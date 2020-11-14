@@ -13,7 +13,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'price', 'item_id', 'quantity',
+        'price', 'item_id', 'quantity', 'is_limited', 'is_bundle', 'is_visisble'
     ];
 
     /**
@@ -22,6 +22,26 @@ class Product extends Model
      * @var string
      */
     protected $table = 'shop_products';
+
+        /**
+     * Validation rules for creation.
+     *
+     * @var array
+     */
+    public static $createRules = [
+        'price' => 'required',
+        'item_id' => 'required',
+    ];
+    
+    /**
+     * Validation rules for updating.
+     *
+     * @var array
+     */
+    public static $updateRules = [
+        'price' => 'required',
+        'item_id' => 'required',
+    ];
     
 
     /**********************************************************************************************
@@ -35,7 +55,7 @@ class Product extends Model
      */
     public function item() 
     {
-        return $this->belongsTo('App\Models\Item\Item');
+        return $this->belongsTo('App\Models\Item\Item', 'item_id');
     }
 
 }

@@ -15,9 +15,8 @@ class StoreController extends Controller
 {
 
     public function storeFront() {
-
-// add products
-    $products = Product::all();
+    // add products
+    $products = Product::where('is_visible', 1)->get();
        
         return view('paypal.paypal_welcome', [
             'products' => $products,

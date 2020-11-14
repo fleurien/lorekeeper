@@ -18,9 +18,9 @@
         </div>
     {!! Form::close() !!}
 </div>
-{!! Form::open(['url' => 'admin/data/products/create', 'class' => 'text-right mb-3']) !!}
-    {!! Form::submit('Make New Product', ['class' => 'btn btn-primary']) !!}
-{!! Form::close() !!}
+
+<a href="products/create" class="btn btn-primary text-right mb-3">Make New Product</a>
+
 @if(!count($products))
     <p>No products found.</p>
 @else 
@@ -29,7 +29,7 @@
         <thead>
             <tr>
                 <th>Product</th>
-                <th>Type</th>
+                <th>Stock</th>
                 <th>Quantity</th>
                 <th></th>
             </tr>
@@ -39,7 +39,7 @@
                 <tr class="sort-product" data-id="{{ $product->id }}">
                     <td>{{ $product->item->name }}</td>
                     <td>{{ $product->price }}</td>
-                    <td>{{ $product->quantity }}</td>
+                    <td>@if($product->quantity) {{ $product->quantity }} @else Unlimited @endif</td>
                     <td>
                         <td class="text-right">
                             <a href="{{ url('admin/data/products/edit/'.$product->id) }}" class="btn btn-primary">Edit</a>

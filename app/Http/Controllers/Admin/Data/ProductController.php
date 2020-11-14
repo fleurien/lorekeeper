@@ -11,9 +11,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Item\Item;
 
+use App\Services\ProductService;
+
 class ProductController extends Controller
 {
-
+    // returns current products
     public function Index(Request $request) {
 
         $query = Product::query();
@@ -26,12 +28,63 @@ class ProductController extends Controller
         ]);
     }
 
-    //
+    // create page
     public function getCreateProduct() {
 
         return view('admin.paypal.create_edit_product', [
             'products' => new Product,
             'items' => Item::orderBy('id')->pluck('name', 'id'),
         ]);
+    }
+
+    // edit page
+    public function getEditProduct($id) {
+        $product = Product::find($id);
+        if(!$product) abort(404);
+        return view('admin.paypal.create_edit_product', [
+            'products' => $product,
+            'items' => Item::orderBy('id')->pluck('name', 'id'),
+        ]);
+    }
+
+    // creates or edits
+    public function postCreateEditProduct(Request $request, ProductService $service, $id = null)
+    {
+        $id ? $request->validate(Product::$updateRules) : $request->validate(Product::$createRules);
+        $data = $request->only([
+            'price', 'quantity', 'is_limited', 'item_id', 'is_bundle', 'is_visible'
+        ]);
+        if($id && $service->updateProduct(Product::find($id), $data, Auth::user())) {
+            flash('Product updated successfully.')->success();
+        }
+        else if (!$id && $product = $service->createProduct($data, Auth::user())) {
+            flash('Product created successfully.')->success();
+            return redirect()->to('admin/data/products/edit/'.$product->id);
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+
+    // delete
+    public function getDeleteProduct($id)
+    {
+        $products = Product::find($id);
+        return view('admin.paypal._delete_product', [
+            'products' => $products,
+        ]);
+    }
+    
+    // post delete
+    public function postDeleteProduct(Request $request, ProductService $service, $id)
+    {
+        if($id && $service->deleteProduct(Product::find($id))) {
+            flash('Product deleted successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->to('admin/data/products');
     }
 }

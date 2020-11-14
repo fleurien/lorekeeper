@@ -18,8 +18,10 @@ class MakeItemAdditionUI extends Migration
             $table->increments('id');
             $table->double('price', 2);
             $table->string('item_id');
-            $table->string('quantity');
+            $table->string('quantity')->nullable();
             $table->boolean('is_bundle')->default(0);
+            $table->boolean('is_limited')->default(0);
+            $table->boolean('is_visible')->default(1);
        });
     }
 

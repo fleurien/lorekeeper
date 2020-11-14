@@ -181,5 +181,5 @@ Route::post('paypal/notify', 'PaypalController@notify');
 // success page
 Route::get('paypal-success', 'StoreController@success');
 
-// cancel page
-Route::get('/cash-shop', 'StoreController@storeFront')->name('paypal.test');
+// cancel page but also the place you buy 
+Route::get('/cash-shop', 'StoreController@storeFront');
