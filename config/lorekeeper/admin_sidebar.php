@@ -160,6 +160,10 @@ return [
                 'name' => 'Items',
                 'url' => 'admin/data/items'
             ],
+            [
+                'name' => 'Products',
+                'url' => 'admin/data/products'
+            ],
         ]
     ],
     'Raffles' => [

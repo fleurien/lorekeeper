@@ -205,6 +205,11 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/create', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
+
+    # PAYPAL
+    Route::get('products', 'ProductController@Index');
+    Route::get('products/create', 'ProductController@getCreateProduct');
+    Route::get('products/edit/{id}', 'ProductController@getEditProduct');
 });
 
 
