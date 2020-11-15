@@ -17,12 +17,12 @@
 
 <div class="form-group">
     {!! Form::label('Price') !!} {!! add_help('Do not include the $') !!}
-    {!! Form::text('price', $products->id ? $products->price : null, ['class' => 'form-control stock-field', 'data-name' => 'price', 'placeholder' => '...']) !!}
+    {!! Form::number('price', $products->id ? $products->price : null, ['class' => 'form-control stock-field', 'data-name' => 'price', 'placeholder' => '...']) !!}
 </div>
 
 <div class="form-group">
     {!! Form::label('Item') !!}
-    {!! Form::select('item_id', $items, null, ['class' => 'form-control stock-field', 'data-name' => 'item_id']) !!}
+    {!! Form::select('item_id', $items, $products->id ? $products->item_id : null, ['class' => 'form-control stock-field', 'data-name' => 'item_id']) !!}
 </div>
 
 <div class="form-group">
@@ -32,7 +32,7 @@
 
 <div class="form-group">
     {!! Form::label('is_visible', 'Should this product be buyable / visible yet?', ['class' => 'form-check-label mb-2']) !!}
-    {!! Form::checkbox('is_visible', 1, $products->id ? $products->is_visible : 1, ['class' => 'form-check-label ml-2', 'data-toggle' => 'toggle']) !!}
+    {!! Form::checkbox('is_visible', 1, $products->id ? $products->is_visible : 0, ['class' => 'form-check-label ml-2', 'data-toggle' => 'toggle']) !!}
 </div>
 
 <div class="form-group">
@@ -41,7 +41,7 @@
 </div>
 <div class="br-form-group mb-2" style="display: none">
     {!! Form::label('quantity', 'Quantity', ['class' => 'form-check-label mb-2']) !!}
-    {!! Form::text('quantity', $products->id ? $products->quantity : null, ['class' => 'form-control', 'data-name' => 'quantity', 'placeholder' => '...']) !!}
+    {!! Form::number('quantity', $products->id ? $products->quantity : null, ['class' => 'form-control', 'data-name' => 'quantity', 'placeholder' => '...']) !!}
 </div>
 
 <div class="text-right">

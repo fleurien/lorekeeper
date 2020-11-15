@@ -24,9 +24,9 @@ class ProductService extends Service
 
             if(Product::where('item_id', $data['item_id'])->exists()) throw new \Exception("This item is already in stock.");
 
-            if(!isset($data['is_visible'])) $data['is_br'] = 0;
-            if(!isset($data['is_limited'])) $data['is_br'] = 0;
-            if(!isset($data['is_bundle'])) $data['is_br'] = 0;
+            if(!isset($data['is_visible'])) $data['is_visible'] = 0;
+            if(!isset($data['is_limited'])) $data['is_limited'] = 0;
+            if(!isset($data['is_bundle'])) $data['is_bundle'] = 0;
 
             $product = Product::create($data);
 
@@ -50,9 +50,9 @@ class ProductService extends Service
         DB::beginTransaction();
 
         try {
-            if(!isset($data['is_visible'])) $data['is_br'] = 0;
-            if(!isset($data['is_limited'])) $data['is_br'] = 0;
-            if(!isset($data['is_bundle'])) $data['is_br'] = 0;
+            if(!isset($data['is_visible'])) $data['is_visible'] = 0;
+            if(!isset($data['is_limited'])) $data['is_limited'] = 0;
+            if(!isset($data['is_bundle'])) $data['is_bundle'] = 0;
 
             // More specific validation
             if(Product::where('item_id', $data['item_id'])->where('id', '!=', $product->id)->exists()) throw new \Exception("This item is already in stock.");

@@ -11,6 +11,8 @@ use Srmklive\PayPal\Services\ExpressCheckout;
 use App\Models\Invoice;
 use App\Models\User\User;
 use App\Models\Product;
+use App\Models\Item\Item;
+use App\Services\InventoryManager;
 
 use App\Http\Controllers\Controller;
 
@@ -27,22 +29,22 @@ class PaypalController extends Controller
         // check if payment is recurring, have to do this to provide a parameter for paypal
         $recurring = $request->input('recurring', false) ? true : false;
         $item = $request->input('item');
+        $amount = $request->input('amount');
         // stuff cause paypal is stupid
         $request->session()->put('stock', $request->input('stock'));
         $request->session()->put('total', $request->input('total'));
         $request->session()->put('item', $request->input('item'));
+        $request->session()->put('amount', $request->input('amount'));
 
-
-        $price = $request->input('total');
+        $price = $request->input('amount') * $request->input('total');
         $stock = $request->input('stock');
-        $check = Stock::find($stock);
+        $check = Product::find($stock);
         $user = Auth::user();
-
         // get new invoice id
         $invoice_id = Invoice::count() + 1;
             
         // Get the cart data
-        $cart = $this->getCart($recurring, $price, $invoice_id);
+        $cart = $this->getCart($recurring, $price, $amount, $invoice_id);
         
         // create new invoice
         $invoice = new Invoice();
@@ -62,6 +64,9 @@ class PaypalController extends Controller
         if (!$response['paypal_link']) {
           return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Something went wrong with PayPal, please try again in a few minutes.']);
         }
+        if($check->is_limited = 1) {
+        if($amount > $check->quantity) return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Cannot purchase more than remaining stock.']);
+        }
 
         if($check != NULL) {
         if($check->quantity <= 0) { 
@@ -72,7 +77,7 @@ class PaypalController extends Controller
       }
 
       
-      private function getCart($recurring, $price, $invoice_id) {
+      private function getCart($recurring, $price, $amount, $invoice_id) {
 
         if ($recurring) {
             // I leave this setup in case someone DOES want recurring but realistically this is useless
@@ -97,7 +102,7 @@ class PaypalController extends Controller
                     [
                         'name' => 'ARPG Item',
                         'price' => $price,
-                        'qty' => 1,
+                        'qty' => $amount,
                     ],
                 ],
                 'return_url' => url('/paypal/express-checkout-success'),
@@ -108,9 +113,9 @@ class PaypalController extends Controller
             ];
     }
 
-    public function expressCheckoutSuccess(Request $request) {
+    public function expressCheckoutSuccess(Request $request, InventoryManager $service) {
 
-        // this function is the completion funciton, user has been charged but more validation needed
+        // this function is the completion fuction, user has been charged but more validation needed
         // check if payment is recurring
         $recurring = $request->input('recurring', false) ? true : false;
 
@@ -118,9 +123,11 @@ class PaypalController extends Controller
 
         $PayerID = $request->get('PayerID');
 
-        $price = session('total');
+        $price = session('amount') * session('total');
 
         $stock = session('stock');
+
+        $amount = session('amount');
         
         //get details
         $response = $this->provider->getExpressCheckoutDetails($token);
@@ -130,7 +137,7 @@ class PaypalController extends Controller
         }
 
         $invoice_id = explode('Invoice-', $response['INVNUM'])[1];
-        $cart = $this->getCart($recurring, $price, $invoice_id);
+        $cart = $this->getCart($recurring, $price, $amount, $invoice_id);
 
         // check if our payment is recurring
         if ($recurring === true) {
@@ -159,13 +166,11 @@ class PaypalController extends Controller
         
         $user = Auth::user();
         $recipient = User::find($user->id);
+        $item_id = session('item');
+        $item = Item::find( $item_id);
 
                 Notifications::create('PURCHASE', $recipient, [
-                    'code' => $invoice_id,
-                ]);
-
-                Notifications::create('IITEM_GRANT', $recipient, [
-                    'code' => $invoice_id,
+                    'item' => $item->name,
                 ]);
 
         if ($recurring === true) {
@@ -180,11 +185,20 @@ class PaypalController extends Controller
         if ($invoice->paid) {
             //reduce stock by one
             if (!empty($stock)){
-                $product = Stock::find($stock);
-                $product->decrement('quantity');
+                $product = Product::find($stock);
+                $product->decrement('quantity', $amount);
                 $product->save(); 
             }
             session()->forget(['stock', 'total']);
+            $data = [];
+            $data['data'] = 'Bought from cash store by ' . $user->name . ' for $' . $price;
+            $data['notes'] = 'Bought from cash store';
+            if($service->creditItem(null, $user, 'Cash Shop Purchase', $data, $item, $amount)) {
+                flash('Items granted successfully.')->success();
+            }
+            else {
+                foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+            }
             
             return redirect('/paypal-success')->with(['code' => 'success', 'message' => 'Your order has been paid succesfully.']);
         }

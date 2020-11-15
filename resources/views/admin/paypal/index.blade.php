@@ -18,8 +18,9 @@
         </div>
     {!! Form::close() !!}
 </div>
-
+<div class="text-right">
 <a href="products/create" class="btn btn-primary text-right mb-3">Make New Product</a>
+</div>
 
 @if(!count($products))
     <p>No products found.</p>
@@ -31,6 +32,8 @@
                 <th>Product</th>
                 <th>Stock</th>
                 <th>Quantity</th>
+                <th>Bundle?</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -39,7 +42,8 @@
                 <tr class="sort-product" data-id="{{ $product->id }}">
                     <td>{{ $product->item->name }}</td>
                     <td>{{ $product->price }}</td>
-                    <td>@if($product->quantity) {{ $product->quantity }} @else Unlimited @endif</td>
+                    <td>@if($product->is_limited) @if($product->quanity == 0) Out of Stock @else {{ $product->quantity }} @endif @else Unlimited @endif</td>
+                    <td>@if($product->is_bundle) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
                     <td>
                         <td class="text-right">
                             <a href="{{ url('admin/data/products/edit/'.$product->id) }}" class="btn btn-primary">Edit</a>

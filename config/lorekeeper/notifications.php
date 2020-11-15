@@ -302,6 +302,12 @@ return [
         'message' => 'Your report (#{report_id}) was closed by <a href="{staff_url}">{staff_name}</a>. (<a href="{url}">View Report</a>)',
         'url' => 'reports/view/{report_id}'
     ],
+    // CHARACTER_ITEM_REMOVAL
+    222 => [
+        'name' => 'Cash Shop Purchase',
+        'message' => 'Thank you for your purchase! Your {item} has been added to your inventory (<a href="{url}">View Inventory</a>)',
+        'url' => 'inventory'
+    ],
     // Comment made on user's model
     // COMMENT_MADE
     239 => [
