@@ -59,21 +59,22 @@ class PaypalController extends Controller
             'CHANNELTYPE' => 'Merchant',
             'CATEGORY' => 'DIGITAL_GOODS',
         ];
+        
+        if($check->is_limited = 1) {
+            if($amount > $check->quantity) return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Cannot purchase more than remaining stock.']);
+            }
+    
+            if($check != NULL) {
+            if($check->quantity <= 0) { 
+                return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'All these items have been bought']);
+                }
+            }
 
         $response = $this->provider->addOptions($options)->setExpressCheckout($cart, $recurring);
         if (!$response['paypal_link']) {
           return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Something went wrong with PayPal, please try again in a few minutes.']);
         }
-        
-        if($check->is_limited = 1) {
-        if($amount > $check->quantity) return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Cannot purchase more than remaining stock.']);
-        }
 
-        if($check != NULL) {
-        if($check->quantity <= 0) { 
-            return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'All these items have been bought']);
-            }
-        }
         return redirect($response['paypal_link']);
       }
 
