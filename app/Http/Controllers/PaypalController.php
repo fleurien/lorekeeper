@@ -64,6 +64,7 @@ class PaypalController extends Controller
         if (!$response['paypal_link']) {
           return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Something went wrong with PayPal, please try again in a few minutes.']);
         }
+        
         if($check->is_limited = 1) {
         if($amount > $check->quantity) return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Cannot purchase more than remaining stock.']);
         }
