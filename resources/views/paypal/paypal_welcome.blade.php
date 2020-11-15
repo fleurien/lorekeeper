@@ -52,8 +52,8 @@
             </div>
         </div>
     @endforeach
-@endif
 </div>
+@endif
 <br>
 <h3 class="text-center mb-4"> Bundle Stock </h3>
     <hr>
@@ -98,6 +98,6 @@
         </div>
     </div>
     @endforeach
-@endif
 </div>
+@endif
 @endsection

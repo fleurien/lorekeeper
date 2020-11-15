@@ -17,7 +17,7 @@
 
 <div class="form-group">
     {!! Form::label('Price') !!} {!! add_help('Do not include the $') !!}
-    {!! Form::number('price', $products->id ? $products->price : null, ['class' => 'form-control stock-field', 'data-name' => 'price', 'placeholder' => '...']) !!}
+    {!! Form::number('price', $products->id ? $products->price : null, ['class' => 'form-control stock-field', 'data-name' => 'price', 'min' => 1, 'placeholder' => '...']) !!}
 </div>
 
 <div class="form-group">
@@ -41,7 +41,7 @@
 </div>
 <div class="br-form-group mb-2" style="display: none">
     {!! Form::label('quantity', 'Quantity', ['class' => 'form-check-label mb-2']) !!}
-    {!! Form::number('quantity', $products->id ? $products->quantity : null, ['class' => 'form-control', 'data-name' => 'quantity', 'placeholder' => '...']) !!}
+    {!! Form::number('quantity', $products->id ? $products->quantity : null, ['class' => 'form-control', 'data-name' => 'quantity', 'min' => 0, 'placeholder' => '...']) !!}
 </div>
 
 <div class="text-right">
