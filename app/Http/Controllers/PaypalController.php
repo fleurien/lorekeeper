@@ -48,6 +48,7 @@ class PaypalController extends Controller
         
         // create new invoice
         $invoice = new Invoice();
+        $invoice->id = $invoice_id;
         $invoice->title = $cart['invoice_description'];
         $invoice->price = $cart['total'];
         $invoice->user_id = $user->id;
