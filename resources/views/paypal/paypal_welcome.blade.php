@@ -30,7 +30,7 @@
                             <strong>Cost:</strong>
                             <br>
                             ${{ $product->price }}
-                        @if($product->is_limited == 1)<div class="text-danger"> Limited Stock <br> Stock Remaining: {{ $product->quantity }}@endif
+                        @if($product->is_limited)<div class="text-danger"> Limited Stock <br> Stock Remaining: {{ $product->quantity }}@endif
                         <br>
                         {{ Form::hidden('item', $product->item_id) }}
                         @if($product->is_limited)
@@ -40,11 +40,11 @@
                         @if($product->is_limited)
                             @if($product->quantity > 0) 
                             {{ Form::number('amount', 1, [ 'class' => 'form-control mb-1', 'min' => 1,]) }}
-                            {{Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white'))}} 
+                            {{ Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white')) }} 
                             @else Out of Stock @endif
                         @else
-                        {{Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white'))}}#
                         {{ Form::number('amount', 1, [ 'class' => 'form-control mb-1', 'min' => 1,]) }}
+                        {{ Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white')) }}
                         @endif
                         {!! Form::close() !!}
                     </div>
@@ -85,11 +85,11 @@
                         @if($product->is_limited)
                             @if($product->quantity > 0) 
                             {{ Form::number('amount', 1, [ 'class' => 'form-control mb-1', 'min' => 1,]) }}
-                            {{Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white'))}} 
+                            {{ Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white')) }} 
                             @else Out of Stock @endif
                         @else
                         {{ Form::number('amount', 1, [ 'class' => 'form-control mb-1', 'min' => 1,]) }}
-                        {{Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white'))}}
+                        {{ Form::submit('Pay via Paypal', array('class' => 'btn-info btn text-white')) }}
                         @endif
                         {!! Form::close() !!}
                     </div>

@@ -36,19 +36,20 @@ class PaypalController extends Controller
         $request->session()->put('item', $request->input('item'));
         $request->session()->put('amount', $request->input('amount'));
 
-        $price = $request->input('amount') * $request->input('total');
+        $price = $request->input('total');
         $stock = $request->input('stock');
         $check = Product::find($stock);
         $user = Auth::user();
+        
         // get new invoice id
-        $invoice_id = Invoice::count() + 1;
-            
+        $invoice = new Invoice();
+        $invoice->save();
+        $invoice_id = $invoice->id;   
+
         // Get the cart data
         $cart = $this->getCart($recurring, $price, $amount, $invoice_id);
         
         // create new invoice
-        $invoice = new Invoice();
-        $invoice->id = $invoice_id;
         $invoice->title = $cart['invoice_description'];
         $invoice->price = $cart['total'];
         $invoice->user_id = $user->id;
@@ -60,14 +61,14 @@ class PaypalController extends Controller
             'CHANNELTYPE' => 'Merchant',
             'CATEGORY' => 'DIGITAL_GOODS',
         ];
-        
-        if($check->is_limited = 1) {
-            if($amount > $check->quantity) return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Cannot purchase more than remaining stock.']);
-            }
     
             if($check != NULL) {
-            if($check->quantity <= 0) { 
-                return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'All these items have been bought']);
+                if($check->is_limited = 1) {
+                    if($amount > $check->quantity) return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Cannot purchase more than remaining stock.']);
+                }
+
+                if($check->quantity <= 0) { 
+                    return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'All these items have been bought']);
                 }
             }
 
@@ -112,7 +113,7 @@ class PaypalController extends Controller
                 'invoice_id' => config('paypal.invoice_prefix') . 'Invoice-' . $invoice_id,
                 'invoice_description' => "ARPG Item purchase. Order #".$invoice_id." Invoice",
                 'cancel_url' => url('/cash-shop'),
-                'total' => $price,
+                'total' => $price * $amount,
             ];
     }
 
@@ -126,7 +127,7 @@ class PaypalController extends Controller
 
         $PayerID = $request->get('PayerID');
 
-        $price = session('amount') * session('total');
+        $price = session('total');
 
         $stock = session('stock');
 
@@ -144,13 +145,11 @@ class PaypalController extends Controller
 
         // check if our payment is recurring
         if ($recurring === true) {
-            // if recurring then we need to create the subscription
-            // you can create monthly or yearly subscriptions
+
             $response = $this->provider->createMonthlySubscription($response['TOKEN'], $response['AMT'], $cart['subscription_desc']);
             
             $status = 'Invalid';
-            // if after creating the subscription paypal responds with activeprofile or pendingprofile
-            // we are good to go and we can set the status to Processed, else status stays Invalid
+
             if (!empty($response['PROFILESTATUS']) && in_array($response['PROFILESTATUS'], ['ActiveProfile', 'PendingProfile'])) {
                 $status = 'Processed';
             }
@@ -194,7 +193,7 @@ class PaypalController extends Controller
             }
             session()->forget(['stock', 'total']);
             $data = [];
-            $data['data'] = 'Bought from cash store by ' . $user->name . ' for $' . $price;
+            $data['data'] = 'Bought from cash store by ' . $user->name . ' for $' . $price . ' each ($' . $price * $amount . 'total)' ;
             $data['notes'] = 'Bought from cash store';
             if($service->creditItem(null, $user, 'Cash Shop Purchase', $data, $item, $amount)) {
                 flash('Items granted successfully.')->success();
