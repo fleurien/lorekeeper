@@ -30,10 +30,10 @@
         <thead>
             <tr>
                 <th>Product</th>
-                <th>Stock</th>
+                <th>Price</th>
                 <th>Quantity</th>
                 <th>Bundle?</th>
-                <th></th>
+                <th>Visible?</th>
                 <th></th>
             </tr>
         </thead>
@@ -41,13 +41,12 @@
             @foreach($products as $product)
                 <tr class="sort-product" data-id="{{ $product->id }}">
                     <td>{{ $product->item->name }}</td>
-                    <td>{{ $product->price }}</td>
+                    <td>${{ $product->price }}</td>
                     <td>@if($product->is_limited) @if($product->quanity == 0) Out of Stock @else {{ $product->quantity }} @endif @else Unlimited @endif</td>
                     <td>@if($product->is_bundle) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
-                    <td>
-                        <td class="text-right">
-                            <a href="{{ url('admin/data/products/edit/'.$product->id) }}" class="btn btn-primary">Edit</a>
-                        </td>
+                    <td>@if($product->is_visible) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
+                    <td class="text-right">
+                        <a href="{{ url('admin/data/products/edit/'.$product->id) }}" class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
             @endforeach
