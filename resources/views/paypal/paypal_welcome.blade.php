@@ -22,7 +22,7 @@
       {!! Form::open(['action' => 'PaypalController@expressCheckout']) !!}
         <div class="card p-3">
             <div class="text-center"><h3><strong>{!! $product->item->displayname !!}</a> @if($product->item->category !== Null )(<a href="{{ $product->item->category->url }}">{!! $product->item->category->name !!})@endif</strong></h3></div>
-                    <div class="text-center inventory-character" data-id="{{ $product->id }}">
+                    <div class="text-center inventory-character">
                         <div class="mb-1">
                             <img style="max-width: 150px;" src="{{ $product->item->imageurl }}">
                         </div>
@@ -30,7 +30,7 @@
                             <strong>Cost:</strong>
                             <br>
                             ${{ $product->price }}
-                        @if($product->is_limited)<div class="text-danger"> Limited Stock <br> Stock Remaining: {{ $product->quantity }}@endif
+                        @if($product->is_limited)<div class="text-danger"> Limited Stock <br> Stock Remaining: {{ $product->quantity }} </div>@endif
                         <br>
                         {{ Form::hidden('item', $product->item_id) }}
                         @if($product->is_limited)
@@ -50,7 +50,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     @endforeach
 </div>
 @endif
@@ -74,8 +73,8 @@
                             <strong>Cost:</strong>
                             <br>
                                 ${{ $product->price }}
-                            @if($product->is_bundle == 1) <div class="text-success"> Bundle @endif
-                            @if($product->is_limited == 1)<div class="text-danger"> Limited Stock <br> Stock Remaining: {{ $product->quantity }}@endif
+                            @if($product->is_bundle == 1) <div class="text-success"> Bundle </div>@endif
+                            @if($product->is_limited == 1)<div class="text-danger"> Limited Stock <br> Stock Remaining: {{ $product->quantity }} </div>@endif
                         <br>
                         {{ Form::hidden('item', $product->item_id) }}
                         @if($product->is_limited) 
@@ -95,8 +94,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
     @endforeach
 </div>
 @endif
