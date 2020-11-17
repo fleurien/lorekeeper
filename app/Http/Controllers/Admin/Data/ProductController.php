@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Product;
+use App\Models\ProductInfo;
 use App\Models\Item\Item;
 
 use App\Services\ProductService;
@@ -81,6 +82,29 @@ class ProductController extends Controller
     {
         if($id && $service->deleteProduct(Product::find($id))) {
             flash('Product deleted successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->to('admin/data/products');
+    }
+
+    // shop
+    public function getEditShop() {
+
+        $shop = ProductInfo::where('id', 1)->first();
+        return view('admin.paypal.edit_desc', [
+            'shop' => $shop,
+        ]);
+    }
+
+    public function postEditShop(Request $request, ProductService $service) {
+
+        $data = $request->only([
+            'title', 'desc', 'bdesc', 'btitle'
+        ]);
+        if($service->editShop(ProductInfo::find(1), $data)) {
+            flash('Shop info edited successfully.')->success();
         }
         else {
             foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Services\InventoryManager;
 use App\Services\ShopManager;
 use App\Models\Product;
+use App\Models\ProductInfo;
 
 class StoreController extends Controller
 {
@@ -17,9 +18,11 @@ class StoreController extends Controller
     public function storeFront() {
     // add products
     $products = Product::where('is_visible', 1)->get();
+    $desc = ProductInfo::where('id', 1)->first();
        
         return view('paypal.paypal_welcome', [
             'products' => $products,
+            'shop' => $desc,
         ]);
     }
 

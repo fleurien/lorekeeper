@@ -15,7 +15,11 @@ class AddInvoiceUser extends Migration
     {
         //
         Schema::table('invoices', function (Blueprint $table) {
-            $table->integer('user_id')->nullable();
+            $table->increments('id');
+            $table->string('title')->nullable();
+            $table->string('desc')->nullable();
+            $table->string('btitle')->nullable();
+            $table->string('bdesc')->nullable();
         });
     }
 

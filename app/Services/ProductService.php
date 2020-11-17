@@ -89,4 +89,22 @@ class ProductService extends Service
         }
         return $this->rollbackReturn(false);
     }
+
+    public function editShop($product, $data) {
+
+        DB::beginTransaction();
+
+        try {
+            $product->title = $data['title'];
+            $product->btitle = $data['btitle'];
+            $product->desc = $data['desc'];
+            $product->bdesc = $data['bdesc'];
+            $product->save();
+            
+            return $this->commitReturn(true);
+        } catch(\Exception $e) { 
+            $this->setError('error', $e->getMessage());
+        }
+        return $this->rollbackReturn(false);
+    }
 }

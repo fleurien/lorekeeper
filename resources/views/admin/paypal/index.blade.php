@@ -19,6 +19,9 @@
     {!! Form::close() !!}
 </div>
 <div class="text-right">
+    <a href="products/shop" class="btn btn-primary text-right mb-3">Edit Cash Shop Text</a>
+</div>
+<div class="text-right">
 <a href="products/create" class="btn btn-primary text-right mb-3">Make New Product</a>
 </div>
 
