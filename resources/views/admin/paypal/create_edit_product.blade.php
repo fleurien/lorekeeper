@@ -43,6 +43,10 @@
     {!! Form::label('quantity', 'Quantity', ['class' => 'form-check-label mb-2']) !!}
     {!! Form::number('quantity', $products->id ? $products->quantity : null, ['class' => 'form-control', 'data-name' => 'quantity', 'min' => 0, 'placeholder' => '...']) !!}
 </div>
+<div class="br-form-group mb-2" style="display: none">
+    {!! Form::label('max', 'Max stock', ['class' => 'form-check-label mb-2']) !!} {!! add_help('This will be the number the stock displays out of, e.g 8/(Max Stock)') !!}
+    {!! Form::number('max', $products->id ? $products->max : null, ['class' => 'form-control', 'data-name' => 'quantity', 'min' => 0, 'placeholder' => '...']) !!}
+</div>
 
 <div class="text-right">
     {!! Form::submit($products->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}

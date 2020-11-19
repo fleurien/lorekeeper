@@ -28,6 +28,10 @@ class ProductService extends Service
             if(!isset($data['is_limited'])) $data['is_limited'] = 0;
             if(!isset($data['is_bundle'])) $data['is_bundle'] = 0;
 
+            if($data['is_limited'] == 1) {
+                if($data['quantity'] > $data['max']) throw new \Exception("Max cannot be smaller than stock.");
+            }
+
             $product = Product::create($data);
 
             return $this->commitReturn($product);
@@ -53,6 +57,9 @@ class ProductService extends Service
             if(!isset($data['is_visible'])) $data['is_visible'] = 0;
             if(!isset($data['is_limited'])) $data['is_limited'] = 0;
             if(!isset($data['is_bundle'])) $data['is_bundle'] = 0;
+            if($data['is_limited'] == 1) {
+                if($data['quantity'] > $data['max']) throw new \Exception("Max cannot be smaller than stock.");
+            }
 
             // More specific validation
             if(Product::where('item_id', $data['item_id'])->where('id', '!=', $product->id)->exists()) throw new \Exception("This item is already in stock.");

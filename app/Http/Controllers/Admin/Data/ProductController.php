@@ -53,7 +53,7 @@ class ProductController extends Controller
     {
         $id ? $request->validate(Product::$updateRules) : $request->validate(Product::$createRules);
         $data = $request->only([
-            'price', 'quantity', 'is_limited', 'item_id', 'is_bundle', 'is_visible'
+            'price', 'quantity', 'is_limited', 'item_id', 'is_bundle', 'is_visible', 'max'
         ]);
         if($id && $service->updateProduct(Product::find($id), $data, Auth::user())) {
             flash('Product updated successfully.')->success();
