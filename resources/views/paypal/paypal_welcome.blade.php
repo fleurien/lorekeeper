@@ -79,9 +79,9 @@
             @else <div class="col-md-3 col-6 profile-inventory-item">
             @endif
                     {!! Form::open(['action' => 'PaypalController@expressCheckout']) !!}
-        <div class="card p-3" style="height: 385px">
+        <div class="card p-3 mb-1" style="height: 385px">
             <div class="text-center"><h3><strong>{!! $product->item->displayname !!}</a></strong></h3></div>
-            @if($product->item->category !== Null ) <h6><div class="text-muted text-center"><a href="{{ $product->item->category->url }}">{!! $product->item->category->name !!}</div></h6></a>@endif
+            @if($product->item->category !== Null ) <h6><div class="text-muted text-center"><a href="{{ $product->item->category->url }}">{!! $product->item->category->name !!}</a></div></h6>@endif
                 <div class="text-center inventory-character" data-id="{{ $product->id }}">
                     <div class="mb-1">
                             <img style="width: 50%;" src="{{ $product->item->imageurl }}">
