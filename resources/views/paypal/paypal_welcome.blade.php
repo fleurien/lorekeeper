@@ -37,7 +37,7 @@
                             <br>
                             ${{ $product->price }}
                             <br>
-                        @if($product->is_limited)<div class="text-danger"> Stock Remaining: {{ $product->quantity }}/0 </div>
+                        @if($product->is_limited)<div class="text-danger"> Stock: {{ $product->quantity }}/0 </div>
                         @else <div class="text-success"> Stock: &infin;</div>
                         @endif
                         {{ Form::hidden('item', $product->item_id) }}
@@ -92,7 +92,7 @@
                                 ${{ $product->price }}
                             <br>
                             @if($product->is_bundle == 1) <div class="text-success"> Bundle </div>@endif
-                            @if($product->is_limited == 1)<div class="text-danger"> Stock Remaining: {{ $product->quantity }} </div>
+                            @if($product->is_limited == 1)<div class="text-danger"> Stock: {{ $product->quantity }} </div>
                             @else <div class="text-success"> Stock: &infin;</div>
                             @endif
                         {{ Form::hidden('item', $product->item_id) }}
