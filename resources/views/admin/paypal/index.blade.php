@@ -28,8 +28,7 @@
 @if(!count($products))
     <p>No products found.</p>
 @else 
-    {!! $products->render() !!}
-    <table class="table table-sm setting-table">
+    <table class="table table-sm shop-table">
         <thead>
             <tr>
                 <th>Product</th>
@@ -40,12 +39,15 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="sortable" class="sortable">
             @foreach($products as $product)
-                <tr class="sort-product" data-id="{{ $product->id }}">
-                    <td>{{ $product->item->name }}</td>
+                <tr class="sort-item" data-id="{{ $product->id }}">
+                    <td>
+                        <a class="fas fa-arrows-alt-v handle mr-3" href="#"></a>
+                        {{ $product->item->name }}
+                    </td>
                     <td>${{ $product->price }}</td>
-                    <td>@if($product->is_limited) @if($product->quantity == 0) Out of Stock @else {{ $product->quantity }} @endif @else Unlimited @endif</td>
+                    <td>@if($product->is_limited) @if($product->quanity == 0) Out of Stock @else {{ $product->quantity }} @endif @else Unlimited @endif</td>
                     <td>@if($product->is_bundle) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
                     <td>@if($product->is_visible) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
                     <td class="text-right">
@@ -56,6 +58,34 @@
         </tbody>
 
     </table>
-    {!! $products->render() !!}
+    <div class="mb-4">
+        {!! Form::open(['url' => 'admin/data/products/sort']) !!}
+        {!! Form::hidden('sort', '', ['id' => 'sortableOrder']) !!}
+        {!! Form::submit('Save Order', ['class' => 'btn btn-primary']) !!}
+        {!! Form::close() !!}
+    </div>
 @endif
+@endsection
+@section('scripts')
+@parent
+<script>
+
+$( document ).ready(function() {
+    $('.handle').on('click', function(e) {
+        e.preventDefault();
+    });
+    $( "#sortable" ).sortable({
+        items: '.sort-item',
+        handle: ".handle",
+        placeholder: "sortable-placeholder",
+        stop: function( event, ui ) {
+            $('#sortableOrder').val($(this).sortable("toArray", {attribute:"data-id"}));
+        },
+        create: function() {
+            $('#sortableOrder').val($(this).sortable("toArray", {attribute:"data-id"}));
+        }
+    });
+    $( "#sortable" ).disableSelection();
+});
+</script>
 @endsection

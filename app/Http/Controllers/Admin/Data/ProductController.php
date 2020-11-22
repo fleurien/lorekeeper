@@ -25,7 +25,7 @@ class ProductController extends Controller
             $query->where('product', 'LIKE', '%'.$data['product'].'%');
 
         return view('admin.paypal.index', [
-            'products' => $query->orderBy('id', 'DESC')->paginate(20)->appends($request->query()),
+            'products' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
         ]);
     }
 
@@ -110,5 +110,17 @@ class ProductController extends Controller
             foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
         }
         return redirect()->to('admin/data/products');
+    }
+
+   //sorts
+    public function postSortProduct(Request $request, ProductService $service)
+    {
+        if($service->sortProduct($request->get('sort'))) {
+            flash('Product order updated successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
     }
 }

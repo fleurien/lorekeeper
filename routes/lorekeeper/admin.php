@@ -212,6 +212,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::get('products/edit/{id}', 'ProductController@getEditProduct');
     Route::get('products/delete/{id}', 'ProductController@getDeleteProduct');
     Route::get('products/shop', 'ProductController@getEditShop');
+    Route::post('products/sort', 'ProductController@postSortProduct');
     Route::post('products/create', 'ProductController@postCreateEditProduct');
     Route::post('products/edit/{id?}', 'ProductController@postCreateEditProduct');
     Route::post('products/delete/{id}', 'ProductController@postDeleteProduct');
