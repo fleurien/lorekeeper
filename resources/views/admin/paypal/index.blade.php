@@ -47,7 +47,7 @@
                         {{ $product->item->name }}
                     </td>
                     <td>${{ $product->price }}</td>
-                    <td>@if($product->is_limited) @if($product->quanity == 0) Out of Stock @else {{ $product->quantity }} @endif @else Unlimited @endif</td>
+                    <td>@if($product->is_limited) @if($product->quantity == 0) Out of Stock @else {{ $product->quantity }} @endif @else Unlimited @endif</td>
                     <td>@if($product->is_bundle) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
                     <td>@if($product->is_visible) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
                     <td class="text-right">
