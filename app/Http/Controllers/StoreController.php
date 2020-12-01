@@ -17,7 +17,7 @@ class StoreController extends Controller
 
     public function storeFront() {
     // add products
-    $products = Product::where('is_visible', 1)->get();
+    $products = Product::where('is_visible', 1)->orderBy('sort', 'DESC')->get();
     $desc = ProductInfo::where('id', 1)->first();
        
         return view('paypal.paypal_welcome', [
