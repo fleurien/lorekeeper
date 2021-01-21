@@ -8,16 +8,7 @@
 <h1>Products</h1>
 
 <p>Items that can be bought in the cash-store.</p>
-<div>
-    {!! Form::open(['method' => 'GET', 'class' => 'form-inline justify-content-end']) !!}
-        <div class="form-group mr-3 mb-3">
-            {!! Form::text('product', Request::get('product'), ['class' => 'form-control', 'placeholder' => 'Product']) !!}
-        </div>
-        <div class="form-group mb-3">
-            {!! Form::submit('Search', ['class' => 'btn btn-primary']) !!}
-        </div>
-    {!! Form::close() !!}
-</div>
+
 <div class="text-right">
     <a href="products/shop" class="btn btn-primary text-right mb-3">Edit Cash Shop Text</a>
 </div>

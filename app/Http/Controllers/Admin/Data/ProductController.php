@@ -17,15 +17,10 @@ use App\Services\ProductService;
 class ProductController extends Controller
 {
     // returns current products
-    public function Index(Request $request) {
-
-        $query = Product::query();
-        $data = $request->only(['product']);
-        if(isset($data['product'])) 
-            $query->where('product', 'LIKE', '%'.$data['product'].'%');
-
+    public function Index(Request $request) 
+    {
         return view('admin.paypal.index', [
-            'products' => $query->orderBy('sort', 'DESC')->appends($request->query()),
+            'products' => Product::orderBy('sort', 'DESC')->get()
         ]);
     }
 
