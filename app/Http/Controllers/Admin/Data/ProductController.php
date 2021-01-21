@@ -25,7 +25,7 @@ class ProductController extends Controller
             $query->where('product', 'LIKE', '%'.$data['product'].'%');
 
         return view('admin.paypal.index', [
-            'products' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+            'products' => $query->orderBy('sort', 'DESC')->appends($request->query()),
         ]);
     }
 
