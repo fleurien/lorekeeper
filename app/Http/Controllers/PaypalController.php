@@ -208,9 +208,9 @@ class PaypalController extends Controller
                 $product->save(); 
             }
             session()->forget(['stock', 'total']);
-            
+
             $data = [];
-            $data['data'] = 'Bought from cash store by ' . $user->name . ' for $' . $price . ' each ($' . $price * $amount . 'total)' ;
+            $data['data'] = 'Bought from cash store by ' . $user->name . ' for $' . $price . ' each ($' . $price * $amount . ' total)' ;
             $data['notes'] = 'Bought from cash store';
 
             if($service->creditItem(null, $user, 'Cash Shop Purchase', $data, $item, $amount)) {
