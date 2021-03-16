@@ -28,16 +28,25 @@ class PaypalController extends Controller
     public function expressCheckout(Request $request) {
         // check if payment is recurring, have to do this to provide a parameter for paypal
         $recurring = $request->input('recurring', false) ? true : false;
+        // getting the info from the request - what item was bought and how much
         $item = $request->input('item');
         $amount = $request->input('amount');
         // stuff cause paypal is stupid
+        // we have to put this into the session because of a few reasons.
+        // 1 - We need these parameters when the paypal session redirects back to our site to confirm it has been paid
+        // 2 - We need it to credit the item and debit any stock; this prevents artificial stock reduction by unsure / curious users 
         $request->session()->put('stock', $request->input('stock'));
         $request->session()->put('total', $request->input('total'));
+        // this is from a hidden field
         $request->session()->put('item', $request->input('item'));
         $request->session()->put('amount', $request->input('amount'));
-
+        // this is the same
         $price = $request->input('total');
         $stock = $request->input('stock');
+
+        // find which product has been bought so we can deduct stock if needed
+        // this is ONLY != for products that have stock
+        // I can't remember my exact code or why... this could probably be refactored
         $check = Product::find($stock);
         $user = Auth::user();
         
@@ -50,11 +59,13 @@ class PaypalController extends Controller
         $cart = $this->getCart($recurring, $price, $amount, $invoice_id);
         
         // create new invoice
+        // for things like description, you can make it variable, though you will need to add it to the session since cart is called on the return function
         $invoice->title = $cart['invoice_description'];
         $invoice->price = $cart['total'];
         $invoice->user_id = $user->id;
         $invoice->save();
 
+        // stuff to make your paypal page look nice :)
         $options = [
             'BRANDNAME' => 'Site ARPG',
             'LOGOIMG' => '/',
@@ -62,17 +73,19 @@ class PaypalController extends Controller
             'CATEGORY' => 'DIGITAL_GOODS',
         ];
     
+        // if
             if($check != NULL) {
                 if($check->is_limited = 1) {
                     if($amount > $check->quantity) return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Cannot purchase more than remaining stock.']);
                 }
 
                 if($check->quantity <= 0) { 
-                    return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'All these items have been bought']);
+                    return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'All these items have been bought.']);
                 }
             }
 
         $response = $this->provider->addOptions($options)->setExpressCheckout($cart, $recurring);
+
         if (!$response['paypal_link']) {
           return redirect('/cash-shop')->with(['code' => 'danger', 'message' => 'Something went wrong with PayPal, please try again in a few minutes.']);
         }
@@ -104,6 +117,8 @@ class PaypalController extends Controller
             return [
                 'items' => [
                     [
+                        // you could pass a variable in here for name but i had so much trouble getting it to work originally
+                        // I have now completely (not really but very close to) thrown up my hands
                         'name' => 'ARPG Item',
                         'price' => $price,
                         'qty' => $amount,
@@ -126,7 +141,7 @@ class PaypalController extends Controller
         $token = $request->get('token');
 
         $PayerID = $request->get('PayerID');
-
+        // getting our stuff back
         $price = session('total');
 
         $stock = session('stock');
@@ -162,6 +177,7 @@ class PaypalController extends Controller
         }
 
         // find invoice by id
+        // new newt comments, could pass invoice in session...
         $invoice = Invoice::find($invoice_id);
         // set invoice status
         $invoice->payment_status = $status;
@@ -192,9 +208,11 @@ class PaypalController extends Controller
                 $product->save(); 
             }
             session()->forget(['stock', 'total']);
+            
             $data = [];
             $data['data'] = 'Bought from cash store by ' . $user->name . ' for $' . $price . ' each ($' . $price * $amount . 'total)' ;
             $data['notes'] = 'Bought from cash store';
+
             if($service->creditItem(null, $user, 'Cash Shop Purchase', $data, $item, $amount)) {
                 flash('Items granted successfully.')->success();
             }
