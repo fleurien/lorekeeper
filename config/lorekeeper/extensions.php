@@ -55,5 +55,5 @@ return [
     ],
 
     // Extra Image Credits - Newt
-    'extra_image_credits' => 0,
+    'extra_image_credits' => 1,
 ];
