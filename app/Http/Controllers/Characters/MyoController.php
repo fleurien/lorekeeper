@@ -220,7 +220,7 @@ class MyoController extends Controller
             flash('This character is bound and cannot be transfered. You must transfer the character it is bound to.')->error();
             return redirect()->back();
         }
-        if($service->createTransfer($request->only(['recipient_id']), $this->character, Auth::user())) {
+        if($service->createTransfer($request->only(['recipient_id', 'user_reason']), $this->character, Auth::user())) {
             flash('Transfer created successfully.')->success();
         }
         else {
@@ -263,7 +263,7 @@ class MyoController extends Controller
 
         return view('character.update_form', [
             'character' => $this->character,
-            'queueOpen' => Settings::get('is_design_updates_open'),
+            'queueOpen' => Settings::get('is_myos_open'),
             'request' => $this->character->designUpdate()->active()->first()
         ]);
     }

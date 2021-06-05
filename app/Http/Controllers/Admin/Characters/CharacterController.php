@@ -18,6 +18,7 @@ use App\Models\Species\Subtype;
 use App\Models\Feature\Feature;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Trade;
+use App\Models\User\UserItem;
 
 use App\Services\CharacterManager;
 use App\Services\CurrencyManager;
@@ -110,12 +111,12 @@ class CharacterController extends Controller
     {
         $request->validate(Character::$createRules);
         $data = $request->only([
-            'user_id', 'owner_alias', 'character_category_id', 'number', 'slug',
+            'user_id', 'owner_url', 'character_category_id', 'number', 'slug',
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
             'sale_value', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
-            'designer_alias', 'designer_url',
-            'artist_alias', 'artist_url',
+            'designer_id', 'designer_url',
+            'artist_id', 'artist_url',
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'image', 'thumbnail', 'image_description', 'parent_id'
         ]);
@@ -140,12 +141,12 @@ class CharacterController extends Controller
     {
         $request->validate(Character::$myoRules);
         $data = $request->only([
-            'user_id', 'owner_alias', 'name',
+            'user_id', 'owner_url', 'name',
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
             'sale_value', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
-            'designer_alias', 'designer_url',
-            'artist_alias', 'artist_url',
+            'designer_id', 'designer_url',
+            'artist_id', 'artist_url',
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'image', 'thumbnail', 'parent_id'
         ]);
@@ -487,7 +488,7 @@ class CharacterController extends Controller
             flash('This character is bound and cannot be transfered. You must transfer the character it is bound to.')->error();
             return redirect()->back();
         }
-        if($service->adminTransfer($request->only(['recipient_id', 'recipient_alias', 'cooldown', 'reason']), $this->character, Auth::user())) {
+        if($service->adminTransfer($request->only(['recipient_id', 'recipient_url', 'cooldown', 'reason']), $this->character, Auth::user())) {
             flash('Character transferred successfully.')->success();
             if($child) flash("This character's attachments have been transferred with it.")->warning();
         }
@@ -509,6 +510,7 @@ class CharacterController extends Controller
     {
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();
         if(!$this->character) abort(404);
+<<<<<<< HEAD
         
         $parent = CharacterLink::where('child_id', $this->character->id)->first();
         $child = CharacterLink::where('parent_id', $this->character->id)->first();
@@ -518,6 +520,10 @@ class CharacterController extends Controller
             return redirect()->back();
         }
         if($service->adminTransfer($request->only(['recipient_id', 'cooldown', 'reason']), $this->character, Auth::user())) {
+=======
+
+        if($service->adminTransfer($request->only(['recipient_id', 'recipient_url', 'cooldown', 'reason']), $this->character, Auth::user())) {
+>>>>>>> b690aaf5f8288040dbb6fc413224523fdba29208
             flash('Character transferred successfully.')->success();
         }
         else {
@@ -659,12 +665,30 @@ class CharacterController extends Controller
 
         $openTransfersQueue = Settings::get('open_transfers_queue');
 
+        $stacks = array();
+        foreach($trades->get() as $trade) {
+            foreach($trade->data as $side=>$assets) {
+                if(isset($assets['user_items'])) {
+                    $user_items = UserItem::with('item')->find(array_keys($assets['user_items']));
+                    $items = array();
+                    foreach($assets['user_items'] as $id=>$quantity) {
+                        $user_item = $user_items->find($id);
+                        $user_item['quantity'] = $quantity;
+                        array_push($items,$user_item);
+                    }
+                    $items = collect($items)->groupBy('item_id');
+                    $stacks[$trade->id][$side] = $items;
+                }
+            }
+        }
+
         return view('admin.masterlist.character_trades', [
             'trades' => $trades->orderBy('id', 'DESC')->paginate(20),
             'tradesQueue' => Settings::get('open_transfers_queue'),
             'openTransfersQueue' => $openTransfersQueue,
             'transferCount' => $openTransfersQueue ? CharacterTransfer::active()->where('is_approved', 0)->count() : 0,
-            'tradeCount' => $openTransfersQueue ? Trade::where('status', 'Pending')->count() : 0
+            'tradeCount' => $openTransfersQueue ? Trade::where('status', 'Pending')->count() : 0,
+            'stacks' => $stacks
         ]);
     }
 
