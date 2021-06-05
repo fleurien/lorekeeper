@@ -99,7 +99,7 @@ class TradeController extends Controller
         ->filter(function($userItem){
             return $userItem->isTransferrable == true;
         })
-        ->sortBy('item.name');;
+        ->sortBy('item.name');
         return view('home.trades.create_trade', [
             'categories' => ItemCategory::orderBy('sort', 'DESC')->get(),
             'item_filter' => Item::orderBy('name')->get()->keyBy('id'),

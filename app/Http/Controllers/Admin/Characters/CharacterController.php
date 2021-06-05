@@ -510,7 +510,6 @@ class CharacterController extends Controller
     {
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();
         if(!$this->character) abort(404);
-<<<<<<< HEAD
         
         $parent = CharacterLink::where('child_id', $this->character->id)->first();
         $child = CharacterLink::where('parent_id', $this->character->id)->first();
@@ -519,11 +518,7 @@ class CharacterController extends Controller
             flash('This character is bound and cannot be transfered. You must transfer the character it is bound to.')->error();
             return redirect()->back();
         }
-        if($service->adminTransfer($request->only(['recipient_id', 'cooldown', 'reason']), $this->character, Auth::user())) {
-=======
-
         if($service->adminTransfer($request->only(['recipient_id', 'recipient_url', 'cooldown', 'reason']), $this->character, Auth::user())) {
->>>>>>> b690aaf5f8288040dbb6fc413224523fdba29208
             flash('Character transferred successfully.')->success();
         }
         else {
