@@ -68,7 +68,7 @@ function calculateGroupCurrency($data)
 function getAssetKeys($isCharacter = false)
 {
     if(!$isCharacter) return ['items', 'currencies', 'raffle_tickets', 'loot_tables', 'user_items', 'characters'];
-    else return ['currencies'];
+    else return ['currencies', 'items', 'character_items', 'loot_tables'];
 }
 
 /**
@@ -111,6 +111,11 @@ function getAssetModelString($type, $namespaced = true)
         case 'characters':
             if($namespaced) return '\App\Models\Character\Character';
             else return 'Character';
+            break;
+
+        case 'character_items':
+            if($namespaced) return '\App\Models\Character\CharacterItem';
+            else return 'CharacterItem';
             break;
     }
     return null;
@@ -283,16 +288,36 @@ function fillUserAssets($assets, $sender, $recipient, $logType, $data)
  * @param  string                           $data
  * @return array
  */
-function fillCharacterAssets($assets, $sender, $recipient, $logType, $data)
+function fillCharacterAssets($assets, $sender, $recipient, $logType, $data, $submitter = null)
 {
+    if(!Config::get('lorekeeper.extensions.character_reward_expansion.default_recipient') && $recipient->user) $item_recipient = $recipient->user;
+    else $item_recipient = $submitter;
+
+
+    // Roll on any loot tables
+    if(isset($assets['loot_tables']))
+    {
+        foreach($assets['loot_tables'] as $table)
+        {
+            $assets = mergeAssetsArrays($assets, $table['asset']->roll($table['quantity']));
+        }
+        unset($assets['loot_tables']);
+    }
+
     foreach($assets as $key => $contents)
     {
         if($key == 'currencies' && count($contents))
         {
             $service = new \App\Services\CurrencyManager;
             foreach($contents as $asset)
-                if(!$service->creditCurrency($sender, $recipient, $logType, $data['data'], $asset['asset'], $asset['quantity'])) return false;
+                if(!$service->creditCurrency($sender, ( $asset['asset']->is_character_owned ? $recipient : $item_recipient), $logType, $data['data'], $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'items' && count($contents))
+        {
+            $service = new \App\Services\InventoryManager;
+            foreach($contents as $asset)
+                if(!$service->creditItem($sender, ( ($asset['asset']->category && $asset['asset']->category->is_character_owned) ? $recipient : $item_recipient), $logType, $data, $asset['asset'], $asset['quantity'])) return false;
         }
     }
-    return true;
+    return $assets;
 }
