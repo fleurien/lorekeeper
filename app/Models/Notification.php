@@ -144,6 +144,7 @@ class Notification extends Model
     const BOOKMARK_GIFT_WRITING             = 39;
     const REPORT_ASSIGNED                   = 220;
     const REPORT_CLOSED                     = 221;
+    const PURCHASE                          = 222;
     const COMMENT_MADE                      = 239;
     const COMMENT_REPLY                     = 240;
     const CHARACTER_ITEM_GRANT              = 501;
