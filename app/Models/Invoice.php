@@ -6,10 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    //
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['title', 'price', 'payment_status', 'code_created'];
 
-    //To check if invoice was paid
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'invoices';
+
+    /**********************************************************************************************
+    
+        ACCESSORS
+
+    **********************************************************************************************/
 
     public function getPaidAttribute() {
     	if ($this->payment_status == 'Invalid') {

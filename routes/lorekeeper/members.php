@@ -173,13 +173,7 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function() {
 /**************************************************************************************************
     Paypal
 **************************************************************************************************/
-Route::post('paypal/express-checkout', 'PaypalController@expressCheckout')->name('paypal.express-checkout');
-Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
-
-Route::post('paypal/notify', 'PaypalController@notify');
-
-// success page
 Route::get('paypal-success', 'StoreController@success');
-
-// cancel page but also the place you buy 
-Route::get('/cash-shop', 'StoreController@storeFront');
+Route::get('cash-shop', 'StoreController@storeFront');
+Route::post('cash-shop/purchase/{id}', 'PaypalController@expressCheckout');
+Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');

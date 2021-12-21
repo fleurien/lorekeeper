@@ -21,10 +21,12 @@
 @else 
 <div class="row">
     @foreach($products->where('is_bundle', 0) as $product)
-    @if($product->is_limited && $product->quantity <= 0) <div class="col-md-3 col-6 profile-inventory-item" style="opacity: 50%">
-    @else <div class="col-md-3 col-6 profile-inventory-item">
+    @if($product->is_limited && $product->quantity <= 0) 
+        <div class="col-md-3 col-6 profile-inventory-item h-100" style="opacity: 50%">
+    @else 
+        <div class="col-md-3 col-6 profile-inventory-item h-100">
     @endif
-      {!! Form::open(['action' => 'PaypalController@expressCheckout']) !!}
+      {!! Form::open(['url' => 'cash-shop/purchase/'.$product->id]) !!}
         <div class="card p-3 mb-2">
             <div class="text-center"><h3><strong>{!! $product->item->displayname !!}</strong></h3></div>
             @if($product->item->category !== Null ) <h6><div class="text-muted text-center"><a href="{{ $product->item->category->url }}">{!! $product->item->category->name !!}</a></div></h6>@endif
@@ -37,14 +39,11 @@
                             <br>
                             ${{ $product->price }}
                             <br>
-                        @if($product->is_limited)<div class="text-danger"> Stock: {{ $product->quantity }}/{{ $product->max }} </div>
-                        @else <div class="text-success"> Stock: &infin;</div>
-                        @endif
-                        {{ Form::hidden('item', $product->item_id) }}
                         @if($product->is_limited)
-                        {{ Form::hidden('stock', $product->id) }} 
+                            <div class="text-danger"> Stock: {{ $product->quantity }}/{{ $product->max }} </div>
+                        @else 
+                            <div class="text-success"> Stock: &infin;</div>
                         @endif
-                        {{ Form::hidden('total', $product->price) }}
                         @if($product->is_limited)
                             @if($product->quantity > 0) 
                             {{ Form::number('amount', 1, [ 'class' => 'form-control mb-1', 'min' => 1,]) }}
@@ -75,10 +74,12 @@
 @else 
     <div class="row">
         @foreach($products->where('is_bundle', 1) as $product)
-        @if($product->is_limited && $product->quantity <= 0) <div class="col-md-3 col-6 profile-inventory-item" style="opacity: 50%">
-            @else <div class="col-md-3 col-6 profile-inventory-item">
-            @endif
-                    {!! Form::open(['action' => 'PaypalController@expressCheckout']) !!}
+        @if($product->is_limited && $product->quantity <= 0) 
+            <div class="col-md-3 col-6 profile-inventory-item h-100" style="opacity: 50%">
+        @else 
+            <div class="col-md-3 col-6 profile-inventory-item h-100">
+        @endif
+        {!! Form::open(['url' => 'cash-shop/purchase'.$product->id]) !!}
         <div class="card p-3 mb-2">
             <div class="text-center"><h3><strong>{!! $product->item->displayname !!}</a></strong></h3></div>
             @if($product->item->category !== Null ) <h6><div class="text-muted text-center"><a href="{{ $product->item->category->url }}">{!! $product->item->category->name !!}</a></div></h6>@endif
@@ -91,15 +92,12 @@
                             <br>
                                 ${{ $product->price }}
                             <br>
-                            @if($product->is_bundle == 1) <div class="text-success"> Bundle </div>@endif
-                            @if($product->is_limited == 1)<div class="text-danger"> Stock: {{ $product->quantity }}/{{ $product->max }} </div>
-                            @else <div class="text-success"> Stock: &infin;</div>
+                            <div class="text-success"> Bundle </div>
+                            @if($product->is_limited)
+                                <div class="text-danger"> Stock: {{ $product->quantity }}/{{ $product->max }} </div>
+                            @else 
+                                <div class="text-success"> Stock: &infin;</div>
                             @endif
-                        {{ Form::hidden('item', $product->item_id) }}
-                        @if($product->is_limited) 
-                        {{ Form::hidden('stock', $product->id) }}
-                        @endif
-                        {{ Form::hidden('total', $product->price) }}
                         @if($product->is_limited)
                             @if($product->quantity > 0) 
                             {{ Form::number('amount', 1, [ 'class' => 'form-control mb-1', 'min' => 1,]) }}
