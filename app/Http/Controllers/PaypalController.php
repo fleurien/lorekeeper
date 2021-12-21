@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use Config;
 use Notifications;
 
 use Illuminate\Http\Request;
@@ -65,7 +66,7 @@ class PaypalController extends Controller
 
         // stuff to make your paypal page look nice :)
         $options = [
-            'BRANDNAME' => env('APP_NAME', 'ARPG Website'),
+            'BRANDNAME' => config('lorekeeper.settings.site_name', 'Lorekeeper'),
             'LOGOIMG' => '/',
             'CHANNELTYPE' => 'Merchant',
             'CATEGORY' => 'DIGITAL_GOODS',
