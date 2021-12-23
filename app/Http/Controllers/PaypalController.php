@@ -132,6 +132,7 @@ class PaypalController extends Controller
         $product = session('product');
         $amount = session('amount');
         session()->forget(['stock', 'total', 'amount']);
+        $product = Product::find($product);
         
         //get details
         $response = $this->provider->getExpressCheckoutDetails($token);
@@ -141,7 +142,7 @@ class PaypalController extends Controller
         }
 
         $invoice_id = explode('Invoice-', $response['INVNUM'])[1];
-        $cart = $this->getCart($recurring, $price, $amount, $invoice_id);
+        $cart = $this->getCart($recurring, $product, $price, $amount, $invoice_id);
 
         // check if our payment is recurring
         // if($recurring) {
@@ -169,7 +170,6 @@ class PaypalController extends Controller
         // set invoice status
         $invoice->payment_status = $status;
 
-        $product = Product::find($product);
         Notifications::create('PURCHASE', Auth::user(), [
             'item' => $product->item->name,
         ]);
