@@ -160,8 +160,6 @@ class PaypalController extends Controller
         // if payment is not recurring just perform transaction on PayPal
         // and get the payment status
         $payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
-        dd($payment_status);
-
         //}
 
         $invoice = Invoice::find($invoice_id);
@@ -170,13 +168,12 @@ class PaypalController extends Controller
         }
 
         // set invoice status
-        $invoice->payment_status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];;
+        $invoice->payment_status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
+        $invoice->save();
 
         Notifications::create('PURCHASE', Auth::user(), [
             'item' => $product->item->name,
         ]);
-
-        $invoice->save();
 
         if($invoice->paid) {
             //reduce stock by one
