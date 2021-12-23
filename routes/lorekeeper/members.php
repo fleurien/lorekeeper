@@ -202,7 +202,7 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function() {
 /**************************************************************************************************
     Paypal
 **************************************************************************************************/
-Route::get('paypal-success', 'StoreController@success');
-Route::get('cash-shop', 'StoreController@storeFront');
-Route::post('cash-shop/purchase/{id}', 'PaypalController@expressCheckout');
-Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
+// Route::get('paypal-success', 'StoreController@success');
+// Route::get('cash-shop', 'StoreController@storeFront');
+// Route::post('cash-shop/purchase/{id}', 'PaypalController@expressCheckout');
+// Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
