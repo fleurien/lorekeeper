@@ -16,9 +16,6 @@ class StoreController extends Controller
 {
 
     public function storeFront() {
-    if(!Auth::check() || !Auth::user()->isStaff) {
-        abort(404);
-    }
     // add products
     $products = Product::where('is_visible', 1)->orderBy('sort', 'DESC')->get();
     $desc = ProductInfo::where('id', 1)->first();
