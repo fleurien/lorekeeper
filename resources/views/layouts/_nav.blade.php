@@ -25,6 +25,9 @@
                         <a class="dropdown-item" href="{{ url('info/faq') }}">
                             FAQ
                         </a>
+                        <a class="dropdown-item" href="{{ url('info/donors') }}">
+                            Donors
+                        </a>
                     </div>
                 </li>
                 <li class="nav-item">
