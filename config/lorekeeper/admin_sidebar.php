@@ -187,7 +187,7 @@ return [
             [
                 'name' => 'Advent Calendars',
                 'url' => 'admin/data/advent-calendars'
-            ]
+            ],
         ]
     ],
     'Raffles' => [
