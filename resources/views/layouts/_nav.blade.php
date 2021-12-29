@@ -10,6 +10,23 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                    <a id="browseDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Important
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="browseDropdown">
+                        <a class="dropdown-item" href="{{ url('info/guide') }}">
+                            Site Guide
+                        </a>
+                        <a class="dropdown-item" href="{{ url('info/traitinfo') }}">
+                            Trait List
+                        </a>
+                        <a class="dropdown-item" href="{{ url('info/faq') }}">
+                            FAQ
+                        </a>
+                    </div>
+                </li>
                 <li class="nav-item">
                     @if(Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
                         <a class="nav-link d-flex text-warning" href="{{ url('news') }}"><strong>News</strong><i class="fas fa-bell"></i></a>
@@ -106,6 +123,9 @@
                         <a class="dropdown-item" href="{{ url('world') }}">
                             Encyclopedia
                         </a>
+                        <a class="dropdown-item" href="{{ url('info/history') }}">
+                            Foxtopus History
+                        </a>
                         <a class="dropdown-item" href="{{ url('prompts/prompts') }}">
                             Prompts
                         </a>
@@ -154,9 +174,6 @@
                         <div class="dropdown-menu" aria-labelledby="browseDropdown">
                             <a class="dropdown-item" href="{{ url('submissions/new') }}">
                                 Submit Prompt
-                            </a>
-                            <a class="dropdown-item" href="{{ url('claims/new') }}">
-                                Submit Claim
                             </a>
                             <a class="dropdown-item" href="{{ url('reports/new') }}">
                                 Submit Report
