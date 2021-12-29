@@ -184,6 +184,10 @@ return [
                 'name' => 'Products',
                 'url' => 'admin/data/products'
             ],
+            [
+                'name' => 'Advent Calendars',
+                'url' => 'admin/data/advent-calendars'
+            ]
         ]
     ],
     'Raffles' => [

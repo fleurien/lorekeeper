@@ -208,3 +208,10 @@ Route::get('paypal-success', 'StoreController@success');
 Route::get('cash-shop', 'StoreController@storeFront');
 Route::post('cash-shop/purchase/{id}', 'PaypalController@expressCheckout');
 Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
+/***Advent Calendars
+**************************************************************************************************/
+
+Route::group(['prefix' => 'advent-calendars'], function() {
+    Route::get('{id}', 'AdventController@getAdvent');
+    Route::post('{id}', 'AdventController@postClaimPrize');
+});
