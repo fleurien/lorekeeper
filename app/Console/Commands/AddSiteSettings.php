@@ -104,6 +104,44 @@ class AddSiteSettings extends Command
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
 
         $this->addSiteSetting('featured_character', 1, 'ID of the currently featured character.');
+        if(!DB::table('site_settings')->where('key', 'event_currency')->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key' => 'event_currency',
+                    'value' => 1,
+                    'description' => 'ID of the currency used for events.'
+                ]
+
+            ]);
+            $this->info("Added:   event_currency / Default: 1");
+        }
+        else $this->line("Skipped: event_currency");
+
+        if(!DB::table('site_settings')->where('key', 'global_event_score')->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key' => 'global_event_score',
+                    'value' => 0,
+                    'description' => '0: Event currency is only tracked individually, 1: A global tally of all event currency is also kept.'
+                ]
+
+            ]);
+            $this->info("Added:   global_event_score / Default: 0");
+        }
+        else $this->line("Skipped: global_event_score");
+
+        if(!DB::table('site_settings')->where('key', 'global_event_goal')->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key' => 'global_event_goal',
+                    'value' => 0,
+                    'description' => 'Goal for global event score. Has no effect if global event score is not 1 and/or if set to 0.'
+                ]
+
+            ]);
+            $this->info("Added:   global_event_goal / Default: 0");
+        }
+        else $this->line("Skipped: global_event_goal");
 
         $this->line("\nSite settings up to date!");
 

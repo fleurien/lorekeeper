@@ -126,6 +126,8 @@ Route::group(['prefix' => 'shops'], function() {
     Route::get('donation-shop/{id}', 'ShopController@getDonationShopStock')->where(['id' => '[0-9]+']);
 });
 
+Route::get('event-tracking', 'PromptsController@getEventTracking');
+
 /**************************************************************************************************
     Site Pages
 **************************************************************************************************/

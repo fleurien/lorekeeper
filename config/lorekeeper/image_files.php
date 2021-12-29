@@ -66,5 +66,5 @@ return [
         'name' => 'Donation Shop Image',
         'description' => 'Image used for the donation shop. PNG format, should be the same size as other shop images.',
         'filename' => 'donation_shop.png'
-    ],
+    ]
 ];
