@@ -147,6 +147,8 @@ class Notification extends Model
     const PURCHASE                          = 222;
     const COMMENT_MADE                      = 239;
     const COMMENT_REPLY                     = 240;
+    const COOWNER_OWNER_UPDATE              = 298;
+    const COOWNER_UPDATE                    = 299;
     const CHARACTER_ITEM_GRANT              = 501;
     const CHARACTER_ITEM_REMOVAL            = 502;
     const GALLERY_SUBMISSION_COLLABORATOR   = 505;

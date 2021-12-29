@@ -93,6 +93,7 @@ class HomeController extends Controller
         if($service->saveProvider($provider, $result, Auth::user())) {
             flash('Account has been linked successfully.')->success();
             Auth::user()->updateCharacters();
+            Auth::user()->updateCoCharacters();
             Auth::user()->updateArtDesignCredits();
             return redirect()->to('account/aliases');
         }
