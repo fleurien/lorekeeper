@@ -155,6 +155,8 @@ class SlotService extends Service
                         if( $stack->item->tag('slot')->data['is_giftable'] == "true") { $characterData['is_giftable'] = true; } else $characterData['is_giftable'] = null;
                         if( $stack->item->tag('slot')->data['is_visible'] == "true") { $characterData['is_visible'] = true; } else $characterData['is_visible'] = null;
 
+                        $characterData['character_count'] = 1;
+
                         // Distribute user rewards
                         $charService = new CharacterManager;
                         if ($character = $charService->createCharacter($characterData, $user, true)) {

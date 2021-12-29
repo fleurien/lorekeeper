@@ -90,6 +90,7 @@ class Character extends Model
         'image' => 'required|mimes:jpeg,jpg,gif,png|max:20000',
         'thumbnail' => 'nullable|mimes:jpeg,jpg,gif,png|max:20000',
         'owner_url' => 'url|nullable',
+        'character_count' => 'min:1'
     ];
 
     /**

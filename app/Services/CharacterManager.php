@@ -88,74 +88,83 @@ class CharacterManager extends Service
         DB::beginTransaction();
 
         try {
-            if(!$isMyo && Character::where('slug', $data['slug'])->exists()) throw new \Exception("Please enter a unique character code.");
-
-            if(!(isset($data['user_id']) && $data['user_id']) && !(isset($data['owner_url']) && $data['owner_url']))
-                throw new \Exception("Please select an owner.");
-            if(!$isMyo)
-            {
-                if(!(isset($data['species_id']) && $data['species_id'])) throw new \Exception('Characters require a species.');
-                if(!(isset($data['rarity_id']) && $data['rarity_id'])) throw new \Exception('Characters require a rarity.');
-            }
-            if(isset($data['subtype_id']) && $data['subtype_id'])
-            {
-                $subtype = Subtype::find($data['subtype_id']);
-                if(!(isset($data['species_id']) && $data['species_id'])) throw new \Exception('Species must be selected to select a subtype.');
-                if(!$subtype || $subtype->species_id != $data['species_id']) throw new \Exception('Selected subtype invalid or does not match species.');
-            }
-            else $data['subtype_id'] = null;
-
-            // Get owner info
-            $url = null;
-            $recipientId = null;
-            if(isset($data['user_id']) && $data['user_id']) $recipient = User::find($data['user_id']);
-            elseif(isset($data['owner_url']) && $data['owner_url']) $recipient = checkAlias($data['owner_url']);
-
-            if(is_object($recipient)) {
-                $recipientId = $recipient->id;
-                $data['user_id'] = $recipient->id;
-            }
-            else {
-                $url = $recipient;
-            }
-
-            // Create character
-            $character = $this->handleCharacter($data, $isMyo);
-            if(!$character) throw new \Exception("Error happened while trying to create character.");
-
-            // Create character image
-            $data['is_valid'] = true; // New image of new characters are always valid
-            $image = $this->handleCharacterImage($data, $character, $isMyo);
-            if(!$image) throw new \Exception("Error happened while trying to create image.");
-
-            // Update the character's image ID
-            $character->character_image_id = $image->id;
-            $character->save();
-
-            // Add a log for the character
-            // This logs all the updates made to the character
-            $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'character');
-
-            // Add a log for the user
-            // This logs ownership of the character
-            $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'user');
-
-            // Update the user's FTO status and character count
-            if(is_object($recipient)) {
-                if(!$isMyo) {
-                    $recipient->settings->is_fto = 0; // MYO slots don't affect the FTO status - YMMV
+            for($i = 1; $i <= $data['character_count']; $i++) {
+                if(!$isMyo && $i > 1) {
+                    // If this is not the first character in a batch,
+                    // pull a new number and assemble a new slug
+                    $data['number'] = (new CharacterManager)->pullNumber(1);
+                    $data['slug'] = CharacterCategory::find($data['character_category_id'])->code.'-'.$data['number'];
                 }
-                $recipient->settings->save();
-            }
 
-            // If the recipient has an account, send them a notification
-            if(is_object($recipient) && $user->id != $recipient->id) {
-                Notifications::create($isMyo ? 'MYO_GRANT' : 'CHARACTER_UPLOAD', $recipient, [
-                    'character_url' => $character->url,
-                ] + ($isMyo ?
-                    ['name' => $character->name] :
-                    ['character_slug' => $character->slug]
-                ));
+                if(!$isMyo && Character::where('slug', $data['slug'])->exists()) throw new \Exception("Please enter a unique character code.");
+
+                if(!(isset($data['user_id']) && $data['user_id']) && !(isset($data['owner_url']) && $data['owner_url']))
+                    throw new \Exception("Please select an owner.");
+                if(!$isMyo)
+                {
+                    if(!(isset($data['species_id']) && $data['species_id'])) throw new \Exception('Characters require a species.');
+                    if(!(isset($data['rarity_id']) && $data['rarity_id'])) throw new \Exception('Characters require a rarity.');
+                }
+                if(isset($data['subtype_id']) && $data['subtype_id'])
+                {
+                    $subtype = Subtype::find($data['subtype_id']);
+                    if(!(isset($data['species_id']) && $data['species_id'])) throw new \Exception('Species must be selected to select a subtype.');
+                    if(!$subtype || $subtype->species_id != $data['species_id']) throw new \Exception('Selected subtype invalid or does not match species.');
+                }
+                else $data['subtype_id'] = null;
+
+                // Get owner info
+                $url = null;
+                $recipientId = null;
+                if(isset($data['user_id']) && $data['user_id']) $recipient = User::find($data['user_id']);
+                elseif(isset($data['owner_url']) && $data['owner_url']) $recipient = checkAlias($data['owner_url']);
+
+                if(is_object($recipient)) {
+                    $recipientId = $recipient->id;
+                    $data['user_id'] = $recipient->id;
+                }
+                else {
+                    $url = $recipient;
+                }
+
+                // Create character
+                $character = $this->handleCharacter($data, $isMyo);
+                if(!$character) throw new \Exception("Error happened while trying to create character.");
+
+                // Create character image
+                $data['is_valid'] = true; // New image of new characters are always valid
+                $image = $this->handleCharacterImage($data, $character, $isMyo, ($data['character_count'] > 1 && $i < $data['character_count'] ? true : false));
+                if(!$image) throw new \Exception("Error happened while trying to create image.");
+
+                // Update the character's image ID
+                $character->character_image_id = $image->id;
+                $character->save();
+
+                // Add a log for the character
+                // This logs all the updates made to the character
+                $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'character');
+
+                // Add a log for the user
+                // This logs ownership of the character
+                $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'user');
+
+                // Update the user's FTO status and character count
+                if(is_object($recipient)) {
+                    if(!$isMyo) {
+                        $recipient->settings->is_fto = 0; // MYO slots don't affect the FTO status - YMMV
+                    }
+                    $recipient->settings->save();
+                }
+
+                // If the recipient has an account, send them a notification
+                if(is_object($recipient) && $user->id != $recipient->id) {
+                    Notifications::create($isMyo ? 'MYO_GRANT' : 'CHARACTER_UPLOAD', $recipient, [
+                        'character_url' => $character->url,
+                    ] + ($isMyo ?
+                        ['name' => $character->name] :
+                        ['character_slug' => $character->slug]
+                    ));
+                }
             }
 
             return $this->commitReturn($character);
@@ -222,9 +231,10 @@ class CharacterManager extends Service
      * @param  array                            $data
      * @return \App\Models\Character\Character  $character
      * @param  bool                             $isMyo
+     * @param  bool                             $isBatch
      * @return \App\Models\Character\CharacterImage|bool
      */
-    private function handleCharacterImage($data, $character, $isMyo = false)
+    private function handleCharacterImage($data, $character, $isMyo = false, $isBatch = false)
     {
         try {
             if($isMyo)
@@ -312,11 +322,11 @@ class CharacterManager extends Service
             }
 
             // Save image
-            $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, isset($data['default_image']));
+            $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, $isBatch ? true : isset($data['default_image']));
 
             // Save thumbnail first before processing full image
             if(isset($data['use_cropper'])) $this->cropThumbnail(Arr::only($data, ['x0','x1','y0','y1']), $image, $isMyo);
-            else $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, isset($data['default_image']));
+            else $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, $isBatch ? true : isset($data['default_image']));
 
             // Process and save the image itself
             if(!$isMyo) $this->processImage($image);
