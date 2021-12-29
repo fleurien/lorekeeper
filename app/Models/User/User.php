@@ -94,6 +94,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get user theme.
+     */
+    public function theme()
+    {
+        return $this->belongsTo('App\Models\Theme');
+    }
+
+    /**
      * Get user-editable profile data.
      */
     public function profile()

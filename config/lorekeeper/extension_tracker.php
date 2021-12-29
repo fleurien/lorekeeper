@@ -58,6 +58,19 @@ return [
             'Newt' => 'https://github.com/ne-wt/',
         ]),
         'version' => '1.0.3',
+    ],
+
+
+
+
+
+    'theme_manager' => [
+        'key' => 'theme_manager',
+        'wiki_key' => 'Theme Manager',
+        'creators' => json_encode([
+            'Uri' => 'https://github.com/preimpression/',
+        ]),
+        'version' => '1.0.0',
     ]
 
 
