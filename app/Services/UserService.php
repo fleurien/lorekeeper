@@ -143,7 +143,7 @@ class UserService extends Service
     {
         $user->settings->birthday_setting = $data;
         $user->settings->save();
-
+    }
      /* Updates the user's theme.
      *
      * @param  array                  $data
