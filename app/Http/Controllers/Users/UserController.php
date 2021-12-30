@@ -339,16 +339,13 @@ class UserController extends Controller
     public function getUserOwnCharacterFavorites($name)
     {
         $user = $this->user;
-        $userCharacters = Character::myo(0)->where(function($query) use ($user) {
-            $query->where('user_id', $user->id)
-            ->orWhere('coowner_id', $user->id);
-        })->pluck('id')->toArray();
+        $userCharacters = $user->primaryCharacters()->pluck('id')->toArray();
         $userFavorites = $user->galleryFavorites()->pluck('gallery_submission_id')->toArray();
 
         return view('user.favorites', [
             'user' => $this->user,
             'characters' => true,
-            'favorites' => $userCharacters->count() ? GallerySubmission::whereIn('id', $userFavorites)->whereIn('id', GalleryCharacter::whereIn('character_id', $userCharacters)->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->accepted()->orderBy('created_at', 'DESC')->paginate(20) : null,
+            'favorites' => $this->user->primaryCharacters->count() ? GallerySubmission::whereIn('id', $userFavorites)->whereIn('id', GalleryCharacter::whereIn('character_id', $userCharacters)->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->accepted()->orderBy('created_at', 'DESC')->paginate(20) : null,
             'sublists' => Sublist::orderBy('sort', 'DESC')->get()
         ]);
     }
