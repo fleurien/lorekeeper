@@ -2820,7 +2820,7 @@ is_object($sender) ? $sender->id : null,
                 $this->createLog($user->id, null, null, null, $character->id, 'Character Co-owner Removed', 'Co-owner removed. Old co-owner: ' . $oldOwner, 'character', true, null, null);
         
             }
-            else throw new \Exception('This character has no co-owner already.');
+            //else throw new \Exception('This character has no co-owner already.');
         }
         // if there was
         else {
