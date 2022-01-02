@@ -61,7 +61,6 @@
 {!! Form::close() !!}
 
 @endsection
-@endsection
 @section('scripts')
     @parent
     <script>
