@@ -73,8 +73,12 @@ class CharacterController extends Controller
      */
     public function getCharacter($slug)
     {
+        $background = new \App\Services\Item\BackgroundService;
+        $bg = $background->checkBackground($this->character);
+
         return view('character.character', [
             'character' => $this->character,
+            'background' => $bg
         ]);
     }
 
@@ -86,8 +90,12 @@ class CharacterController extends Controller
      */
     public function getCharacterProfile($slug)
     {
+        $background = new \App\Services\Item\BackgroundService;
+        $bg = $background->checkBackground($this->character);
+
         return view('character.profile', [
             'character' => $this->character,
+            'background' => $bg
         ]);
     }
 

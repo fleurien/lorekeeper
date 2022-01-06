@@ -54,4 +54,11 @@ return [
         'default_recipient' => 0, // 0 to default to the character's owner (if a user), 1 to default to the submission user.
     ],
 
+
+    // Character Backgrounds - Uri
+    'character_backgrounds' => [
+        'enabled' => 1, // 0 for disabled
+        'profiles_enabled' => 1 // 0 to disable this effect on Character Profiles (versus their masterlist page)
+    ],
+
 ];
