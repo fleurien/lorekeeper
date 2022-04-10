@@ -673,3 +673,10 @@ tr.accountbound {
 }
 
 .overflow-auto {overflow:auto;}
+.clock-styling {
+    padding: 5px 15px;
+    border-radius: 15px 15px;
+    margin-bottom: .5em;
+    color: #fff;
+    letter-spacing: .05em;
+}
