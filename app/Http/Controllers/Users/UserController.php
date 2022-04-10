@@ -2,24 +2,31 @@
 
 namespace App\Http\Controllers\Users;
 
+use Illuminate\Http\Request;	
+use DB;	
+use Auth;	
+use Route;	
 use App\Http\Controllers\Controller;
+
+use App\Models\Award\Award;
+use App\Models\Award\AwardCategory;
+use App\Models\Award\AwardLog;
 use App\Models\Character\Character;
+use App\Models\Character\CharacterCategory;	
 use App\Models\Character\CharacterImage;
 use App\Models\Character\Sublist;
 use App\Models\Currency\Currency;
+use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\Gallery;
 use App\Models\Gallery\GalleryCharacter;
+use App\Models\Gallery\GalleryFavorite;
 use App\Models\Gallery\GallerySubmission;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\Item\ItemLog;
-
+use App\Models\User\User;	
 use App\Models\User\UserAward;
-use App\Models\Award\Award;
-use App\Models\Award\AwardCategory;
-use App\Models\Award\AwardLog;
-
-use App\Models\Gallery\GalleryFavorite;
+use App\Models\User\UserCurrency;
 
 class UserController extends Controller
 {
