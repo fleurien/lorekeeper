@@ -67,7 +67,7 @@ return [
             'Mercury' => 'https://github.com/itinerare/',
         ]),
         'version' => '1.0.0',
-    ]
+    ],
 
     
     'is_online' => [
