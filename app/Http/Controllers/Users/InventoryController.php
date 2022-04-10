@@ -146,6 +146,9 @@ class InventoryController extends Controller
                 case 'resell':
                     return $this->postResell($request, $service);
                     break;
+                case 'donate':
+                    return $this->postDonate($request, $service);
+                    break;
                 case 'act':
                     return $this->postAct($request);
                     break;
@@ -313,6 +316,37 @@ class InventoryController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Donates an inventory stack.
+     *
+     * @param  \Illuminate\Http\Request       $request
+     * @param  App\Services\InventoryManager  $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function postDonate(Request $request, InventoryManager $service)
+    {
+        if($service->donateStack(Auth::user(), UserItem::find($request->get('ids')), $request->get('quantities'))) {
+            flash('Item donated successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+
+    /**
+     * Shows the inventory selection widget.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getSelector($id)
+    {
+        return view('widgets._inventory_select', [
+            'user' => Auth::user(),
+        ]);
     }
 
     /**

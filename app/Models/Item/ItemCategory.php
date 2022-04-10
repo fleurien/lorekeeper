@@ -12,7 +12,7 @@ class ItemCategory extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_character_owned', 'character_limit', 'can_name',
+        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_character_owned', 'character_limit', 'can_name', 'can_donate'
     ];
 
     /**
@@ -21,6 +21,7 @@ class ItemCategory extends Model
      * @var string
      */
     protected $table = 'item_categories';
+
     /**
      * Validation rules for creation.
      *
