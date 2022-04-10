@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use Cache;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterBookmark;
 use App\Models\Character\CharacterImageCreator;
@@ -356,6 +357,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getLogTypeAttribute()
     {
         return 'User';
+    }
+
+    // Check if user is online and display When they were online
+    public function isOnline()
+    {
+      $onlineStatus = Cache::has('user-is-online-' . $this->id);
+      $online = Carbon::createFromTimeStamp(strtotime(Cache::get('user-is-online-time-' . $this->id)));
+      $onlineTime = $online->diffForHumans(['parts' => 2, 'join' => true, 'short' => true]);
+      $onlineYear = $online->year;
+
+      if($onlineYear < Carbon::now()->year-10) $onlineTime = "a long time ago";
+
+      if($onlineStatus) $result = '<i class="fas fa-circle text-success mr-2" data-toggle="tooltip" title="This user is online."></i>';
+      else  $result = '<i class="far fa-circle text-secondary mr-2" data-toggle="tooltip" title="This user was last online ' . $onlineTime .'."></i>';
+
+      return $result;
     }
 
     /**
