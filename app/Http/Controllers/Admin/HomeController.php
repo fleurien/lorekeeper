@@ -11,6 +11,7 @@ use App\Models\Gallery\GallerySubmission;
 use App\Models\Report\Report;
 use App\Models\Submission\Submission;
 use App\Models\Trade;
+use App\Models\Affiliate;
 use Auth;
 use Config;
 use DB;
