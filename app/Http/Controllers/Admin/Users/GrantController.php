@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
+use Config;
+
+use App\Models\Award\Award;
+
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterItem;
 use App\Models\Currency\Currency;
@@ -16,6 +20,7 @@ use App\Services\CurrencyManager;
 use App\Services\InventoryManager;
 use Auth;
 use Illuminate\Http\Request;
+use App\Services\AwardCaseManager;
 
 class GrantController extends Controller
 {
@@ -88,6 +93,43 @@ class GrantController extends Controller
     }
 
     /**
+     * Show the award grant page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getAwards()
+    {
+        return view('admin.grants.awards', [
+            'userOptions'           => User::orderBy('id')->pluck('name', 'id'),
+            'userAwardOptions'      => Award::orderBy('name')->where('is_user_owned',1)->pluck('name', 'id'),
+            'characterOptions'      => Character::myo(0)->orderBy('name')->get()->pluck('fullName', 'id'),
+            'characterAwardOptions' => Award::orderBy('name')->where('is_character_owned',1)->pluck('name', 'id')
+        ]);
+    }
+
+    /**
+     * Grants or removes awards from multiple users.
+     *
+     * @param  \Illuminate\Http\Request        $request
+     * @param  App\Services\AwardCaseManager  $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postAwards(Request $request, AwardCaseManager $service)
+    {
+        $data = $request->only([
+            'names', 'award_ids', 'quantities', 'data', 'disallow_transfer', 'notes',
+            'character_names', 'character_award_ids', 'character_quantities',
+        ]);
+        if($service->grantAwards($data, Auth::user())) {
+            flash('Awards granted successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+
+    /*
      * Show the item search page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
