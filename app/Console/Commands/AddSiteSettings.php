@@ -76,34 +76,23 @@ class AddSiteSettings extends Command
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
 
-        $this->addSiteSetting('is_maintenance_mode', 0, '0: Site is normal, 1: Users without the Has Maintenance Access power will be redirected to the home page.');
-
-        $this->line("\nSite settings up to date!");
-    }
-
-    /**
-     * Add a site setting.
-     *
-     * Example usage:
-     * $this->addSiteSetting("site_setting_key", 1, "0: does nothing. 1: does something.");
-     *
-     * @param string $key
-     * @param int    $value
-     * @param string $description
-     */
-    private function addSiteSetting($key, $value, $description)
-    {
-        if (!DB::table('site_settings')->where('key', $key)->exists()) {
+        /**
+        * AFFILIATES
+        * Setting determines whether affiliates are open or closed.
+        */
+        if(!DB::table('site_settings')->where('key', 'affiliates_open')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key'         => $key,
-                    'value'       => $value,
-                    'description' => $description,
-                ],
+                    'key' => 'affiliates_open',
+                    'value' => 0,
+                    'description' => 'Are you open for affiliates? 0: Disabled, 1: Enabled.'
+                ]
             ]);
-            $this->info('Added:   '.$key.' / Default: '.$value);
-        } else {
-            $this->line('Skipped: '.$key);
+            $this->info("Added:   affiliates_open / Default: 1");
         }
+        else $this->line("Skipped: affiliates_open");
+
+
+        $this->line("\nSite settings up to date!");
     }
 }

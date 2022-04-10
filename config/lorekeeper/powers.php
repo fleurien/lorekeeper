@@ -55,5 +55,9 @@ return [
         'name'        => 'Has Maintenance Access',
         'description' => 'Allow rank to browse the site normally during maintenance mode.',
     ],
+    'manage_affiliates' => [
+        'name' => 'Manage Affiliates',
+        'description' => 'Allow rank to view affiliate request queue, manage them, or even create new affiliates.'
+    ],
 
 ];

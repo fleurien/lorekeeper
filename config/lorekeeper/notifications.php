@@ -289,6 +289,32 @@ return [
         'message' => 'A character you have bookmarked (<a href="{character_url}">{character_name}</a>) has had its Gift Writing Allowed status changed. (<a href="{url}">View Bookmarks</a>)',
         'url'     => 'account/bookmarks',
     ],
+
+    // A user-submitted affiliate was accepted
+    // AFFILIATE_ACCEPTION
+    105 => [
+        'name' => 'Affiliate Request Accepted',
+        'message' => 'The affiliate request for {affiliate_name} has been accepted by {admin_name}. (<a href="{url}/{affiliate_slug}">View Status</a>)',
+        'url' => 'affiliates/status/'
+    ],
+
+    // A user-submitted affiliate was rejected
+    // AFFILIATE_REJECTION
+    106 => [
+        'name' => 'Affiliate Request Rejected',
+        'message' => 'The affiliate request for {affiliate_name} has been rejected by {admin_name}. (<a href="{url}/{affiliate_slug}">View Status</a>)',
+        'url' => 'affiliates/status/'
+    ],
+
+    // A user-submitted affiliate is now pending
+    // AFFILIATE_PENDING
+    107 => [
+        'name' => 'Affiliate Request Pending',
+        'message' => 'The affiliate request for {affiliate_name} is pending. (<a href="{url}/{affiliate_slug}">View Status</a>)',
+        'url' => 'affiliates/status/'
+    ],
+
+
     // REPORT_ASSIGNED
     220 => [
         'name'    => 'Report Assigned',
@@ -302,6 +328,7 @@ return [
         'message' => 'Your report (#{report_id}) was closed by <a href="{staff_url}">{staff_name}</a>. (<a href="{url}">View Report</a>)',
         'url'     => 'reports/view/{report_id}',
     ],
+
     // Comment made on user's model
     // COMMENT_MADE
     239 => [
@@ -309,6 +336,7 @@ return [
         'message' => '<a href="{sender_url}">{sender}</a> has made a comment on {post_type}. <a href="{comment_url}">See Context.</a>',
         'url'     => '',
     ],
+
     // Comment recieved reply
     // COMMENT_REPLY
     240 => [
