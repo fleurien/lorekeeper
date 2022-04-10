@@ -119,6 +119,10 @@ return [
                 'name' => 'Award Grants',
                 'url' => 'admin/grants/awards'
             ],
+            [
+                'name' => 'Event Currency',
+                'url' => 'admin/grants/event-currency'
+            ],
         ]
     ],
     'Masterlist' => [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use Settings;
 use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use Config;
@@ -14,6 +15,9 @@ use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Submission\Submission;
 use App\Models\Trade;
+use App\Models\User\UserCurrency;
+use App\Models\SitePage;
+
 use App\Models\User\User;
 use App\Models\User\UserItem;
 use App\Services\CurrencyManager;
@@ -165,4 +169,52 @@ class GrantController extends Controller
             'submissions'    => $item ? $submissions : null,
         ]);
     }
+
+    /**
+     * Show the event currency info page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getEventCurrency()
+    {
+        $total = UserCurrency::where('user_id', Settings::get('admin_user'))->where('currency_id', Settings::get('event_currency'))->first();
+
+        return view('admin.grants.event_currency', [
+            'currency' => Currency::find(Settings::get('event_currency')),
+            'total' => $total,
+            'progress' => $total ? ($total->quantity <= Settings::get('global_event_goal') ? ($total->quantity/Settings::get('global_event_goal'))*100 : 100) : 0,
+            'inverseProgress' => $total ? ($total->quantity <= Settings::get('global_event_goal') ? 100-(($total->quantity/Settings::get('global_event_goal'))*100) : 0) : 100,
+            'page' => SitePage::where('key', 'event-tracker')->first()
+        ]);
+    }
+
+    /**
+     * Show the clear event currency modal.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getClearEventCurrency()
+    {
+        return view('admin.grants._clear_event_currency', [
+            'currency' => Currency::find(Settings::get('event_currency'))
+        ]);
+    }
+
+    /**
+     * Zeros event points for all users.
+     *
+     * @param  \Illuminate\Http\Request        $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postClearEventCurrency(Request $request)
+    {
+        if(UserCurrency::where('currency_id', Settings::get('event_currency'))->update(['quantity' => 0])) {
+            flash('Event currency cleared successfully.')->success();
+        }
+        else {
+            flash('Failed to clear event currency.')->error();
+        }
+        return redirect()->back();
+    }
+
 }
