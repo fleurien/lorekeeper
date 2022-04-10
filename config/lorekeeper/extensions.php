@@ -80,4 +80,6 @@ return [
         'character_featured'        => 1,   // Number of awards displayed prominently on the character page
     ],
 
+    // Extra Image Credits - Newt
+    'extra_image_credits' => 1,
 ];

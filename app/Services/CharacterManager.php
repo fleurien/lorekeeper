@@ -265,7 +265,8 @@ class CharacterManager extends Service
                         'character_image_id' => $image->id,
                         'type' => 'Designer',
                         'url' => $data['designer_url'][$key],
-                        'user_id' => $id
+                        'user_id' => $id,
+                        'credit_type' => isset($data['designer_type'][$key]) ? $data['designer_type'][$key] : null
                     ]);
             }
             foreach($data['artist_id'] as $key => $id) {
@@ -274,7 +275,8 @@ class CharacterManager extends Service
                         'character_image_id' => $image->id,
                         'type' => 'Artist',
                         'url' => $data['artist_url'][$key],
-                        'user_id' => $id
+                        'user_id' => $id,
+                        'credit_type' => isset($data['artist_type'][$key]) ? $data['artist_type'][$key] : null
                     ]);
             }
 
@@ -824,9 +826,10 @@ class CharacterManager extends Service
                 if ($id || $data['designer_url'][$key]) {
                     DB::table('character_image_creators')->insert([
                         'character_image_id' => $image->id,
-                        'type'               => 'Designer',
-                        'url'                => $data['designer_url'][$key],
-                        'user_id'            => $id,
+                        'type' => 'Designer',
+                        'url' => $data['designer_url'][$key],
+                        'user_id' => $id,
+                        'credit_type' => isset($data['designer_type'][$key]) ? $data['designer_type'][$key] : null
                     ]);
                 }
             }
@@ -834,9 +837,10 @@ class CharacterManager extends Service
                 if ($id || $data['artist_url'][$key]) {
                     DB::table('character_image_creators')->insert([
                         'character_image_id' => $image->id,
-                        'type'               => 'Artist',
-                        'url'                => $data['artist_url'][$key],
-                        'user_id'            => $id,
+                        'type' => 'Artist',
+                        'url' => $data['artist_url'][$key],
+                        'user_id' => $id,
+                        'credit_type' => isset($data['artist_type'][$key]) ? $data['artist_type'][$key] : null
                     ]);
                 }
             }
@@ -2022,20 +2026,24 @@ class CharacterManager extends Service
             foreach ($data['designer_id'] as $key => $id) {
                 if ($id || $data['designer_url'][$key]) {
                     DB::table('character_image_creators')->insert([
-                        'character_image_id' => $image->id,
-                        'type'               => 'Designer',
-                        'url'                => $data['designer_url'][$key],
-                        'user_id'            => $id,
+                        'character_image_id' => $request->id,
+                        'type' => 'Designer',
+                        'character_type' => 'Update',
+                        'url' => $data['designer_url'][$key],
+                        'user_id' => $id,
+                        'credit_type' => isset($data['designer_type'][$key]) ? $data['designer_type'][$key] : null
                     ]);
                 }
             }
             foreach ($data['artist_id'] as $key => $id) {
                 if ($id || $data['artist_url'][$key]) {
                     DB::table('character_image_creators')->insert([
-                        'character_image_id' => $image->id,
-                        'type'               => 'Artist',
-                        'url'                => $data['artist_url'][$key],
-                        'user_id'            => $id,
+                        'character_image_id' => $request->id,
+                        'type' => 'Artist',
+                        'character_type' => 'Update',
+                        'url' => $data['artist_url'][$key],
+                        'user_id' => $id,
+                        'credit_type' => isset($data['artist_type'][$key]) ? $data['artist_type'][$key] : null
                     ]);
                 }
             }
