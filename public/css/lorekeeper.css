@@ -5,12 +5,12 @@
 **************************************************************************************************/
 
 @font-face {
-    font-family: Roboto Condensed;
-    src: url(../webfonts/RobotoCondensed-Regular.ttf)
+    font-family: PressStart2P;
+    src: url(../webfonts/PressStart2P-Regular.ttf)
 }
 @font-face {
-    font-family: Lato;
-    src: url(../webfonts/Lato-Regular.ttf)
+    font-family: VT323;
+    src: url(../webfonts/VT323-Regular.ttf)
 }
 
 /**************************************************************************************************
@@ -19,10 +19,17 @@
     
 **************************************************************************************************/
 
+:root{
+    --green: #4cc8f6;
+    --blue: #0080e0;
+    --pink: #ab3af3;
+    --blue2: #5938ed;
+}
+
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    font-family: PressStart2P; 
     font-weight: bold;
 }
 
@@ -46,7 +53,7 @@ a:hover {
 
 body {
     background-color: transparent;
-    font-family: Lato, sans-serif; 
+    font-family: VT323; 
     min-height: 100vh;
     font-size: 80%;
 }
@@ -78,7 +85,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #ddd;
+    background-color: var(--blue);
 }
 
 main {
@@ -91,26 +98,74 @@ main > .row {
 }
 
 .main-content {
-    background-color: white;
-    box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.1);
+    background-color: var(--blue);
     display: flex;
     flex-direction: column;
 }
 
 /* Header */
 
-.site-header-image {
-    /*background-color: #eee;*/
-    background-repeat: repeat;
-    min-height: 200px;
+.bg-dark{
+    background-color: var(--green)!important;
+    height:fit-content;
+    border: 3px solid var(--pink);
+}
+
+.navbar{
+    padding:0;
 }
 
 .navbar .navbar-brand, .navbar .nav-item {
-    text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    text-transform: lowercase;
+    font-family: PressStart2P; 
+    margin: 1px;
+    color:var(--blue);
+}
+
+#headerNav{
+    bottom:0;
+    position:fixed;
+    z-index: 5;
+    width:100%;
+}
+
+
+a.navbar-brand{
+    font-size:10px;
+    border:none;
+    padding-right:13px;
+}
+
+li.nav-item{
+    border-width: 3px;
+    border-style:solid;
+    border-color:  var(--pink) var(--blue2) var(--blue2) var(--pink);
+    font-size:9px;
+}
+
+li.nav-item:hover{
+    background:#92b9fe;
+    border-width: 3px;
+    border-style:solid;
+    border-color:  var(--blue2) var(--pink) var(--pink) var(--blue2);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color:var(--blue);
+    padding:1px;
+    margin:0 2px;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color:var(--blue);
 }
 
 .navbar .row { width: 100%; }
+
+.dropdown-menu{
+    top:0;
+    position:absolute;
+}
 
 /* Sidebar */
 
