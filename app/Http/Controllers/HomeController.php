@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
 use App\Models\Affiliate;
+use App\Models\Character\Character;
 
 use App\Services\DeviantArtService;
 class HomeController extends Controller
@@ -36,11 +37,16 @@ class HomeController extends Controller
     public function getIndex()
     {
 
+        if(Settings::get('featured_character')) {
+            $character = Character::find(Settings::get('featured_character'));
+        }
+        else $character = null;
         return view('welcome', [
             'about' => SitePage::where('key', 'about')->first(),
             'open' => intval(Settings::get('affiliates_open')),
             'affiliates' => Affiliate::where('status','Accepted')->featured(0)->inRandomOrder()->limit(10)->get(),
             'featured_affiliates' => Affiliate::where('status','Accepted')->featured(1)->get(),
+            'featured' => $character,
         ]);
     }
 

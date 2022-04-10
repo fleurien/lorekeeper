@@ -169,6 +169,8 @@ class AddSiteSettings extends Command
         }
         else $this->line("Skipped: global_event_goal");
 
+        $this->addSiteSetting('featured_character', 1, 'ID of the currently featured character.');
+
         $this->line("\nSite settings up to date!");
 
 
