@@ -23,10 +23,36 @@ class AddSiteSettings extends Command
 
     /**
      * Create a new command instance.
+     *
+     * @return void
      */
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * Add a site setting.
+     * 
+     * Example usage:
+     * $this->addSiteSetting("site_setting_key", 1, "0: does nothing. 1: does something.");
+     * 
+     * @param  string  $key
+     * @param  int     $value
+     * @param  string  $description
+     */
+    private function addSiteSetting($key, $value, $description) {
+        if(!DB::table('site_settings')->where('key', $key)->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key'         => $key,
+                    'value'       => $value,
+                    'description' => $description,
+                ],
+            ]);
+            $this->info( "Added:   ".$key." / Default: ".$value);
+        }
+        else $this->line("Skipped: ".$key);
     }
 
     /**
@@ -91,6 +117,20 @@ class AddSiteSettings extends Command
             $this->info("Added:   affiliates_open / Default: 1");
         }
         else $this->line("Skipped: affiliates_open");
+        if(!DB::table('site_settings')->where('key', 'character_title_display')->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key' => 'character_title_display',
+                    'value' => 0,
+                    'description' => '0: Characters\' titles only display in their image info. 1: Characters\'s titles display alongside their category, species, rarity.'
+                ]
+
+            ]);
+            $this->info("Added:   character_title_display / Default: 0");
+        }
+        else $this->line("Skipped: character_title_display");
+
+        $this->line("\nSite settings up to date!");
 
 
         $this->line("\nSite settings up to date!");

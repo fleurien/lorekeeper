@@ -11,11 +11,8 @@ use App\Models\Item\ItemCategory;
 use App\Models\Rarity;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
-use App\Models\User\User;
-use App\Models\User\UserItem;
-use App\Services\DesignUpdateManager;
-use Auth;
-use Illuminate\Http\Request;
+use App\Models\Character\CharacterTitle;
+use App\Services\CharacterManager;
 
 class DesignController extends Controller
 {
@@ -168,12 +165,10 @@ class DesignController extends Controller
     public function getAddons($id)
     {
         $r = CharacterDesignUpdate::find($id);
-        if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
-            abort(404);
-        }
-        if ($r->status == 'Draft' && $r->user_id == Auth::user()->id) {
+        if(!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) abort(404);
+        if($r->status == 'Draft' && $r->user_id == Auth::user()->id)
             $inventory = UserItem::with('item')->whereNull('deleted_at')->where('count', '>', '0')->where('user_id', $r->user_id)->get();
-        } else {
+        else
             $inventory = isset($r->data['user']) ? parseAssetData($r->data['user']) : null;
         }
 
@@ -233,9 +228,10 @@ class DesignController extends Controller
         return view('character.design.features', [
             'request'   => $r,
             'specieses' => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes'  => ['0' => 'No Subtype'] + Subtype::where('species_id', '=', $r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'rarities'  => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features'  => Feature::getDropdownItems(),
+            'subtypes' => ['0' => 'No Subtype'] + Subtype::where('species_id','=',$r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'rarities' => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'titles' => ['0' => 'Select Title', 'custom' => 'Custom Title'] + CharacterTitle::orderBy('sort', 'DESC')->pluck('title', 'id')->toArray(),
+            'features' => Feature::orderBy('name')->pluck('name', 'id')->toArray()
         ]);
     }
 

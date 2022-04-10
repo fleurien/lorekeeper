@@ -2,6 +2,18 @@
 
 namespace App\Models\Character;
 
+use Config;
+use DB;
+use Settings;
+use App\Models\Model;
+
+
+use App\Models\Character\Character;
+use App\Models\Character\CharacterCategory;
+use App\Models\Character\CharacterTransfer;
+use App\Models\Character\CharacterBookmark;
+
+use App\Models\Character\CharacterCurrency;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Item\Item;

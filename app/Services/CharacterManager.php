@@ -10,6 +10,9 @@ use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterFeature;
 use App\Models\Character\CharacterImage;
 use App\Models\Character\CharacterTransfer;
+use App\Models\User\UserCharacterLog;
+use App\Models\Character\CharacterTitle;
+use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\User\User;
 use Carbon\Carbon;
@@ -179,7 +182,125 @@ class CharacterManager extends Service
             $this->setError('error', $e->getMessage());
         }
 
-        return $this->rollbackReturn(false);
+    /**
+     * Handles character image data.
+     *
+     * @param  array                            $data
+     * @return \App\Models\Character\Character  $character
+     * @param  bool                             $isMyo
+     * @return \App\Models\Character\CharacterImage|bool
+     */
+    private function handleCharacterImage($data, $character, $isMyo = false)
+    {
+        try {
+            if($isMyo)
+            {
+                $data['species_id'] = (isset($data['species_id']) && $data['species_id']) ? $data['species_id'] : null;
+                $data['subtype_id'] = isset($data['subtype_id']) && $data['subtype_id'] ? $data['subtype_id'] : null;
+                $data['rarity_id'] = (isset($data['rarity_id']) && $data['rarity_id']) ? $data['rarity_id'] : null;
+
+                // Use default images for MYO slots without an image provided
+                if(!isset($data['image']))
+                {
+                    $data['image'] = asset('images/myo.png');
+                    $data['thumbnail'] = asset('images/myo-th.png');
+                    $data['extension'] = 'png';
+                    $data['default_image'] = true;
+                    unset($data['use_cropper']);
+                }
+            }
+            $imageData = Arr::only($data, [
+                'species_id', 'subtype_id', 'rarity_id', 'use_cropper',
+                'x0', 'x1', 'y0', 'y1', 'title_id', 'title_data'
+            ]);
+            $imageData['use_cropper'] = isset($data['use_cropper']) ;
+            $imageData['description'] = isset($data['image_description']) ? $data['image_description'] : null;
+            $imageData['parsed_description'] = parse($imageData['description']);
+            $imageData['hash'] = randomString(10);
+            $imageData['fullsize_hash'] = randomString(15);
+            $imageData['sort'] = 0;
+            $imageData['is_valid'] = isset($data['is_valid']);
+            $imageData['is_visible'] = isset($data['is_visible']);
+            $imageData['extension'] = (Config::get('lorekeeper.settings.masterlist_image_format') ? Config::get('lorekeeper.settings.masterlist_image_format') : (isset($data['extension']) ? $data['extension'] : $data['image']->getClientOriginalExtension()));
+            $imageData['character_id'] = $character->id;
+            $imageData['title_id'] = isset($data['title_id']) && $data['title_id'] ? ($data['title_id'] != 'custom' ? $data['title_id'] : null) : null;
+            $imageData['title_data'] = isset($data['title_data']) && $data['title_data'] && isset($data['title_data']['full']) ? json_encode($data['title_data']) : null;
+
+            $image = CharacterImage::create($imageData);
+
+            // Check if entered url(s) have aliases associated with any on-site users
+            foreach($data['designer_url'] as $key=>$url) {
+                $recipient = checkAlias($url, false);
+                if(is_object($recipient)) {
+                    $data['designer_id'][$key] = $recipient->id;
+                    $data['designer_url'][$key] = null;
+                }
+            }
+            foreach($data['artist_url'] as $key=>$url) {
+                $recipient = checkAlias($url, false);
+                if(is_object($recipient)) {
+                    $data['artist_id'][$key] = $recipient->id;
+                    $data['artist_url'][$key] = null;
+                }
+            }
+
+            // Check that users with the specified id(s) exist on site
+            foreach($data['designer_id'] as $id) {
+                if(isset($id) && $id) {
+                    $user = User::find($id);
+                    if(!$user) throw new \Exception('One or more designers is invalid.');
+                }
+            }
+            foreach($data['artist_id'] as $id) {
+                if(isset($id) && $id) {
+                    $user = $user = User::find($id);
+                    if(!$user) throw new \Exception('One or more artists is invalid.');
+                }
+            }
+
+            // Attach artists/designers
+            foreach($data['designer_id'] as $key => $id) {
+                if($id || $data['designer_url'][$key])
+                    DB::table('character_image_creators')->insert([
+                        'character_image_id' => $image->id,
+                        'type' => 'Designer',
+                        'url' => $data['designer_url'][$key],
+                        'user_id' => $id
+                    ]);
+            }
+            foreach($data['artist_id'] as $key => $id) {
+                if($id || $data['artist_url'][$key])
+                    DB::table('character_image_creators')->insert([
+                        'character_image_id' => $image->id,
+                        'type' => 'Artist',
+                        'url' => $data['artist_url'][$key],
+                        'user_id' => $id
+                    ]);
+            }
+
+            // Save image
+            $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, isset($data['default_image']));
+
+            // Save thumbnail first before processing full image
+            if(isset($data['use_cropper'])) $this->cropThumbnail(Arr::only($data, ['x0','x1','y0','y1']), $image, $isMyo);
+            else $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, isset($data['default_image']));
+
+            // Process and save the image itself
+            if(!$isMyo) $this->processImage($image);
+
+            // Attach features
+            foreach($data['feature_id'] as $key => $featureId) {
+                if($featureId) {
+                    $feature = CharacterFeature::create(['character_image_id' => $image->id, 'feature_id' => $featureId, 'data' => $data['feature_data'][$key]]);
+                }
+            }
+
+            return $image;
+        } catch(\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+        return false;
+
     }
 
     /**
@@ -559,6 +680,7 @@ class CharacterManager extends Service
             $old['species'] = $image->species_id ? $image->species->displayName : null;
             $old['subtype'] = $image->subtype_id ? $image->subtype->displayName : null;
             $old['rarity'] = $image->rarity_id ? $image->rarity->displayName : null;
+            $old['title'] = $image->title_id ? $image->title->displayName : ($image->title_data ? $image->title_data : null);
 
             // Clear old features
             $image->features()->delete();
@@ -574,6 +696,8 @@ class CharacterManager extends Service
             $image->species_id = $data['species_id'];
             $image->subtype_id = $data['subtype_id'] ?: null;
             $image->rarity_id = $data['rarity_id'];
+            $image->title_id = isset($data['title_id']) && $data['title_id'] ? ($data['title_id'] != 'custom' ? $data['title_id'] : null) : null;
+            $image->title_data = isset($data['title_data']) && isset($data['title_data']['full']) ? json_encode($data['title_data']) : null;
             $image->save();
 
             $new = [];
@@ -581,6 +705,7 @@ class CharacterManager extends Service
             $new['species'] = $image->species_id ? $image->species->displayName : null;
             $new['subtype'] = $image->subtype_id ? $image->subtype->displayName : null;
             $new['rarity'] = $image->rarity_id ? $image->rarity->displayName : null;
+            $new['title'] = $image->title_id ? $image->title->displayName : ($image->title_data ? $image->title_data : null);
 
             // Character also keeps track of these features
             $image->character->rarity_id = $image->rarity_id;
@@ -1942,7 +2067,67 @@ class CharacterManager extends Service
             $this->setError('error', $e->getMessage());
         }
 
-        return false;
+    /**
+     * Saves the character features (traits) section of a character design update request.
+     *
+     * @param  array                                        $data
+     * @param  \App\Models\Character\CharacterDesignUpdate  $request
+     * @return  bool
+     */
+    public function saveRequestFeatures($data, $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            if(!($request->character->is_myo_slot && $request->character->image->species_id) && !isset($data['species_id'])) throw new \Exception("Please select a species.");
+            if(!($request->character->is_myo_slot && $request->character->image->rarity_id) && !isset($data['rarity_id'])) throw new \Exception("Please select a rarity.");
+
+            $rarity = ($request->character->is_myo_slot && $request->character->image->rarity_id) ? $request->character->image->rarity : Rarity::find($data['rarity_id']);
+            $species = ($request->character->is_myo_slot && $request->character->image->species_id) ? $request->character->image->species : Species::find($data['species_id']);
+            if(isset($data['title_id'])) $title = ($request->character->is_myo_slot && $request->character->image->title_id) ? $request->character->image->title : CharacterTitle::find($data['title_id']);
+            if(isset($data['subtype_id']) && $data['subtype_id'])
+                $subtype = ($request->character->is_myo_slot && $request->character->image->subtype_id) ? $request->character->image->subtype : Subtype::find($data['subtype_id']);
+            else $subtype = null;
+            if(!$rarity) throw new \Exception("Invalid rarity selected.");
+            if(!$species) throw new \Exception("Invalid species selected.");
+            if($subtype && $subtype->species_id != $species->id) throw new \Exception("Subtype does not match the species.");
+            if(isset($title) && !$title) throw new \Exception("Invalid title selected.");
+
+            // Clear old features
+            $request->features()->delete();
+
+            // Attach features
+            // We'll do the compulsory ones at the time of approval.
+
+            $features = Feature::whereIn('id', $data['feature_id'])->with('rarity')->get()->keyBy('id');
+
+            foreach($data['feature_id'] as $key => $featureId) {
+                if(!$featureId) continue;
+
+                // Skip the feature if the rarity is too high.
+                // Comment out this check if rarities should have more berth for traits choice.
+                //if($features[$featureId]->rarity->sort > $rarity->sort) continue;
+
+                // Skip the feature if it's not the correct species.
+                if($features[$featureId]->species_id && $features[$featureId]->species_id != $species->id) continue;
+
+                $feature = CharacterFeature::create(['character_image_id' => $request->id, 'feature_id' => $featureId, 'data' => $data['feature_data'][$key], 'character_type' => 'Update']);
+            }
+
+            // Update other stats
+            $request->species_id = $species->id;
+            $request->rarity_id = $rarity->id;
+            $request->subtype_id = $subtype ? $subtype->id : null;
+            $request->has_features = 1;
+            $request->title_id = isset($data['title_id']) && $data['title_id'] ? ($data['title_id'] != 'custom' ? $data['title_id'] : null) : null;
+            $request->title_data = isset($data['title_data']) && isset($data['title_data']['full']) ? json_encode($data['title_data']) : null;
+            $request->save();
+
+            return $this->commitReturn(true);
+        } catch(\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+        return $this->rollbackReturn(false);
     }
 
     /**
@@ -1954,9 +2139,186 @@ class CharacterManager extends Service
      */
     private function generateFeatureList($image)
     {
-        $result = '';
-        foreach ($image->features as $feature) {
-            $result .= '<div>'.($feature->feature->category ? '<strong>'.$feature->feature->category->displayName.':</strong> ' : '').$feature->feature->displayName.'</div>';
+        DB::beginTransaction();
+
+        try {
+            if($request->status != 'Pending') throw new \Exception("This request cannot be processed.");
+            if(!isset($data['character_category_id'])) throw new \Exception("Please select a character category.");
+            if(!isset($data['number'])) throw new \Exception("Please enter a character number.");
+            if(!isset($data['slug']) || Character::where('slug', $data['slug'])->where('id', '!=', $request->character_id)->exists()) throw new \Exception("Please enter a unique character code.");
+
+            // Remove any added items/currency
+            // Currency has already been removed, so no action required
+            // However logs need to be added for each of these
+            $requestData = $request->data;
+            $inventoryManager = new InventoryManager;
+            if(isset($requestData['user']) && isset($requestData['user']['user_items'])) {
+                $stacks = $requestData['user']['user_items'];
+                foreach($requestData['user']['user_items'] as $userItemId=>$quantity) {
+                    $userItemRow = UserItem::find($userItemId);
+                    if(!$userItemRow) throw new \Exception("Cannot return an invalid item. (".$userItemId.")");
+                    if($userItemRow->update_count < $quantity) throw new \Exception("Cannot return more items than was held. (".$userItemId.")");
+                    $userItemRow->update_count -= $quantity;
+                    $userItemRow->save();
+                }
+
+                $staff = $user;
+                foreach($stacks as $stackId=>$quantity) {
+                    $stack = UserItem::find($stackId);
+                    $user = User::find($request->user_id);
+                    if(!$inventoryManager->debitStack($user, $request->character->is_myo_slot ? 'MYO Design Approved' : 'Character Design Updated', ['data' => 'Item used in ' . ($request->character->is_myo_slot ? 'MYO design approval' : 'Character design update') . ' (<a href="'.$request->url.'">#'.$request->id.'</a>)'], $stack, $quantity)) throw new \Exception("Failed to create log for item stack.");
+                }
+                $user = $staff;
+            }
+            $currencyManager = new CurrencyManager;
+            if(isset($requestData['user']['currencies']) && $requestData['user']['currencies'])
+            {
+                foreach($requestData['user']['currencies'] as $currencyId=>$quantity) {
+                    $currency = Currency::find($currencyId);
+                    if(!$currencyManager->createLog($request->user_id, 'User', null, null,
+                    $request->character->is_myo_slot ? 'MYO Design Approved' : 'Character Design Updated',
+                    'Used in ' . ($request->character->is_myo_slot ? 'MYO design approval' : 'character design update') . ' (<a href="'.$request->url.'">#'.$request->id.'</a>)',
+                    $currencyId, $quantity))
+                        throw new \Exception("Failed to create log for user currency.");
+                }
+            }
+            if(isset($requestData['character']['currencies']) && $requestData['character']['currencies'])
+            {
+                foreach($requestData['character']['currencies'] as $currencyId=>$quantity) {
+                    $currency = Currency::find($currencyId);
+                    if(!$currencyManager->createLog($request->character_id, 'Character', null, null,
+                    $request->character->is_myo_slot ? 'MYO Design Approved' : 'Character Design Updated',
+                    'Used in ' . ($request->character->is_myo_slot ? 'MYO design approval' : 'character design update') . ' (<a href="'.$request->url.'">#'.$request->id.'</a>)',
+                    $currencyId, $quantity))
+                        throw new \Exception("Failed to create log for character currency.");
+                }
+            }
+
+            $extension = Config::get('lorekeeper.settings.masterlist_image_format') != null ? Config::get('lorekeeper.settings.masterlist_image_format') : $request->extension;
+
+            // Create a new image with the request data
+            $image = CharacterImage::create([
+                'character_id' => $request->character_id,
+                'is_visible' => 1,
+                'hash' => $request->hash,
+                'fullsize_hash' => $request->fullsize_hash ? $request->fullsize_hash : randomString(15),
+                'extension' => $extension,
+                'use_cropper' => $request->use_cropper,
+                'x0' => $request->x0,
+                'x1' => $request->x1,
+                'y0' => $request->y0,
+                'y1' => $request->y1,
+                'species_id' => $request->species_id,
+                'subtype_id' => ($request->character->is_myo_slot && isset($request->character->image->subtype_id)) ? $request->character->image->subtype_id : $request->subtype_id,
+                'rarity_id' => $request->rarity_id,
+                'sort' => 0,
+                'title_id' => isset($request->title_id) && $request->title_id ? $request->title_id : null,
+                'title_data' => isset($request->title_data) ? $request->title_data : null
+            ]);
+
+            // Shift the image credits over to the new image
+            $request->designers()->update(['character_type' => 'Character', 'character_image_id' => $image->id]);
+            $request->artists()->update(['character_type' => 'Character', 'character_image_id' => $image->id]);
+
+            // Add the compulsory features
+            if($request->character->is_myo_slot)
+            {
+                foreach($request->character->image->features as $feature)
+                {
+                    CharacterFeature::create(['character_image_id' => $image->id, 'feature_id' => $feature->feature_id, 'data' => $feature->data, 'character_type' => 'Character']);
+                }
+            }
+
+            // Shift the image features over to the new image
+            $request->rawFeatures()->update(['character_image_id' => $image->id, 'character_type' => 'Character']);
+
+            // Make the image directory if it doesn't exist
+            if(!file_exists($image->imagePath))
+            {
+                // Create the directory.
+                if (!mkdir($image->imagePath, 0755, true)) {
+                    $this->setError('error', 'Failed to create image directory.');
+                    return false;
+                }
+                chmod($image->imagePath, 0755);
+            }
+
+            // Move the image file to the new image
+            File::move($request->imagePath . '/' . $request->imageFileName, $image->imagePath . '/' . $image->imageFileName);
+            // Process and save the image
+            $this->processImage($image);
+
+            // The thumbnail is already generated, so it can just be moved without processing
+            File::move($request->thumbnailPath . '/' . $request->thumbnailFileName, $image->thumbnailPath . '/' . $image->thumbnailFileName);
+
+            // Set character data and other info such as cooldown time, resell cost and terms etc.
+            // since those might be updated with the new design update
+            if(isset($data['transferrable_at'])) $request->character->transferrable_at = $data['transferrable_at'];
+            $request->character->character_category_id = $data['character_category_id'];
+            $request->character->number = $data['number'];
+            $request->character->slug = $data['slug'];
+            $request->character->rarity_id = $request->rarity_id;
+
+            $request->character->description = $data['description'];
+            $request->character->parsed_description = parse($data['description']);
+
+            $request->character->is_sellable = isset($data['is_sellable']);
+            $request->character->is_tradeable = isset($data['is_tradeable']);
+            $request->character->is_giftable = isset($data['is_giftable']);
+            $request->character->sale_value = isset($data['sale_value']) ? $data['sale_value'] : 0;
+
+            // Invalidate old image if desired
+            if(isset($data['invalidate_old']))
+            {
+                $request->character->image->is_valid = 0;
+                $request->character->image->save();
+            }
+
+            // Set new image if desired
+            if(isset($data['set_active']))
+            {
+                $request->character->character_image_id = $image->id;
+            }
+
+            // Final recheck and setting of update type, as insurance
+            if($request->character->is_myo_slot)
+            $request->update_type = 'MYO';
+            else $request->update_type = 'Character';
+            $request->save();
+
+            // Add a log for the character and user
+            $this->createLog($user->id, null, $request->character->user_id, $request->character->user->url, $request->character->id, $request->update_type == 'MYO' ? 'MYO Design Approved' : 'Character Design Updated', '[#'.$image->id.']', 'character');
+            $this->createLog($user->id, null, $request->character->user_id, $request->character->user->url, $request->character->id, $request->update_type == 'MYO' ? 'MYO Design Approved' : 'Character Design Updated', '[#'.$image->id.']', 'user');
+
+            // If this is for a MYO, set user's FTO status and the MYO status of the slot
+            // and clear the character's name
+            if($request->character->is_myo_slot)
+            {
+                if(Config::get('lorekeeper.settings.clear_myo_slot_name_on_approval')) $request->character->name = null;
+                $request->character->is_myo_slot = 0;
+                $request->user->settings->is_fto = 0;
+                $request->user->settings->save();
+            }
+            $request->character->save();
+
+            // Set status to approved
+            $request->staff_id = $user->id;
+            $request->status = 'Approved';
+            $request->save();
+
+            // Notify the user
+            Notifications::create('DESIGN_APPROVED', $request->user, [
+                'design_url' => $request->url,
+                'character_url' => $request->character->url,
+                'name' => $request->character->fullName
+            ]);
+
+            // Notify bookmarkers
+            $request->character->notifyBookmarkers('BOOKMARK_IMAGE');
+
+            return $this->commitReturn(true);
+        } catch(\Exception $e) {
+            $this->setError('error', $e->getMessage());
         }
 
         return $result;

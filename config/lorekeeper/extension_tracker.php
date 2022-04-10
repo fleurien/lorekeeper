@@ -42,4 +42,13 @@ return [
         'version' => '1.3.0',
     ],
 
+    'character_titles' => [
+        'key' => 'character_titles',
+        'wiki_key' => 'Character_Titles',
+        'creators' => json_encode([
+            'Mercury' => 'https://github.com/itinerare/',
+        ]),
+        'version' => '1.0.0',
+    ],
+
 ];

@@ -17,6 +17,7 @@ use App\Models\Award\Award;
 use App\Models\Feature\FeatureCategory;
 use App\Models\Feature\Feature;
 use App\Models\Character\CharacterCategory;
+use App\Models\Character\CharacterTitle;
 use App\Models\Prompt\PromptCategory;
 use App\Models\Rarity;
 use App\Models\Shop\Shop;
@@ -456,6 +457,27 @@ class WorldController extends Controller
 
         return view('world.character_categories', [
             'categories' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+        ]);
+    }
+
+    /**
+     * Shows the character titles page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCharacterTitles(Request $request)
+    {
+        $query = CharacterTitle::query();
+        $title = $request->get('title');
+        $rarity = $request->get('rarity_id');
+        if($title) $query->where('title', 'LIKE', '%'.$title.'%');
+        if(isset($rarity) && $rarity != 'none')
+            $query->where('rarity_id', $rarity);
+
+        return view('world.character_titles', [
+            'titles' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+            'rarities' => ['none' => 'Any Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
