@@ -337,19 +337,6 @@ class InventoryController extends Controller
     }
 
     /**
-     * Shows the inventory selection widget.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function getSelector($id)
-    {
-        return view('widgets._inventory_select', [
-            'user' => Auth::user(),
-        ]);
-    }
-
-    /**
      * Acts on an item based on the item's tag.
      *
      * @return \Illuminate\Http\RedirectResponse
