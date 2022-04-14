@@ -170,7 +170,6 @@ class DesignController extends Controller
             $inventory = UserItem::with('item')->whereNull('deleted_at')->where('count', '>', '0')->where('user_id', $r->user_id)->get();
         else
             $inventory = isset($r->data['user']) ? parseAssetData($r->data['user']) : null;
-        }
 
         return view('character.design.addons', [
             'request'     => $r,

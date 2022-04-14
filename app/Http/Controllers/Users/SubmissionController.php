@@ -22,6 +22,8 @@ use Auth;
 use Config;
 use Settings;
 
+use App\Http\Controllers\Controller;
+
 class SubmissionController extends Controller
 {
     /*
