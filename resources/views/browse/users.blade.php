@@ -54,6 +54,7 @@
       <div class="col-4 col-md-2">{!! $user->rank->displayName !!}</div>
       <div class="col-4 col-md-3">{!! pretty_date($user->created_at, false) !!}</div>
     </div>
+    @endforeach
 </div>
 {!! $users->render() !!}
 
