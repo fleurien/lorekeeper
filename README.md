@@ -45,7 +45,7 @@ CONTACT_ADDRESS=(contact email address)
 DEVIANTART_ACCOUNT=(username of ARPG group account)
 ```
 
-## Setting up
+## Setting up 
 
 Composer install:
 ```

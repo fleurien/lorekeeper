@@ -1,6 +1,6 @@
 /**************************************************************************************************
-    
-    Font definitions 
+
+    Font definitions
 
 **************************************************************************************************/
 
@@ -14,15 +14,15 @@
 }
 
 /**************************************************************************************************
-    
+
     Base styles
-    
+
 **************************************************************************************************/
 
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    font-family: Roboto Condensed, serif;
     font-weight: bold;
 }
 
@@ -46,15 +46,15 @@ a:hover {
 
 body {
     background-color: transparent;
-    font-family: Lato, sans-serif; 
+    font-family: Lato, sans-serif;
     min-height: 100vh;
     font-size: 80%;
 }
 
 /**************************************************************************************************
-    
+
     Helpers
-    
+
 **************************************************************************************************/
 
 .hide {
@@ -69,9 +69,9 @@ body {
 }
 
 /**************************************************************************************************
-    
+
     Layout
-    
+
 **************************************************************************************************/
 
 #app {
@@ -107,7 +107,7 @@ main > .row {
 
 .navbar .navbar-brand, .navbar .nav-item {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    font-family: Roboto Condensed, serif;
 }
 
 .navbar .row { width: 100%; }
@@ -131,14 +131,14 @@ main > .row {
     border-bottom-left-radius: .25rem;
     margin-bottom: 1em;
     padding: 0.4em 0;
-    
+
     box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.1);
 }
 
 .sidebar .sidebar-header,
 .sidebar .sidebar-section .sidebar-section-header {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    font-family: Roboto Condensed, serif;
     font-weight: bold;
 }
 
@@ -236,7 +236,7 @@ main > .row {
     }
     .sidebar.active {
         left: 0%;
-    } 
+    }
 
     .sidebar > ul {
         padding-top: 0px;
@@ -254,21 +254,26 @@ main > .row {
         border-radius: 0;
         margin-bottom: 1em;
         padding: 0.4em 0;
-        
+
         box-shadow: none;
     }
-	
+
 	/*fix for screen being over-wide on mobile*/
 	.row {
 		margin:0; max-width:100%;
 	}
-    
+
 	.container-fluid {
 		padding:0px;
 	}
-    
+
 	.site-footer .navbar .navbar-nav {
 		flex-wrap: wrap; justify-content: center;
+	}
+
+	.timestamp {
+		margin-left: 1rem!important;
+		margin-right: 1rem!important;
 	}
 }
 
@@ -299,9 +304,9 @@ main > .row {
 }
 
 /**************************************************************************************************
-    
+
     Content
-    
+
 **************************************************************************************************/
 .modal-header {
     border-bottom: 0px;
@@ -311,7 +316,7 @@ main > .row {
 }
 
 .tooltip-inner {
-    max-width: 350px !important; 
+    max-width: 350px !important;
 }
 
 .nav-tabs .nav-link.active {
@@ -679,4 +684,18 @@ tr.accountbound {
     margin-bottom: .5em;
     color: #fff;
     letter-spacing: .05em;
+}
+
+/**************************************************************************************************
+
+    USERPROFILE LINKS EXTENSION
+
+**************************************************************************************************/
+ 
+.ulinks a {
+    color:	#a196a1!important;
+}
+.ulinks a:hover {
+    color: 	#c6bec6!important;
+    text-decoration: none;
 }

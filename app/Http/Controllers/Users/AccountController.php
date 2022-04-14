@@ -47,12 +47,12 @@ class AccountController extends Controller
     }
 
     /**
-     * Edits the user's profile.
+     * Edits the user's profile.  
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postProfile(Request $request)
-    {
+    {        
         Auth::user()->profile->update([
             'text'        => $request->get('text'),
             'parsed_text' => parse($request->get('text')),
@@ -77,6 +77,24 @@ class AccountController extends Controller
             }
         }
 
+        return redirect()->back();
+    }
+
+    /**
+     * Edits the user's links.  
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postLinks(Request $request)
+    {
+        Auth::user()->profile->update([
+            'disc' => $request->get('disc'),
+            'insta' => $request->get('insta'),
+            'house' => $request->get('house'),
+            'arch' => $request->get('arch'),
+        ]);
+        flash('Profile updated successfully.')->success();
         return redirect()->back();
     }
 
