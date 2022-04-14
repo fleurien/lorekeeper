@@ -223,6 +223,39 @@ return [
             ],
         ]
     ],
+    'World.Expanded' => [
+        'power' => 'manage_world',
+        'links' => [
+            [
+                'name' => 'Locations',
+                'url' => 'admin/world/locations'
+            ],
+            [
+                'name' => 'Fauna',
+                'url' => 'admin/world/faunas'
+            ],
+            [
+                'name' => 'Flora',
+                'url' => 'admin/world/floras'
+            ],
+            [
+                'name' => ' Events',
+                'url' => 'admin/world/events'
+            ],
+            [
+                'name' => ' Figures',
+                'url' => 'admin/world/figures'
+            ],
+            [
+                'name' => 'Factions',
+                'url' => 'admin/world/factions'
+            ],
+            [
+                'name' => 'Concepts',
+                'url' => 'admin/world/concepts'
+            ],
+        ]
+    ],
     'Raffles' => [
         'power' => 'manage_raffles',
         'links' => [

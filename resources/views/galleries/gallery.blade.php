@@ -34,6 +34,9 @@
             {!! Form::select('prompt_id', $prompts, Request::get('prompt_id'), ['class' => 'form-control']) !!}
         </div>
         <div class="form-group mr-3 mb-3">
+            {!! Form::select('location_id', $locations, Request::get('location_id'), ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group mr-3 mb-3">
             {!! Form::select('sort', [
                 'newest'         => 'Newest First',
                 'oldest'         => 'Oldest First',

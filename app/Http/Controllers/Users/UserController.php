@@ -15,6 +15,7 @@ use App\Models\Character\Character;
 use App\Models\Character\CharacterCategory;	
 use App\Models\Character\CharacterImage;
 use App\Models\Character\Sublist;
+use Settings;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\Gallery;
@@ -72,6 +73,8 @@ class UserController extends Controller
             'awards' => $this->user->awards()->orderBy('user_awards.updated_at', 'DESC')->whereNull('deleted_at')->where('count','>',0)->take(4)->get(),
             'sublists' => Sublist::orderBy('sort', 'DESC')->get(),
             'characters' => $characters,
+            'user_enabled' => Settings::get('WE_user_locations'),
+            'user_factions_enabled' => Settings::get('WE_user_factions')
         ]);
     }
 

@@ -188,7 +188,7 @@ main > .row {
 	.site-mobile-header {
 		top: 54px !important;
     }
-    
+
     .timestamp {
 		margin-left: 1rem!important;
 		margin-right: 1rem!important;
@@ -641,6 +641,11 @@ tr.accountbound {
 
 .bookmark-table .img-thumbnail {
     width: 100px;
+}
+
+
+@media (min-width: 768px) {
+    .fb-md-50 { flex-basis:50%; }
 }
 
 /* BOOTSTRAP TABLES *************************************************************************************/
