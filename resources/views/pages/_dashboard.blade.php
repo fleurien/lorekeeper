@@ -1,9 +1,18 @@
+<div class="welcomecont">
+<h2 class="boxtitle">welcome.jpeg</h2>
+<div class="welcomebox">
 <h1>Welcome, {!! Auth::user()->displayName !!}!</h1>
+</div>
+</div>
+
 <div class="card mb-4 timestamp">
     <div class="card-body">
         <i class="far fa-clock"></i> {!! format_date(Carbon\Carbon::now()) !!}
     </div>
 </div>
+
+<div class="temp">
+
 <div class="row">
     <div class="col-md-6">
         <div class="card mb-4">
@@ -57,4 +66,6 @@
             </ul>
         </div>
     </div>
+</div>
+
 </div>

@@ -105,6 +105,45 @@ main > .row {
 
 /* Header */
 
+.temp{
+    display: none;
+}
+
+.boxtitle{
+    font-size:10px;
+    padding:2px;
+    background-color: pink;
+    color:var(--blue2);
+    border-width: 3px;
+    border-style:solid;
+    border-color:  var(--blue2) var(--pink) var(--pink) var(--blue2);
+}
+
+.welcomecont{
+    padding:3px;
+    width:300px;
+    height:450px;
+    background-color: #92b9fe;
+    border-width: 3px;
+    border-style:solid;
+    border-color:  var(--pink) var(--blue2) var(--blue2) var(--pink);
+}
+
+.welcomebox{
+    display:block;
+    height:93%;
+    background-color: pink;
+    padding:15px;
+    border-width: 3px;
+    border-style:solid;
+    border-color:  var(--blue2) var(--pink) var(--pink) var(--blue2);
+}
+
+.welcomebox h1{
+    margin-top:100px;
+    font-size:20px;
+}
+
 .bg-dark{
     background-color: var(--green)!important;
     height:fit-content;
@@ -125,7 +164,7 @@ main > .row {
 #headerNav{
     bottom:0;
     position:fixed;
-    z-index: 5;
+    z-index: 500;
     width:100%;
 }
 
@@ -163,8 +202,21 @@ li.nav-item:hover{
 .navbar .row { width: 100%; }
 
 .dropdown-menu{
-    top:0;
-    position:absolute;
+    background-color: #92b9fe;
+    font-size:9px;
+    box-shadow: 5px 4px 2px 2px #343a4055;
+}
+
+.dropdown-menu a{
+    color:var(--blue);
+}
+
+.dropdown-menu a:hover{
+    background-color: var(--pink);
+}
+
+.dropdown-divider{
+    border-top:1px solid var(--blue);
 }
 
 /* Sidebar */
@@ -628,7 +680,7 @@ tr.accountbound {
     position: absolute;
     right: -0.85rem;
     top: 0.45rem;
-    transform: rotateZ(90deg)translateX(0.25rem);
+    transform: rotateZ(90deg) translateX(0.25rem);
 }
 .collapse-toggle.collapsed:after {
     transform: none;

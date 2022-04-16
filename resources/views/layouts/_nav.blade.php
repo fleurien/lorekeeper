@@ -25,7 +25,7 @@
                     @endif
                 </li>
                 @if(Auth::check())
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropup">
                         <a id="inventoryDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Home
                         </a>
@@ -45,7 +45,7 @@
                             </a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropup">
                         <a id="queueDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Activity
                         </a>
@@ -72,7 +72,7 @@
                         </div>
                     </li>
                 @endif
-                <li class="nav-item dropdown">
+                <li class="nav-item dropup">
                     <a id="browseDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Browse
                     </a>
@@ -97,7 +97,7 @@
                         </a>
                     </div>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropup">
                     <a id="loreDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         World
                     </a>
@@ -143,7 +143,7 @@
                         </li>
                     @endif
                     
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropup">
                         <a id="browseDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Submit
                         </a>
@@ -161,7 +161,7 @@
                         </div>
                     </li>
                     
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropup">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="{{ Auth::user()->url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
