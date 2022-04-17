@@ -13,13 +13,13 @@ class RemoveCategoryActiveToggles extends Migration
      */
     public function up()
     {
-        Schema::table('location_types', function (Blueprint $table) {                   $table->dropColumn('is_active');                    });
+        /*Schema::table('location_types', function (Blueprint $table) {                   $table->dropColumn('is_active');                    });
         Schema::table('fauna_categories', function (Blueprint $table) {                 $table->dropColumn('is_active');                    });
         Schema::table('flora_categories', function (Blueprint $table) {                 $table->dropColumn('is_active');                    });
         Schema::table('event_categories', function (Blueprint $table) {                 $table->dropColumn('is_active');                    });
         Schema::table('figure_categories', function (Blueprint $table) {                $table->dropColumn('is_active');                    });
         Schema::table('faction_types', function (Blueprint $table) {                    $table->dropColumn('is_active');                    });
-        Schema::table('concept_categories', function (Blueprint $table) {               $table->dropColumn('is_active');                    });
+        Schema::table('concept_categories', function (Blueprint $table) {               $table->dropColumn('is_active');                    });*/
     }
 
     /**
