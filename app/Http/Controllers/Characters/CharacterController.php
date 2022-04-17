@@ -2,38 +2,39 @@
 
 namespace App\Http\Controllers\Characters;
 
-use App\Http\Controllers\Controller;
-use App\Models\Character\Character;
-use App\Models\Character\CharacterItem;
+use App\Http\Controllers\Controller;	
+use App\Models\Character\Character;	
+use App\Models\Character\CharacterCurrency;	
+use App\Models\Character\CharacterItem;	
+use App\Models\Character\CharacterProfile;	
+use App\Models\Character\CharacterTransfer;	
+use App\Models\Currency\Currency;	
+use App\Models\Gallery\GallerySubmission;	
+use App\Models\Item\Item;	
+use App\Models\Item\ItemCategory;	
+use App\Models\User\User;	
+use App\Models\User\UserCurrency;	
+use App\Models\User\UserItem;	
+use App\Services\CharacterManager;	
+use App\Services\CurrencyManager;	
+use App\Services\DesignUpdateManager;	
+use App\Services\InventoryManager;	
+use Auth;	
+use Illuminate\Http\Request;	
+use Route;	
+use Settings;	
 use App\Models\Species\Species;
 use App\Models\Rarity;
 use App\Models\WorldExpansion\Location;
 use App\Models\WorldExpansion\Faction;
 use App\Models\Feature\Feature;
-use App\Models\Character\CharacterCurrency;
-use App\Models\Character\CharacterProfile;
-use App\Models\Character\CharacterTransfer;
-use App\Models\Currency\Currency;
-use App\Models\Gallery\GallerySubmission;
-use App\Models\Item\Item;
-use App\Models\Item\ItemCategory;
-use App\Models\User\User;
-use App\Models\User\UserCurrency;
-use App\Models\User\UserItem;
 use App\Models\Item\ItemLog;
-
 use App\Models\Award\Award;
 use App\Models\Award\AwardCategory;
 use App\Models\User\UserAward;
 use App\Models\Award\AwardLog;
 use App\Models\Character\CharacterAward;
-
-
-use App\Services\CurrencyManager;
-use App\Services\DesignUpdateManager;
-use App\Services\InventoryManager;
 use App\Services\AwardCaseManager;
-use App\Services\CharacterManager;
 
 class CharacterController extends Controller
 {
