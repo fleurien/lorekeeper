@@ -64,7 +64,6 @@ class PromptsController extends Controller
             $query->where('prompt_category_id', $data['prompt_category_id']);
         if(isset($data['name']))
             $query->where('name', 'LIKE', '%'.$data['name'].'%');
-        }
 
         if(isset($data['sort']))
         {

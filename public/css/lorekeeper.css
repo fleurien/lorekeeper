@@ -114,6 +114,10 @@ main > .row {
 .navbar .row { width: 100%; 
     }
 
+.bg-dark{
+    background-color: #9dd6b1!important;
+}
+
 
 /* Sidebar */
 
@@ -553,7 +557,7 @@ tr.accountbound {
     position: absolute;
     right: -0.85rem;
     top: 0.45rem;
-    transform: rotateZ(90deg)translateX(0.25rem);
+    transform: rotateZ(90deg) translateX(0.25rem);
 }
 .collapse-toggle.collapsed:after {
     transform: none;

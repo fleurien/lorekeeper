@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\Characters;
 
+use Illuminate\Http\Request;	
+use DB;	
+use Auth;	
+use Settings;	
+use App\Models\Item\Item;	
+use App\Models\User\User;	
+use App\Models\User\UserItem;	
+use App\Models\Character\Character;	
+use App\Models\Character\CharacterDesignUpdate;	
+use App\Models\Species\Species;	
+use App\Models\Species\Subtype;	
+use App\Models\Rarity;	
+use App\Models\Feature\Feature;	
+use App\Models\Item\ItemCategory;	
+use App\Services\CharacterManager;	
 use App\Http\Controllers\Controller;
-use App\Models\Character\Character;
-use App\Models\Character\CharacterDesignUpdate;
-use App\Models\Feature\Feature;
-use App\Models\Item\Item;
-use App\Models\Item\ItemCategory;
-use App\Models\Rarity;
-use App\Models\Species\Species;
-use App\Models\Species\Subtype;
 use App\Models\Character\CharacterTitle;
-use App\Services\CharacterManager;
 
 class DesignController extends Controller
 {
