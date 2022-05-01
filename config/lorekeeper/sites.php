@@ -102,8 +102,8 @@ return [
         'display_name'  => 'discord',
         'regex'         => '/([A-Za-z0-9_-]+)#([0-9]+)/m',
         'icon'          => 'fab fa-discord',
-        'auth'          => 0,
-        'primary_alias' => 0,
+        'auth'          => 1,
+        'primary_alias' => 1,
     ],
 
     /**********************************************************************************************
