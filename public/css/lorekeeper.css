@@ -38,10 +38,12 @@ a.h1:hover, a.h2:hover, a.h3:hover, a.h4:hover, a.h5:hover {
 
 a {
     color: #98aaff;
+    transition:0.4s;
 }
 a:hover {
-    color: #98aaff;
+    color: #331e97;
     text-decoration: none;
+    transition:0.4s;
 }
 
 body {
@@ -49,7 +51,7 @@ body {
     font-family: Changa;
     min-height: 100vh;
     font-size: 80%;
-    color:#98aaff;
+    color:#331e97;
 }
 
 /**************************************************************************************************
