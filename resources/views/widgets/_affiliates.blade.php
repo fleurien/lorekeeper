@@ -25,4 +25,5 @@
     /* You can edit this as you like for hover effects on affiliate icons! */
     .avatar { opacity:0.5; filter:grayscale(.75);transition: 0.3s; }
     .avatar:hover{ opacity:1;filter:unset;transition: 0.3s; }
+    .card-body:hover{ background-color:var(--background)}
 </style>
