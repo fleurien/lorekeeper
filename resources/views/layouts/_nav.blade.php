@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     @if(Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
                         <a class="nav-link d-flex text-warning" href="{{ url('news') }}"><strong>News</strong><i class="fas fa-bell"></i></a>
                     @else
@@ -23,14 +23,17 @@
                     @else
                         <a class="nav-link" href="{{ url('sales') }}">Sales</a>
                     @endif
-                </li>
+                </li> -->
                 @if(Auth::check())
                     <li class="nav-item dropup">
                         <a id="inventoryDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Home
+                            Account
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="inventoryDropdown">
+                            <a class="dropdown-item" href="https://poffinsworld.com/info/traits">
+                                Traits
+                            </a>
                             <a class="dropdown-item" href="{{ url('characters') }}">
                                 My Characters
                             </a>
@@ -38,13 +41,32 @@
                                 My MYO Slots
                             </a>
                             <a class="dropdown-item" href="{{ url('inventory') }}">
-                                Inventory
+                                My Inventory
                             </a>
                             <a class="dropdown-item" href="{{ url('bank') }}">
-                                Bank
+                                My Bank
                             </a>
-                            <a class="dropdown-item" href="{{ url('awardcase') }}">
-                                Awards
+                            <a class="dropdown-item" href="https://poffinsworld.com/info/links">
+                                Helpful Links
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropup">
+                        <a id="queueDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Social
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="queueDropdown">
+                            <a href=" " class="dropdown-item">
+                                Discord
+                            </a>
+                            <a href=" " class="dropdown-item">
+                                Toyhouse
+                            </a>
+                            <a href=" " class="dropdown-item">
+                                Twitter
+                            </a>
+                            <a href=" " class="dropdown-item">
+                                Deviantart
                             </a>
                         </div>
                     </li>
@@ -72,6 +94,10 @@
                             <a class="dropdown-item" href="{{ url('trades/open') }}">
                                 Trades
                             </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url('reports/bug-reports') }}">
+                                Bug Reports
+                            </a>
                         </div>
                     </li>
                 @endif
@@ -81,6 +107,9 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="browseDropdown">
+                        <a class="dropdown-item" href="{{ url('gallery') }}">
+                            Gallery
+                        </a>
                         <a class="dropdown-item" href="{{ url('users') }}">
                             Users
                         </a>
@@ -90,38 +119,30 @@
                         <a class="dropdown-item" href="{{ url('myos') }}">
                             MYO Slot Masterlist
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('raffles') }}">
-                            Raffles
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('reports/bug-reports') }}">
-                            Bug Reports
-                        </a>
                     </div>
                 </li>
                 <li class="nav-item dropup">
                     <a id="loreDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        World
+                        Explore
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="loreDropdown">
-                        <a class="dropdown-item" href="{{ url('world') }}">
-                            Encyclopedia
-                        </a>
-                        <a class="dropdown-item" href="{{ url('world/info') }}">
-                            World Expanded
-                        </a>
-                        <a class="dropdown-item" href="{{ url('prompts/prompts') }}">
-                            Prompts
+                        <a class="dropdown-item" href="#">
+                            Lore
                         </a>
                         <a class="dropdown-item" href="{{ url('shops') }}">
                             Shops
                         </a>
+                        <a class="dropdown-item" href="{{ url('world/info') }}">
+                            World
+                        </a>
+                        <a class="dropdown-item" href="{{ url('prompts/prompts') }}">
+                            Prompts
+                        </a>
+                        <a class="dropdown-item" href="{{ url('world') }}">
+                            Encyclopedia
+                        </a>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('gallery') }}">Gallery</a>
                 </li>
             </ul>
 
@@ -142,7 +163,7 @@
                         <li class="nav-item d-flex">
                             <a class="nav-link position-relative display-inline-block" href="{{ url('admin') }}"><i class="fas fa-crown"></i>
                               @if (Auth::user()->hasAdminNotification(Auth::user()))
-                                <span class="position-absolute rounded-circle bg-danger text-light" style="top: -2px; right: -5px; padding: 1px 6px 1px 6px; font-weight:bold; font-size: 0.8em; box-shadow: 1px 1px 1px rgba(0,0,0,.25);">
+                                <span class="position-absolute rounded-circle bg-danger text-light" style="top: -2px; padding: 1px 6px 1px 6px; font-weight:bold; font-size: 0.8em; box-shadow: 1px 1px 1px rgba(0,0,0,.25);">
                                   {{ Auth::user()->hasAdminNotification(Auth::user()) }}
                                 </span>
                               @endif

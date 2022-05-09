@@ -1,15 +1,12 @@
-<div class="welcomecont">
-<h2 class="boxtitle">welcome.jpeg</h2>
-<div class="welcomebox">
 <h1>Welcome, {!! Auth::user()->displayName !!}!</h1>
-</div>
-</div>
 
+<!--
 <div class="card mb-4 timestamp">
     <div class="card-body">
         <i class="far fa-clock"></i> {!! format_date(Carbon\Carbon::now()) !!}
     </div>
 </div>
+-->
 
 <div class="temp">
 
@@ -17,14 +14,9 @@
     <div class="col-md-6">
         <div class="card mb-4">
             <div class="card-body text-center">
-                <img src="{{ asset('images/account.png') }}" alt="Account" />
-                <h5 class="card-title">Account</h5>
+            <a href="{{ Auth::user()->url }}"><img src="{{ asset('images/account.png') }}" alt="Account" /></a>
+            <a href="{{ Auth::user()->url }}"><h5 class="card-title">Account</h5></a>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="{{ Auth::user()->url }}">Profile</a></li>
-                <li class="list-group-item"><a href="{{ url('account/settings') }}">User Settings</a></li>
-                <li class="list-group-item"><a href="{{ url('trades/open') }}">Trades</a></li>
-            </ul>
         </div>
     </div>
     <div class="col-md-6">

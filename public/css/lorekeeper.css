@@ -5,12 +5,8 @@
 **************************************************************************************************/
 
 @font-face {
-    font-family: PressStart2P;
-    src: url(../webfonts/PressStart2P-Regular.ttf)
-}
-@font-face {
-    font-family: VT323;
-    src: url(../webfonts/VT323-Regular.ttf)
+    font-family: 'Ubuntu Regular';
+    src: url(../webfonts/Ubuntu-Regular.ttf)
 }
 
 /**************************************************************************************************
@@ -20,22 +16,30 @@
 **************************************************************************************************/
 
 :root{
-    --green: #4cc8f6;
-    --blue: #0080e0;
-    --pink: #ab3af3;
-    --blue2: #5938ed;
+    --background: #fffffe;
+    --headline: #00214d;
+    --paragraph: #1b2d45;
+    --button: #3bf4fb;
+    --button-text: #00214d;
+    --stroke: #00214d;
+    --main: #fffffe;
+    --highlight: #3bf4db;
+    --secondary: #c879ff;
+    --tertiary: #caff8a;
+    --darkersec: #826aed;
+    --pink: #ffb7ff;
 }
 
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
     text-transform: uppercase;
-    font-family: PressStart2P; 
+    font-family: 'Ubuntu Regular'; 
     font-weight: bold;
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a,
 a.h1, a.h2, a.h3, a.h4, a.h5 {
-    color: #98aaff;
+    color: var(--headline);
 }
 h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover,
 a.h1:hover, a.h2:hover, a.h3:hover, a.h4:hover, a.h5:hover {
@@ -44,21 +48,24 @@ a.h1:hover, a.h2:hover, a.h3:hover, a.h4:hover, a.h5:hover {
 }
 
 a {
-    color: #98aaff;
+    color: var(--button-text);
     transition:0.4s;
 }
 a:hover {
-    color: #331e97;
     text-decoration: none;
     transition:0.4s;
 }
 
 body {
     background-color: transparent;
-    font-family: VT323; 
+    font-family: 'Ubuntu Regular'; 
     min-height: 100vh;
     font-size: 80%;
-    color:#331e97;
+    color:var(--paragraph);
+}
+
+.bg-danger{
+    background-color: var(--secondary)!important;
 }
 
 /**************************************************************************************************
@@ -86,7 +93,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: var(--blue);
+    background-color: var(--main);
 }
 
 main {
@@ -99,125 +106,89 @@ main > .row {
 }
 
 .main-content {
-    background-color: var(--blue);
+    background-color: var(--main);
     display: flex;
     flex-direction: column;
 }
 
 /* Header */
 
-.temp{
-    display: none;
-}
-
-.boxtitle{
-    font-size:10px;
-    padding:2px;
-    background-color: pink;
-    color:var(--blue2);
-    border-width: 3px;
-    border-style:solid;
-    border-color:  var(--blue2) var(--pink) var(--pink) var(--blue2);
-}
-
-.welcomecont{
-    padding:3px;
-    width:300px;
-    height:450px;
-    background-color: #92b9fe;
-    border-width: 3px;
-    border-style:solid;
-    border-color:  var(--pink) var(--blue2) var(--blue2) var(--pink);
-}
-
-.welcomebox{
-    display:block;
-    height:93%;
-    background-color: pink;
-    padding:15px;
-    border-width: 3px;
-    border-style:solid;
-    border-color:  var(--blue2) var(--pink) var(--pink) var(--blue2);
-}
-
-.welcomebox h1{
-    margin-top:100px;
-    font-size:20px;
-}
-
 .bg-dark{
-    background-color: var(--green)!important;
-    height:fit-content;
-    border: 3px solid var(--pink);
-}
-
-.navbar{
-    padding:0;
+    background-color: var(--main)!important;
+    border-top: 3px solid var(--stroke);
 }
 
 .navbar .navbar-brand, .navbar .nav-item {
-    text-transform: lowercase;
-    font-family: PressStart2P; 
-    margin: 1px;
-    color:var(--blue);
+    text-transform: uppercase;
+    font-family:  'Ubuntu Regular'; 
+    color:var(--button-text);
+    border-radius: 6px;
+    width:fit-content;
+    align-items:center;
 }
 
 #headerNav{
     bottom:0;
     position:fixed;
     z-index: 500;
-    width:100%;
+    width:100vw;
 }
-
 
 a.navbar-brand{
-    font-size:10px;
+    font-size:24px;
     border:none;
     padding-right:13px;
+    font-weight:bold;
+    background: -webkit-linear-gradient(60deg,var(--highlight), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
 }
 
-li.nav-item{
+li.nav-item,
+li.nav-item:active{
     border-width: 3px;
     border-style:solid;
-    border-color:  var(--pink) var(--blue2) var(--blue2) var(--pink);
-    font-size:9px;
+    font-size:12px;
+    color:var(--button-text);
+    font-weight:bold;
+    margin:3px;
+    padding:0 10px;
 }
 
-li.nav-item:hover{
-    background:#92b9fe;
-    border-width: 3px;
-    border-style:solid;
-    border-color:  var(--blue2) var(--pink) var(--pink) var(--blue2);
+li.nav-item:hover,
+.navbar-dark .navbar-nav .show>.nav-link{
+    background:var(--highlight);
+    color:var(--button-text);
 }
 
 .navbar-dark .navbar-nav .nav-link {
-    color:var(--blue);
+    color:var(--button-text);
     padding:1px;
     margin:0 2px;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-    color:var(--blue);
+    color:var(--button-text);
 }
 
 .navbar .row { width: 100%; }
 
+
 .dropdown-menu{
-    background-color: #92b9fe;
-    font-size:9px;
+    background-color: var(--main);
     box-shadow: 5px 4px 2px 2px #343a4055;
 }
 
 .dropdown-menu a{
-    color:var(--blue);
+    color:var(--button-text);
 }
 
 .dropdown-menu a:hover{
-    background-color: var(--pink);
+    background-color: var(--highlight);
 }
 
 .dropdown-divider{
-    border-top:1px solid var(--blue);
+    border-top:1px solid var(--stroke);
 }
 
 /* Sidebar */
@@ -225,7 +196,7 @@ li.nav-item:hover{
 .sidebar {
     text-align: right;
     padding-right: 0px;
-    color:#f4f8fb;
+    color:var(--button-text);
 }
 
 .sidebar ul {
@@ -235,7 +206,7 @@ li.nav-item:hover{
 }
 
 .sidebar ul li {
-    background-color: #98aaff;
+    background-color: var(--main);
     border-top-left-radius: .25rem;
     border-bottom-left-radius: .25rem;
     margin-bottom: 1em;
@@ -245,19 +216,19 @@ li.nav-item:hover{
 .sidebar .sidebar-header,
 .sidebar .sidebar-section .sidebar-section-header {
     text-transform: uppercase;
-    font-family: Aldritch; 
+    font-family: 'Ubuntu Regular'; 
     font-weight: bold;
 }
 
 .sidebar .sidebar-header {
-    background-color: #98aaff;
+    background-color: var(--main);
 }
 .sidebar .sidebar-header a {
-    color: #f4f8fb;
+    color: var(--button-text);
 }
 .sidebar .sidebar-header a:hover {
     background-color: transparent;
-    color: #f4f8fb;
+    color: var(--button-text);
 }
 
 .sidebar a,
@@ -268,12 +239,12 @@ li.nav-item:hover{
 
 .sidebar a {
     text-transform: uppercase;
-    font-family: Aldritch; 
-    color: #f4f8fb;
+    font-family:  'Ubuntu Regular'; 
+    color: var(--button-text);
 }
 .sidebar a:hover {
-    color: #98aaff;
-    background-color: #f4f8fb;
+    color: var(--button-text);
+    background-color: var(--highlight);
     font-weight:bold;
 }
 .sidebar a:hover, .sidebar a:active, .sidebar a:focus, .sidebar a:link {
@@ -283,8 +254,8 @@ li.nav-item:hover{
     text-decoration: none;
 }
 .sidebar a.active, .sidebar a.active:hover {
-    color: #98aaff;
-    background-color: #f4f8fb;
+    color: var(--button-text);
+    background-color: var(--highlight);
 }
 
 .site-mobile-header {
@@ -332,8 +303,8 @@ li.nav-item:hover{
         position: absolute;
         padding-left: 0px;
         text-align: left;
-        background-color: #f4f8fb;
-        color:#98aaff;
+        background-color: var(--main);
+        color:var(--button-text);
         z-index: 3;
         right: 0px;
         bottom: 0px;
@@ -359,7 +330,7 @@ li.nav-item:hover{
     }
 
     .sidebar ul li {
-        background-color: #f4f8fb;
+        background-color: var(--main);
         border-radius: 0;
         margin-bottom: 1em;
         padding: 0.4em 0;
@@ -369,8 +340,8 @@ li.nav-item:hover{
 
     .sidebar a {
         text-transform: uppercase;
-        font-family: Aldritch; 
-        color: #98aaff;
+        font-family:  'Ubuntu Regular'; 
+        color: var(--button-text);
     }
 	
 	/*fix for screen being over-wide on mobile*/
@@ -396,18 +367,30 @@ li.nav-item:hover{
 .site-footer .navbar {
     padding-bottom: 0;
 }
+
 .site-footer .navbar .navbar-nav {
     flex-direction: row;
 }
-.site-footer .navbar .navbar-nav .nav-link {
-    padding-right: .5rem;
-    padding-left: .5rem;
-    color:#98aaff;
+
+.site-footer .navbar .navbar-nav .nav-link{
+    color:var(--button-text);
+    font-size:9px;
+}
+
+.site-footer li.nav-item{
+    border:none;
+    margin:0;
+    padding:0;
+}
+
+.site-footer a.nav-link:hover{
+    background-color: none;
+    text-decoration: underline;
 }
 
 .site-footer .copyright {
     padding: 0 1rem 1rem;
-    color: #98aaff;
+    color: var(--button-text);
 }
 
 .mce-content-body {
@@ -419,6 +402,12 @@ li.nav-item:hover{
     Content
 
 **************************************************************************************************/
+
+.card{
+    border:3px solid var(--stroke);
+    border-radius:6px;
+}
+
 .modal-header {
     border-bottom: 0px;
 }
@@ -435,7 +424,7 @@ li.nav-item:hover{
 }
 .nav-tabs .nav-link {
     text-transform: uppercase;
-    font-family: Aldritch; 
+    font-family:  'Ubuntu Regular'; 
 }
 
 .display-user, .display-character {
@@ -446,21 +435,21 @@ li.nav-item:hover{
     /*vertical-align: middle;*/
     cursor: pointer;
     margin: 0 5px;
-    color: #98aaff;
+    color: var(--button);
 }
 
 .breadcrumb {
     background-color: transparent;
     padding: 0;
-    font-family: Aldritch; 
+    font-family:  'Ubuntu Regular'; 
     text-transform: uppercase;
     align-items: center;
 }
 .breadcrumb a {
-    color: #98aaff;
+    color: var(--button-text);
 }
 .breadcrumb a:hover {
-    color: #98aaff;
+    color: var(--button-text);
     text-decoration: none;
 }
 .breadcrumb-item+.breadcrumb-item:before {
@@ -475,9 +464,9 @@ li.nav-item:hover{
     position: absolute;
     right: -20px;
     top: 0.425em;
-    border: 0.3em solid #98aaff;
-    border-color: #98aaff transparent transparent transparent;
-}
+    border: 0.3em solid var(--stroke);
+    border-color: var(--stroke) transparent transparent transparent;
+}   
 
 .image, .image-thumb {
     max-width: 100%;
@@ -493,7 +482,7 @@ li.nav-item:hover{
 }
 
 .spoiler {
-    border: 1px solid #98aaff;
+    border: 1px solid var(--stroke);
     border-radius: 5px;
     margin-bottom: 1rem;
     background: transparent;
@@ -501,17 +490,17 @@ li.nav-item:hover{
 }
 .spoiler-toggle {
     font-weight: bold;
-    background-color: #f4f8fb;
+    background-color: var(--main);
     cursor: pointer;
     padding: .3rem 1.25rem;
     font-size: .9rem;
-    font-family: Aldritch; 
+    font-family: 'Ubuntu Regular'; 
     color: inherit;
     text-transform: uppercase;
 }
 .spoiler-text {
     padding: .75rem 1.25rem;
-    border-top: 1px solid #98aaff;
+    border-top: 1px solid var(--stroke);
 }
 .text-break {
     overflow-wrap: break-word;
@@ -525,7 +514,7 @@ li.nav-item:hover{
 /* NOTIFICATIONS *********************************************************************************/
 
 .notifications-table .unread, .notifications-table .unread td {
-    background-color: #f4f8fb;
+    background-color: var(--main);
 }
 
 /* BROWSE ****************************************************************************************/
@@ -562,19 +551,19 @@ li.nav-item:hover{
 }
 
 .sortable .handle {
-    color: #98aaff;
+    color: var(--button-text);
 }
 .sortable .sortable-placeholder {
-    background-color: #98aaff;
+    background-color: var(--button-text);
 }
 
 
 /* LOGS ******************************************************************************************/
 tr.inflow {
-    background-color: #f4f8fb;
+    background-color: var(--main);
 }
 tr.outflow {
-    background-color: #f4f8fb;
+    background-color: var(--main);
 }
 
 
@@ -593,7 +582,7 @@ tr.outflow {
 }
 
 .character-bio .nav-tabs.card-header-tabs .active {
-    background-color: #f4f8fb;
+    background-color: var(--main);
 }
 
 /* INVENTORY *************************************************************************************/
@@ -602,14 +591,14 @@ tr.outflow {
     max-width: 100%;
 }
 .inventory-stack-name, .inventory-character-name {
-    color: #98aaff;
+    color: var(--button-text);
 }
 .inventory-stack-name:hover, .inventory-character-name:hover {
     color: inherit;
     text-decoration: none;
 }
 tr.accountbound {
-    background-color: #98aaff;
+    background-color: var(--main);
     border-radius: .25rem;
 }
 
@@ -621,7 +610,7 @@ tr.accountbound {
     display: block;
 }
 .image-nav .nav-item a.active {
-    border: 5px solid #f4f8fb;
+    border: 5px solid var(--main);
 }
 
 /* TRANSFERS *************************************************************************************/
@@ -653,8 +642,8 @@ tr.accountbound {
 .collapse-toggle:after {
     display: block;
     content: '';
-    border: 0.3rem solid #98aaff;
-    border-color: transparent transparent transparent #98aaff;
+    border: 0.3rem solid var(--button-text);
+    border-color: transparent transparent transparent var(--button-text);
     position: absolute;
     right: -0.85rem;
     top: 0.45rem;
@@ -677,11 +666,11 @@ tr.accountbound {
     cursor: not-allowed;
 }
 .user-items .category-selected .inventory-item, .user-characters .category-selected .character-item {
-    background-color: #98aaff;
+    background-color: var(--main);
     border-radius: .25rem;
 }
 .user-items .category-selected.select-item-row {
-    background-color: #98aaff;
+    background-color: var(--main);
 }
 
 /* SHOPS *****************************************************************************************/
@@ -725,11 +714,11 @@ tr.accountbound {
 
 /* BOOTSTRAP TABLES *************************************************************************************/
 .ubt-bottom {
-  border-bottom:1px solid #f4f8fb;
+  border-bottom:1px solid var(--main);
 }
 
 .ubt-top {
-  border-top:1px solid #f4f8fb;
+  border-top:1px solid var(--main);
 }
 
 .ubt-texthide {
