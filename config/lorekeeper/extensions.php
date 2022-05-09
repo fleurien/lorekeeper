@@ -46,15 +46,15 @@ return [
     ],
 
     // Group Traits By Category - Uri
-    'traits_by_category' => 0,
+    'traits_by_category'            => 0,
 
     // Scroll To Top - Uri
     'scroll_to_top' => 0, // 1 - On, 0 - off
 
     // Character Reward Expansion - Uri
-    'character_reward_expansion' => [
-        'expanded'          => 1,
-        'default_recipient' => 0, // 0 to default to the character's owner (if a user), 1 to default to the submission user.
+    'character_reward_expansion'    => [
+        'expanded'                  => 1,
+        'default_recipient'         => 0, // 0 to default to the character's owner (if a user), 1 to default to the submission user.
     ],
 
     // MYO Image Hide/Remove - Mercury
@@ -73,4 +73,13 @@ return [
 
     // Organised Traits Dropdown - Draginraptor
     'organised_traits_dropdown' => 0,
+
+    // Awards - Uri
+    'awards' => [
+        'user_featured'             => 1,   // Number of awards displayed prominently on the user profile
+        'character_featured'        => 1,   // Number of awards displayed prominently on the character page
+    ],
+
+    // Extra Image Credits - Newt
+    'extra_image_credits' => 1,
 ];

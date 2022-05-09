@@ -11,6 +11,9 @@ use Config;
 use DB;
 use Illuminate\Support\Arr;
 use Notifications;
+use App\Models\Item\ItemCategory;
+use App\Models\Currency\Currency;
+use App\Models\Shop\UserItemDonation;
 
 class InventoryManager extends Service
 {
@@ -80,7 +83,7 @@ class InventoryManager extends Service
             }
 
             return $this->commitReturn(true);
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
@@ -147,7 +150,7 @@ class InventoryManager extends Service
             }
 
             return $this->commitReturn(true);
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
@@ -183,21 +186,17 @@ class InventoryManager extends Service
                     throw new \Exception('Invalid sender selected.');
                 }
 
-                if ($recipient->logType == 'Character' && $sender->logType == 'Character') {
-                    throw new \Exception('Cannot transfer items between characters.');
-                }
-                if ($recipient->logType == 'Character' && !$sender->hasPower('edit_inventories') && !$recipient->is_visible) {
-                    throw new \Exception('Invalid character selected.');
-                }
-                if (!$stacks) {
-                    throw new \Exception('Invalid stack selected.');
-                }
-                if ($sender->logType == 'Character' && $quantity <= 0 && $stack->count > 0) {
-                    $quantity = $stack->count;
-                }
-                if ($quantity <= 0) {
-                    throw new \Exception('Invalid quantity entered.');
-                }
+                if($recipient->logType == 'Character' && $sender->logType == 'Character') throw new \Exception("Cannot transfer items between characters.");
+                if($recipient->logType == 'Character' && !$sender->hasPower('edit_inventories') && !$recipient->is_visible) throw new \Exception("Invalid character selected.");
+                if(!$stacks) throw new \Exception("Invalid stack selected.");
+                if($sender->logType == 'Character' && $quantity <= 0 && $stack->count > 0) $quantity = $stack->count;
+                if($quantity <= 0) throw new \Exception("Invalid quantity entered.");
+
+                if(($recipient->logType == 'Character' && !$sender->hasPower('edit_inventories') && !Auth::user() == $recipient->user) || ($recipient->logType == 'User' && !Auth::user()->hasPower('edit_inventories') && !Auth::user() == $sender->user)) throw new \Exception("Cannot transfer items to/from a character you don't own.");
+
+                if($recipient->logType == 'Character' && !$stack->item->category->is_character_owned) throw new \Exception("One of the selected items cannot be owned by characters.");
+                if((!$stack->item->allow_transfer || isset($stack->data['disallow_transfer'])) && !Auth::user()->hasPower('edit_inventories')) throw new \Exception("One of the selected items cannot be transferred.");
+                if($stack->count < $quantity) throw new \Exception("Quantity to transfer exceeds item count.");
 
                 if (($recipient->logType == 'Character' && !$sender->hasPower('edit_inventories') && !$user == $recipient->user) || ($recipient->logType == 'User' && !$user->hasPower('edit_inventories') && !$user == $sender->user)) {
                     throw new \Exception("Cannot transfer items to/from a character you don't own.");
@@ -234,364 +233,384 @@ class InventoryManager extends Service
             }
 
             return $this->commitReturn(true);
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
         return $this->rollbackReturn(false);
     }
 
+        /**	
+     * Transfers items between user stacks.	
+     *	
+     * @param \App\Models\User\User     $sender	
+     * @param \App\Models\User\User     $recipient	
+     * @param \App\Models\User\UserItem $stacks	
+     * @param int                       $quantities	
+     *	
+     * @return bool	
+     */	
+    public function transferStack($sender, $recipient, $stacks, $quantities)	
+    {	
+        DB::beginTransaction();	
+        try {	
+            foreach ($stacks as $key=>$stack) {	
+                $quantity = $quantities[$key];	
+                if (!$sender->hasAlias) {	
+                    throw new \Exception('You need to have a linked social media account before you can perform this action.');	
+                }	
+                if (!$stack) {	
+                    throw new \Exception('An invalid item was selected.');	
+                }	
+                if ($stack->user_id != $sender->id && !$sender->hasPower('edit_inventories')) {	
+                    throw new \Exception('You do not own one of the selected items.');	
+                }	
+                if ($stack->user_id == $recipient->id) {	
+                    throw new \Exception("Cannot send items to the item's owner.");	
+                }	
+                if (!$recipient) {	
+                    throw new \Exception('Invalid recipient selected.');	
+                }	
+                if (!$recipient->hasAlias) {	
+                    throw new \Exception('Cannot transfer items to a non-verified member.');	
+                }	
+                if ($recipient->is_banned) {	
+                    throw new \Exception('Cannot transfer items to a banned member.');	
+                }	
+                if ((!$stack->item->allow_transfer || isset($stack->data['disallow_transfer'])) && !$sender->hasPower('edit_inventories')) {	
+                    throw new \Exception('One of the selected items cannot be transferred.');	
+                }	
+                if ($stack->count < $quantity) {	
+                    throw new \Exception('Quantity to transfer exceeds item count.');	
+                }	
+                $oldUser = $stack->user;	
+                if ($this->moveStack($stack->user, $recipient, ($stack->user_id == $sender->id ? 'User Transfer' : 'Staff Transfer'), ['data' => ($stack->user_id != $sender->id ? 'Transferred by '.$sender->displayName : '')], $stack, $quantity)) {	
+                    Notifications::create('ITEM_TRANSFER', $recipient, [	
+                        'item_name'     => $stack->item->name,	
+                        'item_quantity' => $quantity,	
+                        'sender_url'    => $sender->url,	
+                        'sender_name'   => $sender->name,	
+                    ]);	
+                    if ($stack->user_id != $sender->id) {	
+                        Notifications::create('FORCED_ITEM_TRANSFER', $oldUser, [	
+                            'item_name'     => $stack->item->name,	
+                            'item_quantity' => $quantity,	
+                            'sender_url'    => $sender->url,	
+                            'sender_name'   => $sender->name,	
+                        ]);	
+                    }	
+                }	
+            }	
+            return $this->commitReturn(true);	
+        } catch (\Exception $e) {	
+            $this->setError('error', $e->getMessage());	
+        }	
+        return $this->rollbackReturn(false);	
+    }
+
+	    /**	
+     * Deletes items from stack.	
+     *	
+     * @param \App\Models\Character\Character|\App\Models\User\User         $owner	
+     * @param \App\Models\Character\CharacterItem|\App\Models\User\UserItem $stacks	
+     * @param int                                                           $quantities	
+     * @param mixed                                                         $user	
+     *	
+     * @return bool	
+     */	
+    public function deleteStack($owner, $stacks, $quantities, $user)	
+    {	
+        DB::beginTransaction();	
+        try {	
+            if ($owner->logType == 'User') {	
+                foreach ($stacks as $key=>$stack) {	
+                    $quantity = $quantities[$key];	
+                    if (!$owner->hasAlias) {	
+                        throw new \Exception('You need to have a linked social media account before you can perform this action.');	
+                    }	
+                    if (!$stack) {	
+                        throw new \Exception('An invalid item was selected.');	
+                    }	
+                    if ($stack->user_id != $owner->id && !$user->hasPower('edit_inventories')) {	
+                        throw new \Exception('You do not own one of the selected items.');	
+                    }	
+                    if ($stack->count < $quantity) {	
+                        throw new \Exception('Quantity to delete exceeds item count.');	
+                    }	
+                    $oldUser = $stack->user;	
+                    if ($this->debitStack($stack->user, ($stack->user_id == $user->id ? 'User Deleted' : 'Staff Deleted'), ['data' => ($stack->user_id != $user->id ? 'Deleted by '.$user->displayName : '')], $stack, $quantity)) {	
+                        if ($stack->user_id != $user->id) {	
+                            Notifications::create('ITEM_REMOVAL', $oldUser, [	
+                                'item_name'     => $stack->item->name,	
+                                'item_quantity' => $quantity,	
+                                'sender_url'    => $user->url,	
+                                'sender_name'   => $user->name,	
+                            ]);	
+                        }	
+                    }	
+                }	
+            } else {	
+                foreach ($stacks as $key=>$stack) {	
+                    $quantity = $quantities[$key];	
+                    if (!$user->hasAlias) {	
+                        throw new \Exception('You need to have a linked social media account before you can perform this action.');	
+                    }	
+                    if (!$stack) {	
+                        throw new \Exception('An invalid item was selected.');	
+                    }	
+                    if ($stack->character->user_id != $user->id && !$user->hasPower('edit_inventories')) {	
+                        throw new \Exception('You do not own one of the selected items.');	
+                    }	
+                    if ($stack->count < $quantity) {	
+                        throw new \Exception('Quantity to delete exceeds item count.');	
+                    }	
+                    if ($this->debitStack($stack->character, ($stack->character->user_id == $user->id ? 'User Deleted' : 'Staff Deleted'), ['data' => ($stack->character->user_id != $user->id ? 'Deleted by '.$user->displayName : '')], $stack, $quantity)) {	
+                        if ($stack->character->user_id != $user->id && $stack->character->is_visible && $stack->character->user_id) {	
+                            Notifications::create('CHARACTER_ITEM_REMOVAL', $stack->character->user, [	
+                                'item_name'      => $stack->item->name,	
+                                'item_quantity'  => $quantity,	
+                                'sender_url'     => $user->url,	
+                                'sender_name'    => $user->name,	
+                                'character_name' => $stack->character->fullName,	
+                                'character_slug' => $stack->character->slug,	
+                            ]);	
+                        }	
+                    }	
+                }	
+            }	
+            return $this->commitReturn(true);	
+        } catch (\Exception $e) {	
+            $this->setError('error', $e->getMessage());	
+        }	
+        return $this->rollbackReturn(false);	
+    }
+
+     /**	
+     * Sells items from stack.	
+     *	
+     * @param \App\Models\User\User     $user	
+     * @param \App\Models\User\UserItem $stacks	
+     * @param int                       $quantities	
+     *	
+     * @return bool	
+     */	
+    public function resellStack($user, $stacks, $quantities)	
+    {	
+        DB::beginTransaction();	
+        try {	
+            foreach ($stacks as $key=>$stack) {	
+                $quantity = $quantities[$key];	
+                if (!$user->hasAlias) {	
+                    throw new \Exception('You need to have a linked social media account before you can perform this action.');	
+                }	
+                if (!$stack) {	
+                    throw new \Exception('An invalid item was selected.');	
+                }	
+                if ($stack->user_id != $user->id && !$user->hasPower('edit_inventories')) {	
+                    throw new \Exception('You do not own one of the selected items.');	
+                }	
+                if ($stack->count < $quantity) {	
+                    throw new \Exception('Quantity to sell exceeds item count.');	
+                }	
+                if (!isset($stack->item->data['resell'])) {	
+                    throw new \Exception('This item cannot be sold.');	
+                }	
+                if (!Config::get('lorekeeper.extensions.item_entry_expansion.resale_function')) {	
+                    throw new \Exception('This function is not currently enabled.');	
+                }	
+                $oldUser = $stack->user;	
+                $currencyManager = new CurrencyManager;	
+                if (isset($stack->item->data['resell']) && $stack->item->data['resell']) {	
+                    $currency = $stack->item->resell->flip()->pop();	
+                    $currencyQuantity = $stack->item->resell->pop() * $quantity;	
+                    if (!$currencyManager->creditCurrency(null, $oldUser, 'Sold Item', 'Sold '.$stack->item->displayName.' ×'.$quantity, $currency, $currencyQuantity)) {	
+                        throw new \Exception('Failed to credit currency.');	
+                    }	
+                }	
+                if ($this->debitStack($stack->user, ($stack->user_id == $user->id ? 'Sold by User' : 'Sold by Staff'), ['data' => ($stack->user_id != $user->id ? 'Sold by '.$user->displayName : '')], $stack, $quantity)) {	
+                    if ($stack->user_id != $user->id) {	
+                        Notifications::create('ITEM_REMOVAL', $oldUser, [	
+                            'item_name'     => $stack->item->name,	
+                            'item_quantity' => $quantity,	
+                            'sender_url'    => $user->url,	
+                            'sender_name'   => $user->name,	
+                        ]);	
+                    }	
+                }	
+            }	
+            return $this->commitReturn(true);	
+        } catch (\Exception $e) {	
+            $this->setError('error', $e->getMessage());	
+        }	
+        return $this->rollbackReturn(false);	
+    }
+
     /**
-     * Transfers items between user stacks.
+     * Donates items from stack.
      *
-     * @param \App\Models\User\User     $sender
-     * @param \App\Models\User\User     $recipient
-     * @param \App\Models\User\UserItem $stacks
-     * @param int                       $quantities
-     *
+     * @param  \App\Models\User\User      $user
+     * @param  \App\Models\User\UserItem  $stacks
+     * @param  int                        $quantities
      * @return bool
      */
-    public function transferStack($sender, $recipient, $stacks, $quantities)
+    public function donateStack($user, $stacks, $quantities)
     {
         DB::beginTransaction();
 
         try {
-            foreach ($stacks as $key=>$stack) {
+            foreach($stacks as $key=>$stack) {
                 $quantity = $quantities[$key];
-                if (!$sender->hasAlias) {
-                    throw new \Exception('You need to have a linked social media account before you can perform this action.');
-                }
-                if (!$stack) {
-                    throw new \Exception('An invalid item was selected.');
-                }
-                if ($stack->user_id != $sender->id && !$sender->hasPower('edit_inventories')) {
-                    throw new \Exception('You do not own one of the selected items.');
-                }
-                if ($stack->user_id == $recipient->id) {
-                    throw new \Exception("Cannot send items to the item's owner.");
-                }
-                if (!$recipient) {
-                    throw new \Exception('Invalid recipient selected.');
-                }
-                if (!$recipient->hasAlias) {
-                    throw new \Exception('Cannot transfer items to a non-verified member.');
-                }
-                if ($recipient->is_banned) {
-                    throw new \Exception('Cannot transfer items to a banned member.');
-                }
-                if ((!$stack->item->allow_transfer || isset($stack->data['disallow_transfer'])) && !$sender->hasPower('edit_inventories')) {
-                    throw new \Exception('One of the selected items cannot be transferred.');
-                }
-                if ($stack->count < $quantity) {
-                    throw new \Exception('Quantity to transfer exceeds item count.');
-                }
+                if(!$user->hasAlias) throw new \Exception("Your deviantART account must be verified before you can perform this action.");
+                if(!$stack) throw new \Exception("An invalid item was selected.");
+                if($stack->user_id != $user->id && !$user->hasPower('edit_inventories')) throw new \Exception("You do not own one of the selected items.");
+                if($stack->count < $quantity) throw new \Exception("Quantity to donate exceeds item count.");
+                if(!$stack->item->canDonate) throw new \Exception ("This item cannot be donated.");
+                if((!$stack->item->allow_transfer || isset($stack->data['disallow_transfer'])) && !$user->hasPower('edit_inventories')) throw new \Exception("One of the selected items cannot be transferred.");
 
-                $oldUser = $stack->user;
-                if ($this->moveStack($stack->user, $recipient, ($stack->user_id == $sender->id ? 'User Transfer' : 'Staff Transfer'), ['data' => ($stack->user_id != $sender->id ? 'Transferred by '.$sender->displayName : '')], $stack, $quantity)) {
-                    Notifications::create('ITEM_TRANSFER', $recipient, [
-                        'item_name'     => $stack->item->name,
-                        'item_quantity' => $quantity,
-                        'sender_url'    => $sender->url,
-                        'sender_name'   => $sender->name,
+                // Create or add to donated stock
+                $stock = UserItemDonation::where('stack_id', $stack->id)->where('item_id', $stack->item->id)->first();
+                if($stock) {
+                    $stock->update(['quantity' => $stock->stock += $quantity]);
+                }
+                else {
+                    $stock = UserItemDonation::create([
+                        'stack_id' => $stack->id,
+                        'item_id' => $stack->item->id,
+                        'stock' => $quantity
                     ]);
-                    if ($stack->user_id != $sender->id) {
-                        Notifications::create('FORCED_ITEM_TRANSFER', $oldUser, [
-                            'item_name'     => $stack->item->name,
+                }
+
+                // Debit item(s) from user
+                if($this->debitStack($stack->user, ($stack->user_id == $user->id ? 'Donated by User' : 'Donated by Staff'), ['data' => ($stack->user_id != $user->id ? 'Donated by '.$user->displayName : '')], $stack, $quantity))
+                {
+                    if($stack->user_id != $user->id)
+                        Notifications::create('ITEM_REMOVAL', $stack->user, [
+                            'item_name' => $stack->item->name,
                             'item_quantity' => $quantity,
-                            'sender_url'    => $sender->url,
-                            'sender_name'   => $sender->name,
+                            'sender_url' => $user->url,
+                            'sender_name' => $user->name
                         ]);
-                    }
                 }
             }
-
             return $this->commitReturn(true);
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
-
         return $this->rollbackReturn(false);
     }
 
-    /**
-     * Deletes items from stack.
-     *
-     * @param \App\Models\Character\Character|\App\Models\User\User         $owner
-     * @param \App\Models\Character\CharacterItem|\App\Models\User\UserItem $stacks
-     * @param int                                                           $quantities
-     * @param mixed                                                         $user
-     *
-     * @return bool
-     */
-    public function deleteStack($owner, $stacks, $quantities, $user)
-    {
-        DB::beginTransaction();
-
-        try {
-            if ($owner->logType == 'User') {
-                foreach ($stacks as $key=>$stack) {
-                    $quantity = $quantities[$key];
-                    if (!$owner->hasAlias) {
-                        throw new \Exception('You need to have a linked social media account before you can perform this action.');
-                    }
-                    if (!$stack) {
-                        throw new \Exception('An invalid item was selected.');
-                    }
-                    if ($stack->user_id != $owner->id && !$user->hasPower('edit_inventories')) {
-                        throw new \Exception('You do not own one of the selected items.');
-                    }
-                    if ($stack->count < $quantity) {
-                        throw new \Exception('Quantity to delete exceeds item count.');
-                    }
-
-                    $oldUser = $stack->user;
-
-                    if ($this->debitStack($stack->user, ($stack->user_id == $user->id ? 'User Deleted' : 'Staff Deleted'), ['data' => ($stack->user_id != $user->id ? 'Deleted by '.$user->displayName : '')], $stack, $quantity)) {
-                        if ($stack->user_id != $user->id) {
-                            Notifications::create('ITEM_REMOVAL', $oldUser, [
-                                'item_name'     => $stack->item->name,
-                                'item_quantity' => $quantity,
-                                'sender_url'    => $user->url,
-                                'sender_name'   => $user->name,
-                            ]);
-                        }
-                    }
-                }
-            } else {
-                foreach ($stacks as $key=>$stack) {
-                    $quantity = $quantities[$key];
-                    if (!$user->hasAlias) {
-                        throw new \Exception('You need to have a linked social media account before you can perform this action.');
-                    }
-                    if (!$stack) {
-                        throw new \Exception('An invalid item was selected.');
-                    }
-                    if ($stack->character->user_id != $user->id && !$user->hasPower('edit_inventories')) {
-                        throw new \Exception('You do not own one of the selected items.');
-                    }
-                    if ($stack->count < $quantity) {
-                        throw new \Exception('Quantity to delete exceeds item count.');
-                    }
-
-                    if ($this->debitStack($stack->character, ($stack->character->user_id == $user->id ? 'User Deleted' : 'Staff Deleted'), ['data' => ($stack->character->user_id != $user->id ? 'Deleted by '.$user->displayName : '')], $stack, $quantity)) {
-                        if ($stack->character->user_id != $user->id && $stack->character->is_visible && $stack->character->user_id) {
-                            Notifications::create('CHARACTER_ITEM_REMOVAL', $stack->character->user, [
-                                'item_name'      => $stack->item->name,
-                                'item_quantity'  => $quantity,
-                                'sender_url'     => $user->url,
-                                'sender_name'    => $user->name,
-                                'character_name' => $stack->character->fullName,
-                                'character_slug' => $stack->character->slug,
-                            ]);
-                        }
-                    }
-                }
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
-    }
-
-    /**
-     * Sells items from stack.
-     *
-     * @param \App\Models\User\User     $user
-     * @param \App\Models\User\UserItem $stacks
-     * @param int                       $quantities
-     *
-     * @return bool
-     */
-    public function resellStack($user, $stacks, $quantities)
-    {
-        DB::beginTransaction();
-
-        try {
-            foreach ($stacks as $key=>$stack) {
-                $quantity = $quantities[$key];
-                if (!$user->hasAlias) {
-                    throw new \Exception('You need to have a linked social media account before you can perform this action.');
-                }
-                if (!$stack) {
-                    throw new \Exception('An invalid item was selected.');
-                }
-                if ($stack->user_id != $user->id && !$user->hasPower('edit_inventories')) {
-                    throw new \Exception('You do not own one of the selected items.');
-                }
-                if ($stack->count < $quantity) {
-                    throw new \Exception('Quantity to sell exceeds item count.');
-                }
-                if (!isset($stack->item->data['resell'])) {
-                    throw new \Exception('This item cannot be sold.');
-                }
-                if (!Config::get('lorekeeper.extensions.item_entry_expansion.resale_function')) {
-                    throw new \Exception('This function is not currently enabled.');
-                }
-
-                $oldUser = $stack->user;
-
-                $currencyManager = new CurrencyManager;
-                if (isset($stack->item->data['resell']) && $stack->item->data['resell']) {
-                    $currency = $stack->item->resell->flip()->pop();
-                    $currencyQuantity = $stack->item->resell->pop() * $quantity;
-
-                    if (!$currencyManager->creditCurrency(null, $oldUser, 'Sold Item', 'Sold '.$stack->item->displayName.' ×'.$quantity, $currency, $currencyQuantity)) {
-                        throw new \Exception('Failed to credit currency.');
-                    }
-                }
-
-                if ($this->debitStack($stack->user, ($stack->user_id == $user->id ? 'Sold by User' : 'Sold by Staff'), ['data' => ($stack->user_id != $user->id ? 'Sold by '.$user->displayName : '')], $stack, $quantity)) {
-                    if ($stack->user_id != $user->id) {
-                        Notifications::create('ITEM_REMOVAL', $oldUser, [
-                            'item_name'     => $stack->item->name,
-                            'item_quantity' => $quantity,
-                            'sender_url'    => $user->url,
-                            'sender_name'   => $user->name,
-                        ]);
-                    }
-                }
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
-    }
-
-    /**
-     * Credits an item to a user or character.
-     *
-     * @param \App\Models\Character\Character|\App\Models\User\User $sender
-     * @param \App\Models\Character\Character|\App\Models\User\User $recipient
-     * @param string                                                $type
-     * @param array                                                 $data
-     * @param \App\Models\Item\Item                                 $item
+    /**	
+     * Credits an item to a user or character.	
+     *	
+     * @param \App\Models\Character\Character|\App\Models\User\User $sender	
+     * @param \App\Models\Character\Character|\App\Models\User\User $recipient	
+     * @param string                                                $type	
+     * @param array                                                 $data	
+     * @param \App\Models\Item\Item                                 $item	
      * @param int                                                   $quantity
-     *
-     * @return bool
-     */
-    public function creditItem($sender, $recipient, $type, $data, $item, $quantity)
-    {
-        DB::beginTransaction();
-
-        try {
-            $encoded_data = \json_encode($data);
-
-            if ($recipient->logType == 'User') {
-                $recipient_stack = UserItem::where([
-                    ['user_id', '=', $recipient->id],
-                    ['item_id', '=', $item->id],
-                    ['data', '=', $encoded_data],
-                ])->first();
-
-                if (!$recipient_stack) {
-                    $recipient_stack = UserItem::create(['user_id' => $recipient->id, 'item_id' => $item->id, 'data' => $encoded_data]);
-                }
-                $recipient_stack->count += $quantity;
-                $recipient_stack->save();
-            } else {
-                $recipient_stack = CharacterItem::where([
-                    ['character_id', '=', $recipient->id],
-                    ['item_id', '=', $item->id],
-                    ['data', '=', $encoded_data],
-                ])->first();
-
-                if (!$recipient_stack) {
-                    $recipient_stack = CharacterItem::create(['character_id' => $recipient->id, 'item_id' => $item->id, 'data' => $encoded_data]);
-                }
-                $recipient_stack->count += $quantity;
-                $recipient_stack->save();
-            }
-            if ($type && !$this->createLog($sender ? $sender->id : null, $sender ? $sender->logType : null, $recipient ? $recipient->id : null, $recipient ? $recipient->logType : null, null, $type, $data['data'], $item->id, $quantity)) {
-                throw new \Exception('Failed to create log.');
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
+     * @return bool	
+     */	
+    public function creditItem($sender, $recipient, $type, $data, $item, $quantity)	
+    {	
+        DB::beginTransaction();	
+        try {	
+            $encoded_data = \json_encode($data);	
+            if ($recipient->logType == 'User') {	
+                $recipient_stack = UserItem::where([	
+                    ['user_id', '=', $recipient->id],	
+                    ['item_id', '=', $item->id],	
+                    ['data', '=', $encoded_data],	
+                ])->first();	
+                if (!$recipient_stack) {	
+                    $recipient_stack = UserItem::create(['user_id' => $recipient->id, 'item_id' => $item->id, 'data' => $encoded_data]);	
+                }	
+                $recipient_stack->count += $quantity;	
+                $recipient_stack->save();	
+            } else {	
+                $recipient_stack = CharacterItem::where([	
+                    ['character_id', '=', $recipient->id],	
+                    ['item_id', '=', $item->id],	
+                    ['data', '=', $encoded_data],	
+                ])->first();	
+                if (!$recipient_stack) {	
+                    $recipient_stack = CharacterItem::create(['character_id' => $recipient->id, 'item_id' => $item->id, 'data' => $encoded_data]);	
+                }	
+                $recipient_stack->count += $quantity;	
+                $recipient_stack->save();	
+            }	
+            if ($type && !$this->createLog($sender ? $sender->id : null, $sender ? $sender->logType : null, $recipient ? $recipient->id : null, $recipient ? $recipient->logType : null, null, $type, $data['data'], $item->id, $quantity)) {	
+                throw new \Exception('Failed to create log.');	
+            }	
+            return $this->commitReturn(true);	
+        } catch (\Exception $e) {	
+            $this->setError('error', $e->getMessage());	
+        }	
+        return $this->rollbackReturn(false);	
     }
 
-    /**
-     * Moves items from one user or character stack to another.
-     *
-     * @param \App\Models\Character\Character|\App\Models\User\User $sender
-     * @param \App\Models\Character\Character|\App\Models\User\User $recipient
-     * @param string                                                $type
-     * @param array                                                 $data
-     * @param mixed                                                 $stack
-     * @param mixed                                                 $quantity
-     *
-     * @return bool
-     */
-    public function moveStack($sender, $recipient, $type, $data, $stack, $quantity)
-    {
-        DB::beginTransaction();
-
-        try {
-            $recipient_stack = UserItem::where([
-                ['user_id', '=', $recipient->id],
-                ['item_id', '=', $stack->item_id],
-                ['data', '=', json_encode($stack->data)],
-            ])->first();
-
-            if (!$recipient_stack) {
-                $recipient_stack = UserItem::create(['user_id' => $recipient->id, 'item_id' => $stack->item_id, 'data' => json_encode($stack->data)]);
-            }
-
-            $stack->count -= $quantity;
-            $recipient_stack->count += $quantity;
-            $stack->save();
-            $recipient_stack->save();
-
-            if ($type && !$this->createLog($sender ? $sender->id : null, $sender ? $sender->logType : null, $recipient->id, $recipient ? $recipient->logType : null, $stack->id, $type, $data['data'], $stack->item_id, $quantity)) {
-                throw new \Exception('Failed to create log.');
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
+/**	
+     * Moves items from one user or character stack to another.	
+     *	
+     * @param \App\Models\Character\Character|\App\Models\User\User $sender	
+     * @param \App\Models\Character\Character|\App\Models\User\User $recipient	
+     * @param string                                                $type	
+     * @param array                                                 $data	
+     * @param mixed                                                 $stack	
+     * @param mixed                                                 $quantity	
+     *	
+     * @return bool	
+     */	
+    public function moveStack($sender, $recipient, $type, $data, $stack, $quantity)	
+    {	
+        DB::beginTransaction();	
+        try {	
+            $recipient_stack = UserItem::where([	
+                ['user_id', '=', $recipient->id],	
+                ['item_id', '=', $stack->item_id],	
+                ['data', '=', json_encode($stack->data)],	
+            ])->first();	
+            if (!$recipient_stack) {	
+                $recipient_stack = UserItem::create(['user_id' => $recipient->id, 'item_id' => $stack->item_id, 'data' => json_encode($stack->data)]);	
+            }	
+            $stack->count -= $quantity;	
+            $recipient_stack->count += $quantity;	
+            $stack->save();	
+            $recipient_stack->save();	
+            if ($type && !$this->createLog($sender ? $sender->id : null, $sender ? $sender->logType : null, $recipient->id, $recipient ? $recipient->logType : null, $stack->id, $type, $data['data'], $stack->item_id, $quantity)) {	
+                throw new \Exception('Failed to create log.');	
+            }	
+            return $this->commitReturn(true);	
+        } catch (\Exception $e) {	
+            $this->setError('error', $e->getMessage());	
+        }	
+        return $this->rollbackReturn(false);	
     }
 
-    /**
-     * Debits an item from a user or character.
-     *
-     * @param \App\Models\Character\Character|\App\Models\User\User $owner
-     * @param string                                                $type
-     * @param array                                                 $data
-     * @param \App\Models\Item\UserItem                             $stack
-     * @param mixed                                                 $quantity
-     *
-     * @return bool
-     */
-    public function debitStack($owner, $type, $data, $stack, $quantity)
-    {
-        DB::beginTransaction();
-
-        try {
-            $stack->count -= $quantity;
-            $stack->save();
-
-            if ($type && !$this->createLog($owner ? $owner->id : null, $owner ? $owner->logType : null, null, null, $stack->id, $type, $data['data'], $stack->item->id, $quantity)) {
-                throw new \Exception('Failed to create log.');
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
+    /**	
+     * Debits an item from a user or character.	
+     *	
+     * @param \App\Models\Character\Character|\App\Models\User\User $owner	
+     * @param string                                                $type	
+     * @param array                                                 $data	
+     * @param \App\Models\Item\UserItem                             $stack	
+     * @param mixed                                                 $quantity	
+     *	
+     * @return bool	
+     */	
+    public function debitStack($owner, $type, $data, $stack, $quantity)	
+    {	
+        DB::beginTransaction();	
+        try {	
+            $stack->count -= $quantity;	
+            $stack->save();	
+            if ($type && !$this->createLog($owner ? $owner->id : null, $owner ? $owner->logType : null, null, null, $stack->id, $type, $data['data'], $stack->item->id, $quantity)) {	
+                throw new \Exception('Failed to create log.');	
+            }	
+            return $this->commitReturn(true);	
+        } catch (\Exception $e) {	
+            $this->setError('error', $e->getMessage());	
+        }	
+        return $this->rollbackReturn(false);	
     }
 
     /**
@@ -625,7 +644,7 @@ class InventoryManager extends Service
             }
 
             return $this->commitReturn(true);
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
@@ -635,20 +654,19 @@ class InventoryManager extends Service
     /**
      * Creates an inventory log.
      *
-     * @param int    $senderId
-     * @param string $senderType
-     * @param int    $recipientId
-     * @param string $recipientType
-     * @param int    $stackId
-     * @param string $type
-     * @param string $data
-     * @param int    $quantity
-     * @param mixed  $itemId
-     *
-     * @return int
+     * @param  int     $senderId
+     * @param  string  $senderType
+     * @param  int     $recipientId
+     * @param  string  $recipientType
+     * @param  int     $stackId
+     * @param  string  $type
+     * @param  string  $data
+     * @param  int     $quantity
+     * @return  int
      */
     public function createLog($senderId, $senderType, $recipientId, $recipientType, $stackId, $type, $data, $itemId, $quantity)
     {
+
         return DB::table('items_log')->insert(
             [
                 'sender_id'      => $senderId,

@@ -2,27 +2,39 @@
 
 namespace App\Http\Controllers\Characters;
 
-use App\Http\Controllers\Controller;
-use App\Models\Character\Character;
-use App\Models\Character\CharacterCurrency;
-use App\Models\Character\CharacterItem;
-use App\Models\Character\CharacterProfile;
-use App\Models\Character\CharacterTransfer;
-use App\Models\Currency\Currency;
-use App\Models\Gallery\GallerySubmission;
-use App\Models\Item\Item;
-use App\Models\Item\ItemCategory;
-use App\Models\User\User;
-use App\Models\User\UserCurrency;
-use App\Models\User\UserItem;
-use App\Services\CharacterManager;
-use App\Services\CurrencyManager;
-use App\Services\DesignUpdateManager;
-use App\Services\InventoryManager;
-use Auth;
-use Illuminate\Http\Request;
-use Route;
-use Settings;
+use App\Http\Controllers\Controller;	
+use App\Models\Character\Character;	
+use App\Models\Character\CharacterCurrency;	
+use App\Models\Character\CharacterItem;	
+use App\Models\Character\CharacterProfile;	
+use App\Models\Character\CharacterTransfer;	
+use App\Models\Currency\Currency;	
+use App\Models\Gallery\GallerySubmission;	
+use App\Models\Item\Item;	
+use App\Models\Item\ItemCategory;	
+use App\Models\User\User;	
+use App\Models\User\UserCurrency;	
+use App\Models\User\UserItem;	
+use App\Services\CharacterManager;	
+use App\Services\CurrencyManager;	
+use App\Services\DesignUpdateManager;	
+use App\Services\InventoryManager;	
+use Auth;	
+use Illuminate\Http\Request;	
+use Route;	
+use Settings;	
+use App\Models\Species\Species;
+use App\Models\Rarity;
+use App\Models\WorldExpansion\Location;
+use App\Models\WorldExpansion\Faction;
+use App\Models\Feature\Feature;
+use App\Models\Item\ItemLog;
+use App\Models\Award\Award;
+use App\Models\Award\AwardCategory;
+use App\Models\User\UserAward;
+use App\Models\Award\AwardLog;
+use App\Models\Character\CharacterAward;
+use App\Services\AwardCaseManager;
 
 class CharacterController extends Controller
 {
@@ -106,6 +118,12 @@ class CharacterController extends Controller
 
         return view('character.edit_profile', [
             'character' => $this->character,
+            'locations' => Location::all()->where('is_character_home')->pluck('style','id')->toArray(),
+            'factions' => Faction::all()->where('is_character_faction')->pluck('style','id')->toArray(),
+            'user_enabled' => Settings::get('WE_user_locations'),
+            'user_faction_enabled' => Settings::get('WE_user_factions'),
+            'char_enabled' => Settings::get('WE_character_locations'),
+            'char_faction_enabled' => Settings::get('WE_character_factions')
         ]);
     }
 
@@ -131,7 +149,7 @@ class CharacterController extends Controller
 
         $request->validate(CharacterProfile::$rules);
 
-        if ($service->updateCharacterProfile($request->only(['name', 'link', 'text', 'is_gift_art_allowed', 'is_gift_writing_allowed', 'is_trading', 'alert_user']), $this->character, Auth::user(), !$isOwner)) {
+        if($service->updateCharacterProfile($request->only(['name', 'link', 'text', 'is_gift_art_allowed', 'is_gift_writing_allowed', 'is_trading', 'alert_user', 'location', 'faction']), $this->character, Auth::user(), !$isOwner)) {
             flash('Profile edited successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
@@ -238,6 +256,43 @@ class CharacterController extends Controller
     }
 
     /**
+     * Shows a character's awards.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCharacterAwards($slug)
+    {
+        $categories = AwardCategory::orderBy('sort', 'DESC')->get();
+        $awardOptions = Award::where('is_character_owned', '1');
+
+        $awards = count($categories) ?
+            $this->character->awards()
+                ->where('count', '>', 0)
+                ->orderByRaw('FIELD(award_category_id,'.implode(',', $categories->pluck('id')->toArray()).')')
+                ->orderBy('name')
+                ->orderBy('updated_at')
+                ->get()
+                ->groupBy(['award_category_id', 'id']) :
+            $this->character->awards()
+                ->where('count', '>', 0)
+                ->orderBy('name')
+                ->orderBy('updated_at')
+                ->get()
+                ->groupBy(['award_category_id', 'id']);
+        return view('character.awards', [
+            'character' => $this->character,
+            'categories' => $categories->keyBy('id'),
+            'awards' => $awards,
+            'logs' => $this->character->getAwardLogs(),
+            ] + (Auth::check() && (Auth::user()->hasPower('edit_inventories') || Auth::user()->id == $this->character->user_id) ? [
+                'awardOptions' => $awardOptions->pluck('name', 'id'),
+                'page' => 'character'
+            ] : []));
+    }
+
+
+    /**
      * Transfers currency between the user and character.
      *
      * @param App\Services\CharacterManager $service
@@ -310,10 +365,84 @@ class CharacterController extends Controller
     }
 
     /**
+     * Handles inventory award processing, including transferring awards between the user and character.
+     *
+     * @param  \Illuminate\Http\Request       $request
+     * @param  App\Services\CharacterManager  $service
+     * @param  string                         $slug
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postAwardEdit(Request $request, AwardCaseManager $service, $slug)
+    {
+        // TODO: THIS
+        if(!Auth::check()) abort(404);
+        switch($request->get('action')) {
+            default:
+                flash('Invalid action selected.')->error();
+                break;
+            case 'give':
+                $sender = Auth::user();
+                $recipient = $this->character;
+
+                if($service->transferCharacterStack($sender, $recipient, UserAward::find($request->get('stack_id')), $request->get('stack_quantity'))) {
+                    flash('Award transferred successfully.')->success();
+                }
+                else {
+                    foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+                }
+
+                break;
+            case 'delete':
+                return $this->postDeleteAward($request, $service);
+                break;
+            case 'take':
+                return $this->postAwardTransfer($request, $service);
+                break;
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Transfers inventory awards back to a user.
+     *
+     * @param  \Illuminate\Http\Request       $request
+     * @param  App\Services\InventoryManager  $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function postAwardTransfer(Request $request, AwardCaseManager $service)
+    {
+        if($service->transferCharacterStack($this->character, $this->character->user, CharacterAward::find($request->get('ids')), $request->get('quantities'))) {
+            flash('Award transferred successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+
+    /**
+     * Deletes an award stack.
+     *
+     * @param  \Illuminate\Http\Request       $request
+     * @param  App\Services\CharacterManager  $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function postDeleteAward(Request $request, AwardCaseManager $service)
+    {
+        if($service->deleteStack($this->character, CharacterAward::find($request->get('ids')), $request->get('quantities'))) {
+            flash('Award deleted successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+
+    /**
      * Shows a character's currency logs.
      *
-     * @param string $slug
-     *
+     * @param  string  $slug
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getCharacterCurrencyLogs($slug)
@@ -336,6 +465,20 @@ class CharacterController extends Controller
         return view('character.item_logs', [
             'character' => $this->character,
             'logs'      => $this->character->getItemLogs(0),
+        ]);
+    }
+
+    /**
+     * Shows a character's awar logs.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCharacterAwardLogs($slug)
+    {
+        return view('character.award_logs', [
+            'character' => $this->character,
+            'logs' => $this->character->getAwardLogs(0)
         ]);
     }
 

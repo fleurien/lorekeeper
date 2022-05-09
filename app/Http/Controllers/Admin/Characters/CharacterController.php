@@ -8,11 +8,14 @@ use App\Models\Character\CharacterCategory;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Feature\Feature;
 use App\Models\Rarity;
+use App\Models\Character\CharacterTitle;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserItem;
+
+use App\Services\AwardCaseManager;
 use App\Services\CharacterManager;
 use App\Services\TradeManager;
 use Auth;
@@ -53,11 +56,12 @@ class CharacterController extends Controller
         return view('admin.masterlist.create_character', [
             'categories'  => CharacterCategory::orderBy('sort')->get(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'rarities'    => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'specieses'   => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes'    => ['0' => 'Pick a Species First'],
-            'features'    => Feature::getDropdownItems(),
-            'isMyo'       => false,
+            'rarities' => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'titles' => ['0' => 'Select Title', 'custom' => 'Custom Title'] + CharacterTitle::orderBy('sort', 'DESC')->pluck('title', 'id')->toArray(),
+            'specieses' => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'subtypes' => ['0' => 'Pick a Species First'],
+            'features' => Feature::orderBy('name')->pluck('name', 'id')->toArray(),
+            'isMyo' => false
         ]);
     }
 
@@ -108,10 +112,10 @@ class CharacterController extends Controller
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
             'sale_value', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
-            'designer_id', 'designer_url',
-            'artist_id', 'artist_url',
+            'designer_id', 'designer_url', 'designer_type',
+            'artist_id', 'artist_url', 'artist_type',
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
-            'image', 'thumbnail', 'image_description',
+            'image', 'thumbnail', 'image_description'
         ]);
         if ($character = $service->createCharacter($data, Auth::user())) {
             flash('Character created successfully.')->success();
@@ -141,8 +145,8 @@ class CharacterController extends Controller
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
             'sale_value', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
-            'designer_id', 'designer_url',
-            'artist_id', 'artist_url',
+            'designer_id', 'designer_url', 'designer_type',
+            'artist_id', 'artist_url', 'artist_type',
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'image', 'thumbnail',
         ]);

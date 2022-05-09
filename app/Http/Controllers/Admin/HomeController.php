@@ -11,6 +11,7 @@ use App\Models\Gallery\GallerySubmission;
 use App\Models\Report\Report;
 use App\Models\Submission\Submission;
 use App\Models\Trade;
+use App\Models\Affiliate;
 use Auth;
 use Config;
 use DB;
@@ -43,7 +44,8 @@ class HomeController extends Controller
             'galleryRequireApproval' => $galleryRequireApproval,
             'galleryCurrencyAwards'  => $galleryCurrencyAwards,
             'gallerySubmissionCount' => GallerySubmission::collaboratorApproved()->where('status', 'Pending')->count(),
-            'galleryAwardCount'      => GallerySubmission::requiresAward()->where('is_valued', 0)->count(),
+            'galleryAwardCount' => GallerySubmission::requiresAward()->where('is_valued', 0)->count(),
+            'affiliateCount' => Affiliate::where('status', 'Pending')->count(),
         ]);
     }
 

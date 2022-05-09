@@ -43,6 +43,9 @@
                             <a class="dropdown-item" href="{{ url('bank') }}">
                                 Bank
                             </a>
+                            <a class="dropdown-item" href="{{ url('awardcase') }}">
+                                Awards
+                            </a>
                         </div>
                     </li>
                     <li class="nav-item dropup">
@@ -106,6 +109,9 @@
                         <a class="dropdown-item" href="{{ url('world') }}">
                             Encyclopedia
                         </a>
+                        <a class="dropdown-item" href="{{ url('world/info') }}">
+                            World Expanded
+                        </a>
                         <a class="dropdown-item" href="{{ url('prompts/prompts') }}">
                             Prompts
                         </a>
@@ -133,8 +139,14 @@
                     @endif
                 @else
                     @if(Auth::user()->isStaff)
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin') }}"><i class="fas fa-crown"></i></a>
+                        <li class="nav-item d-flex">
+                            <a class="nav-link position-relative display-inline-block" href="{{ url('admin') }}"><i class="fas fa-crown"></i>
+                              @if (Auth::user()->hasAdminNotification(Auth::user()))
+                                <span class="position-absolute rounded-circle bg-danger text-light" style="top: -2px; right: -5px; padding: 1px 6px 1px 6px; font-weight:bold; font-size: 0.8em; box-shadow: 1px 1px 1px rgba(0,0,0,.25);">
+                                  {{ Auth::user()->hasAdminNotification(Auth::user()) }}
+                                </span>
+                              @endif
+                            </a>
                         </li>
                     @endif
                     @if(Auth::user()->notifications_unread)

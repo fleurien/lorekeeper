@@ -36,7 +36,7 @@ return [
     | site wherever the name needs to be displayed.
     |
     */
-    'site_name' => 'Lorekeeper',
+    'site_name' => 'Poffins',
 
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +48,7 @@ return [
     | It is not, however, displayed on the site itself. This should be kept short and snappy!
     |
     */
-    'site_desc' => 'A Lorekeeper ARPG',
+    'site_desc' => 'A PoffinsWorld ARPG',
 
     /*
     |--------------------------------------------------------------------------
@@ -205,14 +205,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Shop Purchase Limit
+    | Shops
     |--------------------------------------------------------------------------
     |
-    | This is an arbitrary upper limit on how many items a uses can buy in a
+    | Purchase limit:
+    |       This is an arbitrary upper limit on how many items a uses can buy in a
     | single shop transaction.
+    |
+    | Donation Shop:
+    |       Item donations: Controls restrictions (or lack thereof) on user item donations. 0: No restrictions. Any item can be donated. 1: Only items of certain categories may be donated (configure when creating/editing item categories). 2: Only items with the 'donatable' tag may be donated. 3: Items in certain categories or that have the 'donateable' tag may be donated. Default: 0.
+    |       Cooldown: Time (in minutes) that users must wait between "purchases". Default: 5.
+    |       Expiry: Time (in months) before items are automatically deleted from the donation shop. Set to 0 to disable expiry. Default: 0.
     |
     */
     'default_purchase_limit' => 99,
+
+    'donation_shop' => [
+        'item_donations' => 0,
+        'cooldown' => 5,
+        'expiry' => 0,
+    ],
 
     /*
     |--------------------------------------------------------------------------

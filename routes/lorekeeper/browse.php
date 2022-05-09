@@ -15,7 +15,9 @@
 **************************************************************************************************/
 
 Route::get('items/{id}', 'Users\InventoryController@getStack');
+Route::get('awards/{id}', 'Users\AwardCaseController@getStack');
 Route::get('items/character/{id}', 'Users\InventoryController@getCharacterStack');
+Route::get('awards/character/{id}', 'Users\AwardCaseController@getCharacterStack');
 
 /**************************************************************************************************
     News
@@ -56,9 +58,11 @@ Route::group(['prefix' => 'user', 'namespace' => 'Users'], function () {
     Route::get('{name}/myos', 'UserController@getUserMyoSlots');
     Route::get('{name}/inventory', 'UserController@getUserInventory');
     Route::get('{name}/bank', 'UserController@getUserBank');
+    Route::get('{name}/awardcase', 'UserController@getUserAwardCase');
 
     Route::get('{name}/currency-logs', 'UserController@getUserCurrencyLogs');
     Route::get('{name}/item-logs', 'UserController@getUserItemLogs');
+    Route::get('{name}/award-logs', 'UserController@getUserAwardLogs');
     Route::get('{name}/ownership', 'UserController@getUserOwnershipLogs');
     Route::get('{name}/submissions', 'UserController@getUserSubmissions');
 });
@@ -72,10 +76,12 @@ Route::get('/sublist/{key}', 'BrowseController@getSublist');
 Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function () {
     Route::get('{slug}', 'CharacterController@getCharacter');
     Route::get('{slug}/profile', 'CharacterController@getCharacterProfile');
+    Route::get('{slug}/awards', 'CharacterController@getCharacterAwards');
     Route::get('{slug}/bank', 'CharacterController@getCharacterBank');
     Route::get('{slug}/inventory', 'CharacterController@getCharacterInventory');
     Route::get('{slug}/images', 'CharacterController@getCharacterImages');
 
+    Route::get('{slug}/award-logs', 'CharacterController@getCharacterAwardLogs');
     Route::get('{slug}/currency-logs', 'CharacterController@getCharacterCurrencyLogs');
     Route::get('{slug}/item-logs', 'CharacterController@getCharacterItemLogs');
     Route::get('{slug}/ownership', 'CharacterController@getCharacterOwnershipLogs');
@@ -105,10 +111,14 @@ Route::group(['prefix' => 'world'], function () {
     Route::get('species/{id}/traits', 'WorldController@getSpeciesFeatures');
     Route::get('item-categories', 'WorldController@getItemCategories');
     Route::get('items', 'WorldController@getItems');
+    Route::get('award-categories', 'WorldController@getAwardCategories');
+    Route::get('awards', 'WorldController@getAwards');
+    Route::get('awards/{id}', 'WorldController@getAward');
     Route::get('items/{id}', 'WorldController@getItem');
     Route::get('trait-categories', 'WorldController@getFeatureCategories');
     Route::get('traits', 'WorldController@getFeatures');
     Route::get('character-categories', 'WorldController@getCharacterCategories');
+    Route::get('character-titles', 'WorldController@getCharacterTitles');
 });
 
 Route::group(['prefix' => 'prompts'], function () {
@@ -121,7 +131,11 @@ Route::group(['prefix' => 'shops'], function () {
     Route::get('/', 'ShopController@getIndex');
     Route::get('{id}', 'ShopController@getShop')->where(['id' => '[0-9]+']);
     Route::get('{id}/{stockId}', 'ShopController@getShopStock')->where(['id' => '[0-9]+', 'stockId' => '[0-9]+']);
+    Route::get('donation-shop', 'ShopController@getDonationShop');
+    Route::get('donation-shop/{id}', 'ShopController@getDonationShopStock')->where(['id' => '[0-9]+']);
 });
+
+Route::get('event-tracking', 'PromptsController@getEventTracking');
 
 /**************************************************************************************************
     Site Pages
@@ -168,3 +182,59 @@ Route::group(['prefix' => 'gallery'], function () {
 Route::group(['prefix' => 'reports', 'namespace' => 'Users'], function () {
     Route::get('/bug-reports', 'ReportController@getBugIndex');
 });
+
+/**************************************************************************************************
+    Affiliates
+**************************************************************************************************/
+Route::group(['prefix' => 'affiliates'], function() {
+    Route::get('/', 'AffiliateController@getIndex')->name('affiliates');
+    Route::get('apply', 'AffiliateController@getApply')->name('apply_affiliate');
+    Route::get('status/{slug}', 'AffiliateController@getStatus')->name('affiliate_status');
+    Route::post('apply', 'AffiliateController@postApply')->name('post_apply_affiliate');
+});
+/**************************************************************************************************
+    World Expansion
+**************************************************************************************************/
+
+Route::group(['prefix' => 'world', 'namespace' => 'WorldExpansion'], function() {
+
+    Route::get('info', 'LocationController@getWorld');
+    Route::get('locations', 'LocationController@getLocations');
+    Route::get('locations/{id}', 'LocationController@getLocation');
+    Route::get('locations/{id}/submissions', 'LocationController@getLocationSubmissions');
+    Route::get('location-types', 'LocationController@getLocationTypes');
+    Route::get('location-types/{id}', 'LocationController@getLocationType');
+
+    Route::get('faunas', 'NatureController@getFaunas');
+    Route::get('faunas/{id}', 'NatureController@getFauna');
+    Route::get('fauna-categories', 'NatureController@getFaunaCategories');
+    Route::get('fauna-categories/{id}', 'NatureController@getFaunaCategory');
+
+    Route::get('floras', 'NatureController@getFloras');
+    Route::get('floras/{id}', 'NatureController@getFlora');
+    Route::get('flora-categories', 'NatureController@getFloraCategories');
+    Route::get('flora-categories/{id}', 'NatureController@getFloraCategory');
+
+    Route::get('events', 'EventController@getEvents');
+    Route::get('events/{id}', 'EventController@getEvent');
+    Route::get('event-categories', 'EventController@getEventCategories');
+    Route::get('event-categories/{id}', 'EventController@getEventCategory');
+
+    Route::get('figures', 'FigureController@getFigures');
+    Route::get('figures/{id}', 'FigureController@getFigure');
+    Route::get('figure-categories', 'FigureController@getFigureCategories');
+    Route::get('figure-categories/{id}', 'FigureController@getFigureCategory');
+
+    Route::get('factions', 'FactionController@getFactions');
+    Route::get('factions/{id}', 'FactionController@getFaction');
+    Route::get('faction-types', 'FactionController@getFactionTypes');
+    Route::get('faction-types/{id}', 'FactionController@getFactionType');
+    Route::get('factions/{id}/members', 'FactionController@getFactionMembers');
+
+    Route::get('concepts', 'ConceptController@getConcepts');
+    Route::get('concepts/{id}', 'ConceptController@getConcept');
+    Route::get('concept-categories', 'ConceptController@getConceptCategories');
+    Route::get('concept-categories/{id}', 'ConceptController@getConceptCategory');
+});
+
+

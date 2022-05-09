@@ -284,11 +284,38 @@ return [
         'message' => 'The transfer for <a href="{character_url}">{character_name}</a> was approved by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Transfers</a>)',
         'url'     => 'characters/transfers/incoming',
     ],
+
     // BOOKMARK_GIFT_WRITING
     39 => [
         'message' => 'A character you have bookmarked (<a href="{character_url}">{character_name}</a>) has had its Gift Writing Allowed status changed. (<a href="{url}">View Bookmarks</a>)',
         'url'     => 'account/bookmarks',
     ],
+
+    // A user-submitted affiliate was accepted
+    // AFFILIATE_ACCEPTION
+    105 => [
+        'name' => 'Affiliate Request Accepted',
+        'message' => 'The affiliate request for {affiliate_name} has been accepted by {admin_name}. (<a href="{url}/{affiliate_slug}">View Status</a>)',
+        'url' => 'affiliates/status/'
+    ],
+
+    // A user-submitted affiliate was rejected
+    // AFFILIATE_REJECTION
+    106 => [
+        'name' => 'Affiliate Request Rejected',
+        'message' => 'The affiliate request for {affiliate_name} has been rejected by {admin_name}. (<a href="{url}/{affiliate_slug}">View Status</a>)',
+        'url' => 'affiliates/status/'
+    ],
+
+    // A user-submitted affiliate is now pending
+    // AFFILIATE_PENDING
+    107 => [
+        'name' => 'Affiliate Request Pending',
+        'message' => 'The affiliate request for {affiliate_name} is pending. (<a href="{url}/{affiliate_slug}">View Status</a>)',
+        'url' => 'affiliates/status/'
+    ],
+
+
     // REPORT_ASSIGNED
     220 => [
         'name'    => 'Report Assigned',
@@ -302,6 +329,7 @@ return [
         'message' => 'Your report (#{report_id}) was closed by <a href="{staff_url}">{staff_name}</a>. (<a href="{url}">View Report</a>)',
         'url'     => 'reports/view/{report_id}',
     ],
+
     // Comment made on user's model
     // COMMENT_MADE
     239 => [
@@ -309,12 +337,54 @@ return [
         'message' => '<a href="{sender_url}">{sender}</a> has made a comment on {post_type}. <a href="{comment_url}">See Context.</a>',
         'url'     => '',
     ],
+
     // Comment recieved reply
     // COMMENT_REPLY
     240 => [
         'name'    => 'Comment Reply',
         'message' => '<a href="{sender_url}">{sender}</a> has made a reply to your comment. <a href="comment/{comment_url}">See Reply.</a>',
         'url'     => '',
+    ],
+    // AWARD_GRANT
+    341 => [
+        'name' => 'Award Grant',
+        'message' => 'You have earned the following award(s): {award_name} (×{award_quantity}). Congratulations! (<a href="{url}">View Awards</a>)',
+        'url' => 'awardcase'
+    ],
+
+    // AWARD_REMOVAL
+    342 => [
+        'name' => 'Award Removal',
+        'message' => '{award_name} (×{award_quantity}) was removed from your Awards by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Awards</a>)',
+        'url' => 'awardcase'
+    ],
+
+    // AWARD_TRANSFER
+    343 => [
+        'name' => 'Award Transfer',
+        'message' => 'You have received {award_name} (×{award_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Awards</a>)',
+        'url' => 'awardcase'
+    ],
+
+    // FORCED_AWARD_TRANSFER
+    344 => [
+        'name' => 'Forced Award Transfer',
+        'message' => '{item_name} (×{item_quantity}) was removed from {character_name} by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Inventory</a>)',
+        'url' => 'character/{character_slug}/inventory'
+    ],
+
+    // CHARACTER_AWARD_GRANT
+    345 => [
+        'name' => 'Character Award Grant',
+        'message' => '{character_name} has received a staff grant of {award_name} (×{award_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Awards</a>)',
+        'url' => 'character/{character_slug}/awards'
+    ],
+
+    // CHARACTER_AWARD_REMOVAL
+    346 => [
+        'name' => 'Character Award Removal',
+        'message' => '{award_name} (×{award_quantity}) was removed from {character_name} by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Awards</a>)',
+        'url' => 'character/{character_slug}/awards'
     ],
 
     // CHARACTER_ITEM_GRANT

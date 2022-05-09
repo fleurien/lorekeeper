@@ -41,10 +41,28 @@
                         <div class="col-lg-8 col-md-6 col-8">{!! $image->subtype_id ? $image->subtype->displayName : 'None' !!}</div>
                     </div>
                 @endif
+                @if($image->character->homeSetting)
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-4"><h5>Home</h5></div>
+                        <div class="col-lg-8 col-md-6 col-8">{!! $image->character->location ? $image->character->location : 'None' !!}</div>
+                    </div>
+                @endif
+                @if($image->character->factionSetting)
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-4"><h5>Faction</h5></div>
+                        <div class="col-lg-8 col-md-6 col-8">{!! $image->character->faction ? $image->character->currentFaction : 'None' !!}{!! $character->factionRank ? ' ('.$character->factionRank->name.')' : null !!}</div>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-4"><h5>Rarity</h5></div>
                     <div class="col-lg-8 col-md-6 col-8">{!! $image->rarity_id ? $image->rarity->displayName : 'None' !!}</div>
                 </div>
+                @if($image->hasTitle)
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-4"><h5>Title</h5></div>
+                        <div class="col-lg-8 col-md-6 col-8">{!! $image->title_id ? $image->title->displayNamePartial.(isset($image->title_data) ? ' ('.nl2br(htmlentities($image->title_data['full'])).')' : null) : (nl2br(htmlentities($image->title_data['full']))) !!}</div>
+                    </div>
+                @endif
 
                 <div class="mb-3">
                     <div><h5>Traits</h5></div>
@@ -116,7 +134,7 @@
                     <div class="col-lg-4 col-md-6 col-4"><h5>Design</h5></div>
                     <div class="col-lg-8 col-md-6 col-8">
                         @foreach($image->designers as $designer)
-                            <div>{!! $designer->displayLink() !!}</div>
+                            <div>{!! $designer->displayLink() !!} {{ $designer->credit_type ? '(' . $designer->credit_type . ')' : null}}</div>
                         @endforeach
                     </div>
                 </div>
@@ -124,7 +142,7 @@
                     <div class="col-lg-4 col-md-6 col-4"><h5>Art</h5></div>
                     <div class="col-lg-8 col-md-6 col-8">
                         @foreach($image->artists as $artist)
-                            <div>{!! $artist->displayLink() !!}</div>
+                            <div>{!! $artist->displayLink() !!} {{ $artist->credit_type ? '(' . $artist->credit_type . ')' : null}}</div>
                         @endforeach
                     </div>
                 </div>

@@ -37,6 +37,11 @@ return [
         'description' => 'The bank graphic on the front page. PNG format, default size of 200px x 200px (no restriction).',
         'filename'    => 'currency.png',
     ],
+    'awards' => [
+        'name' => 'Awards Icon',
+        'description' => 'The awards graphic on the front page. PNG format, default size of 200px x 200px (no restriction).',
+        'filename' => 'awards.png'
+    ],
     'myo' => [
         'name'        => 'MYO Default Image',
         'description' => 'The default image used for MYO slots when no image is uploaded. PNG format, no size restriction.',
@@ -61,5 +66,20 @@ return [
         'name'        => 'Content Warning Thumbnail',
         'description' => 'Thumbnail used for gallery submissions with a set content warning. PNG format, size of masterlist thumbnails.',
         'filename'    => 'content_warning.png',
+    ],
+    'affiliate' => [
+        'name' => 'Default Affiliate Image',
+        'description' => 'If an affiliate doesn\'t have an affiliate image for whatever reason, use this!',
+        'filename' => 'affiliate.png'
+    ],
+    'our_affiliate' => [
+        'name' => 'Site Affiliate Image',
+        'description' => 'This is your site\'s affiliate icon!',
+        'filename' => 'our_affiliate.png'
+    ],
+    'donation_shop' => [
+        'name' => 'Donation Shop Image',
+        'description' => 'Image used for the donation shop. PNG format, should be the same size as other shop images.',
+        'filename' => 'donation_shop.png'
     ],
 ];

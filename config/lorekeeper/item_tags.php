@@ -24,4 +24,10 @@ return [
         'text_color'       => '#ffffff',
         'background_color' => '#1fd1a7',
     ],
+
+    'donateable' => [
+        'name' => 'Donateable',
+        'text_color' => '#ffffff',
+        'background_color' => '#56639E'
+    ],
 ];

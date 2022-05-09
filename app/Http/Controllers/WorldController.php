@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Character\CharacterCategory;
+use Illuminate\Http\Request;
+use Config;
+use Auth;
+
 use App\Models\Currency\Currency;
 use App\Models\Feature\Feature;
 use App\Models\Feature\FeatureCategory;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
-use App\Models\Prompt\Prompt;
+use App\Models\Award\AwardCategory;
+use App\Models\Award\Award;
+use App\Models\Character\CharacterCategory;
+use App\Models\Character\CharacterTitle;
 use App\Models\Prompt\PromptCategory;
 use App\Models\Rarity;
 use App\Models\Shop\Shop;
@@ -16,8 +22,7 @@ use App\Models\Shop\ShopStock;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\User\User;
-use Config;
-use Illuminate\Http\Request;
+use App\Models\User\UserAward;
 
 class WorldController extends Controller
 {
@@ -129,6 +134,22 @@ class WorldController extends Controller
         }
 
         return view('world.item_categories', [
+            'categories' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+        ]);
+    }
+
+        /**
+     * Shows the award categories page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getAwardCategories(Request $request)
+    {
+        $query = AwardCategory::query();
+        $name = $request->get('name');
+        if($name) $query->where('name', 'LIKE', '%'.$name.'%');
+        return view('world.award_categories', [
             'categories' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
         ]);
     }
@@ -328,6 +349,96 @@ class WorldController extends Controller
         ]);
     }
 
+     /**
+     * Shows the awards page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getAwards(Request $request)
+    {
+        $query = Award::with('category');
+        $data = $request->only(['award_category_id', 'name', 'sort', 'ownership']);
+        if(isset($data['award_category_id']) && $data['award_category_id'] != 'none')
+            $query->where('award_category_id', $data['award_category_id']);
+        if(isset($data['name']))
+            $query->where('name', 'LIKE', '%'.$data['name'].'%');
+
+        if(isset($data['ownership']))
+        {
+            switch($data['ownership']) {
+                case 'all':
+                    $query->where('is_character_owned',1)->where('is_user_owned',1);
+                    break;
+                case 'character':
+                    $query->where('is_character_owned',1)->where('is_user_owned',0);
+                    break;
+                case 'user':
+                    $query->where('is_character_owned',0)->where('is_user_owned',1);
+                    break;
+            }
+        }
+
+        if(isset($data['sort']))
+        {
+            switch($data['sort']) {
+                case 'alpha':
+                    $query->sortAlphabetical();
+                    break;
+                case 'alpha-reverse':
+                    $query->sortAlphabetical(true);
+                    break;
+                case 'category':
+                    $query->sortCategory();
+                    break;
+                case 'newest':
+                    $query->sortNewest();
+                    break;
+                case 'oldest':
+                    $query->sortOldest();
+                    break;
+            }
+        }
+        else $query->sortAlphabetical();
+
+        if(!Auth::check() || !Auth::user()->isStaff) $query->released();
+
+        return view('world.awards', [
+            'awards' => $query->paginate(20)->appends($request->query()),
+            'categories' => ['none' => 'Any Category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'shops' => Shop::orderBy('sort', 'DESC')->get()
+        ]);
+    }
+
+
+    /**
+     * Shows an individual award's page.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getAward($id)
+    {
+        $categories = AwardCategory::orderBy('sort', 'DESC')->get();
+        $award = Award::where('id', $id);
+        $released = $award->released()->count();
+        if((!Auth::check() || !Auth::user()->isStaff)) $award = $award->released();
+        $award = $award->first();
+        if(!$award) abort(404);
+
+        if(!$released) flash('This award is not yet released.')->error();
+
+
+        return view('world.award_page', [
+            'award' => $award,
+            'imageUrl' => $award->imageUrl,
+            'name' => $award->displayName,
+            'description' => $award->parsed_description,
+            'categories' => $categories->keyBy('id'),
+            'shops' => Shop::orderBy('sort', 'DESC')->get()
+        ]);
+    }
+
     /**
      * Shows the character categories page.
      *
@@ -343,6 +454,27 @@ class WorldController extends Controller
 
         return view('world.character_categories', [
             'categories' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+        ]);
+    }
+
+    /**
+     * Shows the character titles page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCharacterTitles(Request $request)
+    {
+        $query = CharacterTitle::query();
+        $title = $request->get('title');
+        $rarity = $request->get('rarity_id');
+        if($title) $query->where('title', 'LIKE', '%'.$title.'%');
+        if(isset($rarity) && $rarity != 'none')
+            $query->where('rarity_id', $rarity);
+
+        return view('world.character_titles', [
+            'titles' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+            'rarities' => ['none' => 'Any Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
