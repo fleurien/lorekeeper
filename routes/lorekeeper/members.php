@@ -193,8 +193,24 @@ Route::group(['prefix' => 'designs', 'namespace' => 'Characters'], function() {
 
 Route::group(['prefix' => 'shops'], function() {
     Route::post('buy', 'ShopController@postBuy');
+    Route::post('collect', 'ShopController@postCollect');
     Route::get('history', 'ShopController@getPurchaseHistory');
 });
+
+
+
+/**************************************************************************************************
+    Research
+**************************************************************************************************/
+
+Route::group(['prefix' => 'research', 'namespace' => 'Research'], function() {
+    Route::get('/purchase/{id}', 'ResearchController@getPurchaseResearch');
+    Route::post('/purchase/{id}', 'ResearchController@postPurchaseResearch');
+    Route::post('/claim-rewards/{id}', 'ResearchController@postClaimRewards');
+    Route::get('/history', 'ResearchController@getResearchHistory');
+    Route::get('/unlocked', 'TreeController@getUserTree');
+});
+
 
 /**************************************************************************************************
     Comments

@@ -32,4 +32,23 @@ return [
     ],
 
 
+    'donation_shop' => [
+        'key' => 'donation_shop',
+        'wiki_key' => 'Donation_Shop',
+        'creators' => json_encode([
+            'Mercury' => 'https://github.com/itinerare/',
+        ]),
+        'version' => '1.2.2',
+    ],
+
+    'research_trees' => [
+        'key' => 'research_trees',
+        'wiki_key' => 'Research Trees',
+        'creators' => json_encode([
+            'Uri' => 'https://github.com/preimpression/',
+        ]),
+        'version' => '1.1.0'
+    ],
+
+
 ];

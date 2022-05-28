@@ -290,7 +290,12 @@ return [
         'message' => 'A character you have bookmarked (<a href="{character_url}">{character_name}</a>) has had its Gift Writing Allowed status changed. (<a href="{url}">View Bookmarks</a>)',
         'url' => 'account/bookmarks'
     ],
-
+    // RESEARCH_GRANT
+    100 => [
+        'name' => 'Research Granted',
+        'message' => 'You have received a staff grant of <a href="{research_url}">{research_name}</a> (of <a href="{tree_url}">{tree_name}</a>) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">Unlocked Research</a>)',
+        'url' => 'research/unlocked'
+    ],
     // REPORT_ASSIGNED
     220 => [
         'name' => 'Report Assigned',
