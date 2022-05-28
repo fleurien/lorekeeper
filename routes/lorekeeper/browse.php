@@ -66,6 +66,9 @@ Route::group(['prefix' => 'user', 'namespace' => 'Users'], function() {
     Route::get('{name}/ownership', 'UserController@getUserOwnershipLogs');
     Route::get('{name}/submissions', 'UserController@getUserSubmissions');
 });
+Route::group(['prefix' => 'user', 'namespace' => 'Research'], function() {
+    Route::get('{name}/unlocked-research', 'TreeController@getUserTree');
+});
 
 /**************************************************************************************************
     Characters
@@ -133,6 +136,16 @@ Route::group(['prefix' => 'shops'], function() {
     Route::get('{id}/{stockId}', 'ShopController@getShopStock')->where(['id' => '[0-9]+', 'stockId' => '[0-9]+']);
     Route::get('donation-shop', 'ShopController@getDonationShop');
     Route::get('donation-shop/{id}', 'ShopController@getDonationShopStock')->where(['id' => '[0-9]+']);
+});
+
+
+Route::group(['prefix' => 'research-trees', 'namespace' => 'Research'], function() {
+    Route::get('/', 'TreeController@getIndex');
+    Route::get('/{id}', 'TreeController@getTree')->where(['id' => '[0-9]+']);
+});
+Route::group(['prefix' => 'research', 'namespace' => 'Research'], function() {
+    Route::get('/', 'ResearchController@getIndex');
+    Route::get('/{id}', 'ResearchController@getResearch')->where(['id' => '[0-9]+']);
 });
 
 /**************************************************************************************************

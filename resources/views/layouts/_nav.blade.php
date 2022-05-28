@@ -46,6 +46,9 @@
                             <a class="dropdown-item" href="{{ url('awardcase') }}">
                                 Awards
                             </a>
+                            <a class="dropdown-item" href="{{ url('research/unlocked') }}">
+                                My Research
+                            </a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -114,6 +117,9 @@
                         </a>
                         <a class="dropdown-item" href="{{ url('shops') }}">
                             Shops
+                        </a>
+                        <a class="dropdown-item" href="{{ url('research-trees') }}">
+                            Research
                         </a>
                     </div>
                 </li>
