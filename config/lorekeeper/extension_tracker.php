@@ -1,6 +1,6 @@
 <?php
 return [
-    
+
     // FORMAT EXAMPLE.
     //
     // 'extension_tracker' => [
@@ -11,6 +11,25 @@ return [
     //     ]),
     //     'version' => '1.0.0',
     // ],
-    
+
+    'awards' => [
+        'key' => 'awards',
+        'wiki_key' => 'Awards',
+        'creators' => json_encode([
+            'Uri' => 'https://github.com/preimpression/',
+            'TGI' => 'https://github.com/tjgallaha/',
+        ]),
+        'version' => '1.3.0',
+    ],
+
+    'advent_calendars' => [
+        'key' => 'advent_calendars',
+        'wiki_key' => 'Advent_Calendars',
+        'creators' => json_encode([
+            'Mercury' => 'https://github.com/itinerare/',
+        ]),
+        'version' => '1.0.1',
+    ],
+
 
 ];
