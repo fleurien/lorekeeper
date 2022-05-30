@@ -13,11 +13,11 @@
 
 <div id="sortable" class="row sortable">
     @foreach($characters as $character)
-        <div class="col-md-3 col-6 text-center mb-2" data-id="{{ $character->id }}">
-            <div>
+        <div class="card m-2 highlight" data-id="{{ $character->id }}">
+            <div class="card-img-top">
                 <a href="{{ $character->url }}"><img src="{{ $character->image->thumbnailUrl }}" class="img-thumbnail" alt="Thumbnail for {{ $character->fullName }}" /></a>
             </div>
-            <div class="mt-1 h5">
+            <div class="card-title">
                 {!! $character->displayName !!}
             </div>
         </div>

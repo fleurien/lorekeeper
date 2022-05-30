@@ -41,7 +41,7 @@ class ChangeFeature extends Command
      */
     public function handle()
     {
-        $characterCount = Character::count();
+        $characterCount = Character::myo(0) -> count();
         $setting = Settings::get('featured_character');
         //
         if($characterCount && $setting) {

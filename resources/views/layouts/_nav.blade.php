@@ -56,16 +56,16 @@
                             Social
                         </a>
                         <div class="dropdown-menu" aria-labelledby="queueDropdown">
-                            <a href=" " class="dropdown-item">
+                            <a href="https://discord.gg/6Afn8mdRrr" class="dropdown-item">
                                 Discord
                             </a>
-                            <a href=" " class="dropdown-item">
+                            <a href="https://toyhou.se/~world/94837.world-of-poffins" class="dropdown-item">
                                 Toyhouse
                             </a>
-                            <a href=" " class="dropdown-item">
+                            <a href="https://twitter.com/poffinsworld" class="dropdown-item">
                                 Twitter
                             </a>
-                            <a href=" " class="dropdown-item">
+                            <a href="https://www.deviantart.com/poffinsworld" class="dropdown-item">
                                 Deviantart
                             </a>
                         </div>
