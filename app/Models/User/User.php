@@ -2,36 +2,38 @@
 
 namespace App\Models\User;
 
+use Auth;
 use Cache;
+use Carbon\Carbon;
+use Config;
 use Settings;
+
+use App\Models\Award\AwardLog;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterBookmark;
+use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterImageCreator;
+use App\Models\Character\CharacterTransfer;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\GalleryCollaborator;
+use App\Models\Gallery\GalleryFavorite;
+use App\Models\Gallery\GallerySubmission;
 use App\Models\Item\ItemLog;
 use App\Models\Rank\RankPower;
 use App\Models\Shop\ShopLog;
-use App\Models\Award\AwardLog;
-use App\Models\User\UserCharacterLog;
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
-use App\Models\Gallery\GallerySubmission;
-use App\Models\Gallery\GalleryFavorite;
+use App\Models\Trade;
+use App\Models\User\UserCharacterLog;
 use App\Models\WorldExpansion\FactionRank;
 use App\Models\WorldExpansion\FactionRankMember;
+
 use App\Traits\Commenter;
-use Auth;
-use Carbon\Carbon;
-use Config;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
-use App\Models\Character\CharacterDesignUpdate;
-use App\Models\Character\CharacterTransfer;
-use App\Models\Trade;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
