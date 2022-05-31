@@ -57,10 +57,12 @@ a.h1:hover, a.h2:hover, a.h3:hover, a.h4:hover, a.h5:hover {
 
 a {
     color: var(--button-text);
+    text-decoration: underline;
     transition:0.4s;
 }
 a:hover {
-    text-decoration: none;
+    text-decoration: underline;
+    color:var(--secondarydark);
     transition:0.4s;
 }
 
@@ -199,6 +201,7 @@ li.nav-item:hover,
     color:var(--button-text);
     padding:1px;
     margin:0 2px;
+    text-decoration: none;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
@@ -235,6 +238,10 @@ li.nav-item:hover,
 
 .dropdown-divider{
     border-top:1px solid var(--stroke);
+}
+
+a.dropdown-item{
+    text-decoration: none;
 }
 
 /* Sidebar */
