@@ -46,8 +46,8 @@
                             <a class="dropdown-item" href="{{ url('bank') }}">
                                 My Bank
                             </a>
-                            <a class="dropdown-item" href="https://poffinsworld.com/info/links">
-                                Helpful Links
+                            <a class="dropdown-item" href="https://poffinsworld.com/info/getstarted">
+                                Get started
                             </a>
                         </div>
                     </li>

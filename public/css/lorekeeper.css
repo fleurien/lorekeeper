@@ -57,10 +57,12 @@ a.h1:hover, a.h2:hover, a.h3:hover, a.h4:hover, a.h5:hover {
 
 a {
     color: var(--button-text);
+    text-decoration: underline;
     transition:0.4s;
 }
 a:hover {
-    text-decoration: none;
+    text-decoration: underline;
+    color:var(--secondarydark);
     transition:0.4s;
 }
 
