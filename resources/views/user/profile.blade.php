@@ -140,8 +140,7 @@
 @endforeach
 
 <div class="text-right"><a href="{{ $user->url.'/characters' }}">View all...</a></div>
-<hr>
-<br><br>
+<hr class="mb-5" />
 
 @comments(['model' => $user->profile,
         'perPage' => 5

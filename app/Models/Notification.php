@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Config;
-use App\Models\Model;
 
 class Notification extends Model
 {
@@ -13,7 +12,7 @@ class Notification extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'notification_type_id', 'is_unread', 'data'
+        'user_id', 'notification_type_id', 'is_unread', 'data',
     ];
 
     /**
@@ -29,7 +28,6 @@ class Notification extends Model
      * @var string
      */
     public $timestamps = true;
-
 
     /**********************************************************************************************
 
@@ -77,8 +75,8 @@ class Notification extends Model
 
         // Replace any variables in data...
         $data = $this->data;
-        if($data && count($data)) {
-            foreach($data as $key => $value) {
+        if ($data && count($data)) {
+            foreach ($data as $key => $value) {
                 $message = str_replace('{'.$key.'}', $value, $message);
             }
         }
@@ -89,13 +87,14 @@ class Notification extends Model
     /**
      * Get the notification ID from type.
      *
+     * @param mixed $type
+     *
      * @return array
      */
     public static function getNotificationId($type)
     {
-        return constant('self::'. $type);
+        return constant('self::'.$type);
     }
-
     /**********************************************************************************************
 
         CONSTANTS
@@ -164,6 +163,6 @@ class Notification extends Model
     const GALLERY_SUBMISSION_CHARACTER      = 511;
     const GALLERY_SUBMISSION_FAVORITE       = 512;
     const GALLERY_SUBMISSION_STAFF_COMMENTS = 513;
-    const GALLERY_SUBMISSION_EDITED         = 514;
-    const GALLERY_SUBMISSION_PARTICIPANT    = 515;
+    const GALLERY_SUBMISSION_EDITED = 514;
+    const GALLERY_SUBMISSION_PARTICIPANT = 515;
 }
