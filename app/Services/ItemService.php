@@ -114,35 +114,6 @@ class ItemService extends Service
     }
 
     /**
-     * Handle category data.
-     *
-     * @param  array                               $data
-     * @param  \App\Models\Item\ItemCategory|null  $category
-     * @return array
-     */
-    private function populateCategoryData($data, $category = null)
-    {
-        if(isset($data['description']) && $data['description']) $data['parsed_description'] = parse($data['description']);
-
-        isset($data['is_character_owned']) && $data['is_character_owned'] ? $data['is_character_owned'] : $data['is_character_owned'] = 0;
-        isset($data['character_limit']) && $data['character_limit'] ? $data['character_limit'] : $data['character_limit'] = 0;
-        isset($data['can_donate']) && $data['is_character_owned'] ? $data['can_donate'] : $data['can_donate'] = 0;
-        isset($data['can_name']) && $data['can_name'] ? $data['can_name'] : $data['can_name'] = 0;
-
-        if(isset($data['remove_image']))
-        {
-            if($category && $category->has_image && $data['remove_image'])
-            {
-                $data['has_image'] = 0;
-                $this->deleteImage($category->categoryImagePath, $category->categoryImageFileName);
-            }
-            unset($data['remove_image']);
-        }
-
-        return $data;
-    }
-
-    /**
      * Delete a category.
      *
      * @param \App\Models\Item\ItemCategory $category
@@ -346,12 +317,24 @@ class ItemService extends Service
 
         try {
             // Check first if the item is currently owned or if some other site feature uses it
-            if(DB::table('user_items')->where([['item_id', '=', $item->id], ['count', '>', 0]])->exists()) throw new \Exception("At least one user currently owns this item. Please remove the item(s) before deleting it.");
-            if(DB::table('character_items')->where([['item_id', '=', $item->id], ['count', '>', 0]])->exists()) throw new \Exception("At least one character currently owns this item. Please remove the item(s) before deleting it.");
-            if(DB::table('loots')->where('rewardable_type', 'Item')->where('rewardable_id', $item->id)->exists()) throw new \Exception("A loot table currently distributes this item as a potential reward. Please remove the item before deleting it.");
-            if(DB::table('prompt_rewards')->where('rewardable_type', 'Item')->where('rewardable_id', $item->id)->exists()) throw new \Exception("A prompt currently distributes this item as a reward. Please remove the item before deleting it.");
-            if(DB::table('research_rewards')->where('rewardable_type', 'Item')->where('rewardable_id', $item->id)->exists()) throw new \Exception("A research branch currently distributes this item as a reward. Please remove the item before deleting it.");
-            if(DB::table('shop_stock')->where('item_id', $item->id)->exists()) throw new \Exception("A shop currently stocks this item. Please remove the item before deleting it.");
+            if (DB::table('user_items')->where([['item_id', '=', $item->id], ['count', '>', 0]])->exists()) {
+                throw new \Exception('At least one user currently owns this item. Please remove the item(s) before deleting it.');
+            }
+            if (DB::table('character_items')->where([['item_id', '=', $item->id], ['count', '>', 0]])->exists()) {
+                throw new \Exception('At least one character currently owns this item. Please remove the item(s) before deleting it.');
+            }
+            if (DB::table('loots')->where('rewardable_type', 'Item')->where('rewardable_id', $item->id)->exists()) {
+                throw new \Exception('A loot table currently distributes this item as a potential reward. Please remove the item before deleting it.');
+            }
+            if (DB::table('prompt_rewards')->where('rewardable_type', 'Item')->where('rewardable_id', $item->id)->exists()) {
+                throw new \Exception('A prompt currently distributes this item as a reward. Please remove the item before deleting it.');
+            }
+            if (DB::table('research_rewards')->where('rewardable_type', 'Item')->where('rewardable_id', $item->id)->exists()) {
+                throw new \Exception('A research branch currently distributes this item as a reward. Please remove the item before deleting it.');
+            }
+            if (DB::table('shop_stock')->where('item_id', $item->id)->exists()) {
+                throw new \Exception('A shop currently stocks this item. Please remove the item before deleting it.');
+            }
 
             if (!$this->logAdminAction($user, 'Deleted Item', 'Deleted '.$item->name)) {
                 throw new \Exception('Failed to log admin action.');
@@ -516,6 +499,36 @@ class ItemService extends Service
         }
 
         return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Handle category data.
+     *
+     * @param array                              $data
+     * @param \App\Models\Item\ItemCategory|null $category
+     *
+     * @return array
+     */
+    private function populateCategoryData($data, $category = null)
+    {
+        if (isset($data['description']) && $data['description']) {
+            $data['parsed_description'] = parse($data['description']);
+        }
+
+        isset($data['is_character_owned']) && $data['is_character_owned'] ? $data['is_character_owned'] : $data['is_character_owned'] = 0;
+        isset($data['character_limit']) && $data['character_limit'] ? $data['character_limit'] : $data['character_limit'] = 0;
+        isset($data['can_donate']) && $data['is_character_owned'] ? $data['can_donate'] : $data['can_donate'] = 0;
+        isset($data['can_name']) && $data['can_name'] ? $data['can_name'] : $data['can_name'] = 0;
+
+        if (isset($data['remove_image'])) {
+            if ($category && $category->has_image && $data['remove_image']) {
+                $data['has_image'] = 0;
+                $this->deleteImage($category->categoryImagePath, $category->categoryImageFileName);
+            }
+            unset($data['remove_image']);
+        }
+
+        return $data;
     }
 
     /**

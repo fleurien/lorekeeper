@@ -48,8 +48,8 @@ return [
         'description' => 'Allow rank to view the submissions queue, edit rewards attached to a submission and approve/reject them.',
     ],
     'manage_research' => [
-        'name' => 'Manage Research',
-        'description' => 'Allow rank to create, edit, and delete Research and Research Trees.'
+        'name'        => 'Manage Research',
+        'description' => 'Allow rank to create, edit, and delete Research and Research Trees.',
     ],
     'manage_reports' => [
         'name'        => 'Manage Reports',
@@ -59,6 +59,5 @@ return [
         'name'        => 'Has Maintenance Access',
         'description' => 'Allow rank to browse the site normally during maintenance mode.',
     ],
-
 
 ];

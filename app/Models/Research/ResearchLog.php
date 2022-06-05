@@ -2,12 +2,8 @@
 
 namespace App\Models\Research;
 
-use Config;
-use DB;
 use App\Models\Model;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class ResearchLog extends Model
 {
@@ -20,7 +16,7 @@ class ResearchLog extends Model
     protected $fillable = [
         'tree_id', 'research_id', 'data',
         'sender_id', 'recipient_id',
-        'currency_id', 'cost'
+        'currency_id', 'cost',
     ];
 
     /**
@@ -38,7 +34,7 @@ class ResearchLog extends Model
     public $timestamps = true;
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -46,7 +42,7 @@ class ResearchLog extends Model
     /**
      * Get the user who initiated the logged action.
      */
-    public function sender() 
+    public function sender()
     {
         return $this->belongsTo('App\Models\User\User', 'sender_id');
     }
@@ -54,7 +50,7 @@ class ResearchLog extends Model
     /**
      * Get the user who received the logged action.
      */
-    public function recipient() 
+    public function recipient()
     {
         return $this->belongsTo('App\Models\User\User', 'recipient_id');
     }
@@ -62,7 +58,7 @@ class ResearchLog extends Model
     /**
      * Get the currency that is the target of the action.
      */
-    public function currency() 
+    public function currency()
     {
         return $this->belongsTo('App\Models\Currency\Currency', 'currency_id');
     }
@@ -70,7 +66,7 @@ class ResearchLog extends Model
     /**
      * Get the currency that is the target of the action.
      */
-    public function tree() 
+    public function tree()
     {
         return $this->belongsTo('App\Models\Research\Tree', 'tree_id');
     }
@@ -78,9 +74,8 @@ class ResearchLog extends Model
     /**
      * Get the currency that is the target of the action.
      */
-    public function research() 
+    public function research()
     {
         return $this->belongsTo('App\Models\Research\Research', 'research_id');
     }
-
 }

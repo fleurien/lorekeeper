@@ -156,7 +156,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::get('items/tag/{id}', 'ItemController@getAddItemTag');
     Route::post('items/tag/{id}', 'ItemController@postAddItemTag');
 
-    # AWARDS
+    // AWARDS
     Route::get('award-categories', 'AwardController@getIndex');
     Route::get('award-categories/create', 'AwardController@getCreateAwardCategory');
     Route::get('award-categories/edit/{id}', 'AwardController@getEditAwardCategory');
@@ -174,7 +174,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('awards/edit/{id?}', 'AwardController@postCreateEditAward');
     Route::post('awards/delete/{id}', 'AwardController@postDeleteAward');
 
-    # SHOPS
+    // SHOPS
     Route::get('shops', 'ShopController@getIndex');
     Route::get('shops/create', 'ShopController@getCreateShop');
     Route::get('shops/edit/{id}', 'ShopController@getEditShop');
@@ -260,10 +260,10 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('advent-calendars/delete/{id}', 'AdventController@postDeleteAdvent');
 });
 
-# DATA
-Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:manage_research'], function() {
+// DATA
+Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:manage_research'], function () {
 
-    # RESEARCH TREES
+    // RESEARCH TREES
     Route::get('trees', 'TreeController@getIndex');
     Route::get('trees/create', 'TreeController@getCreateTree');
     Route::get('trees/edit/{id}', 'TreeController@getEditTree');
@@ -284,18 +284,15 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('research/sort', 'ResearchController@postSortResearch');
 
     Route::get('research/users', 'ResearchController@getUserResearchIndex');
-
 });
-# GRANTS
-Route::group(['prefix' => 'grants', 'namespace' => 'Users', 'middleware' => 'power:manage_research'], function() {
+// GRANTS
+Route::group(['prefix' => 'grants', 'namespace' => 'Users', 'middleware' => 'power:manage_research'], function () {
     Route::get('research', 'GrantController@getResearch');
     Route::post('research', 'GrantController@postResearch');
 });
 
-
-# PAGES
-Route::group(['prefix' => 'pages', 'middleware' => 'power:edit_pages'], function() {
-
+// PAGES
+Route::group(['prefix' => 'pages', 'middleware' => 'power:edit_pages'], function () {
     Route::get('/', 'PageController@getIndex');
     Route::get('create', 'PageController@getCreatePage');
     Route::get('edit/{id}', 'PageController@getEditPage');

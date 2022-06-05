@@ -2,13 +2,12 @@
 
 namespace App\Models\Character;
 
+use App\Models\Award\Award;
+use App\Models\Award\AwardLog;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Item\Item;
 use App\Models\Item\ItemLog;
-use App\Models\Award\Award;
-use App\Models\Award\AwardLog;
-
 use App\Models\Model;
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
@@ -199,6 +198,7 @@ class Character extends Model
     {
         return $this->belongsToMany('App\Models\Item\Item', 'character_items')->withPivot('count', 'data', 'updated_at', 'id')->whereNull('character_items.deleted_at');
     }
+
     /**
      * Get the character's awards.
      */
@@ -501,21 +501,25 @@ class Character extends Model
     /**
      * Get the character's award logs.
      *
-     * @param  int  $limit
-     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     * @param int $limit
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
      */
     public function getAwardLogs($limit = 10)
     {
         $character = $this;
 
-        $query = AwardLog::with('award')->where(function($query) use ($character) {
+        $query = AwardLog::with('award')->where(function ($query) use ($character) {
             $query->with('sender.rank')->where('sender_type', 'Character')->where('sender_id', $character->id)->where('log_type', '!=', 'Staff Grant');
-        })->orWhere(function($query) use ($character) {
+        })->orWhere(function ($query) use ($character) {
             $query->with('recipient.rank')->where('recipient_type', 'Character')->where('recipient_id', $character->id)->where('log_type', '!=', 'Staff Removal');
         })->orderBy('id', 'DESC');
 
-        if($limit) return $query->take($limit)->get();
-        else return $query->paginate(30);
+        if ($limit) {
+            return $query->take($limit)->get();
+        } else {
+            return $query->paginate(30);
+        }
     }
 
     /**

@@ -104,9 +104,9 @@ return [
             ],
             [
                 'name' => 'Award Grants',
-                'url' => 'admin/grants/awards'
+                'url'  => 'admin/grants/awards',
             ],
-        ]
+        ],
     ],
     'Masterlist' => [
         'power' => 'manage_characters',
@@ -147,11 +147,11 @@ return [
             ],
             [
                 'name' => 'Award Categories',
-                'url' => 'admin/data/award-categories'
+                'url'  => 'admin/data/award-categories',
             ],
             [
                 'name' => 'Awards',
-                'url' => 'admin/data/awards'
+                'url'  => 'admin/data/awards',
             ],
             [
                 'name' => 'Character Categories',
@@ -199,9 +199,9 @@ return [
             ],
             [
                 'name' => 'Advent Calendars',
-                'url' => 'admin/data/advent-calendars'
+                'url'  => 'admin/data/advent-calendars',
             ],
-        ]
+        ],
     ],
 
     'Research' => [
@@ -209,21 +209,21 @@ return [
         'links' => [
             [
                 'name' => 'Research Trees',
-                'url' => 'admin/data/trees'
+                'url'  => 'admin/data/trees',
             ],
             [
                 'name' => 'Research Branches',
-                'url' => 'admin/data/research'
+                'url'  => 'admin/data/research',
             ],
             [
                 'name' => 'Research Grants',
-                'url' => 'admin/grants/research'
+                'url'  => 'admin/grants/research',
             ],
             [
                 'name' => 'User Research Log',
-                'url' => 'admin/data/research/users'
+                'url'  => 'admin/data/research/users',
             ],
-        ]
+        ],
     ],
 
     'Raffles' => [

@@ -2,12 +2,8 @@
 
 namespace App\Models\Award;
 
-use Config;
-use DB;
-use App\Models\Model;
-use App\Models\Award\AwardCategory;
 use App\Models\Character\CharacterAward;
-use App\Models\Shop\Shop;
+use App\Models\Model;
 use App\Models\Prompt\Prompt;
 use App\Models\User\User;
 use App\Models\User\UserAward;
@@ -38,7 +34,7 @@ class Award extends Model
      * @var array
      */
     protected $casts = [
-        'credits' => 'array'
+        'credits' => 'array',
     ];
 
     /**
@@ -48,12 +44,12 @@ class Award extends Model
      */
     public static $createRules = [
         'award_category_id' => 'nullable',
-        'name' => 'required|unique:awards|between:3,100',
-        'description' => 'nullable',
-        'image' => 'mimes:png,jpeg,jpg,gif',
-        'rarity' => 'nullable',
-        'uses' => 'nullable|between:3,250',
-        'release' => 'nullable|between:3,100'
+        'name'              => 'required|unique:awards|between:3,100',
+        'description'       => 'nullable',
+        'image'             => 'mimes:png,jpeg,jpg,gif',
+        'rarity'            => 'nullable',
+        'uses'              => 'nullable|between:3,250',
+        'release'           => 'nullable|between:3,100',
     ];
 
     /**
@@ -63,11 +59,11 @@ class Award extends Model
      */
     public static $updateRules = [
         'award_category_id' => 'nullable',
-        'name' => 'required|between:3,100',
-        'description' => 'nullable',
-        'image' => 'mimes:png,jpeg,jpg,gif',
-        'uses' => 'nullable|between:3,250',
-        'release' => 'nullable|between:3,100'
+        'name'              => 'required|between:3,100',
+        'description'       => 'nullable',
+        'image'             => 'mimes:png,jpeg,jpg,gif',
+        'uses'              => 'nullable|between:3,250',
+        'release'           => 'nullable|between:3,100',
     ];
 
     /**********************************************************************************************
@@ -84,7 +80,6 @@ class Award extends Model
         return $this->belongsTo('App\Models\Award\AwardCategory', 'award_category_id');
     }
 
-
     /**********************************************************************************************
 
         SCOPES
@@ -94,8 +89,9 @@ class Award extends Model
     /**
      * Scope a query to sort awards in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortAlphabetical($query, $reverse = false)
@@ -106,19 +102,24 @@ class Award extends Model
     /**
      * Scope a query to sort awards in category order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortCategory($query)
     {
-        if(AwardCategory::all()->count()) return $query->orderBy(AwardCategory::select('sort')->whereColumn('awards.award_category_id', 'award_categories.id'), 'DESC');
+        if (AwardCategory::all()->count()) {
+            return $query->orderBy(AwardCategory::select('sort')->whereColumn('awards.award_category_id', 'award_categories.id'), 'DESC');
+        }
+
         return $query;
     }
 
     /**
      * Scope a query to sort awards by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortNewest($query)
@@ -129,7 +130,8 @@ class Award extends Model
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortOldest($query)
@@ -140,7 +142,8 @@ class Award extends Model
     /**
      * Scope a query to show only released or "released" (at least one user-owned stack has ever existed) items.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeReleased($query)
@@ -148,9 +151,9 @@ class Award extends Model
         $users = UserAward::pluck('award_id')->toArray();
         $characters = CharacterAward::pluck('award_id')->toArray();
         $array = array_merge($users, $characters);
+
         return $query->whereIn('id', $array)->orWhere('is_released', 1);
     }
-
 
     /**********************************************************************************************
 
@@ -185,7 +188,7 @@ class Award extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.' . $this->extension;
+        return $this->id.'-image.'.$this->extension;
     }
 
     /**
@@ -205,8 +208,11 @@ class Award extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -246,24 +252,30 @@ class Award extends Model
      */
     public function getDataAttribute()
     {
-        if (!$this->id) return null;
+        if (!$this->id) {
+            return null;
+        }
+
         return json_decode($this->attributes['data'], true);
     }
 
-    public function getCreditsAttribute(){
+    public function getCreditsAttribute()
+    {
         return $this->data['credits'];
     }
-    public function getPrettyCreditsAttribute(){
 
+    public function getPrettyCreditsAttribute()
+    {
         $creds = [];
         $credits = [];
 
-        foreach($this->credits as $credit){
-            $text = isset($credit['name']) ? $credit['name'] :  (isset($credit['id']) ? User::find($credit['id'])->name : (isset($credit['url']) ? $credit['url'] : 'artist'));
-            $link = isset($credit['url']) ? $credit['url'] :  (isset($credit['id']) ? User::find($credit['id'])->url : '#');
+        foreach ($this->credits as $credit) {
+            $text = $credit['name'] ?? (isset($credit['id']) ? User::find($credit['id'])->name : ($credit['url'] ?? 'artist'));
+            $link = $credit['url'] ?? (isset($credit['id']) ? User::find($credit['id'])->url : '#');
             $role = isset($credit['role']) ? '<small>('.$credit['role'].')</small>' : null;
-            $credits[] = '<a href="'.$link.'" target="_blank">'.$text.'</a> '. $role;
+            $credits[] = '<a href="'.$link.'" target="_blank">'.$text.'</a> '.$role;
         }
+
         return $credits;
     }
 
@@ -274,7 +286,10 @@ class Award extends Model
      */
     public function getRarityAttribute()
     {
-        if (!$this->data) return null;
+        if (!$this->data) {
+            return null;
+        }
+
         return $this->data['rarity'];
     }
 
@@ -285,7 +300,10 @@ class Award extends Model
      */
     public function getSourceAttribute()
     {
-        if (!$this->data) return null;
+        if (!$this->data) {
+            return null;
+        }
+
         return $this->data['release'];
     }
 
@@ -296,8 +314,11 @@ class Award extends Model
      */
     public function getPromptsAttribute()
     {
-        if (!$this->data) return null;
+        if (!$this->data) {
+            return null;
+        }
         $awardPrompts = $this->data['prompts'];
+
         return Prompt::whereIn('id', $awardPrompts)->get();
     }
 
@@ -306,5 +327,4 @@ class Award extends Model
         OTHER FUNCTIONS
 
     **********************************************************************************************/
-
 }

@@ -54,14 +54,14 @@ Route::group(['prefix' => 'inventory', 'namespace' => 'Users'], function () {
     Route::get('selector', 'InventoryController@getSelector');
 });
 
-Route::group(['prefix' => 'awardcase', 'namespace' => 'Users'], function() {
+Route::group(['prefix' => 'awardcase', 'namespace' => 'Users'], function () {
     Route::get('/', 'AwardCaseController@getIndex');
     Route::post('edit', 'AwardCaseController@postEdit');
 
     Route::get('selector', 'AwardCaseController@getSelector');
 });
 
-Route::group(['prefix' => 'characters', 'namespace' => 'Users'], function() {
+Route::group(['prefix' => 'characters', 'namespace' => 'Users'], function () {
     Route::get('/', 'CharacterController@getIndex');
     Route::post('sort', 'CharacterController@postSortCharacters');
 
@@ -199,20 +199,17 @@ Route::group(['prefix' => 'shops'], function () {
     Route::get('history', 'ShopController@getPurchaseHistory');
 });
 
-
-
 /**************************************************************************************************
     Research
 **************************************************************************************************/
 
-Route::group(['prefix' => 'research', 'namespace' => 'Research'], function() {
+Route::group(['prefix' => 'research', 'namespace' => 'Research'], function () {
     Route::get('/purchase/{id}', 'ResearchController@getPurchaseResearch');
     Route::post('/purchase/{id}', 'ResearchController@postPurchaseResearch');
     Route::post('/claim-rewards/{id}', 'ResearchController@postClaimRewards');
     Route::get('/history', 'ResearchController@getResearchHistory');
     Route::get('/unlocked', 'TreeController@getUserTree');
 });
-
 
 /**************************************************************************************************
     Comments
@@ -231,7 +228,7 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Advent Calendars
 **************************************************************************************************/
 
-Route::group(['prefix' => 'advent-calendars'], function() {
+Route::group(['prefix' => 'advent-calendars'], function () {
     Route::get('{id}', 'AdventController@getAdvent');
     Route::post('{id}', 'AdventController@postClaimPrize');
 });

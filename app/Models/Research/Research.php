@@ -2,18 +2,12 @@
 
 namespace App\Models\Research;
 
-use Config;
 use DB;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\User\User;
-use App\Models\Research\Tree;
-
 class Research extends Model
 {
-
     use SoftDeletes;
 
     /**
@@ -22,10 +16,9 @@ class Research extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'summary', 'parsed_description', 'sort','icon_code', 'tree_id',
-        'parent_id', 'prerequisite_id', 'prereq_is_same', 'is_active', 'price', 'data'
+        'name', 'description', 'summary', 'parsed_description', 'sort', 'icon_code', 'tree_id',
+        'parent_id', 'prerequisite_id', 'prereq_is_same', 'is_active', 'price', 'data',
     ];
-
 
     /**
      * The table associated with the model.
@@ -42,14 +35,14 @@ class Research extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:researches|between:3,25',
-        'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'icon' => 'nullable|max:300',
-        'tree_id' => 'required|integer',
+        'name'            => 'required|unique:researches|between:3,25',
+        'description'     => 'nullable',
+        'summary'         => 'nullable|max:300',
+        'icon'            => 'nullable|max:300',
+        'tree_id'         => 'required|integer',
         'prerequisite_id' => 'nullable|integer',
-        'parent_id' => 'nullable|integer',
-        'price' => 'integer',
+        'parent_id'       => 'nullable|integer',
+        'price'           => 'integer',
     ];
 
     /**
@@ -58,15 +51,14 @@ class Research extends Model
      * @var array
      */
     public static $updateRules = [
-        'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'icon' => 'nullable|max:300',
-        'tree_id' => 'required|integer',
+        'description'     => 'nullable',
+        'summary'         => 'nullable|max:300',
+        'icon'            => 'nullable|max:300',
+        'tree_id'         => 'required|integer',
         'prerequisite_id' => 'nullable|integer',
-        'parent_id' => 'nullable|integer',
-        'price' => 'integer',
+        'parent_id'       => 'nullable|integer',
+        'price'           => 'integer',
     ];
-
 
     /**********************************************************************************************
 
@@ -122,8 +114,6 @@ class Research extends Model
         return $this->hasMany('App\Models\Research\ResearchReward', 'research_id');
     }
 
-
-
     /**********************************************************************************************
 
         ACCESSORS
@@ -137,8 +127,11 @@ class Research extends Model
      */
     public function getDisplayNameAttribute()
     {
-        if($this->is_active) {return '<a href="'.$this->url.'" class="display-research">'.$this->name.'</a>';}
-        else {return '<s><a href="'.$this->url.'" class="display-research text-muted">'.$this->name.'</a></s>';}
+        if ($this->is_active) {
+            return '<a href="'.$this->url.'" class="display-research">'.$this->name.'</a>';
+        } else {
+            return '<s><a href="'.$this->url.'" class="display-research text-muted">'.$this->name.'</a></s>';
+        }
     }
 
     /**
@@ -188,8 +181,11 @@ class Research extends Model
      */
     public function getResearchImageUrlAttribute()
     {
-        if (!$this->image_url) return null;
-        return asset($this->imageDirectory . '/' . $this->researchImageFileName);
+        if (!$this->image_url) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->researchImageFileName);
     }
 
     /**
@@ -212,31 +208,32 @@ class Research extends Model
         return 'researches';
     }
 
-
     /**********************************************************************************************
 
         SCOPES
 
     **********************************************************************************************/
 
-
-
     /**
      * Scope a query to sort items in category order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortTree($query)
     {
         $ids = Tree::orderBy('sort', 'DESC')->pluck('id')->toArray();
+
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(tree_id, '.implode(',', $ids).')')) : $query;
     }
+
     /**
      * Scope a query to sort items in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortAlphabetical($query, $reverse = false)
@@ -247,7 +244,8 @@ class Research extends Model
     /**
      * Scope a query to sort items by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortNewest($query)
@@ -258,14 +256,12 @@ class Research extends Model
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortOldest($query)
     {
         return $query->orderBy('id');
     }
-
-
-
 }

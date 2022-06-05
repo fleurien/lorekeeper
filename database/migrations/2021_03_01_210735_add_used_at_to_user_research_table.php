@@ -8,8 +8,6 @@ class AddUsedAtToUserResearchTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -27,13 +25,10 @@ class AddUsedAtToUserResearchTable extends Migration
 
             $table->foreign('research_id')->references('id')->on('researches');
         });
-
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

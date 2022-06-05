@@ -57,7 +57,6 @@ return [
         'default_recipient' => 0, // 0 to default to the character's owner (if a user), 1 to default to the submission user.
     ],
 
-
     // Awards - Uri
     'awards' => [
         'user_featured'             => 1,   // Number of awards displayed prominently on the user profile

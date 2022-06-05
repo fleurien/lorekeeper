@@ -4,20 +4,16 @@ namespace App\Models\Research;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User\User;
-
 class Tree extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'summary', 'parsed_description', 'sort', 'image_url', 'currency_id', 'is_active'
+        'name', 'description', 'summary', 'parsed_description', 'sort', 'image_url', 'currency_id', 'is_active',
     ];
-
 
     /**
      * The table associated with the model.
@@ -25,38 +21,37 @@ class Tree extends Model
      * @var string
      */
     protected $table = 'trees';
-    
+
     public $timestamps = false;
-    
+
     /**
      * Validation rules for creation.
      *
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:trees|between:3,25',
+        'name'        => 'required|unique:trees|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
         'currency_id' => 'integer',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
         'currency_id' => 'integer',
     ];
 
-
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -64,7 +59,7 @@ class Tree extends Model
     /**
      * Get the research attached to this tree.
      */
-    public function researches() 
+    public function researches()
     {
         return $this->hasMany('App\Models\Research\Research', 'tree_id');
     }
@@ -72,15 +67,13 @@ class Tree extends Model
     /**
      * Get the research attached to this tree.
      */
-    public function currency() 
+    public function currency()
     {
-        return $this->belongsTo('App\Models\Currency\Currency','currency_id');
+        return $this->belongsTo('App\Models\Currency\Currency', 'currency_id');
     }
 
-    
-
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -124,7 +117,7 @@ class Tree extends Model
     {
         return public_path($this->imageDirectory);
     }
-    
+
     /**
      * Gets the URL of the model's image.
      *
@@ -132,8 +125,11 @@ class Tree extends Model
      */
     public function getTreeImageUrlAttribute()
     {
-        if (!$this->image_url) return null;
-        return asset($this->imageDirectory . '/' . $this->treeImageFileName);
+        if (!$this->image_url) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->treeImageFileName);
     }
 
     /**
@@ -145,6 +141,4 @@ class Tree extends Model
     {
         return url('research-trees/'.$this->id);
     }
-
-
 }

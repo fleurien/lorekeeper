@@ -38,9 +38,9 @@ return [
         'filename'    => 'currency.png',
     ],
     'awards' => [
-        'name' => 'Awards Icon',
+        'name'        => 'Awards Icon',
         'description' => 'The awards graphic on the front page. PNG format, default size of 200px x 200px (no restriction).',
-        'filename' => 'awards.png'
+        'filename'    => 'awards.png',
     ],
     'myo' => [
         'name'        => 'MYO Default Image',
@@ -53,9 +53,9 @@ return [
         'filename'    => 'myo-th.png',
     ],
     'research-tree' => [
-        'name' => 'Research Tree Icon',
+        'name'        => 'Research Tree Icon',
         'description' => 'The research tree graphic on the front page. PNG format, default size of 200px x 200px (no restriction)',
-        'filename' => 'research-tree.png'
+        'filename'    => 'research-tree.png',
     ],
     'meta-image' => [
         'name'        => 'Meta Tag Image',
@@ -73,8 +73,8 @@ return [
         'filename'    => 'content_warning.png',
     ],
     'donation_shop' => [
-        'name' => 'Donation Shop Image',
+        'name'        => 'Donation Shop Image',
         'description' => 'Image used for the donation shop. PNG format, should be the same size as other shop images.',
-        'filename' => 'donation_shop.png'
+        'filename'    => 'donation_shop.png',
     ],
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Models\Award\AwardLog;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterBookmark;
 use App\Models\Character\CharacterImageCreator;
@@ -10,11 +11,9 @@ use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\GalleryCollaborator;
 use App\Models\Item\ItemLog;
 use App\Models\Rank\RankPower;
-use App\Models\Shop\ShopLog;
-use App\Models\Award\AwardLog;
 use App\Models\Research\Research;
 use App\Models\Research\ResearchLog;
-use App\Models\User\UserCharacterLog;
+use App\Models\Shop\ShopLog;
 use App\Models\Submission\Submission;
 use App\Traits\Commenter;
 use Auth;
@@ -23,10 +22,6 @@ use Config;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
-use App\Models\Character\CharacterDesignUpdate;
-use App\Models\Character\CharacterTransfer;
-use App\Models\Trade;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -203,7 +198,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the research attached to this research.
      */
-    public function researches() 
+    public function researches()
     {
         return $this->belongsToMany('App\Models\Research\Research', 'user_research')->withPivot('updated_at', 'id')->whereNull('user_research.deleted_at');
     }
@@ -433,11 +428,16 @@ class User extends Authenticatable implements MustVerifyEmail
         // Fetch log for most recent collection
         $log = ItemLog::where('recipient_id', $this->id)->where('log_type', 'Collected from Donation Shop')->orderBy('id', 'DESC')->first();
         // If there is no log, by default, the cooldown is null
-        if(!$log) return null;
+        if (!$log) {
+            return null;
+        }
         // If the cooldown would already be up, it is null
-        if($log->created_at->addMinutes(Config::get('lorekeeper.settings.donation_shop.cooldown')) <= Carbon::now()) return null;
+        if ($log->created_at->addMinutes(Config::get('lorekeeper.settings.donation_shop.cooldown')) <= Carbon::now()) {
+            return null;
+        }
         // Otherwise, calculate the remaining time
         return $log->created_at->addMinutes(Config::get('lorekeeper.settings.donation_shop.cooldown'));
+
         return null;
     }
 
@@ -534,15 +534,19 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the user's currency logs.
      *
-     * @param  int  $limit
-     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     * @param int $limit
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
      */
     public function getResearchLogs($limit = 10)
     {
         $user = $this;
         $query = ResearchLog::where('recipient_id', $this->id)->with('tree')->with('research')->with('currency')->orderBy('id', 'DESC');
-        if($limit) return $query->take($limit)->get();
-        else return $query->paginate(30);
+        if ($limit) {
+            return $query->take($limit)->get();
+        } else {
+            return $query->paginate(30);
+        }
     }
 
     /**
@@ -566,22 +570,27 @@ class User extends Authenticatable implements MustVerifyEmail
             return $query->paginate(30);
         }
     }
-        /**
+
+    /**
      * Get the user's award logs.
      *
-     * @param  int  $limit
-     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     * @param int $limit
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
      */
     public function getAwardLogs($limit = 10)
     {
         $user = $this;
-        $query = AwardLog::with('award')->where(function($query) use ($user) {
+        $query = AwardLog::with('award')->where(function ($query) use ($user) {
             $query->with('sender')->where('sender_type', 'User')->where('sender_id', $user->id)->whereNotIn('log_type', ['Staff Grant', 'Prompt Rewards', 'Claim Rewards']);
-        })->orWhere(function($query) use ($user) {
+        })->orWhere(function ($query) use ($user) {
             $query->with('recipient')->where('recipient_type', 'User')->where('recipient_id', $user->id)->where('log_type', '!=', 'Staff Removal');
         })->orderBy('id', 'DESC');
-        if($limit) return $query->take($limit)->get();
-        else return $query->paginate(30);
+        if ($limit) {
+            return $query->take($limit)->get();
+        } else {
+            return $query->paginate(30);
+        }
     }
 
     /**
@@ -704,9 +713,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return CharacterBookmark::where('user_id', $this->id)->where('character_id', $character->id)->first();
     }
 
-    /** 
+    /**
      * Checks if the user has a specific research unlocked and attached to its account.
-     * 
+     *
+     * @param mixed $id
+     *
      * @return bool
      */
     public function hasResearch($id)
