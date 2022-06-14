@@ -35,6 +35,7 @@
                 <li class="list-group-item"><a href="{{ url('world/award-categories') }}">Award Categories</a></li>
                 <li class="list-group-item"><a href="{{ url('world/awards') }}">All Awards</a></li>
                 <li class="list-group-item"><a href="{{ url('world/currencies') }}">Currencies</a></li>
+                <li class="list-group-item"><a href="{{ url('world/recipes') }}">All Recipes</a></li>
             </ul>
         </div>
     </div>

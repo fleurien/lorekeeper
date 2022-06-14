@@ -14,6 +14,9 @@ use App\Models\Submission\Submission;
 use App\Models\User\User;
 use App\Models\User\UserAward;
 use App\Models\User\UserItem;
+use App\Models\Submission\SubmissionCharacter;
+use App\Models\Recipe\Recipe;
+
 use App\Services\SubmissionManager;
 use Auth;
 use Config;
