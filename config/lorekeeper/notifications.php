@@ -296,6 +296,21 @@ return [
         'message' => 'You have received a staff grant of <a href="{research_url}">{research_name}</a> (of <a href="{tree_url}">{tree_name}</a>) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">Unlocked Research</a>)',
         'url'     => 'research/unlocked',
     ],
+
+    // USER_REACTIVATED
+    103 => [
+        'name'      => 'User Reactivated',
+        'message'   => '<a href="{user_url}">{user_name}\'s</a> account has been reactivated by <a href="{staff_url}">{staff_name}</a>.',
+        'url'       => '',
+    ],
+
+    // USER_DEACTIVATED
+    104 => [
+        'name'      => 'User Deactivated',
+        'message'   => '<a href="{user_url}">{user_name}\'s</a> account has been deactivated by <a href="{staff_url}">{staff_name}</a>.',
+        'url'       => '',
+    ],
+
     // REPORT_ASSIGNED
     220 => [
         'name'    => 'Report Assigned',
