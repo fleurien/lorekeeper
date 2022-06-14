@@ -53,6 +53,9 @@
                             <a class="dropdown-item" href="{{ url('comments/liked') }}">
                                 Liked Comments
                             </a>
+                            <a class="dropdown-item" href="{{ url('level') }}">
+                                Level Area
+                            </a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

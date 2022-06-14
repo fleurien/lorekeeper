@@ -2,15 +2,20 @@
 
 namespace App\Services\Item;
 
+use DB;
+
 use App\Models\Award\Award;
+use App\Models\Claymore\Gear;
+use App\Models\Claymore\Weapon;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Loot\LootTable;
+use App\Models\Pet\Pet;
 use App\Models\Raffle\Raffle;
+use App\Models\Recipe\Recipe;
+
 use App\Services\InventoryManager;
 use App\Services\Service;
-use DB;
-use App\Models\Recipe\Recipe;
 
 class BoxService extends Service
 {
@@ -38,6 +43,9 @@ class BoxService extends Service
             'tables'              => LootTable::orderBy('name')->pluck('name', 'id'),
             'raffles'             => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
             'recipes'=> Recipe::orderBy('name')->pluck('name', 'id'),
+            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
+            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
+            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
         ];
     }
 
@@ -99,6 +107,15 @@ class BoxService extends Service
                         break;
                     case 'Award':
                         $type = 'App\Models\Award\Award';
+                        break;
+                    case 'Pet':
+                        $type = 'App\Models\Pet\Pet';
+                        break;
+                    case 'Gear':
+                        $type = 'App\Models\Claymore\Gear';
+                        break;
+                    case 'Weapon':
+                        $type = 'App\Models\Claymore\Weapon';
                         break;
                     case 'LootTable':
                         $type = 'App\Models\Loot\LootTable';

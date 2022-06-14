@@ -11,6 +11,8 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
+use App\Models\Character\CharacterClass;
+
 class CharacterController extends Controller
 {
     /*
@@ -134,6 +136,40 @@ class CharacterController extends Controller
             }
         }
 
+        return redirect()->back();
+    }
+
+    /************************************************************************************
+     * CLAYMORE
+     ************************************************************************************/
+
+    /**
+     * Changes / assigns the character class
+     * @param  \Illuminate\Http\Request       $request
+     * @param  int                            $id
+     * @param App\Services\CharacterManager  $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getClassModal($id)
+    {
+        $this->character = Character::find($id);
+        if(!$this->character) abort(404);
+        return view('admin.claymores.classes._modal', [
+            'classes' => ['none' => 'No Class'] + CharacterClass::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
+            'character' => $this->character
+        ]);
+    }
+
+    public function postClassModal($id, Request $request, CharacterManager $service)
+    {
+        $this->character = Character::find($id);
+        if(!$this->character) abort(404);
+        if($service->editClass($request->only(['class_id']), $this->character, Auth::user())) {
+            flash('Character class edited successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
         return redirect()->back();
     }
 }
