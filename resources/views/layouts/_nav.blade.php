@@ -133,9 +133,9 @@
                         </a>
                     </div>
                 </li>
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link" href="{{ url('gallery') }}">Gallery</a>
-                </li>
+                </li>-->
             </ul>
 
             <!-- Right Side Of Navbar -->

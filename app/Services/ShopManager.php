@@ -6,7 +6,6 @@ use App\Models\Character\Character;
 use App\Models\Item\ItemLog;
 use App\Models\Shop\Shop;
 use App\Models\Shop\ShopLog;
-use App\Models\Shop\ShopLog;
 use App\Models\Shop\ShopStock;
 use App\Models\Shop\UserItemDonation;
 use Carbon\Carbon;
@@ -179,14 +178,14 @@ class ShopManager extends Service
         return $limit;
     }
 
-    /**
+    /*
      * Collects an item from the donation shop.
      *
      * @param array                 $data
      * @param \App\Models\User\User $user
      *
      * @return App\Models\Shop\Shop|bool
-     */
+     
     public function collectDonation($data, $user)
     {
         DB::beginTransaction();
@@ -227,12 +226,12 @@ class ShopManager extends Service
 
         return $this->rollbackReturn(false);
     }
-
-    /**
+*/
+    /*
      * Clears out expired donations from the shop, if relevant.
      *
      * @return bool
-     */
+     
     public function cleanDonations()
     {
         $count = UserItemDonation::expired()->count();
@@ -259,4 +258,5 @@ class ShopManager extends Service
             return $this->rollbackReturn(false);
         }
     }
+    */
 }
