@@ -15,15 +15,8 @@ class UserGear extends Model
      * @var array
      */
     protected $fillable = [
-        'data', 'gear_id', 'user_id', 'attached_at', 'has_image'
+        'data', 'gear_id', 'user_id', 'attached_at', 'has_image',
     ];
-
-    /**
-     * Whether the model contains timestamps to be saved and updated.
-     *
-     * @var string
-     */
-    public $timestamps = true;
 
     /**
      * Dates on the model to convert to Carbon instances.
@@ -39,8 +32,15 @@ class UserGear extends Model
      */
     protected $table = 'user_gears';
 
+    /**
+     * Whether the model contains timestamps to be saved and updated.
+     *
+     * @var string
+     */
+    public $timestamps = true;
+
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -48,7 +48,7 @@ class UserGear extends Model
     /**
      * Get the user who owns the stack.
      */
-    public function user() 
+    public function user()
     {
         return $this->belongsTo('App\Models\User\User');
     }
@@ -56,7 +56,7 @@ class UserGear extends Model
     /**
      * Get the gear associated with this gear stack.
      */
-    public function gear() 
+    public function gear()
     {
         return $this->belongsTo('App\Models\Claymore\Gear');
     }
@@ -67,7 +67,7 @@ class UserGear extends Model
     }
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -77,11 +77,11 @@ class UserGear extends Model
      *
      * @return array
      */
-    public function getDataAttribute() 
+    public function getDataAttribute()
     {
         return json_decode($this->attributes['data'], true);
     }
-    
+
     /**
      * Checks if the stack is transferrable.
      *
@@ -89,7 +89,10 @@ class UserGear extends Model
      */
     public function getIsTransferrableAttribute()
     {
-        if(!isset($this->data['disallow_transfer']) && $this->gear->allow_transfer) return true;
+        if (!isset($this->data['disallow_transfer']) && $this->gear->allow_transfer) {
+            return true;
+        }
+
         return false;
     }
 
@@ -120,7 +123,7 @@ class UserGear extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -140,8 +143,10 @@ class UserGear extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
-    }
+        if (!$this->has_image) {
+            return null;
+        }
 
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
+    }
 }

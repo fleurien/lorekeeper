@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
-use Auth;
-use Config;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Award\Award;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterDesignUpdate;
@@ -23,7 +18,6 @@ use App\Models\Submission\Submission;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserItem;
-
 use App\Services\AwardCaseManager;
 use App\Services\Claymore\GearManager;
 use App\Services\Claymore\WeaponManager;
@@ -33,6 +27,8 @@ use App\Services\PetManager;
 use App\Services\RecipeService;
 use App\Services\ResearchService;
 use App\Services\Stat\ExperienceManager;
+use Auth;
+use Illuminate\Http\Request;
 
 class GrantController extends Controller
 {
@@ -142,7 +138,7 @@ class GrantController extends Controller
 
         return redirect()->back();
     }
-    
+
     /**
      * Show the recipe grant page.
      *
@@ -151,8 +147,8 @@ class GrantController extends Controller
     public function getRecipes()
     {
         return view('admin.grants.recipes', [
-            'users' => User::orderBy('id')->pluck('name', 'id'),
-            'recipes' => Recipe::orderBy('name')->pluck('name', 'id')
+            'users'   => User::orderBy('id')->pluck('name', 'id'),
+            'recipes' => Recipe::orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
@@ -193,24 +189,26 @@ class GrantController extends Controller
     /**
      * Grants or removes items from multiple users.
      *
-     * @param  \Illuminate\Http\Request        $request
-     * @param  App\Services\InventoryManager  $service
+     * @param App\Services\InventoryManager $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postRecipes(Request $request, RecipeService $service)
     {
         $data = $request->only(['names', 'recipe_ids', 'data']);
-        if($service->grantRecipes($data, Auth::user())) {
+        if ($service->grantRecipes($data, Auth::user())) {
             flash('Recipes granted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
     /**
-     * Grants or removes exp (show)
+     * Grants or removes exp (show).
      */
     public function getExp()
     {
@@ -221,17 +219,19 @@ class GrantController extends Controller
     }
 
     /**
-     * Grants or removes exp
+     * Grants or removes exp.
      */
     public function postExp(Request $request, ExperienceManager $service)
     {
         $data = $request->only(['names', 'quantity', 'data']);
-        if($service->grantExp($data, Auth::user())) {
+        if ($service->grantExp($data, Auth::user())) {
             flash('EXP granted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
@@ -244,26 +244,28 @@ class GrantController extends Controller
     {
         return view('admin.grants.pets', [
             'users' => User::orderBy('id')->pluck('name', 'id'),
-            'pets' => Pet::orderBy('name')->pluck('name', 'id')
+            'pets'  => Pet::orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
     /**
      * Grants or removes pets from multiple users.
      *
-     * @param  \Illuminate\Http\Request        $request
-     * @param  App\Services\InvenntoryManager  $service
+     * @param App\Services\InvenntoryManager $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postPets(Request $request, PetManager $service)
     {
         $data = $request->only(['names', 'pet_ids', 'quantities', 'data', 'disallow_transfer', 'notes']);
-        if($service->grantPets($data, Auth::user())) {
+        if ($service->grantPets($data, Auth::user())) {
             flash('Pets granted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
@@ -276,26 +278,28 @@ class GrantController extends Controller
     {
         return view('admin.grants.gear', [
             'users' => User::orderBy('id')->pluck('name', 'id'),
-            'gears' => Gear::orderBy('name')->pluck('name', 'id')
+            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
     /**
      * Grants or removes gear from multiple users.
      *
-     * @param  \Illuminate\Http\Request        $request
-     * @param  App\Services\InvenntoryManager  $service
+     * @param App\Services\InvenntoryManager $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postGear(Request $request, GearManager $service)
     {
         $data = $request->only(['names', 'gear_ids', 'quantities', 'data', 'disallow_transfer', 'notes']);
-        if($service->grantGears($data, Auth::user())) {
+        if ($service->grantGears($data, Auth::user())) {
             flash('Gear granted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
@@ -307,27 +311,29 @@ class GrantController extends Controller
     public function getWeapons()
     {
         return view('admin.grants.weapons', [
-            'users' => User::orderBy('id')->pluck('name', 'id'),
-            'weapons' => Weapon::orderBy('name')->pluck('name', 'id')
+            'users'   => User::orderBy('id')->pluck('name', 'id'),
+            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
     /**
      * Grants or removes gear from multiple users.
      *
-     * @param  \Illuminate\Http\Request        $request
-     * @param  App\Services\InvenntoryManager  $service
+     * @param App\Services\InvenntoryManager $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postWeapons(Request $request, WeaponManager $service)
     {
         $data = $request->only(['names', 'weapon_ids', 'quantities', 'data', 'disallow_transfer', 'notes']);
-        if($service->grantWeapons($data, Auth::user())) {
+        if ($service->grantWeapons($data, Auth::user())) {
             flash('Weapons granted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 

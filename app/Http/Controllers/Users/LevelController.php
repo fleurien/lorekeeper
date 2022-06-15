@@ -2,24 +2,14 @@
 
 namespace App\Http\Controllers\Users;
 
-use Illuminate\Http\Request;
-
-use DB;
-use Auth;
-use App\Models\User\User;
-use App\Models\User\UserCurrency;
-use App\Models\Currency\Currency;
-use App\Models\Currency\CurrencyLog;
-use App\Services\CurrencyManager;
-
-use App\Models\Level\Level;
-use App\Models\Character\Character;
-
-use App\Services\Stat\ExperienceManager;
-use App\Services\Stat\StatManager;
-use App\Services\Stat\LevelManager;
-
 use App\Http\Controllers\Controller;
+use App\Models\Character\Character;
+use App\Models\Level\Level;
+use App\Models\User\User;
+use App\Services\Stat\LevelManager;
+use App\Services\Stat\StatManager;
+use Auth;
+use Illuminate\Http\Request;
 
 class LevelController extends Controller
 {
@@ -38,32 +28,29 @@ class LevelController extends Controller
     {
         $user = Auth::user();
         // create a user level if one doesn't exist
-        if(!$user->level)
-        {
+        if (!$user->level) {
             $user->level()->create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
         }
         //
         $level = $user->level->current_level + 1;
         $next = Level::where('level', $level)->first();
-        if(!$next) {
+        if (!$next) {
             $next = null;
             $width = 100;
-        }
-        else {
-            if($user->level->current_exp < $next->exp_required)
-            {
+        } else {
+            if ($user->level->current_exp < $next->exp_required) {
                 $width = ($user->level->current_exp / $next->exp_required) * 100;
-            }
-            else {
+            } else {
                 $width = 100;
             }
         }
+
         return view('home.level', [
-            'user' => $user,
-            'next' => $next,
-            'width' => $width,
+            'user'       => $user,
+            'next'       => $next,
+            'width'      => $width,
             'characters' => $user->characters()->pluck('slug', 'id'),
         ]);
     }
@@ -71,13 +58,14 @@ class LevelController extends Controller
     public function postLevel(LevelManager $service)
     {
         $user = Auth::user();
-        if($service->userLevel($user)) 
-        {
+        if ($service->userLevel($user)) {
             flash('Successfully levelled up!')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
@@ -85,15 +73,18 @@ class LevelController extends Controller
     {
         $user = Auth::user();
         $character = Character::find($request->get('id'));
-        if($user->id != $character->user_id) abort(404);
+        if ($user->id != $character->user_id) {
+            abort(404);
+        }
 
-        if($service->userToCharacter($user, $character, $request->get('quantity'))) 
-        {
+        if ($service->userToCharacter($user, $character, $request->get('quantity'))) {
             flash('Successfully transferred stat points!')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 }

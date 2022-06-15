@@ -32,14 +32,14 @@ return [
     ],
 
     'recipe' => [
-        'name' => 'Recipe',
-        'text_color' => '#ffffff',
-        'background_color' => '#6D18A7'
+        'name'             => 'Recipe',
+        'text_color'       => '#ffffff',
+        'background_color' => '#6D18A7',
     ],
 
     'splice' => [
-        'name' => 'Splice',
-        'text_color' => '#ffffff',
-        'background_color' => '#a69bc6'
-    ]
+        'name'             => 'Splice',
+        'text_color'       => '#ffffff',
+        'background_color' => '#a69bc6',
+    ],
 ];

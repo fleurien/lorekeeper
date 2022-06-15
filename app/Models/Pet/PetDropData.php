@@ -2,34 +2,17 @@
 
 namespace App\Models\Pet;
 
-use Config;
-use DB;
-use Carbon\Carbon;
-use Notifications;
 use App\Models\Model;
-
-use App\Models\Species\Species;
-use App\Models\Species\Subtype;
-use App\Models\Character\Character;
-
-use App\Models\User\UserPet;
-use App\Models\Pet\Pet;
-use App\Models\Pet\PetVariant;
-use App\Models\Pet\PetDrop;
-
-use App\Models\Currency\Currency;
-use App\Models\Item\Item;
 
 class PetDropData extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'pet_id', 'variant_id', 'parameters', 'data', 'is_active'
+        'pet_id', 'variant_id', 'parameters', 'data', 'is_active',
     ];
 
     /**
@@ -45,9 +28,9 @@ class PetDropData extends Model
      * @var array
      */
     public static $createRules = [
-        'pet_id' => 'required|unique:pet_drop_data',
+        'pet_id'         => 'required|unique:pet_drop_data',
         'drop_frequency' => 'required',
-        'drop_interval' => 'required'
+        'drop_interval'  => 'required',
     ];
 
     /**
@@ -56,9 +39,9 @@ class PetDropData extends Model
      * @var array
      */
     public static $updateRules = [
-        'pet_id' => 'required',
+        'pet_id'         => 'required',
         'drop_frequency' => 'required',
-        'drop_interval' => 'required'
+        'drop_interval'  => 'required',
     ];
 
     /**********************************************************************************************
@@ -114,8 +97,11 @@ class PetDropData extends Model
      */
     public function getParametersAttribute()
     {
-        if(isset($this->attributes['parameters'])) return json_decode($this->attributes['parameters'], true);
-        else return null;
+        if (isset($this->attributes['parameters'])) {
+            return json_decode($this->attributes['parameters'], true);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -125,7 +111,10 @@ class PetDropData extends Model
      */
     public function getParameterArrayAttribute()
     {
-        foreach($this->parameters as $parameter=>$weight) $paramArray[$parameter] = $parameter;
+        foreach ($this->parameters as $parameter=>$weight) {
+            $paramArray[$parameter] = $parameter;
+        }
+
         return $paramArray;
     }
 
@@ -136,8 +125,11 @@ class PetDropData extends Model
      */
     public function getDataAttribute()
     {
-        if(isset($this->attributes['data'])) return json_decode($this->attributes['data'], true);
-        else return null;
+        if (isset($this->attributes['data'])) {
+            return json_decode($this->attributes['data'], true);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -157,7 +149,7 @@ class PetDropData extends Model
      */
     public function getCapAttribute()
     {
-        return isset($this->data['cap']) ? $this->data['cap'] : null;
+        return $this->data['cap'] ?? null;
     }
 
     /**********************************************************************************************
@@ -175,28 +167,29 @@ class PetDropData extends Model
     {
         $parameters = $this->parameters;
         $totalWeight = 0;
-        foreach($parameters as $parameter=>$weight) $totalWeight += $weight;
+        foreach ($parameters as $parameter=>$weight) {
+            $totalWeight += $weight;
+        }
 
-        for($i = 0; $i < 1; $i++)
-        {
+        for ($i = 0; $i < 1; $i++) {
             $roll = mt_rand(0, $totalWeight - 1);
             $result = null;
             $prev = null;
             $count = 0;
-            foreach($parameters as $parameter=>$weight)
-            {
+            foreach ($parameters as $parameter=>$weight) {
                 $count += $weight;
 
-                if($roll < $count)
-                {
+                if ($roll < $count) {
                     $result = $parameter;
                     break;
                 }
                 $prev = $parameter;
             }
-            if(!$result) $result = $prev;
+            if (!$result) {
+                $result = $prev;
+            }
         }
+
         return $result;
     }
-
 }

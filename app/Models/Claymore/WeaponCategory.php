@@ -2,7 +2,6 @@
 
 namespace App\Models\Claymore;
 
-use Config;
 use App\Models\Model;
 
 class WeaponCategory extends Model
@@ -13,7 +12,7 @@ class WeaponCategory extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'has_image', 'description', 'class_restriction'
+        'name', 'sort', 'has_image', 'description', 'class_restriction',
     ];
 
     /**
@@ -22,31 +21,31 @@ class WeaponCategory extends Model
      * @var string
      */
     protected $table = 'weapon_categories';
-    
+
     /**
      * Validation rules for creation.
      *
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:weapon_categories|between:3,25',
+        'name'        => 'required|unique:weapon_categories|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -78,7 +77,7 @@ class WeaponCategory extends Model
      */
     public function getCategoryImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -90,7 +89,7 @@ class WeaponCategory extends Model
     {
         return public_path($this->imageDirectory);
     }
-    
+
     /**
      * Gets the URL of the model's image.
      *
@@ -98,8 +97,11 @@ class WeaponCategory extends Model
      */
     public function getCategoryImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->categoryImageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->categoryImageFileName);
     }
 
     /**

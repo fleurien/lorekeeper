@@ -207,12 +207,12 @@ class PromptService extends Service
             }
 
             $prompt = Prompt::create(Arr::only($data, ['prompt_category_id', 'name', 'summary', 'description', 'parsed_description', 'is_active', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'has_image', 'prefix', 'hide_submissions', 'level_req']));
-            
+
             $prompt->expreward()->create([
-                'prompt_id' => $prompt->id,
-                'user_exp'  => $data['user_exp'],
-                'user_points'  => $data['user_points'],
-                'chara_exp'  => $data['chara_exp'],
+                'prompt_id'     => $prompt->id,
+                'user_exp'      => $data['user_exp'],
+                'user_points'   => $data['user_points'],
+                'chara_exp'     => $data['chara_exp'],
                 'chara_points'  => $data['chara_points'],
             ]);
 
@@ -276,25 +276,26 @@ class PromptService extends Service
 
             $prompt->update(Arr::only($data, ['prompt_category_id', 'name', 'summary', 'description', 'parsed_description', 'is_active', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'has_image', 'prefix', 'hide_submissions', 'level_req']));
 
-            if($prompt->expreward) {
+            if ($prompt->expreward) {
                 $prompt->expreward()->update([
-                    'user_exp'  => $data['user_exp'],
-                    'user_points'  => $data['user_points'],
-                    'chara_exp'  => $data['chara_exp'],
+                    'user_exp'      => $data['user_exp'],
+                    'user_points'   => $data['user_points'],
+                    'chara_exp'     => $data['chara_exp'],
                     'chara_points'  => $data['chara_points'],
                 ]);
-            }
-            else {
+            } else {
                 $prompt->expreward()->create([
-                    'prompt_id' => $prompt->id,
-                    'user_exp'  => $data['user_exp'],
-                    'user_points'  => $data['user_points'],
-                    'chara_exp'  => $data['chara_exp'],
+                    'prompt_id'     => $prompt->id,
+                    'user_exp'      => $data['user_exp'],
+                    'user_points'   => $data['user_points'],
+                    'chara_exp'     => $data['chara_exp'],
                     'chara_points'  => $data['chara_points'],
                 ]);
             }
 
-            if ($prompt) $this->handleImage($image, $prompt->imagePath, $prompt->imageFileName);
+            if ($prompt) {
+                $this->handleImage($image, $prompt->imagePath, $prompt->imageFileName);
+            }
 
             $this->populateRewards(Arr::only($data, ['rewardable_type', 'rewardable_id', 'quantity']), $prompt);
 
@@ -326,6 +327,39 @@ class PromptService extends Service
             }
 
             $prompt->rewards()->delete();
+            if ($prompt->has_image) {
+                $this->deleteImage($prompt->imagePath, $prompt->imageFileName);
+            }
+            $prompt->delete();
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Deletes a prompt.
+     *
+     * @param \App\Models\Prompt\Prompt $prompt
+     *
+     * @return bool
+     */
+    public function deletePrompt($prompt)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Check first if the category is currently in use
+            if (Submission::where('prompt_id', $prompt->id)->exists()) {
+                throw new \Exception('A submission under this prompt exists. Deleting the prompt will break the submission page - consider setting the prompt to be not active instead.');
+            }
+
+            $prompt->rewards()->delete();
+            $prompt->expreward()->delete();
+            $prompt->skills()->delete();
             if ($prompt->has_image) {
                 $this->deleteImage($prompt->imagePath, $prompt->imageFileName);
             }
@@ -380,10 +414,18 @@ class PromptService extends Service
             $data['parsed_description'] = parse($data['description']);
         }
 
-        if(!isset($data['hide_before_start'])) $data['hide_before_start'] = 0;
-        if(!isset($data['hide_after_end'])) $data['hide_after_end'] = 0;
-        if(!isset($data['is_active'])) $data['is_active'] = 0;
-        if(!isset($data['level_check'])) $data['level_req'] = null;
+        if (!isset($data['hide_before_start'])) {
+            $data['hide_before_start'] = 0;
+        }
+        if (!isset($data['hide_after_end'])) {
+            $data['hide_after_end'] = 0;
+        }
+        if (!isset($data['is_active'])) {
+            $data['is_active'] = 0;
+        }
+        if (!isset($data['level_check'])) {
+            $data['level_req'] = null;
+        }
 
         if (isset($data['remove_image'])) {
             if ($prompt && $prompt->has_image && $data['remove_image']) {
@@ -422,51 +464,22 @@ class PromptService extends Service
     /**
      * Processes user input for creating/updating prompt skill rewards.
      *
-     * @param  array                      $data
-     * @param  \App\Models\Prompt\Prompt  $prompt
+     * @param array                     $data
+     * @param \App\Models\Prompt\Prompt $prompt
      */
     private function populateSkills($data, $prompt)
     {
         // Clear the old skills...
         $prompt->skills()->delete();
 
-        if(isset($data['skill_id'])) {
-            foreach($data['skill_id'] as $key => $type)
-            {
+        if (isset($data['skill_id'])) {
+            foreach ($data['skill_id'] as $key => $type) {
                 PromptSkill::create([
                     'prompt_id'       => $prompt->id,
-                    'skill_id' => $type,
+                    'skill_id'        => $type,
                     'quantity'        => $data['skill_quantity'][$key],
                 ]);
             }
         }
-    }
-
-
-    /**
-     * Deletes a prompt.
-     *
-     * @param  \App\Models\Prompt\Prompt  $prompt
-     * @return bool
-     */
-    public function deletePrompt($prompt)
-    {
-        DB::beginTransaction();
-
-        try {
-            // Check first if the category is currently in use
-            if(Submission::where('prompt_id', $prompt->id)->exists()) throw new \Exception("A submission under this prompt exists. Deleting the prompt will break the submission page - consider setting the prompt to be not active instead.");
-
-            $prompt->rewards()->delete();
-            $prompt->expreward()->delete();
-            $prompt->skills()->delete();
-            if($prompt->has_image) $this->deleteImage($prompt->imagePath, $prompt->imageFileName);
-            $prompt->delete();
-
-            return $this->commitReturn(true);
-        } catch(\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
     }
 }

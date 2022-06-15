@@ -12,15 +12,8 @@ class PetVariant extends Model
      * @var array
      */
     protected $fillable = [
-        'pet_id', 'variant_name', 'has_image'
+        'pet_id', 'variant_name', 'has_image',
     ];
-
-    /**
-     * Whether the model contains timestamps to be saved and updated.
-     *
-     * @var string
-     */
-    public $timestamps = false;
 
     /**
      * The table associated with the model.
@@ -29,8 +22,15 @@ class PetVariant extends Model
      */
     protected $table = 'pet_variants';
 
+    /**
+     * Whether the model contains timestamps to be saved and updated.
+     *
+     * @var string
+     */
+    public $timestamps = false;
+
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -38,13 +38,13 @@ class PetVariant extends Model
     /**
      * Get the pet associated with this pet stack.
      */
-    public function pet() 
+    public function pet()
     {
         return $this->belongsTo('App\Models\Pet\Pet');
     }
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -66,7 +66,7 @@ class PetVariant extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->pet_id .'-'. $this->variant_name .'-image.png';
+        return $this->pet_id.'-'.$this->variant_name.'-image.png';
     }
 
     /**
@@ -78,7 +78,7 @@ class PetVariant extends Model
     {
         return public_path($this->imageDirectory);
     }
-    
+
     /**
      * Gets the URL of the model's image.
      *
@@ -86,7 +86,10 @@ class PetVariant extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 }

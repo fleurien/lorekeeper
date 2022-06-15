@@ -1,15 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddRewardStatPrompt extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -34,7 +32,7 @@ class AddRewardStatPrompt extends Migration
 
             $table->integer('sender_id')->unsigned()->nullable();
             $table->integer('character_id')->unsigned()->nullable();
-            
+
             $table->string('log'); // Actual log text
             $table->string('log_type'); // Indicates what type of transaction the item was used in
             $table->string('data', 1024)->nullable(); // Includes information like staff notes, etc.
@@ -48,8 +46,6 @@ class AddRewardStatPrompt extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

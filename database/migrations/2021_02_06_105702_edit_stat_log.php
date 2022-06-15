@@ -8,14 +8,11 @@ class EditStatLog extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         //
-        Schema::table('stat_log', function (Blueprint $table)
-        {
+        Schema::table('stat_log', function (Blueprint $table) {
             $table->renameColumn('character_id', 'recipient_id');
             $table->enum('leveller_type', ['User', 'Character'])->nullable()->default('Character');
         });
@@ -23,14 +20,11 @@ class EditStatLog extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
         //
-        Schema::table('stat_log', function (Blueprint $table)
-        {
+        Schema::table('stat_log', function (Blueprint $table) {
             $table->renameColumn('recipient_id', 'character_id');
             $table->dropColumn('leveller_type');
         });

@@ -2,7 +2,6 @@
 
 namespace App\Models\Skill;
 
-use Config;
 use App\Models\Model;
 
 class SkillCategory extends Model
@@ -13,7 +12,7 @@ class SkillCategory extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'has_image', 'description'
+        'name', 'has_image', 'description',
     ];
 
     /**
@@ -22,31 +21,31 @@ class SkillCategory extends Model
      * @var string
      */
     protected $table = 'skill_categories';
-    
+
     /**
      * Validation rules for creation.
      *
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:skill_categories|between:3,100',
+        'name'        => 'required|unique:skill_categories|between:3,100',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,100',
+        'name'        => 'required|between:3,100',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -78,7 +77,7 @@ class SkillCategory extends Model
      */
     public function getCategoryImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -90,7 +89,7 @@ class SkillCategory extends Model
     {
         return public_path($this->imageDirectory);
     }
-    
+
     /**
      * Gets the URL of the model's image.
      *
@@ -98,8 +97,11 @@ class SkillCategory extends Model
      */
     public function getCategoryImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->categoryImageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->categoryImageFileName);
     }
 
     /**

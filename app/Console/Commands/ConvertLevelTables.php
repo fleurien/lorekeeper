@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use DB;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 
 class ConvertLevelTables extends Command
@@ -24,8 +24,6 @@ class ConvertLevelTables extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -46,9 +44,7 @@ class ConvertLevelTables extends Command
         $this->info('Running migration...');
         $this->call('migrate');
 
-
-        foreach($characterLevels as $characterLevel)
-        {
+        foreach ($characterLevels as $characterLevel) {
             $userLevel = new \App\Models\Level\Level();
             $userLevel->level = $characterLevel->level;
             $userLevel->exp_required = $characterLevel->exp_required;

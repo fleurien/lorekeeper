@@ -2,7 +2,6 @@
 
 namespace App\Models\Skill;
 
-use Config;
 use App\Models\Model;
 
 class Skill extends Model
@@ -13,7 +12,7 @@ class Skill extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'skill_category_id', 'parent_id', 'parent_level', 'prerequisite_id', 'has_image'
+        'name', 'description', 'skill_category_id', 'parent_id', 'parent_level', 'prerequisite_id', 'has_image',
     ];
 
     /**
@@ -22,24 +21,24 @@ class Skill extends Model
      * @var string
      */
     protected $table = 'skills';
-    
+
     /**
      * Validation rules for creation.
      *
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:rarities|between:3,100',
+        'name'        => 'required|unique:rarities|between:3,100',
         'description' => 'nullable',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,100',
+        'name'        => 'required|between:3,100',
         'description' => 'nullable',
     ];
 
@@ -58,7 +57,7 @@ class Skill extends Model
     }
 
     /**
-     * Get the children of the skill
+     * Get the children of the skill.
      */
     public function children()
     {
@@ -82,7 +81,7 @@ class Skill extends Model
     }
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -114,7 +113,7 @@ class Skill extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -134,8 +133,11 @@ class Skill extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**

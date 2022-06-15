@@ -2,7 +2,6 @@
 
 namespace App\Models\Level;
 
-use Config;
 use App\Models\Model;
 
 class UserLevel extends Model
@@ -13,7 +12,7 @@ class UserLevel extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id','current_level', 'current_exp', 'current_points'
+        'user_id', 'current_level', 'current_exp', 'current_points',
     ];
 
     /**
@@ -24,7 +23,7 @@ class UserLevel extends Model
     protected $table = 'user_levels';
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -32,14 +31,13 @@ class UserLevel extends Model
     /**
      * Get the shop stock.
      */
-    public function user() 
+    public function user()
     {
         return $this->belongsTo('App\Models\User\User');
     }
-    
-    public function level() 
+
+    public function level()
     {
         return $this->belongsTo('App\Models\Level\Level', 'current_level');
     }
-
 }

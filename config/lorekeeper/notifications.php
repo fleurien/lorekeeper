@@ -287,7 +287,7 @@ return [
 
     // BOOKMARK_GIFT_WRITING
     39 => [
-        'name' => 'Bookmark Gift Writing',
+        'name'    => 'Bookmark Gift Writing',
         'message' => 'A character you have bookmarked (<a href="{character_url}">{character_name}</a>) has had its Gift Writing Allowed status changed. (<a href="{url}">View Bookmarks</a>)',
         'url'     => 'account/bookmarks',
     ],
@@ -383,81 +383,81 @@ return [
     ],
         // PET_REMOVAL
     241 => [
-        'name' => 'Pet Removal',
+        'name'    => 'Pet Removal',
         'message' => '{pet_name} (×{pet_quantity}) was removed from your inventory by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Inventory</a>)',
-        'url' => 'pets'
+        'url'     => 'pets',
     ],
     // PET_TRANSFER
     242 => [
-        'name' => 'Pet Transfer',
+        'name'    => 'Pet Transfer',
         'message' => 'You have received {pet_name} (×{pet_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Inventory</a>)',
-        'url' => 'pets'
+        'url'     => 'pets',
     ],
     // FORCED_PET_TRANSFER
     243 => [
-        'name' => 'Forced Pet Transfer',
+        'name'    => 'Forced Pet Transfer',
         'message' => '{pet_name} (×{pet_quantity}) was transferred out of your inventory by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Inventory</a>)',
-        'url' => 'pets'
+        'url'     => 'pets',
     ],
     // PET_GRANT
     244 => [
-        'name' => 'Pet Grant',
+        'name'    => 'Pet Grant',
         'message' => 'You have received a staff grant of {pet_name} (×{pet_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Inventory</a>)',
-        'url' => 'pets'
+        'url'     => 'pets',
     ],
     // EXP GRANT
     245 => [
-        'name' => 'EXP Grant',
+        'name'    => 'EXP Grant',
         'message' => 'You have received a staff grant of {quantity} EXP from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Level Area</a>)',
-        'url' => 'level'
+        'url'     => 'level',
     ],
     // GEAR GRANT
     250 => [
-        'name' => 'Gear Grant',
+        'name'    => 'Gear Grant',
         'message' => 'You have received a staff grant of {gear_name} (×{gear_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'gears'
+        'url'     => 'gears',
     ],
     // WEAPON GRANT
     251 => [
-        'name' => 'Weapons Grant',
+        'name'    => 'Weapons Grant',
         'message' => 'You have received a staff grant of {weapon_name} (×{weapon_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'weapons'
+        'url'     => 'weapons',
     ],
     // WEAPON_REMOVAL
     252 => [
-        'name' => 'Weapon Removal',
+        'name'    => 'Weapon Removal',
         'message' => '{weapon_name} (×{weapon_quantity}) was removed from your armoury by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'weapons'
+        'url'     => 'weapons',
     ],
     // WEAPON_TRANSFER
     253 => [
-        'name' => 'Weapon Transfer',
+        'name'    => 'Weapon Transfer',
         'message' => 'You have received {weapon_name} (×{weapon_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'weapons'
+        'url'     => 'weapons',
     ],
     // FORCED_WEAPON_TRANSFER
     254 => [
-        'name' => 'Forced Weapon Transfer',
+        'name'    => 'Forced Weapon Transfer',
         'message' => '{weapon_name} (×{weapon_quantity}) was transferred out of your armoury by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'weapons'
+        'url'     => 'weapons',
     ],
     // GEAR_REMOVAL
     255 => [
-        'name' => 'Gear Removal',
+        'name'    => 'Gear Removal',
         'message' => '{gear_name} (×{gear_quantity}) was removed from your armoury by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'gears'
+        'url'     => 'gears',
     ],
     // GEAR_TRANSFER
     256 => [
-        'name' => 'Gear Transfer',
+        'name'    => 'Gear Transfer',
         'message' => 'You have received {gear_name} (×{gear_quantity}) from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'gears'
+        'url'     => 'gears',
     ],
     // FORCED_GEAR_TRANSFER
     257 => [
-        'name' => 'Forced Gear Transfer',
+        'name'    => 'Forced Gear Transfer',
         'message' => '{gear_name} (×{gear_quantity}) was transferred out of your armoury by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Armoury</a>)',
-        'url' => 'gears'
+        'url'     => 'gears',
     ],
     // CHARACTER_ITEM_GRANT
     501 => [
@@ -552,8 +552,8 @@ return [
 
     // RECIPE_GRANT
     600 => [
-        'name' => 'Recipe Grant',
+        'name'    => 'Recipe Grant',
         'message' => 'You have received a staff grant of the crafting recipe {recipe_name} from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Unlocked Recipes</a>)',
-        'url' => 'crafting'
+        'url'     => 'crafting',
     ],
 ];

@@ -2,7 +2,6 @@
 
 namespace App\Models\Stat;
 
-use Config;
 use App\Models\Model;
 
 class CountLog extends Model
@@ -13,7 +12,7 @@ class CountLog extends Model
      * @var array
      */
     protected $fillable = [
-        'sender_id', 'recipient_id', 
+        'sender_id', 'recipient_id',
         'log', 'quantity', 'log_type', 'data',
         'sender_type',
     ];
@@ -33,7 +32,7 @@ class CountLog extends Model
     public $timestamps = true;
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -41,9 +40,12 @@ class CountLog extends Model
     /**
      * Get the user who initiated the logged action.
      */
-    public function sender() 
+    public function sender()
     {
-        if($this->sender_type == 'User') return $this->belongsTo('App\Models\User\User', 'sender_id');
+        if ($this->sender_type == 'User') {
+            return $this->belongsTo('App\Models\User\User', 'sender_id');
+        }
+
         return $this->belongsTo('App\Models\Character\Character', 'sender_id');
     }
 }

@@ -108,23 +108,23 @@ return [
             ],
             [
                 'name' => 'Recipe Grants',
-                'url' => 'admin/grants/recipes'
+                'url'  => 'admin/grants/recipes',
             ],
             [
                 'name' => 'EXP Grants',
-                'url' => 'admin/grants/exp'
+                'url'  => 'admin/grants/exp',
             ],
             [
                 'name' => 'Pet Grants',
-                'url' => 'admin/grants/pets'
+                'url'  => 'admin/grants/pets',
             ],
             [
                 'name' => 'Gear Grants',
-                'url' => 'admin/grants/gear'
+                'url'  => 'admin/grants/gear',
             ],
             [
                 'name' => 'Weapon Grants',
-                'url' => 'admin/grants/weapons'
+                'url'  => 'admin/grants/weapons',
             ],
         ],
     ],
@@ -162,7 +162,7 @@ return [
         'links' => [
             [
                 'name' => 'Stats',
-                'url' => 'admin/stats'
+                'url'  => 'admin/stats',
             ],
         ],
     ],
@@ -171,11 +171,11 @@ return [
         'links' => [
             [
                 'name' => 'User Levels',
-                'url' => 'admin/levels/user'
+                'url'  => 'admin/levels/user',
             ],
             [
                 'name' => 'Character Levels',
-                'url' => 'admin/levels/character'
+                'url'  => 'admin/levels/character',
             ],
         ],
     ],
@@ -244,11 +244,11 @@ return [
             ],
             [
                 'name' => 'Recipes',
-                'url' => 'admin/data/recipes'
+                'url'  => 'admin/data/recipes',
             ],
             [
                 'name' => 'Pets',
-                'url' => 'admin/data/pets'
+                'url'  => 'admin/data/pets',
             ],
         ],
     ],
@@ -280,19 +280,19 @@ return [
         'links' => [
             [
                 'name' => 'Gear',
-                'url' => 'admin/gear'
+                'url'  => 'admin/gear',
             ],
             [
                 'name' => 'Weapons',
-                'url' => 'admin/weapon'
+                'url'  => 'admin/weapon',
             ],
             [
                 'name' => 'Character Classes',
-                'url' => 'admin/character-classes'
+                'url'  => 'admin/character-classes',
             ],
             [
                 'name' => 'Character Skills',
-                'url' => 'admin/data/skills'
+                'url'  => 'admin/data/skills',
             ],
         ],
     ],

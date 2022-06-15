@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Data;
 
-use Auth;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Award\Award;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\Weapon;
@@ -19,8 +15,9 @@ use App\Models\Prompt\PromptCategory;
 use App\Models\Raffle\Raffle;
 use App\Models\Recipe\Recipe;
 use App\Models\Skill\Skill;
-
 use App\Services\PromptService;
+use Auth;
+use Illuminate\Http\Request;
 
 class PromptController extends Controller
 {
@@ -203,13 +200,13 @@ class PromptController extends Controller
             'items'      => Item::orderBy('name')->pluck('name', 'id'),
             'awards'     => Award::orderBy('name')->pluck('name', 'id'),
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
-            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
-            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
-            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
-            'tables' => LootTable::orderBy('name')->pluck('name', 'id'),
-            'raffles' => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
-            'recipes'=> Recipe::orderBy('name')->pluck('name', 'id'),
-            'skills' => Skill::pluck('name', 'id')->toArray()
+            'pets'       => Pet::orderBy('name')->pluck('name', 'id'),
+            'gears'      => Gear::orderBy('name')->pluck('name', 'id'),
+            'weapons'    => Weapon::orderBy('name')->pluck('name', 'id'),
+            'tables'     => LootTable::orderBy('name')->pluck('name', 'id'),
+            'raffles'    => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'recipes'    => Recipe::orderBy('name')->pluck('name', 'id'),
+            'skills'     => Skill::pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -233,13 +230,13 @@ class PromptController extends Controller
             'items'      => Item::orderBy('name')->pluck('name', 'id'),
             'awards'     => Award::orderBy('name')->pluck('name', 'id'),
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
-            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
-            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
-            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
-            'tables' => LootTable::orderBy('name')->pluck('name', 'id'),
-            'raffles' => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
-            'recipes'=> Recipe::orderBy('name')->pluck('name', 'id'),
-            'skills' => Skill::pluck('name', 'id')->toArray()
+            'pets'       => Pet::orderBy('name')->pluck('name', 'id'),
+            'gears'      => Gear::orderBy('name')->pluck('name', 'id'),
+            'weapons'    => Weapon::orderBy('name')->pluck('name', 'id'),
+            'tables'     => LootTable::orderBy('name')->pluck('name', 'id'),
+            'raffles'    => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'recipes'    => Recipe::orderBy('name')->pluck('name', 'id'),
+            'skills'     => Skill::pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -257,7 +254,7 @@ class PromptController extends Controller
         $data = $request->only([
             'name', 'prompt_category_id', 'summary', 'description', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'is_active', 'rewardable_type',
              'rewardable_id', 'quantity', 'image', 'remove_image', 'prefix', 'hide_submissions', 'staff_only',
-             'chara_exp', 'chara_points', 'user_exp', 'user_points', 'level_req', 'level_check', 'skill_id', 'skill_quantity'
+             'chara_exp', 'chara_points', 'user_exp', 'user_points', 'level_req', 'level_check', 'skill_id', 'skill_quantity',
         ]);
         if ($id && $service->updatePrompt(Prompt::find($id), $data, Auth::user())) {
             flash('Prompt updated successfully.')->success();

@@ -2,8 +2,6 @@
 
 namespace App\Models\Prompt;
 
-use Config;
-
 use App\Models\Model;
 
 class PromptReward extends Model
@@ -77,7 +75,8 @@ class PromptReward extends Model
             case 'Recipe':
                 return $this->belongsTo('App\Models\Recipe\Recipe', 'rewardable_id');
                 break;
-        }   
+        }
+
         return null;
     }
 }

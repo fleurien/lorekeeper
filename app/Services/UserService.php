@@ -61,7 +61,7 @@ class UserService extends Service
             'user_id' => $user->id,
         ]);
         $user->level()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         return $user;

@@ -2,8 +2,6 @@
 
 namespace App\Models\Recipe;
 
-use App;
-use Config;
 use App\Models\Model;
 
 class RecipeReward extends Model
@@ -14,7 +12,7 @@ class RecipeReward extends Model
      * @var array
      */
     protected $fillable = [
-        'recipe_id', 'rewardable_type', 'rewardable_id', 'quantity'
+        'recipe_id', 'rewardable_type', 'rewardable_id', 'quantity',
     ];
 
     /**
@@ -23,7 +21,7 @@ class RecipeReward extends Model
      * @var string
      */
     protected $table = 'recipe_rewards';
-    
+
     /**
      * Validation rules for creation.
      *
@@ -31,10 +29,10 @@ class RecipeReward extends Model
      */
     public static $createRules = [
         'rewardable_type' => 'required',
-        'rewardable_id' => 'required',
-        'quantity' => 'required|integer|min:1'
+        'rewardable_id'   => 'required',
+        'quantity'        => 'required|integer|min:1',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
@@ -42,23 +40,22 @@ class RecipeReward extends Model
      */
     public static $updateRules = [
         'rewardable_type' => 'required',
-        'rewardable_id' => 'required',
-        'quantity' => 'required|integer|min:1'
+        'rewardable_id'   => 'required',
+        'quantity'        => 'required|integer|min:1',
     ];
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
-    
+
     /**
      * Get the reward attached to the loot entry.
      */
-    public function reward() 
+    public function reward()
     {
-        switch ($this->rewardable_type)
-        {
+        switch ($this->rewardable_type) {
             case 'Item':
                 return $this->belongsTo('App\Models\Item\Item', 'rewardable_id');
             case 'Currency':
@@ -69,6 +66,7 @@ class RecipeReward extends Model
                 // Laravel requires a relationship instance to be returned (cannot return null), so returning one that doesn't exist here.
                 return $this->belongsTo('App\Models\Recipe\RecipeRewards', 'rewardable_id', 'recipe_id')->whereNull('recipe_id');
         }
+
         return null;
     }
 }

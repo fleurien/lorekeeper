@@ -8,8 +8,6 @@ class AddLevelRewards extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -20,7 +18,7 @@ class AddLevelRewards extends Migration
             $table->string('rewardable_type');
             $table->integer('rewardable_id')->unsigned();
             $table->integer('quantity')->unsigned();
-            
+
             $table->foreign('level_id')->references('id')->on('level_users');
         });
 
@@ -30,15 +28,13 @@ class AddLevelRewards extends Migration
             $table->string('rewardable_type');
             $table->integer('rewardable_id')->unsigned();
             $table->integer('quantity')->unsigned();
-            
+
             $table->foreign('level_id')->references('id')->on('level_characters');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

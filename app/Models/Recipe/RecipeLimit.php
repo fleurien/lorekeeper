@@ -2,8 +2,6 @@
 
 namespace App\Models\Recipe;
 
-use App;
-use Config;
 use App\Models\Model;
 
 class RecipeLimit extends Model
@@ -14,7 +12,7 @@ class RecipeLimit extends Model
      * @var array
      */
     protected $fillable = [
-        'recipe_id', 'limit_type', 'limit_id', 'quantity'
+        'recipe_id', 'limit_type', 'limit_id', 'quantity',
     ];
 
     /**
@@ -25,18 +23,17 @@ class RecipeLimit extends Model
     protected $table = 'recipe_limits';
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
-    
+
     /**
      * Get the reward attached to the loot entry.
      */
-    public function reward() 
+    public function reward()
     {
-        switch ($this->limit_type)
-        {
+        switch ($this->limit_type) {
             case 'Item':
                 return $this->belongsTo('App\Models\Item\Item', 'limit_id');
             case 'Currency':
@@ -47,6 +44,7 @@ class RecipeLimit extends Model
                 // Laravel requires a relationship instance to be returned (cannot return null), so returning one that doesn't exist here.
                 return $this->belongsTo('App\Models\Recipe\RecipeLimit', 'limit_id', 'recipe_id')->whereNull('recipe_id');
         }
+
         return null;
     }
 }

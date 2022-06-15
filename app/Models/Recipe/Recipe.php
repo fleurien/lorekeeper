@@ -2,8 +2,6 @@
 
 namespace App\Models\Recipe;
 
-use Config;
-use DB;
 use App\Models\Model;
 
 class Recipe extends Model
@@ -14,7 +12,7 @@ class Recipe extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'has_image', 'needs_unlocking', 'description', 'parsed_description', 'reference_url', 'artist_alias' ,'artist_url', 'is_limited'
+        'name', 'has_image', 'needs_unlocking', 'description', 'parsed_description', 'reference_url', 'artist_alias', 'artist_url', 'is_limited',
     ];
 
     protected $appends = ['image_url'];
@@ -32,9 +30,9 @@ class Recipe extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:recipes',
+        'name'        => 'required|unique:recipes',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**
@@ -43,9 +41,9 @@ class Recipe extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required',
+        'name'        => 'required',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -84,8 +82,9 @@ class Recipe extends Model
     /**
      * Scope a query to sort items in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortAlphabetical($query, $reverse = false)
@@ -96,7 +95,8 @@ class Recipe extends Model
     /**
      * Scope a query to sort items by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortNewest($query)
@@ -107,7 +107,8 @@ class Recipe extends Model
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortOldest($query)
@@ -115,11 +116,11 @@ class Recipe extends Model
         return $query->orderBy('id');
     }
 
-
     /**
      * Scope a query to only show recipes that need to be unlocked.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortNeedsUnlocking($query)
@@ -134,34 +135,33 @@ class Recipe extends Model
     **********************************************************************************************/
 
     /**
-     * Gets the decoded output json
+     * Gets the decoded output json.
      *
      * @return array
      */
     public function getRewardsAttribute()
     {
         $rewards = [];
-        if($this->output) {
+        if ($this->output) {
             $assets = $this->getRewardItemsAttribute();
 
-            foreach($assets as $type => $a)
-            {
+            foreach ($assets as $type => $a) {
                 $class = getAssetModelString($type, false);
-                foreach($a as $id => $asset)
-                {
-                    $rewards[] = (object)[
+                foreach ($a as $id => $asset) {
+                    $rewards[] = (object) [
                         'rewardable_type' => $class,
-                        'rewardable_id' => $id,
-                        'quantity' => $asset['quantity']
+                        'rewardable_id'   => $id,
+                        'quantity'        => $asset['quantity'],
                     ];
                 }
             }
         }
+
         return $rewards;
     }
 
     /**
-     * Interprets the json output and retrieves the corresponding items
+     * Interprets the json output and retrieves the corresponding items.
      *
      * @return array
      */
@@ -207,7 +207,7 @@ class Recipe extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -227,8 +227,11 @@ class Recipe extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -252,33 +255,35 @@ class Recipe extends Model
     }
 
     /**
-    * Gets the currency's asset type for asset management.
-    *
-    * @return bool
-    */
-   public function getLockedAttribute()
-   {
-       return $this->needs_unlocking && !User;
-   }
+     * Gets the currency's asset type for asset management.
+     *
+     * @return bool
+     */
+    public function getLockedAttribute()
+    {
+        return $this->needs_unlocking && !User;
+    }
 
-   /**
-    * Returns whether or not a recipe's ingredients are all currency
-    *
-    * @return bool
-    */
-   public function getOnlyCurrencyAttribute()
-   {
-        if(count($this->ingredients))
-        {
+    /**
+     * Returns whether or not a recipe's ingredients are all currency.
+     *
+     * @return bool
+     */
+    public function getOnlyCurrencyAttribute()
+    {
+        if (count($this->ingredients)) {
             $type = [];
-            foreach($this->ingredients as $ingredient)
-            {
+            foreach ($this->ingredients as $ingredient) {
                 $type[] = $ingredient->ingredient_type;
             }
             $types = array_flip($type);
-            if(count($types) == 1 && key($types) == 'Currency') return true;
-            else return false;
+            if (count($types) == 1 && key($types) == 'Currency') {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
-        else return false;
-   }
+    }
 }

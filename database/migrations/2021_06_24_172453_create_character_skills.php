@@ -8,8 +8,6 @@ class CreateCharacterSkills extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -37,7 +35,7 @@ class CreateCharacterSkills extends Migration
             $table->integer('skill_id');
             $table->integer('level');
         });
-    
+
         Schema::create('prompt_skills', function (Blueprint $table) {
             $table->integer('prompt_id');
             $table->integer('skill_id');
@@ -47,8 +45,6 @@ class CreateCharacterSkills extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

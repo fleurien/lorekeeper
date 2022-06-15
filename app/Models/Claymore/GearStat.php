@@ -2,7 +2,6 @@
 
 namespace App\Models\Claymore;
 
-use Config;
 use App\Models\Model;
 
 class GearStat extends Model
@@ -13,7 +12,7 @@ class GearStat extends Model
      * @var array
      */
     protected $fillable = [
-        'gear_id', 'stat_id', 'count'
+        'gear_id', 'stat_id', 'count',
     ];
 
     /**
@@ -24,19 +23,18 @@ class GearStat extends Model
     protected $table = 'gear_stats';
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
 
-    public function gear() 
+    public function gear()
     {
         return $this->belongsTo('App\Models\Claymore\Gear');
     }
 
-    public function stat() 
+    public function stat()
     {
         return $this->belongsTo('App\Models\Stat\Stat');
     }
-    
 }

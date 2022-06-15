@@ -35,7 +35,6 @@ class Kernel extends ConsoleKernel
             ->everyMinute();
         $schedule->command('check-pet-drops')
                 ->everyMinute();
-
     }
 
     /**

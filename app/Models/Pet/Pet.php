@@ -2,10 +2,8 @@
 
 namespace App\Models\Pet;
 
-use Config;
-use DB;
 use App\Models\Model;
-use App\Models\Pet\PetCategory;
+use DB;
 
 class Pet extends Model
 {
@@ -15,7 +13,7 @@ class Pet extends Model
      * @var array
      */
     protected $fillable = [
-        'pet_category_id', 'name', 'has_image', 'description', 'parsed_description', 'allow_transfer', 'pet_name'
+        'pet_category_id', 'name', 'has_image', 'description', 'parsed_description', 'allow_transfer', 'pet_name',
     ];
 
     /**
@@ -32,9 +30,9 @@ class Pet extends Model
      */
     public static $createRules = [
         'pet_category_id' => 'nullable',
-        'name' => 'required|unique:pets|between:3,25',
-        'description' => 'nullable',
-        'image' => 'mimes:png',
+        'name'            => 'required|unique:pets|between:3,25',
+        'description'     => 'nullable',
+        'image'           => 'mimes:png',
     ];
 
     /**
@@ -44,9 +42,9 @@ class Pet extends Model
      */
     public static $updateRules = [
         'pet_category_id' => 'nullable',
-        'name' => 'required|between:3,25',
-        'description' => 'nullable',
-        'image' => 'mimes:png',
+        'name'            => 'required|between:3,25',
+        'description'     => 'nullable',
+        'image'           => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -85,8 +83,9 @@ class Pet extends Model
     /**
      * Scope a query to sort pets in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortAlphabetical($query, $reverse = false)
@@ -97,19 +96,22 @@ class Pet extends Model
     /**
      * Scope a query to sort pets in category order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortCategory($query)
     {
         $ids = PetCategory::orderBy('sort', 'DESC')->pluck('id')->toArray();
+
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(pet_category_id, '.implode(',', $ids).')')) : $query;
     }
 
     /**
      * Scope a query to sort pets by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortNewest($query)
@@ -120,7 +122,8 @@ class Pet extends Model
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortOldest($query)
@@ -161,7 +164,7 @@ class Pet extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -181,8 +184,11 @@ class Pet extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -207,14 +213,20 @@ class Pet extends Model
 
     public function VariantImage($id = null)
     {
-        if(!$id) return $this->imageUrl;
-        else return $this->variants()->where('id', $id)->first()->imageUrl;
+        if (!$id) {
+            return $this->imageUrl;
+        } else {
+            return $this->variants()->where('id', $id)->first()->imageUrl;
+        }
     }
 
     public function VariantName($id = null)
     {
-        if(!$id || !$this->variants() ) return '';
-        else return $this->variants()->where('id', $id)->first()->variant_name;
+        if (!$id || !$this->variants()) {
+            return '';
+        } else {
+            return $this->variants()->where('id', $id)->first()->variant_name;
+        }
     }
 
     /**
@@ -224,7 +236,10 @@ class Pet extends Model
      */
     public function getHasDropsAttribute()
     {
-        if($this->dropData) return 1;
-        else return 0;
+        if ($this->dropData) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

@@ -8,8 +8,6 @@ class AddLevelDescription extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -41,8 +39,6 @@ class AddLevelDescription extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

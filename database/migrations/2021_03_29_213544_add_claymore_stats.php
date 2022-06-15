@@ -8,8 +8,6 @@ class AddClaymoreStats extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -20,7 +18,7 @@ class AddClaymoreStats extends Migration
             $table->integer('stat_id')->unsigned();
 
             $table->integer('count');
-            
+
             $table->foreign('gear_id')->references('id')->on('gears');
             $table->foreign('stat_id')->references('id')->on('stats');
         });
@@ -31,7 +29,7 @@ class AddClaymoreStats extends Migration
             $table->integer('stat_id')->unsigned();
 
             $table->integer('count');
-            
+
             $table->foreign('weapon_id')->references('id')->on('weapons');
             $table->foreign('stat_id')->references('id')->on('stats');
         });
@@ -49,8 +47,6 @@ class AddClaymoreStats extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -61,7 +57,7 @@ class AddClaymoreStats extends Migration
             $table->dropColumn('currency_id');
             $table->dropColumn('cost');
         });
-        
+
         Schema::table('weapons', function (Blueprint $table) {
             $table->dropColumn('currency_id');
             $table->dropColumn('cost');

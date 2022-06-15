@@ -147,7 +147,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('pet-drops/edit/{id?}', 'PetController@postCreateEditDrop');
     Route::post('pet-drops/delete/{id}', 'PetController@postDeleteDrop');
 
-    # ITEMS
+    // ITEMS
     Route::get('item-categories', 'ItemController@getIndex');
     Route::get('item-categories/create', 'ItemController@getCreateItemCategory');
     Route::get('item-categories/edit/{id}', 'ItemController@getEditItemCategory');
@@ -191,7 +191,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('awards/delete/{id}', 'AwardController@postDeleteAward');
 
     // SHOPS
-    # RECIPES
+    // RECIPES
     Route::get('recipes', 'RecipeController@getRecipeIndex');
     Route::get('recipes/create', 'RecipeController@getCreateRecipe');
     Route::get('recipes/edit/{id}', 'RecipeController@getEditRecipe');
@@ -199,8 +199,8 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('recipes/create', 'RecipeController@postCreateEditRecipe');
     Route::post('recipes/edit/{id?}', 'RecipeController@postCreateEditRecipe');
     Route::post('recipes/delete/{id}', 'RecipeController@postDeleteRecipe');
-    
-    # PETS
+
+    // PETS
     Route::get('pet-categories', 'PetController@getIndex');
     Route::get('pet-categories/create', 'PetController@getCreatePetCategory');
     Route::get('pet-categories/edit/{id}', 'PetController@getEditPetCategory');
@@ -220,7 +220,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
 
     Route::post('pets/variants/{id?}', 'PetController@postEditVariants');
 
-    # SHOPS
+    // SHOPS
     Route::get('shops', 'ShopController@getIndex');
     Route::get('shops/create', 'ShopController@getCreateShop');
     Route::get('shops/edit/{id}', 'ShopController@getEditShop');
@@ -305,7 +305,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('advent-calendars/edit/{id?}', 'AdventController@postCreateEditAdvent');
     Route::post('advent-calendars/delete/{id}', 'AdventController@postDeleteAdvent');
 
-    # SKILLS
+    // SKILLS
     Route::get('skills', 'SkillController@getIndex');
     Route::get('skills/create', 'SkillController@getCreateSkill');
     Route::get('skills/edit/{id}', 'SkillController@getEditSkill');
@@ -313,7 +313,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('skills/create', 'SkillController@postCreateEditSkill');
     Route::post('skills/edit/{id?}', 'SkillController@postCreateEditSkill');
     Route::post('skills/delete/{id}', 'SkillController@postDeleteSkill');
-    # SKILL CATEGORIES
+    // SKILL CATEGORIES
     Route::get('skill-categories', 'SkillController@getCategoryIndex');
     Route::get('skill-categories/create', 'SkillController@getCreateSkillCategory');
     Route::get('skill-categories/edit/{id}', 'SkillController@getEditSkillCategory');
@@ -402,7 +402,7 @@ Route::group(['prefix' => 'grants', 'namespace' => 'Users', 'middleware' => 'pow
 
     Route::get('items', 'GrantController@getItems');
     Route::post('items', 'GrantController@postItems');
-    
+
     Route::get('item-search', 'GrantController@getItemSearch');
 
     Route::get('exp', 'GrantController@getExp');
@@ -425,14 +425,13 @@ Route::group(['prefix' => 'grants', 'namespace' => 'Users', 'middleware' => 'pow
     Route::post('recipes', 'GrantController@postRecipes');
 });
 
-# PETS
-Route::group(['prefix' => 'pets', 'middleware' => 'power:edit_inventories'], function() {
+// PETS
+Route::group(['prefix' => 'pets', 'middleware' => 'power:edit_inventories'], function () {
     Route::post('pet/{id}', 'Data\PetController@postEditPetDrop');
 });
 
-
-# MASTERLIST
-Route::group(['prefix' => 'masterlist', 'namespace' => 'Characters', 'middleware' => 'power:manage_characters'], function() {
+// MASTERLIST
+Route::group(['prefix' => 'masterlist', 'namespace' => 'Characters', 'middleware' => 'power:manage_characters'], function () {
     Route::get('create-character', 'CharacterController@getCreateCharacter');
     Route::post('create-character', 'CharacterController@postCreateCharacter');
 
@@ -584,8 +583,8 @@ Route::group(['prefix' => 'designs', 'middleware' => 'power:manage_characters'],
 });
 Route::get('{type}/{status}', 'DesignController@getDesignIndex')->where('type', 'myo-approvals|design-approvals')->where('status', 'pending|approved|rejected');
 
-# STATS - STATS
-Route::group(['prefix' => 'stats', 'namespace' => 'Stats', 'middleware' => 'power:edit_stats'], function() {
+// STATS - STATS
+Route::group(['prefix' => 'stats', 'namespace' => 'Stats', 'middleware' => 'power:edit_stats'], function () {
     // GET
     Route::get('/', 'StatController@getIndex');
     Route::get('/create', 'StatController@getCreateStat');
@@ -595,12 +594,10 @@ Route::group(['prefix' => 'stats', 'namespace' => 'Stats', 'middleware' => 'powe
     Route::post('/create', 'StatController@postCreateEditStat');
     Route::post('/edit/{id}', 'StatController@postCreateEditStat');
     Route::post('/delete/{id}', 'StatController@postDeleteStat');
-
-
 });
-# STATS - LEVELS
-Route::group(['prefix' => 'levels', 'namespace' => 'Stats', 'middleware' => 'power:edit_levels'], function() {
-    # USER
+// STATS - LEVELS
+Route::group(['prefix' => 'levels', 'namespace' => 'Stats', 'middleware' => 'power:edit_levels'], function () {
+    // USER
     // GET
     Route::get('/user', 'LevelController@getIndex');
     Route::get('/create', 'LevelController@getCreateLevel');
@@ -610,14 +607,14 @@ Route::group(['prefix' => 'levels', 'namespace' => 'Stats', 'middleware' => 'pow
     Route::post('/create', 'LevelController@postCreateEditLevel');
     Route::post('/edit/{id}', 'LevelController@postCreateEditLevel');
     Route::post('/delete/{id}', 'LevelController@postDeleteLevel');
-    # ---------------------------------------------
-    # CHARACTER
+    // ---------------------------------------------
+    // CHARACTER
     // GET
     Route::get('/character', 'LevelController@getCharaIndex');
     Route::get('character/create', 'LevelController@getCharaCreateLevel');
     Route::get('character/edit/{id}', 'LevelController@getCharaEditLevel');
     Route::get('character/delete/{id}', 'LevelController@getCharaDeleteLevel');
-        // POST
+    // POST
     Route::post('character/create', 'LevelController@postCharaCreateEditLevel');
     Route::post('character/edit/{id}', 'LevelController@postCharaCreateEditLevel');
     Route::post('character/delete/{id}', 'LevelController@postCharaDeleteLevel');
@@ -626,8 +623,8 @@ Route::group(['prefix' => 'levels', 'namespace' => 'Stats', 'middleware' => 'pow
 /***********************************************************************************
  * CLAYMORES
  ***********************************************************************************/
-# GEARS
-Route::group(['prefix' => 'gear', 'namespace' => 'Claymores', 'middleware' => 'power:edit_claymores'], function() {
+// GEARS
+Route::group(['prefix' => 'gear', 'namespace' => 'Claymores', 'middleware' => 'power:edit_claymores'], function () {
     Route::get('/', 'GearController@getGearIndex');
     Route::get('/create', 'GearController@getCreateGear');
     Route::post('/create', 'GearController@postCreateEditGear');
@@ -638,7 +635,7 @@ Route::group(['prefix' => 'gear', 'namespace' => 'Claymores', 'middleware' => 'p
 
     Route::post('/stats/{id}', 'GearController@postEditGearStats');
 
-    # categories
+    // categories
     Route::get('gear-categories', 'GearController@getGearCategoryIndex');
     Route::get('gear-categories/create', 'GearController@getCreateGearCategory');
     Route::get('gear-categories/edit/{id}', 'GearController@getEditGearCategory');
@@ -649,8 +646,8 @@ Route::group(['prefix' => 'gear', 'namespace' => 'Claymores', 'middleware' => 'p
     Route::post('gear-categories/sort', 'GearController@postSortGearCategory');
 });
 
-# WEAPONS
-Route::group(['prefix' => 'weapon', 'namespace' => 'Claymores', 'middleware' => 'power:edit_claymores'], function() {
+// WEAPONS
+Route::group(['prefix' => 'weapon', 'namespace' => 'Claymores', 'middleware' => 'power:edit_claymores'], function () {
     Route::get('/', 'WeaponController@getWeaponIndex');
     Route::get('/create', 'WeaponController@getCreateWeapon');
     Route::post('/create', 'WeaponController@postCreateEditWeapon');
@@ -661,7 +658,7 @@ Route::group(['prefix' => 'weapon', 'namespace' => 'Claymores', 'middleware' => 
 
     Route::post('/stats/{id}', 'WeaponController@postEditWeaponStats');
 
-    # categories
+    // categories
     Route::get('weapon-categories', 'WeaponController@getWeaponCategoryIndex');
     Route::get('weapon-categories/create', 'WeaponController@getCreateWeaponCategory');
     Route::get('weapon-categories/edit/{id}', 'WeaponController@getEditWeaponCategory');
@@ -672,8 +669,8 @@ Route::group(['prefix' => 'weapon', 'namespace' => 'Claymores', 'middleware' => 
     Route::post('weapon-categories/sort', 'WeaponController@postSortWeaponCategory');
 });
 
-# CHARACTER CLASSES
-Route::group(['prefix' => 'character-classes', 'namespace' => 'Claymores', 'middleware' => 'power:edit_claymores'], function() {
+// CHARACTER CLASSES
+Route::group(['prefix' => 'character-classes', 'namespace' => 'Claymores', 'middleware' => 'power:edit_claymores'], function () {
     Route::get('/', 'CharacterClassController@getIndex');
     Route::get('create', 'CharacterClassController@getCreateCharacterClass');
     Route::get('edit/{id}', 'CharacterClassController@getEditCharacterClass');

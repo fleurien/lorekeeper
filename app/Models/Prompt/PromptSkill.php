@@ -2,7 +2,6 @@
 
 namespace App\Models\Prompt;
 
-use Config;
 use App\Models\Model;
 
 class PromptSkill extends Model
@@ -13,7 +12,7 @@ class PromptSkill extends Model
      * @var array
      */
     protected $fillable = [
-        'prompt_id', 'skill_id', 'quantity'
+        'prompt_id', 'skill_id', 'quantity',
     ];
 
     /**
@@ -22,7 +21,7 @@ class PromptSkill extends Model
      * @var string
      */
     protected $table = 'prompt_skills';
-    
+
     /**
      * Validation rules for creation.
      *
@@ -32,7 +31,7 @@ class PromptSkill extends Model
         'skill_id' => 'required',
         'quantity' => 'required|integer|min:1',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
@@ -44,15 +43,15 @@ class PromptSkill extends Model
     ];
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
-    
+
     /**
      * Get the skill attached to the prompt skill.
      */
-    public function skill() 
+    public function skill()
     {
         return $this->belongsTo('App\Models\Skill\Skill', 'skill_id');
     }

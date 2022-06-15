@@ -1,67 +1,73 @@
-<?php namespace App\Services\Stat;
+<?php
 
-use App\Services\Service;
+namespace App\Services\Stat;
 
-use DB;
-use Config;
-
-use Illuminate\Support\Arr;
-use App\Models\Item\Item;
 use App\Models\Level\Level;
-use App\Models\Level\UserLevelReward;
-use App\Models\Level\CharacterLevelReward;
 use App\Models\Level\UserLevelRequirement;
-use App\Models\Level\CharacterLevelRequirement;
+use App\Models\Level\UserLevelReward;
+use App\Services\Service;
+use DB;
+use Illuminate\Support\Arr;
 
 class LevelService extends Service
 {
- /**
+    /**
      * Creates a new level.
      *
+     * @param mixed $data
      */
     public function createLevel($data)
     {
         DB::beginTransaction();
 
         try {
-            if(!isset($data['stat_points'])) $data['stat_points'] = 0;
+            if (!isset($data['stat_points'])) {
+                $data['stat_points'] = 0;
+            }
             $level = Level::create($data);
 
             $this->populateRewards(Arr::only($data, ['rewardable_type', 'rewardable_id', 'quantity']), $level);
             $this->populateLimits($level, Arr::only($data, ['limit_type', 'limit_id', 'limit_quantity']));
 
             return $this->commitReturn($level);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 
     /**
      * Updates a level.
      *
+     * @param mixed $level
+     * @param mixed $data
      */
     public function updateLevel($level, $data)
     {
         DB::beginTransaction();
 
         try {
-            if(!isset($data['stat_points'])) $data['stat_points'] = 0;
+            if (!isset($data['stat_points'])) {
+                $data['stat_points'] = 0;
+            }
             $level->update($data);
 
             $this->populateRewards(Arr::only($data, ['rewardable_type', 'rewardable_id', 'quantity']), $level);
             $this->populateLimits($level, Arr::only($data, ['limit_type', 'limit_id', 'limit_quantity']));
 
             return $this->commitReturn($level);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
-    
+
     /**
      * Deletes a level.
      *
+     * @param mixed $level
      */
     public function deleteLevel($level)
     {
@@ -70,33 +76,41 @@ class LevelService extends Service
         try {
 
             // Check first if the level is currently owned or if some other site feature uses it
-            if(DB::table('user_levels')->where('current_level', '>=', $level->level)->exists()) throw new \Exception("At least one user has already reached this level.");
-            if(DB::table('prompts')->where('level_req', '>=', $level->level)->exists()) throw new \Exception("A prompt currently has this level as a requirement.");
+            if (DB::table('user_levels')->where('current_level', '>=', $level->level)->exists()) {
+                throw new \Exception('At least one user has already reached this level.');
+            }
+            if (DB::table('prompts')->where('level_req', '>=', $level->level)->exists()) {
+                throw new \Exception('A prompt currently has this level as a requirement.');
+            }
             $level->rewards()->delete();
             $level->delete();
 
             return $this->commitReturn(true);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 
     /*******************************************************************************
-     * 
+     *
      *  CHARACTERS
      ******************************************************************************/
 
     /**
      * Creates a new level.
      *
+     * @param mixed $data
      */
     public function createCharaLevel($data)
     {
         DB::beginTransaction();
 
         try {
-            if(!isset($data['stat_points'])) $data['stat_points'] = 0;
+            if (!isset($data['stat_points'])) {
+                $data['stat_points'] = 0;
+            }
             $level = Level::create($data);
             $level->level_type = 'Character';
             $level->save();
@@ -105,22 +119,27 @@ class LevelService extends Service
             $this->populateLimits($level, Arr::only($data, ['limit_type', 'limit_id', 'limit_quantity']), true);
 
             return $this->commitReturn($level);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 
     /**
      * Updates a level.
      *
+     * @param mixed $level
+     * @param mixed $data
      */
     public function updateCharaLevel($level, $data)
     {
         DB::beginTransaction();
 
         try {
-            if(!isset($data['stat_points'])) $data['stat_points'] = 0;
+            if (!isset($data['stat_points'])) {
+                $data['stat_points'] = 0;
+            }
             $level->update($data);
             $level->level_type = 'Character';
             $level->save();
@@ -129,15 +148,17 @@ class LevelService extends Service
             $this->populateLimits($level, Arr::only($data, ['limit_type', 'limit_id', 'limit_quantity']), true);
 
             return $this->commitReturn($level);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
-    
+
     /**
      * Deletes a level.
      *
+     * @param mixed $level
      */
     public function deleteCharaLevel($level)
     {
@@ -145,53 +166,53 @@ class LevelService extends Service
 
         try {
             // Check first if the level is currently owned or if some other site feature uses it
-            if(DB::table('character_levels')->where('current_level', '>=', $level->level)->exists()) throw new \Exception("At least one character has already reached this level.");
+            if (DB::table('character_levels')->where('current_level', '>=', $level->level)->exists()) {
+                throw new \Exception('At least one character has already reached this level.');
+            }
             $level->rewards()->delete();
             $level->delete();
 
             return $this->commitReturn(true);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 
     /*******************************************************************************
-     * 
+     *
      *  OTHER FUNCTIONS
-     * 
+     *
      ******************************************************************************/
 
-         /**
+    /**
      * Processes user input for creating/updating prompt rewards.
      *
-     * @param  array                      $data
-     * @param  \App\Models\Prompt\Prompt  $level
+     * @param array                     $data
+     * @param \App\Models\Prompt\Prompt $level
+     * @param mixed                     $isChara
      */
     private function populateRewards($data, $level, $isChara = false)
     {
         // Clear the old rewards...
         $level->rewards()->delete();
-        if(!$isChara)
-        {
-            if(isset($data['rewardable_type'])) {
-                foreach($data['rewardable_type'] as $key => $type)
-                {
+        if (!$isChara) {
+            if (isset($data['rewardable_type'])) {
+                foreach ($data['rewardable_type'] as $key => $type) {
                     UserLevelReward::create([
-                        'level_id'       => $level->id,
+                        'level_id'        => $level->id,
                         'rewardable_type' => $type,
                         'rewardable_id'   => $data['rewardable_id'][$key],
                         'quantity'        => $data['quantity'][$key],
                     ]);
                 }
             }
-        }
-        else {
-            if(isset($data['rewardable_type'])) {
-                foreach($data['rewardable_type'] as $key => $type)
-                {
+        } else {
+            if (isset($data['rewardable_type'])) {
+                foreach ($data['rewardable_type'] as $key => $type) {
                     LevelReward::create([
-                        'level_id'       => $level->id,
+                        'level_id'        => $level->id,
                         'rewardable_type' => $type,
                         'rewardable_id'   => $data['rewardable_id'][$key],
                         'quantity'        => $data['quantity'][$key],
@@ -205,27 +226,24 @@ class LevelService extends Service
     {
         $level->limits()->delete();
 
-        if($isChara){
-            if(isset($data['limit_type'])) {
-                foreach($data['limit_type'] as $key => $type)
-                {
+        if ($isChara) {
+            if (isset($data['limit_type'])) {
+                foreach ($data['limit_type'] as $key => $type) {
                     LevelRequirement::create([
-                        'level_id'       => $level->id,
-                        'limit_type' => $type,
-                        'limit_id'   => $data['limit_id'][$key],
+                        'level_id'        => $level->id,
+                        'limit_type'      => $type,
+                        'limit_id'        => $data['limit_id'][$key],
                         'quantity'        => $data['limit_quantity'][$key],
                     ]);
                 }
             }
-        }
-        else {
-            if(isset($data['limit_type'])) {
-                foreach($data['limit_type'] as $key => $type)
-                {
+        } else {
+            if (isset($data['limit_type'])) {
+                foreach ($data['limit_type'] as $key => $type) {
                     UserLevelRequirement::create([
-                        'level_id'       => $level->id,
-                        'limit_type' => $type,
-                        'limit_id'   => $data['limit_id'][$key],
+                        'level_id'        => $level->id,
+                        'limit_type'      => $type,
+                        'limit_id'        => $data['limit_id'][$key],
                         'quantity'        => $data['limit_quantity'][$key],
                     ]);
                 }

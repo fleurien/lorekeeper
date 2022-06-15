@@ -2,7 +2,6 @@
 
 namespace App\Models\Stat;
 
-use Config;
 use App\Models\Model;
 
 class CharacterStat extends Model
@@ -13,7 +12,7 @@ class CharacterStat extends Model
      * @var array
      */
     protected $fillable = [
-        'character_id', 'stat_id', 'stat_level', 'count', 'current_count', 'count'
+        'character_id', 'stat_id', 'stat_level', 'count', 'current_count', 'count',
     ];
 
     /**
@@ -24,19 +23,18 @@ class CharacterStat extends Model
     protected $table = 'character_stats';
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
 
-    public function character() 
+    public function character()
     {
         return $this->belongsTo('App\Models\Character\Character');
     }
 
-    public function stat() 
+    public function stat()
     {
         return $this->belongsTo('App\Models\Stat\Stat');
     }
-    
 }

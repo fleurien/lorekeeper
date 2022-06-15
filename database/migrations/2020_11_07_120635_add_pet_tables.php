@@ -1,15 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddPetTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -53,7 +51,7 @@ class AddPetTables extends Migration
             $table->foreign('user_id')->references('id')->on('users');
         });
 
-        Schema::create('user_pets_log', function(Blueprint $table) {
+        Schema::create('user_pets_log', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('pet_id')->unsigned();
@@ -61,8 +59,8 @@ class AddPetTables extends Migration
 
             $table->integer('sender_id')->unsigned()->nullable();
             $table->integer('recipient_id')->unsigned()->nullable();
-            $table->string('log'); 
-            $table->string('log_type'); 
+            $table->string('log');
+            $table->string('log_type');
             $table->string('data', 1024)->nullable();
 
             $table->timestamps();
@@ -78,8 +76,6 @@ class AddPetTables extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -2,7 +2,6 @@
 
 namespace App\Models\User;
 
-use Config;
 use App\Models\Model;
 
 class UserRecipeLog extends Model
@@ -13,7 +12,7 @@ class UserRecipeLog extends Model
      * @var array
      */
     protected $fillable = [
-        'sender_id', 'recipient_id', 
+        'sender_id', 'recipient_id',
         'log', 'log_type', 'data',
         'character_id',
     ];
@@ -33,7 +32,7 @@ class UserRecipeLog extends Model
     public $timestamps = true;
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -41,7 +40,7 @@ class UserRecipeLog extends Model
     /**
      * Get the user who initiated the logged action.
      */
-    public function sender() 
+    public function sender()
     {
         return $this->belongsTo('App\Models\User\User', 'sender_id');
     }
@@ -49,7 +48,7 @@ class UserRecipeLog extends Model
     /**
      * Get the user who received the logged action.
      */
-    public function recipient() 
+    public function recipient()
     {
         return $this->belongsTo('App\Models\User\User', 'recipient_id');
     }
@@ -57,7 +56,7 @@ class UserRecipeLog extends Model
     /**
      * Get the item that is the target of the action.
      */
-    public function recipe() 
+    public function recipe()
     {
         return $this->belongsTo('App\Models\Recipe\Recipe');
     }

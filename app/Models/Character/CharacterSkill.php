@@ -2,20 +2,17 @@
 
 namespace App\Models\Character;
 
-use Config;
-use DB;
 use App\Models\Model;
 
 class CharacterSkill extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'character_id', 'skill_id', 'level'
+        'character_id', 'skill_id', 'level',
     ];
 
     /**

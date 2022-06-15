@@ -2,7 +2,6 @@
 
 namespace App\Models\Stat;
 
-use Config;
 use App\Models\Model;
 
 class StatTransferLog extends Model
@@ -13,9 +12,9 @@ class StatTransferLog extends Model
      * @var array
      */
     protected $fillable = [
-        'sender_id', 'recipient_id', 
+        'sender_id', 'recipient_id',
         'log', 'quantity', 'log_type', 'data',
-        'sender_type', 'recipient_type'
+        'sender_type', 'recipient_type',
     ];
 
     /**
@@ -33,7 +32,7 @@ class StatTransferLog extends Model
     public $timestamps = true;
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -41,18 +40,24 @@ class StatTransferLog extends Model
     /**
      * Get the user who initiated the logged action.
      */
-    public function sender() 
+    public function sender()
     {
-        if($this->sender_type == 'User') return $this->belongsTo('App\Models\User\User', 'sender_id');
+        if ($this->sender_type == 'User') {
+            return $this->belongsTo('App\Models\User\User', 'sender_id');
+        }
+
         return $this->belongsTo('App\Models\Character\Character', 'sender_id');
     }
 
     /**
      * Get the user who received the logged action.
      */
-    public function recipient() 
+    public function recipient()
     {
-        if($this->recipient_type == 'User') return $this->belongsTo('App\Models\User\User', 'recipient_id');
+        if ($this->recipient_type == 'User') {
+            return $this->belongsTo('App\Models\User\User', 'recipient_id');
+        }
+
         return $this->belongsTo('App\Models\Character\Character', 'recipient_id');
     }
 }

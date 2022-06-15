@@ -2,7 +2,6 @@
 
 namespace App\Models\Level;
 
-use Config;
 use App\Models\Model;
 
 class LevelLog extends Model
@@ -13,7 +12,7 @@ class LevelLog extends Model
      * @var array
      */
     protected $fillable = [
-        'leveller_type', 'recipient_id', 'previous_level', 'new_level', 'created_at', 'updated_at'
+        'leveller_type', 'recipient_id', 'previous_level', 'new_level', 'created_at', 'updated_at',
     ];
 
     /**
@@ -31,7 +30,7 @@ class LevelLog extends Model
     public $timestamps = true;
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -39,9 +38,12 @@ class LevelLog extends Model
     /**
      * Get the user who received the logged action.
      */
-    public function recipient() 
+    public function recipient()
     {
-        if($this->recipient_type == 'User') return $this->belongsTo('App\Models\User\User', 'leveller_type');
+        if ($this->recipient_type == 'User') {
+            return $this->belongsTo('App\Models\User\User', 'leveller_type');
+        }
+
         return $this->belongsTo('App\Models\Character\Character', 'leveller_type');
     }
 }

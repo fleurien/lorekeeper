@@ -2,15 +2,10 @@
 
 namespace App\Models\Claymore;
 
-use Config;
-use DB;
 use App\Models\Model;
-use App\Models\Claymore\GearCategory;
-
 use App\Models\User\User;
-use App\Models\Shop\Shop;
-use App\Models\Prompt\Prompt;
 use App\Models\User\UserGear;
+use DB;
 
 class Gear extends Model
 {
@@ -21,7 +16,7 @@ class Gear extends Model
      */
     protected $fillable = [
         'gear_category_id', 'name', 'has_image', 'description', 'parsed_description', 'allow_transfer',
-        'parent_id', 'currency_id', 'cost'
+        'parent_id', 'currency_id', 'cost',
     ];
 
     protected $appends = ['image_url'];
@@ -40,9 +35,9 @@ class Gear extends Model
      */
     public static $createRules = [
         'gear_category_id' => 'nullable',
-        'name' => 'required|unique:gears|between:3,100',
-        'description' => 'nullable',
-        'image' => 'mimes:png',
+        'name'             => 'required|unique:gears|between:3,100',
+        'description'      => 'nullable',
+        'image'            => 'mimes:png',
     ];
 
     /**
@@ -52,9 +47,9 @@ class Gear extends Model
      */
     public static $updateRules = [
         'gear_category_id' => 'nullable',
-        'name' => 'required|between:3,100',
-        'description' => 'nullable',
-        'image' => 'mimes:png',
+        'name'             => 'required|between:3,100',
+        'description'      => 'nullable',
+        'image'            => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -72,7 +67,7 @@ class Gear extends Model
     }
 
     /**
-     * Get the parent of the gear
+     * Get the parent of the gear.
      */
     public function parent()
     {
@@ -90,9 +85,9 @@ class Gear extends Model
     }
 
     /**
-     * Get the currency that the parent costs
+     * Get the currency that the parent costs.
      */
-    public function currency() 
+    public function currency()
     {
         return $this->belongsTo('App\Models\Currency\Currency');
     }
@@ -106,8 +101,9 @@ class Gear extends Model
     /**
      * Scope a query to sort gears in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortAlphabetical($query, $reverse = false)
@@ -118,19 +114,22 @@ class Gear extends Model
     /**
      * Scope a query to sort gears in category order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortCategory($query)
     {
         $ids = GearCategory::orderBy('sort', 'DESC')->pluck('id')->toArray();
+
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(gear_category_id, '.implode(',', $ids).')')) : $query;
     }
 
     /**
      * Scope a query to sort gears by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortNewest($query)
@@ -141,7 +140,8 @@ class Gear extends Model
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortOldest($query)
@@ -152,7 +152,8 @@ class Gear extends Model
     /**
      * Scope a query to show only released or "released" (at least one user-owned stack has ever existed) gears.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeReleased($query)
@@ -193,7 +194,7 @@ class Gear extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -213,8 +214,11 @@ class Gear extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Models\Claymore;
 
-use Config;
 use App\Models\Model;
 
 class WeaponStat extends Model
@@ -13,7 +12,7 @@ class WeaponStat extends Model
      * @var array
      */
     protected $fillable = [
-        'weapon_id', 'stat_id', 'count'
+        'weapon_id', 'stat_id', 'count',
     ];
 
     /**
@@ -24,19 +23,18 @@ class WeaponStat extends Model
     protected $table = 'weapon_stats';
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
 
-    public function weapon() 
+    public function weapon()
     {
         return $this->belongsTo('App\Models\Claymore\Weapon');
     }
 
-    public function stat() 
+    public function stat()
     {
         return $this->belongsTo('App\Models\Stat\Stat');
     }
-    
 }
