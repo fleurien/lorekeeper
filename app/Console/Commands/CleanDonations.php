@@ -39,4 +39,5 @@ class CleanDonations extends Command
         //
         (new ShopManager)->cleanDonations();
     }
+     */
 }
