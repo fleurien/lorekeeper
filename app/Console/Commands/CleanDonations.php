@@ -36,7 +36,6 @@ class CleanDonations extends Command
      */
      public function handle()
     {
-        //
         (new ShopManager)->cleanDonations();
     }
 }
