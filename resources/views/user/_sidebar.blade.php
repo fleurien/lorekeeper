@@ -1,5 +1,5 @@
 <ul>
-    <li class="sidebar-header"><a href="{{ $user->url }}" class="card-link">{{ $user->name }}</a></li>
+    <li class="sidebar-header"><a href="{{ $user->url }}" class="card-link" style="overflow:hidden; text-overflow: ellipsis;">{{ $user->name }}</a></li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">Gallery</div>
         <div class="sidebar-item"><a href="{{ $user->url.'/gallery' }}" class="{{ set_active('user/'.$user->name.'/gallery*') }}">Gallery</a></div>

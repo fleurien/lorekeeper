@@ -114,11 +114,6 @@ main > .row {
 
 /* Sidebar */
 
-.sidebar-header .card-link {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .sidebar {
     text-align: right;
     padding-right: 0px;
