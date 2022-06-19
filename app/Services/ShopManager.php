@@ -2,15 +2,18 @@
 
 namespace App\Services;
 
+use Config;
+use DB;
+use Carbon\Carbon;
+
 use App\Models\Character\Character;
 use App\Models\Item\ItemLog;
 use App\Models\Shop\Shop;
 use App\Models\Shop\ShopLog;
 use App\Models\Shop\ShopStock;
 use App\Models\Shop\UserItemDonation;
-use Carbon\Carbon;
-use Config;
-use DB;
+
+use App\Services\Service;
 
 class ShopManager extends Service
 {
@@ -185,7 +188,7 @@ class ShopManager extends Service
      * @param \App\Models\User\User $user
      *
      * @return App\Models\Shop\Shop|bool
-
+    */
     public function collectDonation($data, $user)
     {
         DB::beginTransaction();
@@ -226,12 +229,12 @@ class ShopManager extends Service
 
         return $this->rollbackReturn(false);
     }
-*/
+
     /*
      * Clears out expired donations from the shop, if relevant.
      *
      * @return bool
-
+    */
     public function cleanDonations()
     {
         $count = UserItemDonation::expired()->count();
@@ -258,5 +261,5 @@ class ShopManager extends Service
             return $this->rollbackReturn(false);
         }
     }
-    */
+    
 }
