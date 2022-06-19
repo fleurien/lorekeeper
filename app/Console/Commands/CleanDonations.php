@@ -34,8 +34,9 @@ class CleanDonations extends Command
      *
      * @return mixed
      */
-     public function handle()
+    public function handle()
     {
+        //
         (new ShopManager)->cleanDonations();
     }
 }
