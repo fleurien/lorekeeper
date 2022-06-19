@@ -2,6 +2,10 @@
 
 namespace App\Models\Item;
 
+use Config;
+use DB;
+
+use App\Models\Item\ItemCategory;	
 use App\Models\Model;
 use App\Models\Prompt\Prompt;
 use App\Models\Shop\Shop;
