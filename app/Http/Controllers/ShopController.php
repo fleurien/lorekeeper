@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
+
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
@@ -11,9 +16,8 @@ use App\Models\Shop\ShopStock;
 use App\Models\Shop\UserItemDonation;
 use App\Models\SitePage;
 use App\Models\User\UserItem;
+
 use App\Services\ShopManager;
-use Auth;
-use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
