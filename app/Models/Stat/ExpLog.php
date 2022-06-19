@@ -2,6 +2,8 @@
 
 namespace App\Models\Stat;
 
+use Config;	
+
 use App\Models\Model;
 
 class ExpLog extends Model

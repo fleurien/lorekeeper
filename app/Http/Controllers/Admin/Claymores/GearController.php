@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Admin\Claymores;
 
+use Auth;
+use Config;	
+use Settings;	
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
+
 use App\Models\Character\CharacterClass;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\GearCategory;
 use App\Models\Currency\Currency;
 use App\Models\Stat\Stat;
+
 use App\Services\Claymore\GearService;
-use Auth;
-use Illuminate\Http\Request;
 
 class GearController extends Controller
 {

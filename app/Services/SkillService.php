@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use Config;	
+use DB;
+
 use App\Models\Skill\Skill;
 use App\Models\Skill\SkillCategory;
-use DB;
+
+use App\Services\Service;	
 
 class SkillService extends Service
 {

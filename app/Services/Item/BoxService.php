@@ -2,6 +2,8 @@
 
 namespace App\Services\Item;
 
+use DB;
+
 use App\Models\Award\Award;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\Weapon;
@@ -11,9 +13,9 @@ use App\Models\Loot\LootTable;
 use App\Models\Pet\Pet;
 use App\Models\Raffle\Raffle;
 use App\Models\Recipe\Recipe;
+
 use App\Services\InventoryManager;
 use App\Services\Service;
-use DB;
 
 class BoxService extends Service
 {

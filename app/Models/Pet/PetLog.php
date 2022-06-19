@@ -2,6 +2,8 @@
 
 namespace App\Models\Pet;
 
+use Config;	
+
 use App\Models\Model;
 
 class PetLog extends Model

@@ -2,6 +2,8 @@
 
 namespace App\Models\Claymore;
 
+use Config;	
+
 use App\Models\Model;
 
 class WeaponStat extends Model

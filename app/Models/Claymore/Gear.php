@@ -2,10 +2,15 @@
 
 namespace App\Models\Claymore;
 
+use Config;	
+use DB;
+
+use App\Models\Claymore\GearCategory;	
 use App\Models\Model;
+use App\Models\Prompt\Prompt;	
+use App\Models\Shop\Shop;	
 use App\Models\User\User;
 use App\Models\User\UserGear;
-use DB;
 
 class Gear extends Model
 {

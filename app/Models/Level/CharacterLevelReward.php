@@ -2,6 +2,8 @@
 
 namespace App\Models\Level;
 
+use Config;	
+
 use App\Models\Model;
 
 class CharacterLevelReward extends Model

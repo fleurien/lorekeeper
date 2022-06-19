@@ -2,7 +2,21 @@
 
 namespace App\Models\Pet;
 
+use Config;	
+use DB;	
+use Notifications;	
+use Carbon\Carbon;	
+
+use App\Models\Character\Character;	
+use App\Models\Currency\Currency;	
+use App\Models\Item\Item;	
 use App\Models\Model;
+use App\Models\Pet\Pet;	
+use App\Models\Pet\PetDrop;	
+use App\Models\Pet\PetVariant;	
+use App\Models\Species\Species;	
+use App\Models\Species\Subtype;	
+use App\Models\User\UserPet;	
 
 class PetDropData extends Model
 {

@@ -2,6 +2,8 @@
 
 namespace App\Models\Character;
 
+use Config;	
+
 use App\Models\Model;
 
 class CharacterClass extends Model

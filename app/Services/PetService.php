@@ -2,10 +2,14 @@
 
 namespace App\Services;
 
+use Config;	
+use DB;
+
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetCategory;
 use App\Models\Pet\PetVariant;
-use DB;
+
+use App\Services\Service;	
 
 class PetService extends Service
 {

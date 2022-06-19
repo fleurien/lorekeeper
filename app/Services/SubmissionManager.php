@@ -2,6 +2,14 @@
 
 namespace App\Services;
 
+use Config;	
+use DB;
+use Image;	
+use Notifications;
+use Settings;
+use Carbon\Carbon;	
+use Illuminate\Support\Arr;
+
 use App\Models\Award\Award;
 use App\Models\Character\Character;
 use App\Models\Claymore\Gear;
@@ -9,6 +17,7 @@ use App\Models\Claymore\Weapon;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Loot\LootTable;
+use App\Models\Pet\Pet;	
 use App\Models\Prompt\Prompt;
 use App\Models\Raffle\Raffle;
 use App\Models\Recipe\Recipe;
@@ -16,12 +25,11 @@ use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
 use App\Models\User\User;
 use App\Models\User\UserItem;
+
+use App\Services\Service;	
+use App\Services\SkillManager;	
 use App\Services\Stat\ExperienceManager;
 use App\Services\Stat\StatManager;
-use DB;
-use Illuminate\Support\Arr;
-use Notifications;
-use Settings;
 
 class SubmissionManager extends Service
 {

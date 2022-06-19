@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers\Characters;
 
+use Auth;
+use DB;	
+use Route;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
+
 use App\Models\Character\Character;
+use App\Models\Level\CharacterLevel;	
 use App\Models\Level\Level;
 use App\Models\Stat\CharacterStat;
 use App\Models\Stat\Stat;
+
 use App\Services\Stat\ExperienceManager;
 use App\Services\Stat\LevelManager;
 use App\Services\Stat\StatManager;
-use Auth;
-use Illuminate\Http\Request;
-use Route;
 
 class LevelController extends Controller
 {

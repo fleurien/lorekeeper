@@ -2,8 +2,11 @@
 
 namespace App\Models\Submission;
 
-use App\Models\Model;
+use Config;	
+use DB;	
 use Carbon\Carbon;
+
+use App\Models\Model;
 
 class Submission extends Model
 {

@@ -2,6 +2,8 @@
 
 namespace App\Models\Prompt;
 
+use Config;	
+
 use App\Models\Model;
 
 class PromptSkill extends Model

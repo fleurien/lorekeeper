@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers\Admin\Characters;
 
+use Auth;
+use Config;
+use Settings;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
+
 use App\Models\Character\Character;
 use App\Models\Character\CharacterCategory;
+use App\Models\Character\CharacterClass;	
 use App\Models\Character\CharacterTransfer;
+use App\Services\CurrencyManager;	
 use App\Models\Feature\Feature;
 use App\Models\Rarity;
 use App\Models\Species\Species;
@@ -14,12 +22,9 @@ use App\Models\Stat\Stat;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserItem;
+
 use App\Services\CharacterManager;
 use App\Services\TradeManager;
-use Auth;
-use Config;
-use Illuminate\Http\Request;
-use Settings;
 
 class CharacterController extends Controller
 {

@@ -3,8 +3,8 @@
 namespace App\Models\User;
 
 use Auth;
-use Carbon\Carbon;
 use Config;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

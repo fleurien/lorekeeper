@@ -2,6 +2,9 @@
 
 namespace App\Models\Character;
 
+use Config;	
+use DB;	
+
 use App\Models\Model;
 
 class CharacterSkill extends Model

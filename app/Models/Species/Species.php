@@ -2,6 +2,8 @@
 
 namespace App\Models\Species;
 
+use Config;	
+
 use App\Models\Model;
 
 class Species extends Model

@@ -2,12 +2,15 @@
 
 namespace App\Services\Claymore;
 
+use DB;
+use Config;	
+
 use App\Models\Character\Character;
 use App\Models\Character\CharacterClass;
 use App\Models\Claymore\GearCategory;
 use App\Models\Claymore\WeaponCategory;
+
 use App\Services\Service;
-use DB;
 
 class CharacterClassService extends Service
 {

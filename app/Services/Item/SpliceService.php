@@ -2,9 +2,16 @@
 
 namespace App\Services\Item;
 
-use App\Models\Item\Item;
-use App\Services\Service;
 use DB;
+
+use App\Models\Currency\Currency;	
+use App\Models\Item\Item;
+use App\Models\Loot\LootTable;	
+use App\Models\Raffle\Raffle;	
+use App\Models\Pet\Pet;	
+
+use App\Services\InventoryManager;	
+use App\Services\Service;
 
 class SpliceService extends Service
 {

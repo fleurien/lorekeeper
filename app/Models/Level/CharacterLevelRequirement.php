@@ -3,6 +3,8 @@
 namespace App\Models\Level;
 
 use App;
+use Config;	
+
 use App\Models\Model;
 
 class CharacterLevelRequirement extends Model

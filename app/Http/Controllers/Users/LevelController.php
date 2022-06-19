@@ -11,11 +11,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use App\Models\Currency\Currency;	
 use App\Models\Currency\CurrencyLog;	
-use App\Services\CurrencyManager;	
 use App\Models\Level\Level;
 use App\Models\User\User;
 use App\Models\User\UserCurrency;	
 
+use App\Services\CurrencyManager;	
 use App\Services\Stat\ExperienceManager;	
 use App\Services\Stat\LevelManager;
 use App\Services\Stat\StatManager;

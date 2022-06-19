@@ -2,15 +2,21 @@
 
 namespace App\Services\Stat;
 
+use Auth;
+use Config;	
+use DB;
+use Notifications;	
+use Carbon\Carbon;
+
 use App\Models\Character\Character;
+use App\Models\Item\Item;	
 use App\Models\Level\CharacterLevel;
 use App\Models\Level\UserLevel;
+use App\Models\Stat\CharacterStat;	
 use App\Models\Stat\Stat;
 use App\Models\User\User;
+
 use App\Services\Service;
-use Auth;
-use Carbon\Carbon;
-use DB;
 
 class StatManager extends Service
 {

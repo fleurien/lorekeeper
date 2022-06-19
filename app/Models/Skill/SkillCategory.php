@@ -2,6 +2,8 @@
 
 namespace App\Models\Skill;
 
+use Config;	
+
 use App\Models\Model;
 
 class SkillCategory extends Model

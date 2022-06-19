@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Admin\Claymores;
 
+use Auth;
+use Config;	
+use Settings;	
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
+
 use App\Models\Character\CharacterClass;
 use App\Models\Claymore\Weapon;
 use App\Models\Claymore\WeaponCategory;
 use App\Models\Currency\Currency;
 use App\Models\Stat\Stat;
+
 use App\Services\Claymore\WeaponService;
-use Auth;
-use Illuminate\Http\Request;
 
 class WeaponController extends Controller
 {

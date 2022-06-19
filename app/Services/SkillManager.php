@@ -2,10 +2,16 @@
 
 namespace App\Services;
 
+use Config;	
+use DB;
+use Carbon\Carbon;
+
+use App\Models\Character\CharacterLog;	
 use App\Models\Character\CharacterSkill;
 use App\Models\Skill\Skill;
-use Carbon\Carbon;
-use DB;
+use App\Models\Skill\SkillCategory;	
+
+use App\Services\Service;	
 
 class SkillManager extends Service
 {

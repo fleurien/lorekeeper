@@ -2,8 +2,12 @@
 
 namespace App\Models\Prompt;
 
+use Config;
+use DB;	
+use Carbon\Carbon;		
+
 use App\Models\Model;
-use Carbon\Carbon;
+use App\Models\Prompt\PromptCategory;	
 
 class Prompt extends Model
 {

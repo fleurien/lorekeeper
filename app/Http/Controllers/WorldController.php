@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Config;
+use Illuminate\Http\Request;
+
 use App\Models\Award\Award;
 use App\Models\Award\AwardCategory;
 use App\Models\Character\CharacterCategory;
@@ -15,7 +19,9 @@ use App\Models\Feature\Feature;
 use App\Models\Feature\FeatureCategory;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
+use App\Models\Level\CharacterLevel;	
 use App\Models\Level\Level;
+use App\Models\Level\UserLevel;	
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetCategory;
 use App\Models\Prompt\Prompt;
@@ -30,9 +36,6 @@ use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\Stat\Stat;
 use App\Models\User\User;
-use Auth;
-use Config;
-use Illuminate\Http\Request;
 
 class WorldController extends Controller
 {

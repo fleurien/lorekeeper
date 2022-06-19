@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Claymores;
 
-use App\Http\Controllers\Controller;
-use App\Models\Character\CharacterClass;
-use App\Services\Claymore\CharacterClassService;
 use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
+
+use App\Models\Character\CharacterClass;
+
+use App\Services\Claymore\CharacterClassService;
 
 class CharacterClassController extends Controller
 {

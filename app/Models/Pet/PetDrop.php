@@ -2,11 +2,18 @@
 
 namespace App\Models\Pet;
 
+use Config;	
+use DB;	
+use Carbon\Carbon;
+use Notifications;	
+
 use App\Models\Item\Item;
+use App\Models\Item\ItemLog;	
 use App\Models\Model;
+use App\Models\Pet\Pet;	
+use App\Models\Pet\PetDropData;	
 use App\Models\User\User;
 use App\Models\User\UserPet;
-use Carbon\Carbon;
 
 class PetDrop extends Model
 {
