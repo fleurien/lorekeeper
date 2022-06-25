@@ -9,13 +9,13 @@ $( document ).ready(function() {
     var $GearSelect = $('#lootRowData').find('.gear-select');
     var $currencySelect = $('#lootRowData').find('.currency-select');
     var $awardSelect = $('#lootRowData').find('.award-select');
-    @if($showLootTables)
+    @if(isset($showLootTables) && $showLootTables)
         var $tableSelect = $('#lootRowData').find('.table-select');
     @endif
-    @if($showRaffles)
+    @if(isset($showRaffles) && $showRaffles)
         var $raffleSelect = $('#lootRowData').find('.raffle-select');
     @endif
-    @if($showRecipes)
+    @if(isset($showRecipes) && $showRecipes)
         var $recipeSelect = $('#lootRowData').find('.recipe-select');
     @endif
 
@@ -41,13 +41,13 @@ $( document ).ready(function() {
         else if (val == 'Pet') $clone = $PetSelect.clone();
         else if (val == 'Weapon') $clone = $WeaponSelect.clone();
         else if (val == 'Gear') $clone = $GearSelect.clone();
-        @if($showLootTables)
+        @if(isset($showLootTables) && $showLootTables)
             else if (val == 'LootTable') $clone = $tableSelect.clone();
         @endif
-        @if($showRaffles)
+        @if(isset($showRaffles) && $showRaffles)
             else if (val == 'Raffle') $clone = $raffleSelect.clone();
         @endif
-        @if($showRecipes)
+        @if(isset($showRecipes) && $showRecipes)
             else if (val == 'Recipe') $clone = $recipeSelect.clone();
         @endif
 
@@ -67,13 +67,13 @@ $( document ).ready(function() {
             else if (val == 'Pet') $clone = $PetSelect.clone();
             else if (val == 'Weapon') $clone = $WeaponSelect.clone();
             else if (val == 'Gear') $clone = $GearSelect.clone();
-            @if($showLootTables)
+            @if(isset($showLootTables) && $showLootTables)
                 else if (val == 'LootTable') $clone = $tableSelect.clone();
             @endif
-            @if($showRaffles)
+            @if(isset($showRaffles) && $showRaffles)
                 else if (val == 'Raffle') $clone = $raffleSelect.clone();
             @endif
-            @if($showRecipes)
+            @if(isset($showRecipes) && $showRecipes)
                 else if (val == 'Recipe') $clone = $recipeSelect.clone();
             @endif
 

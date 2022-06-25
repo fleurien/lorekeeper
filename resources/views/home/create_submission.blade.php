@@ -50,9 +50,9 @@
             <p>Note that any rewards added here are <u>in addition</u> to the default prompt rewards. If you do not require any additional rewards, you can leave this blank.</p>
         @endif
         @if($isClaim)
-            @include('widgets._loot_select', ['loots' => null, 'showLootTables' => false, 'showRaffles' => true])
+            @include('widgets._loot_select', ['loots' => null, 'showLootTables' => false, 'showRaffles' => true, 'showRecipes' => true])
         @else
-            @include('widgets._loot_select', ['loots' => null, 'showLootTables' => false, 'showRaffles' => false])
+            @include('widgets._loot_select', ['loots' => null, 'showLootTables' => false, 'showRaffles' => false,'showRecipes' => false])
         @endif
         @if(!$isClaim)
             <div id="rewards" class="mb-3"></div>

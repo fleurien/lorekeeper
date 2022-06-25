@@ -24,6 +24,7 @@ use App\Models\Recipe\Recipe;
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
 use App\Models\User\User;
+use App\Models\User\UserAward;	
 use App\Models\User\UserItem;
 
 use App\Services\Service;	
@@ -427,6 +428,7 @@ class SubmissionManager extends Service
             $currencyIds = [];
             $itemIds = [];
             $tableIds = [];
+            $awardIds = [];
             if (isset($data['character_currency_id'])) {
                 foreach ($data['character_currency_id'] as $c) {
                     foreach ($c as $currencyId) {
@@ -449,6 +451,7 @@ class SubmissionManager extends Service
             array_unique($currencyIds);
             array_unique($itemIds);
             array_unique($tableIds);
+            array_unique($awardIds);
             $currencies = Currency::whereIn('id', $currencyIds)->where('is_character_owned', 1)->get()->keyBy('id');
             $items = Item::whereIn('id', $itemIds)->get()->keyBy('id');
             $tables = LootTable::whereIn('id', $tableIds)->get()->keyBy('id');
