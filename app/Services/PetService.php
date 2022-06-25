@@ -288,7 +288,7 @@ class PetService extends Service
             if (DB::table('prompt_rewards')->where('rewardable_type', 'Pet')->where('rewardable_id', $pet->id)->exists()) {
                 throw new \Exception('A prompt currently distributes this pet as a reward. Please remove the pet before deleting it.');
             }
-            if (DB::table('user_pet_logs')->where('pet_id', $pet->id)->exists()) {
+            if (DB::table('user_pets_log')->where('pet_id', $pet->id)->exists()) {
                 throw new \Exception('At least one log currently has this pet. Please remove the log(s) before deleting it.');
             }
             //if(DB::table('shop_stock')->where('pet_id', $pet->id)->exists()) throw new \Exception("A shop currently stocks this pet. Please remove the pet before deleting it.");
