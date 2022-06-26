@@ -566,7 +566,7 @@ class InventoryManager extends Service
      * @param int                       $quantities
      *
      * @return bool
-     */
+     
     public function donateStack($user, $stacks, $quantities)
     {
         DB::beginTransaction();
@@ -625,7 +625,7 @@ class InventoryManager extends Service
 
         return $this->rollbackReturn(false);
     }
-
+    */
     /**
      * Credits an item to a user or character.
      *

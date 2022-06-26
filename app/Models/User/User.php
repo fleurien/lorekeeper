@@ -496,7 +496,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * Check if user can collect from the donation shop.
      *
      * @return int
-     */
+     
     public function getDonationShopCooldownAttribute()
     {
         // Fetch log for most recent collection
@@ -514,7 +514,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return null;
     }
-
+    */
     /**********************************************************************************************
 
         OTHER FUNCTIONS

@@ -218,7 +218,7 @@ return [
     |       Cooldown: Time (in minutes) that users must wait between "purchases". Default: 5.
     |       Expiry: Time (in months) before items are automatically deleted from the donation shop. Set to 0 to disable expiry. Default: 0.
     |
-    */
+    
     'default_purchase_limit' => 99,
 
     'donation_shop' => [
@@ -226,7 +226,7 @@ return [
         'cooldown'       => 5,
         'expiry'         => 0,
     ],
-
+    */
     /*
     |--------------------------------------------------------------------------
     | Currency Symbol

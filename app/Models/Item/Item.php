@@ -400,7 +400,7 @@ class Item extends Model
      * Check if an item can be donated.
      *
      * @return bool
-     */
+     
     public function getCanDonateAttribute()
     {
         if (!$this->allow_transfer) {
@@ -438,7 +438,7 @@ class Item extends Model
 
         return 0;
     }
-
+    */
     /**********************************************************************************************
 
         OTHER FUNCTIONS

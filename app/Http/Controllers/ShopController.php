@@ -144,7 +144,7 @@ class ShopController extends Controller
      * Shows the donation shop.
      *
      * @return \Illuminate\Contracts\Support\Renderable
-     */
+     
     public function getDonationShop()
     {
         $categories = ItemCategory::orderBy('sort', 'DESC')->get();
@@ -161,7 +161,7 @@ class ShopController extends Controller
             'shops'      => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
         ]);
     }
-
+    */
     /**
      * Gets the donation shop stock modal.
      *
@@ -169,7 +169,7 @@ class ShopController extends Controller
      * @param int                      $id
      *
      * @return \Illuminate\Contracts\Support\Renderable
-     */
+     
     public function getDonationShopStock(ShopManager $service, $id)
     {
         $stock = UserItemDonation::where('id', $id)->first();
@@ -178,14 +178,14 @@ class ShopController extends Controller
             'stock' => $stock,
         ]);
     }
-
+    */
     /**
      * Collects an item from the donation shop.
      *
      * @param App\Services\ShopManager $service
      *
      * @return \Illuminate\Http\RedirectResponse
-     */
+     
     public function postCollect(Request $request, ShopManager $service)
     {
         if ($service->collectDonation($request->only(['stock_id']), Auth::user())) {
@@ -198,4 +198,5 @@ class ShopController extends Controller
 
         return redirect()->back();
     }
+    */
 }

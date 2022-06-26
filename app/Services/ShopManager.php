@@ -188,7 +188,7 @@ class ShopManager extends Service
      * @param \App\Models\User\User $user
      *
      * @return App\Models\Shop\Shop|bool
-    */
+    
     public function collectDonation($data, $user)
     {
         DB::beginTransaction();
@@ -229,12 +229,12 @@ class ShopManager extends Service
 
         return $this->rollbackReturn(false);
     }
-
+    */
     /*
      * Clears out expired donations from the shop, if relevant.
      *
      * @return bool
-    */
+    
     public function cleanDonations()
     {
         $count = UserItemDonation::expired()->count();
@@ -261,5 +261,5 @@ class ShopManager extends Service
             return $this->rollbackReturn(false);
         }
     }
-    
+    */
 }
