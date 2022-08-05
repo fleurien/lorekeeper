@@ -34,6 +34,7 @@ Route::group(['prefix' => 'account', 'namespace' => 'Users'], function() {
     Route::get('remove-alias/{id}', 'AccountController@getRemoveAlias');
     Route::post('remove-alias/{id}', 'AccountController@postRemoveAlias');
     Route::post('dob', 'AccountController@postBirthday');
+    Route::post('theme', 'AccountController@postTheme');
 
     Route::get('bookmarks', 'BookmarkController@getBookmarks');
     Route::get('bookmarks/create', 'BookmarkController@getCreateBookmark');
@@ -185,6 +186,7 @@ Route::group(['prefix' => 'designs', 'namespace' => 'Characters'], function() {
 
 Route::group(['prefix' => 'shops'], function() {
     Route::post('buy', 'ShopController@postBuy');
+    Route::post('collect', 'ShopController@postCollect');
     Route::get('history', 'ShopController@getPurchaseHistory');
 });
 
@@ -197,4 +199,19 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function() {
     Route::put('/{comment}', 'CommentController@update')->name('comments.update');
     Route::post('/{comment}', 'CommentController@reply')->name('comments.reply');
     Route::post('/{id}/feature', 'CommentController@feature')->name('comments.feature');
+});
+
+/**************************************************************************************************
+    Paypal
+**************************************************************************************************/
+Route::get('paypal-success', 'StoreController@success');
+Route::get('cash-shop', 'StoreController@storeFront');
+Route::post('cash-shop/purchase/{id}', 'PaypalController@expressCheckout');
+Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
+/***Advent Calendars
+**************************************************************************************************/
+
+Route::group(['prefix' => 'advent-calendars'], function() {
+    Route::get('{id}', 'AdventController@getAdvent');
+    Route::post('{id}', 'AdventController@postClaimPrize');
 });

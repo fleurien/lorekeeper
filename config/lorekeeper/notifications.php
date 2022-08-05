@@ -302,6 +302,12 @@ return [
         'message' => 'Your report (#{report_id}) was closed by <a href="{staff_url}">{staff_name}</a>. (<a href="{url}">View Report</a>)',
         'url' => 'reports/view/{report_id}'
     ],
+    // CHARACTER_ITEM_REMOVAL
+    222 => [
+        'name' => 'Cash Shop Purchase',
+        'message' => 'Thank you for your purchase! Your {item} has been added to your inventory (<a href="{url}">View Inventory</a>)',
+        'url' => 'inventory'
+    ],
     // Comment made on user's model
     // COMMENT_MADE
     239 => [
@@ -314,6 +320,20 @@ return [
     240 => [
         'name' => 'Comment Reply',
         'message' => '<a href="{sender_url}">{sender}</a> has made a reply to your comment. <a href="comment/{comment_url}">See Reply.</a>',
+        'url' => ''
+    ],
+
+    // COOWNER_OWNER_UPDATE
+    298 => [
+        'name' => 'Main Owner Update',
+        'message' => 'The main owner of {character_url} has changed. Transferred to: {recipient}',
+        'url' => ''
+    ],
+    
+    // COOWNER_UPDATE
+    299 => [
+        'name' => 'Co-owner Update',
+        'message' => '<a href="{user_url}">{user}</a> has updated your co-ownership status to {character_url}.',
         'url' => ''
     ],
 

@@ -146,13 +146,13 @@ class BrowseController extends Controller
         if($request->get('owner')) {
             $owner = User::find($request->get('owner'));
             $query->where(function($query) use ($owner) {
-                $query->where('user_id', $owner->id);
+                $query->where('user_id', $owner->id)->orWhere('coowner_id', $owner->id);
             });
         }
         if($request->get('owner_url')) {
             $ownerUrl = $request->get('owner_url');
             $query->where(function($query) use ($ownerUrl) {
-                $query->where('owner_url','LIKE', '%'.$ownerUrl.'%');
+                $query->where('owner_url','LIKE', '%'.$ownerUrl.'%')->orWhere('coowner_url','LIKE', '%'.$ownerUrl.'%');
             });
         }
 
@@ -254,7 +254,7 @@ class BrowseController extends Controller
             'specieses' => [0 => 'Any Species'] + Species::whereNotIn('id', $subSpecies)->orderBy('specieses.sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes' => [0 => 'Any Subtype'] + Subtype::orderBy('subtypes.sort', 'DESC')->pluck('name', 'id')->toArray(),
             'rarities' => [0 => 'Any Rarity'] + Rarity::orderBy('rarities.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features' => Feature::orderBy('features.name')->pluck('name', 'id')->toArray(),
+            'features' => Feature::getFeaturesByCategory(),
             'sublists' => Sublist::orderBy('sort', 'DESC')->get(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray()
         ]);
@@ -515,7 +515,7 @@ class BrowseController extends Controller
             'specieses' => [0 => 'Any Species'] + $subSpecies,
             'subtypes' => [0 => 'Any Subtype'] + Subtype::orderBy('subtypes.sort', 'DESC')->pluck('name', 'id')->toArray(),
             'rarities' => [0 => 'Any Rarity'] + Rarity::orderBy('rarities.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features' => Feature::orderBy('features.name')->pluck('name', 'id')->toArray(),
+            'features' => Feature::getFeaturesByCategory(),
             'sublist' => $sublist,
             'sublists' => Sublist::orderBy('sort', 'DESC')->get(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray()

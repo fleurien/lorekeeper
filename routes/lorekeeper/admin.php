@@ -64,6 +64,18 @@ Route::group(['prefix' => 'files', 'middleware' => 'power:edit_site_settings'], 
     Route::post('folder/rename', 'FileController@postRenameFolder');
 });
 
+# THEME MANAGER
+Route::group(['prefix' => 'themes', 'middleware' => 'power:edit_site_settings'], function() {
+    Route::get('/', 'ThemeController@getIndex');
+
+    Route::get('create', 'ThemeController@getCreateTheme');
+    Route::get('edit/{id}', 'ThemeController@getEditTheme');
+    Route::get('delete/{id}', 'ThemeController@getDeleteTheme');
+    Route::post('create', 'ThemeController@postCreateEditTheme');
+    Route::post('edit/{id}', 'ThemeController@postCreateEditTheme');
+    Route::post('delete/{id}', 'ThemeController@postDeleteTheme');
+});
+
 # SITE IMAGES
 Route::group(['prefix' => 'images', 'middleware' => 'power:edit_site_settings'], function() {
     Route::get('/', 'FileController@getSiteImages');
@@ -157,9 +169,21 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::get('shops/delete/{id}', 'ShopController@getDeleteShop');
     Route::post('shops/create', 'ShopController@postCreateEditShop');
     Route::post('shops/edit/{id?}', 'ShopController@postCreateEditShop');
-    Route::post('shops/stock/{id}', 'ShopController@postEditShopStock');
     Route::post('shops/delete/{id}', 'ShopController@postDeleteShop');
     Route::post('shops/sort', 'ShopController@postSortShop');
+    Route::post('shops/restrictions/{id}', 'ShopController@postRestrictShop');
+    # stock
+    // create
+    Route::get('shops/stock/{id}', 'ShopController@getCreateShopStock');
+    Route::post('shops/stock/{id}', 'ShopController@postCreateShopStock');
+    // edit
+    Route::get('shops/stock/edit/{id}', 'ShopController@getEditShopStock');
+    Route::post('shops/stock/edit/{id}', 'ShopController@postEditShopStock');
+    // delete
+    Route::get('shops/stock/delete/{id}', 'ShopController@getDeleteShopStock');
+    Route::post('shops/stock/delete/{id}', 'ShopController@postDeleteShopStock');
+    // misc
+    Route::get('shops/stock-type', 'ShopController@getShopStockType');
 
     # FEATURES (TRAITS)
     Route::get('trait-categories', 'FeatureController@getIndex');
@@ -226,6 +250,26 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/create', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
+
+    # PAYPAL - PRODUCTS
+    Route::get('products', 'ProductController@Index');
+    Route::get('products/create', 'ProductController@getCreateProduct');
+    Route::get('products/edit/{id}', 'ProductController@getEditProduct');
+    Route::get('products/delete/{id}', 'ProductController@getDeleteProduct');
+    Route::get('products/shop', 'ProductController@getEditShop');
+    Route::post('products/sort', 'ProductController@postSortProduct');
+    Route::post('products/create', 'ProductController@postCreateEditProduct');
+    Route::post('products/edit/{id?}', 'ProductController@postCreateEditProduct');
+    Route::post('products/delete/{id}', 'ProductController@postDeleteProduct');
+    Route::post('products/shop/edit', 'ProductController@postEditShop');
+    
+    Route::get('advent-calendars', 'AdventController@getAdventIndex');
+    Route::get('advent-calendars/create', 'AdventController@getCreateAdvent');
+    Route::get('advent-calendars/edit/{id}', 'AdventController@getEditAdvent');
+    Route::get('advent-calendars/delete/{id}', 'AdventController@getDeleteAdvent');
+    Route::post('advent-calendars/create', 'AdventController@postCreateEditAdvent');
+    Route::post('advent-calendars/edit/{id?}', 'AdventController@postCreateEditAdvent');
+    Route::post('advent-calendars/delete/{id}', 'AdventController@postDeleteAdvent');
 });
 
 
@@ -283,6 +327,10 @@ Route::group(['prefix' => 'grants', 'namespace' => 'Users', 'middleware' => 'pow
     Route::post('items', 'GrantController@postItems');
 
     Route::get('item-search', 'GrantController@getItemSearch');
+
+    Route::get('event-currency', 'GrantController@getEventCurrency');
+    Route::get('event-currency/clear', 'GrantController@getClearEventCurrency');
+    Route::post('event-currency/clear', 'GrantController@postClearEventCurrency');
 });
 
 
@@ -358,6 +406,7 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters', 'middleware'
     Route::post('{slug}/settings', 'CharacterController@postCharacterSettings');
 
     Route::post('{slug}/transfer', 'CharacterController@postTransfer');
+    Route::post('{slug}/bind', 'CharacterController@postBind');
 });
 // Might rewrite these parts eventually so there's less code duplication...
 Route::group(['prefix' => 'myo', 'namespace' => 'Characters', 'middleware' => 'power:manage_characters'], function() {
@@ -377,6 +426,7 @@ Route::group(['prefix' => 'myo', 'namespace' => 'Characters', 'middleware' => 'p
     Route::post('{id}/settings', 'CharacterController@postMyoSettings');
 
     Route::post('{id}/transfer', 'CharacterController@postMyoTransfer');
+    Route::post('{slug}/bind', 'CharacterController@postMyoBind');
 });
 
 # RAFFLES

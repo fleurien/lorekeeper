@@ -6,12 +6,14 @@ use Auth;
 use DB;
 use Config;
 use Carbon\Carbon;
+use Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 
 use App\Models\SitePage;
+use App\Models\Character\Character;
 
 use App\Services\LinkService;
 use App\Services\DeviantArtService;
@@ -34,8 +36,13 @@ class HomeController extends Controller
      */
     public function getIndex()
     {
+        if(Settings::get('featured_character')) {
+            $character = Character::find(Settings::get('featured_character'));
+        }
+        else $character = null;
         return view('welcome', [
-            'about' => SitePage::where('key', 'about')->first()
+            'about' => SitePage::where('key', 'about')->first(),
+            'featured' => $character,
         ]);
     }
     
@@ -86,6 +93,7 @@ class HomeController extends Controller
         if($service->saveProvider($provider, $result, Auth::user())) {
             flash('Account has been linked successfully.')->success();
             Auth::user()->updateCharacters();
+            Auth::user()->updateCoCharacters();
             Auth::user()->updateArtDesignCredits();
             return redirect()->to('account/aliases');
         }

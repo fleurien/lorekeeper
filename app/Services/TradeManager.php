@@ -350,7 +350,7 @@ class TradeManager extends Service
             if($trade->is_sender_trade_confirmed && $trade->is_recipient_trade_confirmed) {
                 if(!(Settings::get('open_transfers_queue') && (isset($trade->data['sender']['characters']) || isset($trade->data['recipient']['characters'])))) {
                     // Distribute the trade attachments
-                    $this->creditAttachments($trade);
+                    if(!$this->creditAttachments($trade)) throw new \Exception('sfjdkfhdhsdkf');
     
                     $trade->status = 'Completed';
 
@@ -572,10 +572,29 @@ class TradeManager extends Service
             $senderCharacters = Character::where('user_id', $trade->sender_id)->where('trade_id', $trade->id)->get();
             $recipientCharacters = Character::where('user_id', $trade->recipient_id)->where('trade_id', $trade->id)->get();
 
-            foreach($senderCharacters as $character) $characterManager->moveCharacter($character, $trade->recipient, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$character->id]) ? $cooldowns[$character->id] : $defaultCooldown, 'Transferred in trade');
+            foreach($senderCharacters as $character) {
+                // if parent exists
+                if($character->parent) { 
+                    $characterManager->moveCharacter($character->parent->parent, $trade->recipient, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$character->parent->id]) ? $cooldowns[$character->parent->id] : $defaultCooldown, 'Transferred in trade');
+                }
+                // if children exist
+                foreach($character->children as $child) {
+                    $characterManager->moveCharacter($child->child, $trade->recipient, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$child->id]) ? $cooldowns[$child->id] : $defaultCooldown, 'Transferred in trade');
+                }
+                $characterManager->moveCharacter($character, $trade->recipient, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$character->id]) ? $cooldowns[$character->id] : $defaultCooldown, 'Transferred in trade');
+            } 
             
-            foreach($recipientCharacters as $character) $characterManager->moveCharacter($character, $trade->sender, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$character->id]) ? $cooldowns[$character->id] : $defaultCooldown, 'Transferred in trade');
-
+            foreach($recipientCharacters as $character) {
+                // if parent exists
+                if($character->parent) { 
+                    $characterManager->moveCharacter($character->parent->parent, $trade->recipient, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$character->parent->id]) ? $cooldowns[$character->parent->id] : $defaultCooldown, 'Transferred in trade');
+                }
+                // if children exist
+                foreach($character->children as $child) {
+                    $characterManager->moveCharacter($child->child, $trade->sender, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$child->id]) ? $cooldowns[$child->id] : $defaultCooldown, 'Transferred in trade');
+                }
+                $characterManager->moveCharacter($character, $trade->sender, 'Trade [<a href="'.$trade->url.'">#'.$trade->id.'</a>]', isset($cooldowns[$character->id]) ? $cooldowns[$character->id] : $defaultCooldown, 'Transferred in trade');
+            }
             Character::where('trade_id', $trade->id)->update(['trade_id' => null]);
 
             // Transfer currency

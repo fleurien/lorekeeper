@@ -18,10 +18,21 @@ return [
         'text_color' => '#ffffff',
         'background_color' => '#f6993f'
     ],
-    
+
     'slot' => [
         'name' => 'Slot',
         'text_color' => '#ffffff',
         'background_color' => '#1fd1a7'
     ],
+
+    'donateable' => [
+        'name' => 'Donateable',
+        'text_color' => '#ffffff',
+        'background_color' => '#56639E'
+    ],
+        'coupon' => [
+        'name' => 'Coupon',
+        'text_color' => '#ffffff',
+        'background_color' => '#ff5ca8'
+    ]
 ];

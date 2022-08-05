@@ -43,8 +43,8 @@ return [
         'regex' => '/twitter\.com\/([A-Za-z0-9_-]+)/',
         'link' => 'twitter.com',
         'icon' => 'fab fa-twitter',
-        'auth' => 0,
-        'primary_alias' => 0
+        'auth' => 1,
+        'primary_alias' => 1
     ],
 
     'instagram' => [
@@ -63,8 +63,8 @@ return [
         'regex' => '/([A-Za-z0-9_-]+)\.tumblr\.com/',
         'link' => 'tumblr.com',
         'icon' => 'fab fa-tumblr',
-        'auth' => 0,
-        'primary_alias' => 0
+        'auth' => 1,
+        'primary_alias' => 1
     ],
 
     'imgur' => [
@@ -83,8 +83,8 @@ return [
         'regex' => '/twitch\.tv\/([A-Za-z0-9_-]+)/',
         'link' => 'twitch.tv',
         'icon' => 'fab fa-twitch',
-        'auth' => 0,
-        'primary_alias' => 0
+        'auth' => 1,
+        'primary_alias' => 1
     ],
 
     /**********************************************************************************************

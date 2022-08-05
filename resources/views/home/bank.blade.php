@@ -41,7 +41,7 @@
 {!! Form::open(['url' => 'bank/transfer']) !!}
     <div class="form-group">
         {!! Form::label('user_id', 'Recipient') !!}
-        {!! Form::select('user_id', $userOptions, null, ['class' => 'form-control']) !!}
+        {!! Form::select('user_id', $userOptions, null, ['class' => 'form-control selectize']) !!}
     </div>
     <div class="form-group">
         <div class="row">
@@ -60,4 +60,10 @@
     </div>
 {!! Form::close() !!}
 
+@endsection
+@section('scripts')
+    @parent
+    <script>
+        $('.selectize').selectize();
+    </script>
 @endsection

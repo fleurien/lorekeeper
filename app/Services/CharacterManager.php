@@ -25,6 +25,7 @@ use App\Models\Character\CharacterImage;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterBookmark;
+use App\Models\Character\CharacterLink;
 use App\Models\User\UserCharacterLog;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
@@ -88,9 +89,16 @@ class CharacterManager extends Service
         DB::beginTransaction();
 
         try {
-            if(!$isMyo && Character::where('slug', $data['slug'])->exists()) throw new \Exception("Please enter a unique character code.");
+            for($i = 1; $i <= $data['character_count']; $i++) {
+                if(!$isMyo && $i > 1) {
+                    // If this is not the first character in a batch,
+                    // pull a new number and assemble a new slug
+                    $data['number'] = (new CharacterManager)->pullNumber(1);
+                    $data['slug'] = CharacterCategory::find($data['character_category_id'])->code.'-'.$data['number'];
+                }
 
-            if(!(isset($data['user_id']) && $data['user_id']) && !(isset($data['owner_url']) && $data['owner_url']))
+            if(!$isMyo && Character::where('slug', $data['slug'])->exists()) throw new \Exception("Please enter a unique character code.");
+            if(!(isset($data['user_id']) && $data['user_id']) && !(isset($data['owner_url']) && $data['owner_url']) && !(isset($data['parent_id']) && $data['parent_id']))
                 throw new \Exception("Please select an owner.");
             if(!$isMyo)
             {
@@ -104,12 +112,27 @@ class CharacterManager extends Service
                 if(!$subtype || $subtype->species_id != $data['species_id']) throw new \Exception('Selected subtype invalid or does not match species.');
             }
             else $data['subtype_id'] = null;
-
+            if($isMyo) { $data['coowner_id'] = null; $data['coowner_url'] = null; }
             // Get owner info
             $url = null;
             $recipientId = null;
-            if(isset($data['user_id']) && $data['user_id']) $recipient = User::find($data['user_id']);
+            
+            $alias = null;
+            if(isset($data['parent_id']) && $data['parent_id'])
+            {
+                // Find the new parent of the character
+                $parent = Character::where('id', $data['parent_id'])->first();
+                //find new owner based on parent
+                $recipient = User::find($parent->user_id);
+                if(!$recipient) $recipient = Character::where('id', $data['parent_id'])->first()->owner_alias;
+                //we dont want the child to be tradeable/transferrable...
+                $data['is_sellable'] = null;
+                $data['is_tradeable'] = null;
+                $data['is_giftable'] = null;
+            }
+            elseif(isset($data['user_id']) && $data['user_id']) $recipient = User::find($data['user_id']);
             elseif(isset($data['owner_url']) && $data['owner_url']) $recipient = checkAlias($data['owner_url']);
+
 
             if(is_object($recipient)) {
                 $recipientId = $recipient->id;
@@ -119,44 +142,78 @@ class CharacterManager extends Service
                 $url = $recipient;
             }
 
-            // Create character
-            $character = $this->handleCharacter($data, $isMyo);
-            if(!$character) throw new \Exception("Error happened while trying to create character.");
+                // CO OWNER NOTIF ///////////////////////////
+                $courl = null;
+                $corecipientId = null;
+                $corecipient = null;
+                if(isset($data['coowner_id']) && $data['coowner_id']) $corecipient = User::find($data['coowner_id']);
+                elseif(isset($data['coowner_url']) && $data['coowner_url']) $corecipient = checkAlias($data['coowner_url']);
 
-            // Create character image
-            $data['is_valid'] = true; // New image of new characters are always valid
-            $image = $this->handleCharacterImage($data, $character, $isMyo);
-            if(!$image) throw new \Exception("Error happened while trying to create image.");
-
-            // Update the character's image ID
-            $character->character_image_id = $image->id;
-            $character->save();
-
-            // Add a log for the character
-            // This logs all the updates made to the character
-            $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'character');
-
-            // Add a log for the user
-            // This logs ownership of the character
-            $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'user');
-
-            // Update the user's FTO status and character count
-            if(is_object($recipient)) {
-                if(!$isMyo) {
-                    $recipient->settings->is_fto = 0; // MYO slots don't affect the FTO status - YMMV
+                if(is_object($corecipient)) {
+                    $corecipientId = $corecipient->id;
+                    $data['coowner_id'] = $corecipient->id;
                 }
-                $recipient->settings->save();
+                else {
+                    $courl = $corecipient;
+                }
+                /////////////////////////////////////////////
+                // Create character
+                $character = $this->handleCharacter($data, $isMyo);
+                if(!$character) throw new \Exception("Error happened while trying to create character.");
+                // Create character link
+                if(isset($data['parent_id']) && $data['parent_id'])
+                {
+                    CharacterLink::create([
+                        'parent_id' => $data['parent_id'],
+                        'child_id' => $character->id
+                    ]);
+                }
+                // Create character image
+                $data['is_valid'] = true; // New image of new characters are always valid
+                $image = $this->handleCharacterImage($data, $character, $isMyo, ($data['character_count'] > 1 && $i < $data['character_count'] ? true : false));
+                if(!$image) throw new \Exception("Error happened while trying to create image.");
+
+                // Update the character's image ID
+                $character->character_image_id = $image->id;
+                $character->save();
+
+                // Add a log for the character
+                // This logs all the updates made to the character
+                $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'character');
+
+                // Add a log for the user
+                // This logs ownership of the character
+                $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'user');
+
+                // Update the user's FTO status and character count
+                if(is_object($recipient)) {
+                    if(!$isMyo) {
+                        $recipient->settings->is_fto = 0; // MYO slots don't affect the FTO status - YMMV
+                    }
+                    $recipient->settings->save();
+                }
+
+                // If the recipient has an account, send them a notification
+                if(is_object($recipient) && $user->id != $recipient->id) {
+                    Notifications::create($isMyo ? 'MYO_GRANT' : 'CHARACTER_UPLOAD', $recipient, [
+                        'character_url' => $character->url,
+                    ] + ($isMyo ?
+                        ['name' => $character->name] :
+                        ['character_slug' => $character->slug]
+                    ));
+                }
             }
 
-            // If the recipient has an account, send them a notification
-            if(is_object($recipient) && $user->id != $recipient->id) {
-                Notifications::create($isMyo ? 'MYO_GRANT' : 'CHARACTER_UPLOAD', $recipient, [
+            /////////////
+            if(is_object($corecipient) && $user->id != $corecipient->id) {
+                Notifications::create($isMyo ? 'MYO_GRANT' : 'CHARACTER_UPLOAD', $corecipient, [
                     'character_url' => $character->url,
                 ] + ($isMyo ?
                     ['name' => $character->name] :
                     ['character_slug' => $character->slug]
                 ));
             }
+            ///////////
 
             return $this->commitReturn($character);
         } catch(\Exception $e) {
@@ -188,11 +245,12 @@ class CharacterManager extends Service
             $characterData = Arr::only($data, [
                 'character_category_id', 'rarity_id', 'user_id',
                 'number', 'slug', 'description',
-                'sale_value', 'transferrable_at', 'is_visible'
+                'sale_value', 'transferrable_at', 'is_visible', 'coowner_id'
             ]);
 
             $characterData['name'] = ($isMyo && isset($data['name'])) ? $data['name'] : null;
             $characterData['owner_url'] = isset($characterData['user_id']) ? null : $data['owner_url'];
+            $characterData['coowner_url'] = isset($characterData['coowner_id']) ? null : $data['coowner_url'];
             $characterData['is_sellable'] = isset($data['is_sellable']);
             $characterData['is_tradeable'] = isset($data['is_tradeable']);
             $characterData['is_giftable'] = isset($data['is_giftable']);
@@ -222,9 +280,10 @@ class CharacterManager extends Service
      * @param  array                            $data
      * @return \App\Models\Character\Character  $character
      * @param  bool                             $isMyo
+     * @param  bool                             $isBatch
      * @return \App\Models\Character\CharacterImage|bool
      */
-    private function handleCharacterImage($data, $character, $isMyo = false)
+    private function handleCharacterImage($data, $character, $isMyo = false, $isBatch = false)
     {
         try {
             if($isMyo)
@@ -312,11 +371,11 @@ class CharacterManager extends Service
             }
 
             // Save image
-            $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, isset($data['default_image']));
+            $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, $isBatch ? true : isset($data['default_image']));
 
             // Save thumbnail first before processing full image
             if(isset($data['use_cropper'])) $this->cropThumbnail(Arr::only($data, ['x0','x1','y0','y1']), $image, $isMyo);
-            else $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, isset($data['default_image']));
+            else $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, $isBatch ? true : isset($data['default_image']));
 
             // Process and save the image itself
             if(!$isMyo) $this->processImage($image);
@@ -1174,6 +1233,8 @@ class CharacterManager extends Service
                 $this->createLog($user->id, null, null, null, $character->id, 'Character Updated', ucfirst(implode(', ', $result)) . ' edited', 'character', true, $old, $new);
             }
 
+            $this->updateCoOwner($character, Arr::only($data, ['coowner_id', 'coowner_url']), $user);
+
             return $this->commitReturn(true);
         } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
@@ -1452,9 +1513,47 @@ class CharacterManager extends Service
             }
 
             $sender = $character->user;
-
+            
+            // Move the character
             $this->moveCharacter($character, $recipient, 'Transferred by ' . $user->displayName . (isset($data['reason']) ? ': ' . $data['reason'] : ''), isset($data['cooldown']) ? $data['cooldown'] : -1);
 
+            // Find all of the children of this character
+            if($childrenArray =  CharacterLink::where('parent_id', $character->id)->get()->pluck('child_id')->toArray())
+            {
+                //get ALL the children
+                foreach($childrenArray as $child) {
+                    if(!isset($children))
+                    {
+                        $children = Character::where('id', $child)->get();
+                    } else {
+                        $children = $children->merge(Character::where('id', $child)->get());
+                    }
+                }
+                //get all the children of children
+                $search = 5;
+                while($search >= 0)
+                {
+                    foreach($children as $child)
+                    {
+                        $grandchildren = null;
+                        if ($grandchildren = CharacterLink::where('parent_id', $child->id)->get()->pluck('child_id')->toArray()) {
+                            foreach($grandchildren as $grandchild) {
+                                $children = $children->merge(Character::where('id', $grandchild)->get());
+                            }
+                        }
+                    }
+                    $search -= 1;
+                }
+            } else $children = false;
+
+            // Move all children of this character
+            if($children) {
+                foreach($children as $child)
+                {
+                    $this->moveCharacter($child, $recipient, 'Parent ' . $character->slug . ' transferred to ' . $user->displayName . (isset($data['reason']) ? ': ' . $data['reason'] : ''), isset($data['cooldown']) ? $data['cooldown'] : -1);
+                } 
+            }
+            
             // Add notifications for the old and new owners
             if($sender) {
                 Notifications::create('CHARACTER_SENT', $sender, [
@@ -1506,7 +1605,46 @@ class CharacterManager extends Service
                 if ($transfer->is_approved) {
                     //check the cooldown saved
                     if(isset($transfer->data['cooldown'])) $cooldown = $transfer->data['cooldown'];
-                    $this->moveCharacter($transfer->character, $transfer->recipient, 'User Transfer', $cooldown);
+                    {
+                        $this->moveCharacter($transfer->character, $transfer->recipient, 'User Transfer', $cooldown);
+
+                        // Find all of the children of this character
+                        if($childrenArray =  CharacterLink::where('parent_id', $transfer->character->id)->get()->pluck('child_id')->toArray())
+                        {
+                            //get ALL the children
+                            foreach($childrenArray as $child) {
+                                if(!isset($children))
+                                {
+                                    $children = Character::where('id', $child)->get();
+                                } else {
+                                    $children = $children->merge(Character::where('id', $child)->get());
+                                }
+                            }
+                            //get all the children of children
+                            $search = 5;
+                            while($search >= 0)
+                            {
+                                foreach($children as $child)
+                                {
+                                    $grandchildren = null;
+                                    if ($grandchildren = CharacterLink::where('parent_id', $child->id)->get()->pluck('child_id')->toArray()) {
+                                        foreach($grandchildren as $grandchild) {
+                                            $children = $children->merge(Character::where('id', $grandchild)->get());
+                                        }
+                                    }
+                                }
+                                $search -= 1;
+                            }
+                        } else $children = false;
+
+                        // Move all children of this character
+                        if($children) {
+                            foreach($children as $child)
+                            {
+                                $this->moveCharacter($child, $transfer->recipient, 'Parent ' . $transfer->character->slug . ' transferred to ' . $transfer->recipient->name, $cooldown);
+                            }
+                        }
+                    }
                     if(!Settings::get('open_transfers_queue'))
                         $transfer->data = json_encode([
                             'cooldown' => $cooldown,
@@ -1605,6 +1743,44 @@ class CharacterManager extends Service
                 if($transfer->status == 'Accepted') {
                     $this->moveCharacter($transfer->character, $transfer->recipient, 'User Transfer', isset($data['cooldown']) ? $data['cooldown'] : -1);
 
+                    // Find all of the children of this character
+                    if($childrenArray =  CharacterLink::where('parent_id', $transfer->character->id)->get()->pluck('child_id')->toArray())
+                    {
+                        //get ALL the children
+                        foreach($childrenArray as $child) {
+                            if(!isset($children))
+                            {
+                                $children = Character::where('id', $child)->get();
+                            } else {
+                                $children = $children->merge(Character::where('id', $child)->get());
+                            }
+                        }
+                        //get all the children of children
+                        $search = 5;
+                        while($search >= 0)
+                        {
+                            foreach($children as $child)
+                            {
+                                $grandchildren = null;
+                                if ($grandchildren = CharacterLink::where('parent_id', $child->id)->get()->pluck('child_id')->toArray()) {
+                                    foreach($grandchildren as $grandchild) {
+                                        $children = $children->merge(Character::where('id', $grandchild)->get());
+                                    }
+                                }
+                            }
+                            $search -= 1;
+                        }
+                    } else $children = false;
+                    
+                    // Move all children of this character
+                    if($children) {
+                        foreach($children as $child)
+                        {
+                            $this->moveCharacter($child, $transfer->recipient, 'Parent ' . $transfer->character->slug . ' transferred to ' . $transfer->recipient->name, isset($data['cooldown']) ? $data['cooldown'] : -1);
+                        }
+                    }
+                    
+
                     // Notify both parties of the successful transfer
                     Notifications::create('CHARACTER_TRANSFER_APPROVED', $transfer->sender, [
                         'character_name' => $transfer->character->slug,
@@ -1662,6 +1838,91 @@ class CharacterManager extends Service
     }
 
     /**
+     * Handles bound characters.
+     *
+     * @param  array                            $data
+     * @param  \App\Models\Character\Character  $character
+     * @param  \App\Models\User\User            $user
+     * @return  bool
+     */
+    public function boundTransfer($data, $character, $user)
+    {
+        DB::beginTransaction();
+
+        try {
+            if(isset($data['parent_id']) && $data['parent_id']) {
+                // Find the new parent of the character
+                $parent = Character::where('id', $data['parent_id'])->first();
+
+                // Find all of the children of this character
+                if($childrenArray =  CharacterLink::where('parent_id', $character->id)->get()->pluck('child_id')->toArray())
+                {
+                    //get ALL the children
+                    foreach($childrenArray as $child) {
+                        if(!isset($children))
+                        {
+                            $children = Character::where('id', $child)->get();
+                        } else {
+                            $children = $children->merge(Character::where('id', $child)->get());
+                        }
+                    }
+                    //get all the children of children
+                    $search = 5;
+                    while($search >= 0)
+                    {
+                        foreach($children as $child)
+                        {
+                            $grandchildren = null;
+                            if ($grandchildren = CharacterLink::where('parent_id', $child->id)->get()->pluck('child_id')->toArray()) {
+                                foreach($grandchildren as $grandchild) {
+                                    $children = $children->merge(Character::where('id', $grandchild)->get());
+                                }
+                            }
+                        }
+                        $search -= 1;
+                    }
+                } else $children = false;
+
+                //find new owner based on parent
+                $recipient = User::find($parent->user_id);
+                if(!$recipient) $recipient = Character::where('id', $data['parent_id'])->first()->owner_alias;
+
+                //remove old parent and create new link
+                CharacterLink::where('child_id', $character->id)->delete();
+                CharacterLink::create([
+                    'parent_id' => $data['parent_id'],
+                    'child_id' => $character->id
+                ]);
+                
+                //we dont want the child to be tradeable/transferrable...
+                $transfer['is_sellable'] = false;
+                $transfer['is_tradeable'] = false;
+                $transfer['is_giftable'] = false;
+                $character->update($transfer);
+
+                // Move the character
+                $this->moveCharacter($character, $recipient, 'Bound to ' . $parent->slug . (isset($data['reason']) ? ': ' . $data['reason'] : ''), isset($data['cooldown']) ? $data['cooldown'] : -1);
+
+                // Move all children of this character
+                if($children) {
+                    foreach($children as $child)
+                    {
+                        $this->moveCharacter($child, $recipient, 'Parent ' . $character->slug . ' transferred by ' . $user->displayName . (isset($data['reason']) ? ': ' . $data['reason'] : ''), isset($data['cooldown']) ? $data['cooldown'] : -1);
+                    }
+                }
+            } else {
+                //if no parent is set, simply unbind
+                CharacterLink::where('child_id', $character->id)->delete();
+                flash('Character has been unbound.')->success();
+            }
+        return $this->commitReturn(true);
+        } catch(\Exception $e) { 
+            $this->setError('error', $e->getMessage());
+        }
+        return $this->rollbackReturn(false);
+    }
+
+    /**
      * Moves a character from one user to another.
      *
      * @param  \App\Models\Character\Character  $character
@@ -1683,6 +1944,24 @@ class CharacterManager extends Service
         if(is_object($recipient)) {
             if(!$character->is_myo_slot) $recipient->settings->is_fto = 0;
             $recipient->settings->save();
+        }
+
+        //Notify any co-owners
+        if($character->coowner_id)
+        {
+            $coOwner = $character->coowner;
+            if(is_object($recipient) && $coOwner->id == $recipient->id)
+            {
+                $character->coowner_id = null;
+                $character->coowner_url = null;
+                $character->save();
+            }
+            else {
+                Notifications::create('COOWNER_OWNER_UPDATE', $coOwner, [
+                    'character_url' => $character->displayName,
+                    'recipient' => is_object($recipient) ? $recipient->displayName : prettyProfileName($recipient),
+                ]);
+            }
         }
 
         // Update character owner, sort order and cooldown
@@ -2504,5 +2783,102 @@ is_object($sender) ? $sender->id : null,
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
+    }
+
+    /**
+     * 
+     * CO-OWNER STUFF   
+     * 
+     */
+    public function updateCoOwner($character, $data, $user)
+    {
+        // VALIDATION /////////
+        if($character->isMyo) throw new \Exception('Cannot have a co-owner on a MYO');
+
+            // old co owner
+            $oldOwner = null;
+            if(isset($character->coowner_url))
+            {
+                $oldOwner = prettyProfileLink($character->coowner_url); 
+            }
+            elseif(isset($character->coowner_id))
+            {
+                $oldOwner = $character->coowner->displayName;
+            }
+            else { $oldOwner = 'None.'; }
+            //
+
+        // if there was no co-owner before
+        if(!isset($data['coowner_id']) && !isset($data['coowner_url']))
+        {
+            if($character->coowner_id || $character->coowner_url)
+            {
+                $character->coowner_id = null;
+                $character->coowner_url = null;
+                $character->save();
+
+                $this->createLog($user->id, null, null, null, $character->id, 'Character Co-owner Removed', 'Co-owner removed. Old co-owner: ' . $oldOwner, 'character', true, null, null);
+        
+            }
+            //else throw new \Exception('This character has no co-owner already.');
+        }
+        // if there was
+        else {
+
+            if(isset($data['coowner_id'])) 
+            { 
+                if($character->user_id == $data['coowner_id']) throw new \Exception('You cannot set the owner as the co-owner.'); 
+                if(isset($character->coowner_id))
+                {
+                    if($character->coowner_id == $data['coowner_id']) throw new \Exception('This user is already a co-owner.'); 
+                }
+            }
+
+            if(isset($data['coowner_url'])) 
+            { 
+                if($character->owner_url == $data['coowner_url']) throw new \Exception('You cannot set the owner as the co-owner.'); 
+                if(isset($character->coowner_url))
+                {
+                    if($character->coowner_url == $data['coowner_url']) throw new \Exception('This user is already a co-owner.'); 
+                }
+            }
+            /////////////////////
+
+            if(isset($data['coowner_url'])) { if($character->owner_url == $data['coowner_url']) { throw new \Exception('You cannot set the owner as the co-owner.'); } }
+
+            // new co owner
+            $courl = null;
+            $corecipientId = null;
+            if(isset($data['coowner_id']) && $data['coowner_id']) $corecipient = User::find($data['coowner_id']);
+            elseif(isset($data['coowner_url']) && $data['coowner_url']) $corecipient = checkAlias($data['coowner_url']);
+
+            if(is_object($corecipient)) {
+                $corecipientId = $corecipient->id;
+                $data['coowner_id'] = $corecipient->id;
+            }
+            else {
+                $courl = $corecipient;
+            }
+
+            if(is_object($corecipient) && $character->user_id != $corecipient->id) {
+                Notifications::create('COOWNER_UPDATE', $corecipient, [
+                    'character_url' => $character->displayName,
+                    'user_url' => $user->url,
+                    'user' => $user->displayname
+                ]);
+
+                $character->coowner_id = $corecipientId;
+                $character->save();
+            }
+            else {
+                $character->coowner_url = $courl;
+                $character->save();
+            }
+
+            if($character->coowner_id)  { $new =  $character->coowner->displayName; }
+            else { $new = prettyProfileLink($character->coowner_url); }
+
+            $this->createLog($user->id, null, null, null, $character->id, 'Character Co-Owner Updated', 'Co-owner edited. Old co-owner: ' . $oldOwner . ' New co-owner: ' . $new . '.', 'character', true, null, null);
+        }
     }
 }

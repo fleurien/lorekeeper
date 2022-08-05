@@ -4,11 +4,18 @@ use App\Services\Service;
 
 use DB;
 use Config;
+use Carbon\Carbon;
+use Settings;
 
 use App\Models\Character\Character;
 use App\Models\Shop\Shop;
 use App\Models\Shop\ShopStock;
+use App\Models\Shop\UserItemDonation;
+use App\Models\Item\ItemLog;
 use App\Models\Shop\ShopLog;
+use App\Models\User\UserItem;
+use App\Models\Item\Item;
+use App\Models\Item\ItemTag;
 
 class ShopManager extends Service
 {
@@ -41,7 +48,7 @@ class ShopManager extends Service
             if(!$shop) throw new \Exception("Invalid shop selected.");
 
             // Check that the stock exists and belongs to the shop
-            $shopStock = ShopStock::where('id', $data['stock_id'])->where('shop_id', $data['shop_id'])->with('currency')->with('item')->first();
+            $shopStock = ShopStock::where('id', $data['stock_id'])->where('shop_id', $data['shop_id'])->with('currency')->first();
             if(!$shopStock) throw new \Exception("Invalid item selected.");
 
             // Check if the item has a quantity, and if it does, check there is enough stock remaining
@@ -50,7 +57,47 @@ class ShopManager extends Service
             // Check if the user can only buy a limited number of this item, and if it does, check that the user hasn't hit the limit
             if($shopStock->purchase_limit && $this->checkPurchaseLimitReached($shopStock, $user)) throw new \Exception("You have already purchased the maximum amount of this item you can buy.");
 
-            $total_cost = $shopStock->cost * $quantity;
+
+            if(isset($data['use_coupon'])) {
+                // check if the the stock is limited stock
+                if($shopStock->is_limited_stock && !Settings::get('limited_stock_coupon_settings')) throw new \Exception('Sorry! You can\'t use coupons on limited stock items');
+
+                if(!isset($data['coupon'])) throw new \Exception('Please select a coupon to use.');
+                // finding the users tag
+                $userItem = UserItem::find($data['coupon']);
+                // finding bought item
+                $item = Item::find($userItem->item_id);
+                $tag = $item->tags()->where('tag', 'Coupon')->first();
+                $coupon = $tag->data;
+
+                if(!$coupon['discount']) throw new \Exception('No discount amount set, please contact a site admin before trying to purchase again.');
+                
+                // if the coupon isn't infinite kill it
+                if(!$coupon['infinite']) {
+                    if(!(new InventoryManager)->debitStack($user, 'Coupon Used', ['data' => 'Coupon used in purchase of ' . $shopStock->item->name . ' from ' . $shop->name], $userItem, 1)) throw new \Exception("Failed to remove coupon.");
+                }
+                if(!Settings::get('coupon_settings')) {
+                    $minus = ($coupon['discount'] / 100) * ($shopStock->displayCost * $quantity);
+                    $base = ($shopStock->displayCost * $quantity);
+                        if($base <= 0) {
+                            throw new \Exception("Cannot use a coupon on an item that is free.");
+                        }
+                    $new = $base - $minus;
+                    $total_cost =  round($new);
+                }
+                else {
+                    $minus = ($coupon['discount'] / 100) * ($shopStock->displayCost);
+                    $base = ($shopStock->displayCost * $quantity);
+                        if($base <= 0) {
+                            throw new \Exception("Cannot use a coupon on an item that is free.");
+                        }
+                    $new = $base - $minus;
+                    $total_cost =  round($new);
+                }
+            }
+            else {
+                $total_cost = $shopStock->displayCost * $quantity;
+            }
 
             $character = null;
             if($data['bank'] == 'character')
@@ -72,11 +119,11 @@ class ShopManager extends Service
                 // - currency must be user-held
                 // - user has enough currency
                 if(!$shopStock->use_user_bank || !$shopStock->currency->is_user_owned) throw new \Exception("You cannot use your user bank to pay for this item.");
-                if($shopStock->cost > 0 && !(new CurrencyManager)->debitCurrency($user, null, 'Shop Purchase', 'Purchased '.$shopStock->item->name.' from '.$shop->name, $shopStock->currency, $total_cost)) throw new \Exception("Not enough currency to make this purchase.");
+                if($shopStock->displayCost > 0 && !(new CurrencyManager)->debitCurrency($user, null, 'Shop Purchase', 'Purchased '.$shopStock->item->name.' from '.$shop->name, $shopStock->currency, $total_cost)) throw new \Exception("Not enough currency to make this purchase.");
             }
 
             // If the item has a limited quantity, decrease the quantity
-            if($shopStock->is_limited_stock) 
+            if($shopStock->is_limited_stock)
             {
                 $shopStock->quantity -= $quantity;
                 $shopStock->save();
@@ -88,19 +135,21 @@ class ShopManager extends Service
                 'character_id' => $character ? $character->id : null, 
                 'user_id' => $user->id, 
                 'currency_id' => $shopStock->currency->id, 
-                'cost' => $total_cost, 
+                'cost' => $shopStock->cost, 
                 'item_id' => $shopStock->item_id, 
                 'quantity' => $quantity
             ]);
-            
+
             // Give the user the item, noting down 1. whose currency was used (user or character) 2. who purchased it 3. which shop it was purchased from
-            if(!(new InventoryManager)->creditItem(null, $user, 'Shop Purchase', [
-                'data' => $shopLog->itemData, 
-                'notes' => 'Purchased ' . format_date($shopLog->created_at)
-            ], $shopStock->item, $quantity)) throw new \Exception("Failed to purchase item.");
+            if($shopStock->stock_type == 'Item') {
+                if(!(new InventoryManager)->creditItem(null, $user, 'Shop Purchase', [
+                    'data' => $shopLog->itemData, 
+                    'notes' => 'Purchased ' . format_date($shopLog->created_at)
+                ], $shopStock->item, $quantity)) throw new \Exception("Failed to purchase item.");
+            }
 
             return $this->commitReturn($shop);
-        } catch(\Exception $e) { 
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
@@ -129,7 +178,7 @@ class ShopManager extends Service
      */
     public function checkUserPurchases($shopStock, $user)
     {
-        return ShopLog::where('shop_id', $shopStock->shop_id)->where('item_id', $shopStock->item_id)->where('user_id', $user->id)->sum('quantity');
+        return ShopLog::where('shop_id', $shopStock->shop_id)->where('cost', $shopStock->cost)->where('item_id', $shopStock->item_id)->where('user_id', $user->id)->sum('quantity');
     }
 
     public function getStockPurchaseLimit($shopStock, $user)
@@ -143,5 +192,75 @@ class ShopManager extends Service
             if($shopStock->quantity < $limit) $limit = $shopStock->quantity;
         }
         return $limit;
+    }
+
+    /**
+     * Collects an item from the donation shop.
+     *
+     * @param  array                 $data
+     * @param  \App\Models\User\User $user
+     * @return bool|App\Models\Shop\Shop
+     */
+    public function collectDonation($data, $user)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Check that the stock exists and belongs to the shop
+            $stock = UserItemDonation::where('id', $data['stock_id'])->first();
+            if(!$stock) throw new \Exception("Invalid item selected.");
+
+            // Check that the user hasn't collected from the shop too recently
+            if($user->donationShopCooldown) throw new \Exception("You've collected an item too recently. Please try again later.");
+
+            // Check if the item has a quantity, and if it does, check there is enough stock remaining
+            if($stock->stock == 0) throw new \Exception("This item is out of stock.");
+
+            // Decrease the quantity
+            $stock->stock -= 1;
+            $stock->save();
+
+            // Give the user the item
+            if(!(new InventoryManager)->creditItem(null, $user, 'Collected from Donation Shop', [
+                'data' => isset($stock->stack->data['data']) ? $stock->stack->data['data'] : null,
+                'notes' => isset($stock->stack->data['notes']) ? $stock->stack->data['notes'] : null,
+            ], $stock->item, 1)) throw new \Exception("Failed to collect item.");
+
+            return $this->commitReturn($stock);
+        } catch(\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Clears out expired donations from the shop, if relevant.
+     *
+     * @return bool
+     */
+    public function cleanDonations()
+    {
+        $count = UserItemDonation::expired()->count();
+        if($count) {
+            DB::beginTransaction();
+
+            try {
+                // Fetch the logs for all expired items.
+                // This is necessary because the quantity is needed
+                $expiredLogs = ItemLog::where('log_type', 'Donated by User')->where('created_at', '<', Carbon::now()->subMonths(Config::get('lorekeeper.settings.donation_shop.expiry')));
+
+                // Process through expired items and remove the expired quantitie(s)
+                foreach(UserItemDonation::expired()->get() as $expired) {
+                    $quantityExpired = $expiredLogs->where('stack_id', $expired->stack_id)->sum('quantity');
+                    $expired->update(['stock', ($expired->stock -= $quantityExpired > 0 ? $expired->stock -= $quantityExpired : 0)]);
+                    unset($quantityExpired);
+                }
+
+                return $this->commitReturn(true);
+            } catch(\Exception $e) {
+                $this->setError('error', $e->getMessage());
+            }
+            return $this->rollbackReturn(false);
+        }
     }
 }

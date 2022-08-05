@@ -42,8 +42,27 @@
             </div>
         </div>
     </div>
-
-    @if(!$isMyo)
+<div class="form-group">
+        {!! Form::label('Bound to (Optional)') !!} {!! add_help('This binds a character to another existing character as a child, which overrides transfer options.') !!}
+        {!! Form::select('parent_id', $characterOptions, old('parent_id'), ['class' => 'form-control selectize mr-2 default character-select']) !!}
+    </div>
+@if(!$isMyo)
+    <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('Co-Owner (Optional)') !!}
+                    {!! Form::select('coowner_id', $userOptions, old('coowner_id'), ['class' => 'form-control', 'placeholder' => 'Select User', 'id' => 'userSelect']) !!}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('Owner URL (Optional)') !!}
+                    {!! Form::text('coowner_url', old('coowner_url'), ['class' => 'form-control']) !!}
+                </div>
+            </div>
+        </div>
+    <hr>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -58,7 +77,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    {!! Form::label('Number') !!} {!! add_help('This number helps to identify the character and should preferably be unique either within the category, or among all characters.') !!}
+                    {!! Form::label('Number') !!} {!! add_help('This number helps to identify the character and should preferably be unique either within the category, or among all characters. If creating multiple characters with this information, this will be the first number used.') !!}
                     <div class="d-flex">
                         {!! Form::text('number', old('number'), ['class' => 'form-control mr-2', 'id' => 'number']) !!}
                         <a href="#" id="pull-number" class="btn btn-primary" data-toggle="tooltip" title="This will find the highest number assigned to a character currently and add 1 to it. It can be adjusted to pull the highest number in the category or the highest overall number - this setting is in the code.">Pull Next Number</a>
@@ -235,6 +254,13 @@
             {!! Form::text('feature_data[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Extra Info (Optional)']) !!}
             <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
         </div>
+    </div>
+
+    <div class="float-left input-group mb-3 w-50">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="characterCount">Number of Characters {!! add_help('The number of characters to create using this info.') !!}</span>
+        </div>
+        {!! Form::number('character_count', 1, ['class' => 'quantity-select form-control', 'aria-describedby' => 'characterCount']) !!}
     </div>
 
     <div class="text-right">

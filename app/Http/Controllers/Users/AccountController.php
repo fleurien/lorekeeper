@@ -8,6 +8,7 @@ use Image;
 
 use App\Models\User\User;
 use App\Models\User\UserAlias;
+use App\Models\Theme;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +39,7 @@ class AccountController extends Controller
     {
         if(Auth::user()->is_banned)
             return view('account.banned');
-        else 
+        else
             return redirect()->to('/');
     }
 
@@ -49,9 +50,11 @@ class AccountController extends Controller
      */
     public function getSettings()
     {
-        return view('account.settings');
+        return view('account.settings',[
+            'themeOptions' => Theme::where('is_active',1)->get()->pluck('displayName','id')->toArray()
+        ]);
     }
-    
+
     /**
      * Edits the user's profile.
      *
@@ -84,7 +87,24 @@ class AccountController extends Controller
         }
         return redirect()->back();
     }
-    
+
+    /**
+     * Edits the user's theme.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postTheme(Request $request, UserService $service)
+    {
+        if($service->updateTheme($request->only('theme'), Auth::user())) {
+            flash('Theme updated successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+
     /**
      * Changes the user's password.
      *
@@ -106,7 +126,7 @@ class AccountController extends Controller
         }
         return redirect()->back();
     }
-    
+
     /**
      * Changes the user's email address and sends a verification email.
      *
@@ -162,7 +182,7 @@ class AccountController extends Controller
             'notifications' => $notifications
         ]);
     }
-    
+
     /**
      * Deletes a notification and returns a response.
      *

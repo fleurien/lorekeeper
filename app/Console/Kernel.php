@@ -30,6 +30,10 @@ class Kernel extends ConsoleKernel
                 ->daily();
         $schedule->command('check-sales')
                 ->everyMinute();
+        $schedule->command('change-feature')
+                ->monthly();
+        $schedule->command('clean-donations')
+            ->everyMinute();
 
     }
 

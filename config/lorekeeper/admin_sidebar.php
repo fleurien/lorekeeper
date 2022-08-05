@@ -94,6 +94,10 @@ return [
                 'name' => 'Item Grants',
                 'url' => 'admin/grants/items'
             ],
+            [
+                'name' => 'Event Currency',
+                'url' => 'admin/grants/event-currency'
+            ],
         ]
     ],
     'Masterlist' => [
@@ -176,6 +180,14 @@ return [
                 'name' => 'Items',
                 'url' => 'admin/data/items'
             ],
+            [
+                'name' => 'Products',
+                'url' => 'admin/data/products'
+            ],
+            [
+                'name' => 'Advent Calendars',
+                'url' => 'admin/data/advent-calendars'
+            ],
         ]
     ],
     'Raffles' => [
@@ -201,6 +213,10 @@ return [
             [
                 'name' => 'File Manager',
                 'url' => 'admin/files'
+            ],
+            [
+                'name' => 'Theme Manager',
+                'url' => 'admin/themes'
             ],
         ]
     ],
