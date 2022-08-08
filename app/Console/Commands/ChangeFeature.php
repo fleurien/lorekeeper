@@ -45,20 +45,15 @@ class ChangeFeature extends Command
         $setting = Settings::get('featured_character');
         //
         if($characterCount && $setting) {
-            $id = mt_rand(1, $characterCount);
-            //
-            if($id == $setting && $id != 1) {
-                if($id <= 5) {
-                    $id = $id + mt_rand(-2, 2);
+            $id = Character::myo()->random()->id;
+            $setting = Settings::get('featured_character');
+            if($id && $setting) {
+                if($id == $setting) {
+                    $id = Character::myo()->random()->id;
                 }
-                else {
-                    $id = $id + mt_rand(-5, 5);
-                }
-            }
-            //
-            if($id < 0) $id = abs($id);
 
-            DB::table('site_settings')->where('key', 'featured_character')->update(['value' => $id]);
+                DB::table('site_settings')->where('key', 'featured_character')->update(['value' => $id]);
+            }
         }
     }
 }
