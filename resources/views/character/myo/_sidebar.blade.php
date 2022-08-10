@@ -6,8 +6,8 @@
     </li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">History</div>
-        <div class="sidebar-item"><a href="{{ $character->url . '/change-log' }}" class="{{ set_active('myo/'.$character->id.'/change-log') }}">Change Log</a></div>
         <div class="sidebar-item"><a href="{{ $character->url . '/ownership' }}" class="{{ set_active('myo/'.$character->id.'/ownership') }}">Ownership History</a></div>
+        <div class="sidebar-item"><a href="{{ $character->url . '/change-log' }}" class="{{ set_active('myo/'.$character->id.'/change-log') }}">Change Logs</a></div>
     </li>
     @if(Auth::check() && (Auth::user()->id == $character->user_id || Auth::user()->hasPower('manage_characters')))
         <li class="sidebar-section">
