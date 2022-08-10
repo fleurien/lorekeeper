@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
-use Auth;
-use Config;	
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Award\Award;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterDesignUpdate;
@@ -23,7 +18,6 @@ use App\Models\Submission\Submission;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserItem;
-
 use App\Services\AwardCaseManager;
 use App\Services\Claymore\GearManager;
 use App\Services\Claymore\WeaponManager;
@@ -33,6 +27,8 @@ use App\Services\PetManager;
 use App\Services\RecipeService;
 use App\Services\ResearchService;
 use App\Services\Stat\ExperienceManager;
+use Auth;
+use Illuminate\Http\Request;
 
 class GrantController extends Controller
 {

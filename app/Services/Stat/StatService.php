@@ -2,13 +2,9 @@
 
 namespace App\Services\Stat;
 
-use Config;	
-use DB;
-
-use App\Models\Item\Item;	
 use App\Models\Stat\Stat;
-
 use App\Services\Service;
+use DB;
 
 class StatService extends Service
 {

@@ -2,25 +2,15 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use DB;	
-use Route;	
-use Settings;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Character\Character;
 use App\Models\Character\CharacterClass;
-use App\Models\Character\CharacterCurrency;	
 use App\Models\Character\CharacterTransfer;
-use App\Models\Currency\Currency;	
-use App\Models\Currency\CurrencyLog;	
 use App\Models\User\User;
-use App\Models\User\UserCurrency;	
-
 use App\Services\CharacterManager;
-use App\Services\CurrencyManager;	
+use Auth;
+use Illuminate\Http\Request;
+use Settings;
 
 class CharacterController extends Controller
 {

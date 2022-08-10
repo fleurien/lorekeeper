@@ -2,13 +2,9 @@
 
 namespace App\Console\Commands;
 
-use DB;	
-use Illuminate\Console\Command;
-use Illuminate\Database\Schema\Blueprint;	
-use Illuminate\Support\Facades\Schema;	
-
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
+use Illuminate\Console\Command;
 
 class ExchangeFocus extends Command
 {

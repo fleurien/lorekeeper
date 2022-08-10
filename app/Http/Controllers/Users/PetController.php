@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use DB;	
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Character\Character;
 use App\Models\Item\ItemTag;
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetCategory;
-use App\Models\Pet\PetLog;	
 use App\Models\User\User;
 use App\Models\User\UserItem;
 use App\Models\User\UserPet;
-
 use App\Services\InventoryManager;
 use App\Services\PetManager;
+use Auth;
+use Illuminate\Http\Request;
 
 class PetController extends Controller
 {

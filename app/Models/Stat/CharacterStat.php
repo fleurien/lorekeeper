@@ -2,8 +2,6 @@
 
 namespace App\Models\Stat;
 
-use Config;	
-
 use App\Models\Model;
 
 class CharacterStat extends Model

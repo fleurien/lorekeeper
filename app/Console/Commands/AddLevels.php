@@ -2,14 +2,10 @@
 
 namespace App\Console\Commands;
 
-use DB;	
-use Illuminate\Console\Command;
-use Illuminate\Database\Schema\Blueprint;	
-use Illuminate\Support\Facades\Schema;	
-
 use App\Models\Character\Character;
 use App\Models\Prompt\Prompt;
 use App\Models\User\User;
+use Illuminate\Console\Command;
 
 class AddLevels extends Command
 {

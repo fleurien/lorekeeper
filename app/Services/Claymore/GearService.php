@@ -2,14 +2,11 @@
 
 namespace App\Services\Claymore;
 
-use Config;	
-use DB;
-
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\GearCategory;
 use App\Models\Claymore\GearStat;
-
 use App\Services\Service;
+use DB;
 
 class GearService extends Service
 {

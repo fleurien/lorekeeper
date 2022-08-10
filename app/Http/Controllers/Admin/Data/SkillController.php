@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Data;
 
-use Auth;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
-use App\Models\Character\Character;	
-use App\Models\Character\CharacterSkill;	
 use App\Models\Prompt\Prompt;
 use App\Models\Skill\Skill;
 use App\Models\Skill\SkillCategory;
-
 use App\Services\SkillService;
+use Auth;
+use Illuminate\Http\Request;
 
 class SkillController extends Controller
 {

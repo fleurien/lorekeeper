@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Stats;
 
-use Auth;
-use Config;	
-use Settings;	
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Stat\Stat;
-
-use App\Services\CharacterManager;	
 use App\Services\Stat\StatService;
+use Auth;
+use Illuminate\Http\Request;
 
 class StatController extends Controller
 {

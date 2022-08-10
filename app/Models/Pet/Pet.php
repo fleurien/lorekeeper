@@ -2,11 +2,8 @@
 
 namespace App\Models\Pet;
 
-use Config;	
-use DB;
-
 use App\Models\Model;
-use App\Models\Pet\PetCategory;	
+use DB;
 
 class Pet extends Model
 {

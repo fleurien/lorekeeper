@@ -2,15 +2,6 @@
 
 namespace App\Services;
 
-use Config;
-use DB;
-use File;	
-use Image;
-use Notifications;
-use Settings;
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
-
 use App\Models\Character\Character;
 use App\Models\Character\CharacterBookmark;
 use App\Models\Character\CharacterCategory;
@@ -20,19 +11,17 @@ use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterFeature;
 use App\Models\Character\CharacterImage;
 use App\Models\Character\CharacterTransfer;
-use App\Models\Currency\Currency;	
-use App\Models\Feature\Feature;	
-use App\Models\Rarity;	
-use App\Models\Species\Species;	
 use App\Models\Species\Subtype;
 use App\Models\Stat\CharacterStat;
 use App\Models\User\User;
-use App\Models\User\UserCharacterLog;	
-use App\Models\User\UserItem;	
+use Carbon\Carbon;
+use Config;
+use DB;
+use Illuminate\Support\Arr;
+use Image;
+use Notifications;
+use Settings;
 
-use App\Services\CurrencyManager;	
-use App\Services\InventoryManager;	
-use App\Services\Service;	
 
 class CharacterManager extends Service
 {
