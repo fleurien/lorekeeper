@@ -86,7 +86,6 @@
 
         <main class="container-fluid">
             <div class="row">
-
                 <div class="sidebar col-lg-2" id="sidebar">
                     @yield('sidebar')
                 </div>
@@ -112,11 +111,12 @@
                         @yield('content')
                     </div>
                 </div>
-                <div class="site-footer mt-4" id="footer">
+            </div>
+            <div class="row">
+                <div class="site-footer" id="footer">
                     @include('layouts._footer')
                 </div>
             </div>
-
         </main>
 
 
