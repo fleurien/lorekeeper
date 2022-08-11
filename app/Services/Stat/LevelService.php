@@ -2,17 +2,12 @@
 
 namespace App\Services\Stat;
 
-use Config;	
-use DB;
-use Illuminate\Support\Arr;
-
-use App\Models\Level\CharacterLevelRequirement;	
-use App\Models\Level\CharacterLevelReward;	
 use App\Models\Level\Level;
 use App\Models\Level\UserLevelRequirement;
 use App\Models\Level\UserLevelReward;
-
 use App\Services\Service;
+use DB;
+use Illuminate\Support\Arr;
 
 class LevelService extends Service
 {

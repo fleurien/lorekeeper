@@ -2,8 +2,6 @@
 
 namespace App\Models\Claymore;
 
-use Config;	
-
 use App\Models\Model;
 
 class GearLog extends Model

@@ -2,14 +2,11 @@
 
 namespace App\Services;
 
-use Config;
-use DB;
-
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\Item\ItemTag;
-
-use App\Services\Service;	
+use Config;
+use DB;
 
 class ItemService extends Service
 {

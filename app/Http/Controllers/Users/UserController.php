@@ -2,39 +2,27 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use DB;	
-use Route;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Award\Award;
 use App\Models\Award\AwardCategory;
 use App\Models\Character\Character;
-use App\Models\Character\CharacterCategory;	
 use App\Models\Character\CharacterImage;
 use App\Models\Character\Sublist;
 use App\Models\Claymore\GearCategory;
-use App\Models\Claymore\Weapon;	
 use App\Models\Claymore\WeaponCategory;
 use App\Models\Currency\Currency;
-use App\Models\Currency\CurrencyLog;	
 use App\Models\Gallery\Gallery;
 use App\Models\Gallery\GalleryCharacter;
-use App\Models\Gallery\GalleryFavorite;	
 use App\Models\Gallery\GallerySubmission;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
-use App\Models\Item\ItemLog;	
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetCategory;
-use App\Models\Pet\PetLog;	
 use App\Models\User\User;
 use App\Models\User\UserCurrency;
-use App\Models\User\UserGear;	
-use App\Models\User\UserItem;	
-use App\Models\User\UserWeapon;	
+use Auth;
+use Illuminate\Http\Request;
+use Route;
 
 class UserController extends Controller
 {
