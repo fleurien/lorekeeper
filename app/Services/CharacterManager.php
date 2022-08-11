@@ -22,7 +22,6 @@ use Image;
 use Notifications;
 use Settings;
 
-
 class CharacterManager extends Service
 {
     /*
