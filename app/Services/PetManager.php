@@ -2,20 +2,16 @@
 
 namespace App\Services;
 
-use Auth;
-use Config;	
-use DB;
-use Notifications;
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
-
 use App\Models\Character\Character;
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetDrop;
 use App\Models\User\User;
 use App\Models\User\UserPet;
-
-use App\Services\Service;	
+use Auth;
+use Carbon\Carbon;
+use DB;
+use Illuminate\Support\Arr;
+use Notifications;
 
 class PetManager extends Service
 {

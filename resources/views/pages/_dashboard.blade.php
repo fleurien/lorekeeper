@@ -14,7 +14,6 @@
 
     .main-content{
         margin-left:10vw;
-        margin-top:10vh;
         background-color:var(--light);
         max-width:fit-content;
         height:fit-content;

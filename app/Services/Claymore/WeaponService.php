@@ -2,14 +2,11 @@
 
 namespace App\Services\Claymore;
 
-use Config;	
-use DB;
-
 use App\Models\Claymore\Weapon;
 use App\Models\Claymore\WeaponCategory;
 use App\Models\Claymore\WeaponStat;
-
 use App\Services\Service;
+use DB;
 
 class WeaponService extends Service
 {

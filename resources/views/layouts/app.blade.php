@@ -112,13 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="site-footer" id="footer">
-                    @include('layouts._footer')
-                </div>
-            </div>
         </main>
-
 
         <div class="modal fade" id="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
@@ -130,6 +124,12 @@
                     <div class="modal-body">
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="site-footer" id="footer">
+                @include('layouts._footer')
             </div>
         </div>
 

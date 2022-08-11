@@ -1,12 +1,5 @@
 @extends('layouts.app')
 
-<style>
-    .main-content {
-        background-color: #c2dfe0;
-        border-radius: 10px;
-    }
-</style>
-
 @section('title') Character::@yield('profile-title')@endsection
 
 @section('sidebar')

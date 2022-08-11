@@ -2,19 +2,14 @@
 
 namespace App\Services\Stat;
 
-use Auth;	
-use Config;	
-use DB;
-use Notifications;
-use Carbon\Carbon;
-
 use App\Models\Character\Character;
 use App\Models\Level\CharacterLevel;
-use App\Models\Level\Level;	
 use App\Models\Level\UserLevel;
 use App\Models\User\User;
-
 use App\Services\Service;
+use Carbon\Carbon;
+use DB;
+use Notifications;
 
 class ExperienceManager extends Service
 {

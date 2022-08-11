@@ -2,28 +2,21 @@
 
 namespace App\Services\Stat;
 
-use Auth;
-use Config;	
-use DB;
-use Notifications;	
-use Carbon\Carbon;
-
 use App\Models\Character\Character;
 use App\Models\Character\CharacterCurrency;
 use App\Models\Character\CharacterItem;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
-use App\Models\Level\CharacterLevel;	
 use App\Models\Level\Level;
-use App\Models\Level\UserLevel;	
 use App\Models\Loot\LootTable;
-use App\Models\Prompt\Prompt;	
 use App\Models\Raffle\Raffle;
 use App\Models\User\User;
 use App\Models\User\UserCurrency;
 use App\Models\User\UserItem;
-
 use App\Services\Service;
+use Auth;
+use Carbon\Carbon;
+use DB;
 
 class LevelManager extends Service
 {

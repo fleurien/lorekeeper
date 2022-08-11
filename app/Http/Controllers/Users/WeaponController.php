@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use DB;	
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Character\Character;
 use App\Models\Claymore\Weapon;
 use App\Models\Claymore\WeaponCategory;
-use App\Models\Claymore\WeaponLog;	
 use App\Models\User\User;
 use App\Models\User\UserWeapon;
-
 use App\Services\Claymore\WeaponManager;
+use Auth;
+use Illuminate\Http\Request;
 
 class WeaponController extends Controller
 {

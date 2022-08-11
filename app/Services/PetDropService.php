@@ -2,16 +2,11 @@
 
 namespace App\Services;
 
-use Config;	
-use DB;
-use Illuminate\Support\Arr;
-
 use App\Models\Item\Item;
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetDropData;
-use App\Models\Pet\PetVariant;	
-
-use App\Services\Service;	
+use DB;
+use Illuminate\Support\Arr;
 
 class PetDropService extends Service
 {

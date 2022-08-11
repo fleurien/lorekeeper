@@ -2,7 +2,6 @@
 
 namespace App\Models\Item;
 
-use Config;
 use App\Models\Model;
 
 class ItemCategory extends Model
