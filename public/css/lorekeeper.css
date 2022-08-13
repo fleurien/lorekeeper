@@ -36,6 +36,7 @@
     --brandlighter:#fbb9b6;
     --accent: #a64f24;
     --light: #ffe29d;
+    --lightdarker: #ca9d4d;
     --dark: #1c4849;
 }
 
@@ -86,27 +87,15 @@ body {
     background-color: var(--light);
     font-family: Lato, sans-serif;
     width:100%;
-    min-height: 100vh;
+    min-height: 100%;
     display:flex;
     background-color: var(--light);
     background-image: url(images/Augustwide.png);
     background-size:cover;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-/** BOOTSTRAP STYLES **/
-
-.btn-primary{
-    color:var(--white);
-    background-color: var(--brand);
-    border-color:var(--brand);
-}
-
-.btn-primary:hover{
-    color:var(--white);
-    background-color: var(--branddarker);
-    border-color:var(--branddarker);
+    background-attachment: fixed;
+    flex-direction: column;
 }
 
 /**************************************************************************************************
@@ -159,6 +148,30 @@ body {
     color:var(--black);
 }
 
+.btn-primary{
+    color:var(--black);
+    background-color: var(--light);
+    border-color:var(--light);
+}
+
+.btn-primary:hover{
+    color:var(--white);
+    background-color: var(--lightdarker);
+    border-color:var(--lightdarker);
+}
+
+.btn-danger{
+    color:var(--white);
+    background-color: var(--brand);
+    border-color:var(--brand);
+}
+
+.btn-danger:hover{
+    color:var(--white);
+    background-color: var(--branddarker);
+    border-color:var(--branddarker);
+}
+
 /**************************************************************************************************
 
     Layout
@@ -186,6 +199,9 @@ main > .row,
 .main-content {
     display: flex;
     flex-direction: column;
+    background-color:rgba(194, 223, 224,0.8);
+    border-radius:10px;
+    height:fit-content;
 }
 
 /* Header */
@@ -297,7 +313,7 @@ main > .row,
 }
 
 .sidebar-section{
-    background: linear-gradient(180deg, rgba(194,223,224,1) 55%, rgba(249,249,247,1) 100%);
+    background: linear-gradient(180deg, rgba(160, 222, 210,1) 55%, rgba(249,249,247,.5) 100%);
 }
 
 .sidebar a,
@@ -315,8 +331,8 @@ main > .row,
 .sidebar a:hover {
     background-color: transparent;
     font-weight:bolder;
-    border-left: 2px solid var(--accent);
-    margin-left: -2px;
+    border-left: 3px solid var(--brand);
+    margin-left: -3px;
 
 }
 .sidebar a:hover, .sidebar a:active, .sidebar a:focus, .sidebar a:link {
@@ -326,7 +342,7 @@ main > .row,
     text-decoration: none;
 }
 .sidebar a.active, .sidebar a.active:hover {
-    color: var(--black);
+    color: var(--white);
     background-color: var(--brand);
     font-weight:bolder;
 }
@@ -336,7 +352,10 @@ main > .row,
     padding: 10px 20px;
 }
 
+/* MEDIA QUERIES */
+
 @media (max-width: 767px) {
+
 	.site-mobile-header {
 		top: 54px !important;
     }
@@ -345,6 +364,16 @@ main > .row,
 		margin-left: 1rem!important;
 		margin-right: 1rem!important;
 	}
+
+    .site-mobile-header{
+        position: relative!important;
+        margin-top:-50px!important;
+        z-index:10!important;
+    }
+
+    .site-footer{
+        background-color: var(--brand);
+    }
 }
 
 @media (max-width: 991px) {
@@ -354,15 +383,41 @@ main > .row,
     .site-mobile-header {
         display: block;
         position: fixed;
-		top: 68px;
         z-index: 4;
         width: 100%;
+        background-color: transparent!important;
+    }
+
+    .btn-outline-light{
+        color:var(--black);
+        border-color:var(--black);
+    }
+
+    .bg-dark{
+        background-image:none!important;
+        border:none;
+    }
+
+    .navbar .navbar-brand{
+        font-size:22px;
+        background-image:none!important;
+        margin:0px;
+        left:-60px;
+    }
+
+    .navbar .navbar-brand,
+    .navbar .navbar-brand:hover,
+    .navbar .navbar-brand:active,
+    .navbar .navbar-brand:focus,
+    .navbar .navbar-brand:visited{
+        color:var(--white);
     }
 
     #headerNav {
         position: fixed;
         z-index: 5;
         width: 100%;
+        background-color: var(--brand)!important;
     }
 
     main.container-fluid {
@@ -376,7 +431,7 @@ main > .row,
         position: absolute;
         padding-left: 0px;
         text-align: left;
-        background-color: #ddd;
+        background-color: var(--light);
         z-index: 3;
         right: 0px;
         bottom: 0px;
@@ -385,9 +440,14 @@ main > .row,
 
         left: -100%;
         transition: left 0.2s;
+        color:var(--black)
     }
     .sidebar.active {
         left: 0%;
+    }
+
+    .sidebar-section{
+        background:none;
     }
 
     .sidebar > ul {
@@ -399,15 +459,20 @@ main > .row,
         display: block;
         padding-top: 30px;
         padding-left: 0px;
+        background-color: transparent;
     }
 
     .sidebar ul li {
-        background-color: white;
+        background-color: transparent;
         border-radius: 0;
         margin-bottom: 1em;
         padding: 0.4em 0;
-
         box-shadow: none;
+    }
+
+    .navbar-dark .navbar-nav .nav-link, .navbar-dark .navbar-nav .nav-link a{
+        color:var(--white);
+        margin-top:6px;
     }
 
 	/*fix for screen being over-wide on mobile*/
@@ -430,6 +495,8 @@ main > .row,
     text-align: center;
     align-self: flex-end;
     width:100vw;
+    position:fixed;
+    bottom:0;
 }
 
 .site-footer .navbar {
@@ -493,11 +560,11 @@ main > .row,
 }
 
 .nav-tabs .nav-link.active {
-    background-color: transparent;
+    background-color: var(--white);
 }
 .nav-tabs .nav-link {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif;
+    font-family: Lato;
 }
 
 .display-user, .display-character {
@@ -686,7 +753,12 @@ tr.outflow {
 }
 
 .character-bio .nav-tabs.card-header-tabs .active {
-    background-color: var(--brand);
+    background-color: var(--light);
+    border-color:var(--lightdarker);
+}
+
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    border-color:var(--lightdarker);
 }
 
 /* INVENTORY *************************************************************************************/
@@ -944,7 +1016,7 @@ tr.accountbound {
     border-color:  #fbba00;
 }
 
-/*--------------memeber-card-design----------*/
+/*--------------member-card-design----------*/
 .member-view-box{
     padding:0px 20px;
     text-align: center;
@@ -1058,7 +1130,7 @@ tr.accountbound {
     border-color:  #fbba00;
 }
 
-/*--------------memeber-card-design----------*/
+/*--------------member-card-design----------*/
 .member-view-box{
     padding:0px 20px;
     text-align: center;
