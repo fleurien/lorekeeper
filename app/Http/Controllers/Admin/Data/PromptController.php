@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Data;
 
-use Auth;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Award\Award;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\Weapon;
@@ -19,8 +15,9 @@ use App\Models\Prompt\PromptCategory;
 use App\Models\Raffle\Raffle;
 use App\Models\Recipe\Recipe;
 use App\Models\Skill\Skill;
-
 use App\Services\PromptService;
+use Auth;
+use Illuminate\Http\Request;
 
 class PromptController extends Controller
 {

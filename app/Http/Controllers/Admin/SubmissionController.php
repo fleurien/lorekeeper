@@ -2,26 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Auth;
-use Config;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Award\Award;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\Weapon;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
-use App\Models\Item\ItemCategory;	
 use App\Models\Loot\LootTable;
 use App\Models\Pet\Pet;
 use App\Models\Prompt\PromptCategory;
 use App\Models\Raffle\Raffle;
 use App\Models\Recipe\Recipe;
 use App\Models\Submission\Submission;
-
 use App\Services\SubmissionManager;
+use Auth;
+use Config;
+use Illuminate\Http\Request;
 
 class SubmissionController extends Controller
 {

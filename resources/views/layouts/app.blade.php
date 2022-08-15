@@ -86,7 +86,6 @@
 
         <main class="container-fluid">
             <div class="row">
-
                 <div class="sidebar col-lg-2" id="sidebar">
                     @yield('sidebar')
                 </div>
@@ -94,7 +93,7 @@
                     <div>
                         @if(Settings::get('is_maintenance_mode'))
                             <div class="alert alert-secondary">
-                                The site is currently in maintenance mode! 
+                                The site is currently in maintenance mode!
                                 @if(!Auth::user()->hasPower('maintenance_access'))
                                     You can browse public content, but cannot make any submissions.
                                 @endif
@@ -111,15 +110,9 @@
                         @include('flash::message')
                         @yield('content')
                     </div>
-
-                    <div class="site-footer mt-4" id="footer">
-                            @include('layouts._footer')
-                    </div>
                 </div>
             </div>
-
         </main>
-
 
         <div class="modal fade" id="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
@@ -131,6 +124,12 @@
                     <div class="modal-body">
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="site-footer" id="footer">
+                @include('layouts._footer')
             </div>
         </div>
 

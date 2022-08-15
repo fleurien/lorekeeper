@@ -2,22 +2,17 @@
 
 namespace App\Services;
 
-use Auth;	
-use Config;
-use DB;
-use Notifications;
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
-
 use App\Models\Character\CharacterItem;
-use App\Models\Currency\Currency;	
 use App\Models\Item\Item;
-use App\Models\Item\ItemCategory;	
 use App\Models\Shop\UserItemDonation;
 use App\Models\User\User;
 use App\Models\User\UserItem;
-
-use App\Services\Service;	
+use Auth;
+use Carbon\Carbon;
+use Config;
+use DB;
+use Illuminate\Support\Arr;
+use Notifications;
 
 class InventoryManager extends Service
 {
@@ -561,71 +556,74 @@ class InventoryManager extends Service
     /**
      * Donates items from stack.
      *
-     * @param \App\Models\User\User     $user
-     * @param \App\Models\User\UserItem $stacks
-     * @param int                       $quantities
+     * @param mixed $sender
+     * @param mixed $recipient
+     * @param mixed $type
+     * @param mixed $data
+     * @param mixed $item
+     * @param mixed $quantity
      *
      * @return bool
-     
-    public function donateStack($user, $stacks, $quantities)
-    {
-        DB::beginTransaction();
-
-        try {
-            foreach ($stacks as $key=>$stack) {
-                $quantity = $quantities[$key];
-                if (!$user->hasAlias) {
-                    throw new \Exception('Your deviantART account must be verified before you can perform this action.');
-                }
-                if (!$stack) {
-                    throw new \Exception('An invalid item was selected.');
-                }
-                if ($stack->user_id != $user->id && !$user->hasPower('edit_inventories')) {
-                    throw new \Exception('You do not own one of the selected items.');
-                }
-                if ($stack->count < $quantity) {
-                    throw new \Exception('Quantity to donate exceeds item count.');
-                }
-                if (!$stack->item->canDonate) {
-                    throw new \Exception('This item cannot be donated.');
-                }
-                if ((!$stack->item->allow_transfer || isset($stack->data['disallow_transfer'])) && !$user->hasPower('edit_inventories')) {
-                    throw new \Exception('One of the selected items cannot be transferred.');
-                }
-
-                // Create or add to donated stock
-                $stock = UserItemDonation::where('stack_id', $stack->id)->where('item_id', $stack->item->id)->first();
-                if ($stock) {
-                    $stock->update(['quantity' => $stock->stock += $quantity]);
-                } else {
-                    $stock = UserItemDonation::create([
-                        'stack_id' => $stack->id,
-                        'item_id'  => $stack->item->id,
-                        'stock'    => $quantity,
-                    ]);
-                }
-
-                // Debit item(s) from user
-                if ($this->debitStack($stack->user, ($stack->user_id == $user->id ? 'Donated by User' : 'Donated by Staff'), ['data' => ($stack->user_id != $user->id ? 'Donated by '.$user->displayName : '')], $stack, $quantity)) {
-                    if ($stack->user_id != $user->id) {
-                        Notifications::create('ITEM_REMOVAL', $stack->user, [
-                            'item_name'     => $stack->item->name,
-                            'item_quantity' => $quantity,
-                            'sender_url'    => $user->url,
-                            'sender_name'   => $user->name,
-                        ]);
-                    }
-                }
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
-    }
-    */
+     *
+     * public function donateStack($user, $stacks, $quantities)
+     * {
+     * DB::beginTransaction();
+     *
+     * try {
+     * foreach ($stacks as $key=>$stack) {
+     * $quantity = $quantities[$key];
+     * if (!$user->hasAlias) {
+     * throw new \Exception('Your deviantART account must be verified before you can perform this action.');
+     * }
+     * if (!$stack) {
+     * throw new \Exception('An invalid item was selected.');
+     * }
+     * if ($stack->user_id != $user->id && !$user->hasPower('edit_inventories')) {
+     * throw new \Exception('You do not own one of the selected items.');
+     * }
+     * if ($stack->count < $quantity) {
+     * throw new \Exception('Quantity to donate exceeds item count.');
+     * }
+     * if (!$stack->item->canDonate) {
+     * throw new \Exception('This item cannot be donated.');
+     * }
+     * if ((!$stack->item->allow_transfer || isset($stack->data['disallow_transfer'])) && !$user->hasPower('edit_inventories')) {
+     * throw new \Exception('One of the selected items cannot be transferred.');
+     * }
+     *
+     * // Create or add to donated stock
+     * $stock = UserItemDonation::where('stack_id', $stack->id)->where('item_id', $stack->item->id)->first();
+     * if ($stock) {
+     * $stock->update(['quantity' => $stock->stock += $quantity]);
+     * } else {
+     * $stock = UserItemDonation::create([
+     * 'stack_id' => $stack->id,
+     * 'item_id'  => $stack->item->id,
+     * 'stock'    => $quantity,
+     * ]);
+     * }
+     *
+     * // Debit item(s) from user
+     * if ($this->debitStack($stack->user, ($stack->user_id == $user->id ? 'Donated by User' : 'Donated by Staff'), ['data' => ($stack->user_id != $user->id ? 'Donated by '.$user->displayName : '')], $stack, $quantity)) {
+     * if ($stack->user_id != $user->id) {
+     * Notifications::create('ITEM_REMOVAL', $stack->user, [
+     * 'item_name'     => $stack->item->name,
+     * 'item_quantity' => $quantity,
+     * 'sender_url'    => $user->url,
+     * 'sender_name'   => $user->name,
+     * ]);
+     * }
+     * }
+     * }
+     *
+     * return $this->commitReturn(true);
+     * } catch (\Exception $e) {
+     * $this->setError('error', $e->getMessage());
+     * }
+     *
+     * return $this->rollbackReturn(false);
+     * }
+     */
     /**
      * Credits an item to a user or character.
      *

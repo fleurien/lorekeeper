@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use DB;	
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Character\Character;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\GearCategory;
-use App\Models\Claymore\GearLog;	
 use App\Models\User\User;
 use App\Models\User\UserGear;
-
 use App\Services\Claymore\GearManager;
+use Auth;
+use Illuminate\Http\Request;
 
 class GearController extends Controller
 {

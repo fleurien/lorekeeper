@@ -2,10 +2,6 @@
 
 namespace App\Models\Submission;
 
-use Config;	
-use DB;	
-use Carbon\Carbon;	
-
 use App\Models\Model;
 
 class SubmissionCharacter extends Model

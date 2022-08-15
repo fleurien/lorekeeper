@@ -2,17 +2,13 @@
 
 namespace App\Services;
 
-use Config;	
-use DB;
-use Illuminate\Support\Arr;
-
 use App\Models\Prompt\Prompt;
 use App\Models\Prompt\PromptCategory;
 use App\Models\Prompt\PromptReward;
 use App\Models\Prompt\PromptSkill;
 use App\Models\Submission\Submission;
-
-use App\Services\Service;	
+use DB;
+use Illuminate\Support\Arr;
 
 class PromptService extends Service
 {

@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Config;
 
-use App\Models\Model;	
-
 class Notification extends Model
 {
     /**

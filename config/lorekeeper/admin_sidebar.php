@@ -18,12 +18,12 @@ return [
         'power' => 'admin',
         'links' => [
             [
-                'name' => 'User Ranks',
-                'url'  => 'admin/users/ranks',
-            ],
-            [
                 'name' => 'Admin Logs',
                 'url'  => 'admin/logs',
+            ],
+            [
+                'name' => 'User Ranks',
+                'url'  => 'admin/users/ranks',
             ],
             [
                 'name' => 'Staff Reward Settings',
@@ -48,12 +48,12 @@ return [
                 'url'  => 'admin/news',
             ],
             [
-                'name' => 'Sales',
-                'url'  => 'admin/sales',
-            ],
-            [
                 'name' => 'Pages',
                 'url'  => 'admin/pages',
+            ],
+            [
+                'name' => 'Sales',
+                'url'  => 'admin/sales',
             ],
         ],
     ],
@@ -74,14 +74,6 @@ return [
         'power' => 'manage_submissions',
         'links' => [
             [
-                'name' => 'Gallery Submissions',
-                'url'  => 'admin/gallery/submissions',
-            ],
-            [
-                'name' => 'Gallery Currency Awards',
-                'url'  => 'admin/gallery/currency',
-            ],
-            [
                 'name' => 'Prompt Submissions',
                 'url'  => 'admin/submissions',
             ],
@@ -89,38 +81,46 @@ return [
                 'name' => 'Claim Submissions',
                 'url'  => 'admin/claims',
             ],
+            [
+                'name' => 'Gallery Submissions',
+                'url'  => 'admin/gallery/submissions',
+            ],
+            [
+                'name' => 'Gallery Currency Awards',
+                'url'  => 'admin/gallery/currency',
+            ],
         ],
     ],
     'Grants' => [
         'power' => 'edit_inventories',
         'links' => [
             [
-                'name' => 'Currency Grants',
-                'url'  => 'admin/grants/user-currency',
-            ],
-            [
-                'name' => 'Item Grants',
-                'url'  => 'admin/grants/items',
-            ],
-            [
                 'name' => 'Award Grants',
                 'url'  => 'admin/grants/awards',
             ],
             [
-                'name' => 'Recipe Grants',
-                'url'  => 'admin/grants/recipes',
+                'name' => 'Currency Grants',
+                'url'  => 'admin/grants/user-currency',
             ],
             [
                 'name' => 'EXP Grants',
                 'url'  => 'admin/grants/exp',
             ],
             [
+                'name' => 'Gear Grants',
+                'url'  => 'admin/grants/gear',
+            ],
+            [
+                'name' => 'Item Grants',
+                'url'  => 'admin/grants/items',
+            ],
+            [
                 'name' => 'Pet Grants',
                 'url'  => 'admin/grants/pets',
             ],
             [
-                'name' => 'Gear Grants',
-                'url'  => 'admin/grants/gear',
+                'name' => 'Recipe Grants',
+                'url'  => 'admin/grants/recipes',
             ],
             [
                 'name' => 'Weapon Grants',
@@ -140,12 +140,12 @@ return [
                 'url'  => 'admin/masterlist/create-myo',
             ],
             [
-                'name' => 'Character Transfers',
-                'url'  => 'admin/masterlist/transfers/incoming',
-            ],
-            [
                 'name' => 'Character Trades',
                 'url'  => 'admin/masterlist/trades/incoming',
+            ],
+            [
+                'name' => 'Character Transfers',
+                'url'  => 'admin/masterlist/transfers/incoming',
             ],
             [
                 'name' => 'Design Updates',
@@ -170,12 +170,12 @@ return [
         'power' => 'edit_levels',
         'links' => [
             [
-                'name' => 'User Levels',
-                'url'  => 'admin/levels/user',
-            ],
-            [
                 'name' => 'Character Levels',
                 'url'  => 'admin/levels/character',
+            ],
+            [
+                'name' => 'User Levels',
+                'url'  => 'admin/levels/user',
             ],
         ],
     ],
@@ -183,32 +183,64 @@ return [
         'power' => 'edit_data',
         'links' => [
             [
-                'name' => 'Galleries',
-                'url'  => 'admin/data/galleries',
-            ],
-            [
-                'name' => 'Award Categories',
-                'url'  => 'admin/data/award-categories',
+                'name' => 'Advent Calendars',
+                'url'  => 'admin/data/advent-calendars',
             ],
             [
                 'name' => 'Awards',
                 'url'  => 'admin/data/awards',
             ],
             [
+                'name' => 'Award Categories',
+                'url'  => 'admin/data/award-categories',
+            ],
+            [
                 'name' => 'Character Categories',
                 'url'  => 'admin/data/character-categories',
             ],
             [
-                'name' => 'Sub Masterlists',
-                'url'  => 'admin/data/sublists',
+                'name' => 'Currencies',
+                'url'  => 'admin/data/currencies',
+            ],
+            [
+                'name' => 'Galleries',
+                'url'  => 'admin/data/galleries',
+            ],
+            [
+                'name' => 'Items',
+                'url'  => 'admin/data/items',
+            ],
+            [
+                'name' => 'Loot Tables',
+                'url'  => 'admin/data/loot-tables',
+            ],
+            [
+                'name' => 'Pets',
+                'url'  => 'admin/data/pets',
+            ],
+            [
+                'name' => 'Prompts',
+                'url'  => 'admin/data/prompts',
             ],
             [
                 'name' => 'Rarities',
                 'url'  => 'admin/data/rarities',
             ],
             [
+                'name' => 'Recipes',
+                'url'  => 'admin/data/recipes',
+            ],
+            [
+                'name' => 'Shops',
+                'url'  => 'admin/data/shops',
+            ],
+            [
                 'name' => 'Species',
                 'url'  => 'admin/data/species',
+            ],
+            [
+                'name' => 'Sub Masterlists',
+                'url'  => 'admin/data/sublists',
             ],
             [
                 'name' => 'Subtypes',
@@ -217,38 +249,6 @@ return [
             [
                 'name' => 'Traits',
                 'url'  => 'admin/data/traits',
-            ],
-            [
-                'name' => 'Shops',
-                'url'  => 'admin/data/shops',
-            ],
-            [
-                'name' => 'Currencies',
-                'url'  => 'admin/data/currencies',
-            ],
-            [
-                'name' => 'Prompts',
-                'url'  => 'admin/data/prompts',
-            ],
-            [
-                'name' => 'Loot Tables',
-                'url'  => 'admin/data/loot-tables',
-            ],
-            [
-                'name' => 'Items',
-                'url'  => 'admin/data/items',
-            ],
-            [
-                'name' => 'Advent Calendars',
-                'url'  => 'admin/data/advent-calendars',
-            ],
-            [
-                'name' => 'Recipes',
-                'url'  => 'admin/data/recipes',
-            ],
-            [
-                'name' => 'Pets',
-                'url'  => 'admin/data/pets',
             ],
         ],
     ],

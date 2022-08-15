@@ -2,16 +2,6 @@
 
 namespace App\Services;
 
-use Auth;	
-use DB;
-use File;
-use Image;
-use Notifications;
-use Settings;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;	
-
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Gallery\GallerySubmission;
@@ -20,11 +10,13 @@ use App\Models\Submission\Submission;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserUpdateLog;
-
-use App\Services\CharacterManager;	
-use App\Services\GalleryManager;	
-use App\Services\Service;	
-use App\Services\SubmissionManager;	
+use Carbon\Carbon;
+use DB;
+use File;
+use Illuminate\Support\Facades\Hash;
+use Image;
+use Notifications;
+use Settings;
 
 class UserService extends Service
 {

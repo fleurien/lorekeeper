@@ -2,13 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use DB;	
-use Illuminate\Console\Command;
-
 use App\Models\Pet\PetDrop;
-
-use App\Services\NewsService;	
+use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class CheckPetDrops extends Command
 {

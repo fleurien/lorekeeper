@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
-@section('title') Character ::@yield('profile-title')@endsection
+<style>
+
+    .image {
+        max-height:60vh;
+    };
+
+</style>
+
+@section('title') Character::@yield('profile-title')@endsection
 
 @section('sidebar')
     @include('character.'.($isMyo ? 'myo.' : '').'_sidebar')

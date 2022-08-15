@@ -2,8 +2,6 @@
 
 namespace App\Models\Loot;
 
-use Config;	
-
 use App\Models\Model;
 
 class Loot extends Model
