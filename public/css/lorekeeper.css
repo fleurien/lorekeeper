@@ -117,13 +117,9 @@ body {
 
 .parsed-text p,
 .parsed-text ul{
-    background-color: var(--light);
-    color:var(--black);
     border-radius: 8px;
     margin:10px;
     padding:30px;
-    text-align:center;
-    list-style:none;
 }
 
 .parsed-text a{
@@ -141,7 +137,6 @@ body {
 
 .parsed-text h1,
 .parsed-text h2{
-    background:var(--brand);
     margin:10px;
     padding:20px;
     border-radius: 8px;
@@ -373,6 +368,8 @@ main > .row,
 
     .site-footer{
         background-color: var(--brand);
+        position:fixed;
+        bottom:0;
     }
 }
 
@@ -497,6 +494,7 @@ main > .row,
     width:100vw;
     position:fixed;
     bottom:0;
+    z-index:-1;
 }
 
 .site-footer .navbar {
@@ -517,6 +515,11 @@ main > .row,
 
 .mce-content-body {
     padding: 20px;
+}
+
+#tinymce{
+    background-color: #fff;
+    background-image:none;
 }
 
 .site-footer a{
