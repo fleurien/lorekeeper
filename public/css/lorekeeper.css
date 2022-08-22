@@ -117,19 +117,9 @@ body {
 
 .parsed-text p,
 .parsed-text ul{
-<<<<<<< HEAD
-    background-color: var(--light);
-    color:var(--black);
     border-radius: 8px;
     margin:10px;
     padding:30px;
-    text-align:center;
-    list-style:none;
-=======
-    border-radius: 8px;
-    margin:10px;
-    padding:30px;
->>>>>>> c75d594e4202f88da1e29e2b804abc736aeac140
 }
 
 .parsed-text a{
@@ -147,10 +137,7 @@ body {
 
 .parsed-text h1,
 .parsed-text h2{
-<<<<<<< HEAD
     background:var(--brand);
-=======
->>>>>>> c75d594e4202f88da1e29e2b804abc736aeac140
     margin:10px;
     padding:20px;
     border-radius: 8px;
@@ -224,7 +211,6 @@ main > .row,
 .navbar .nav-item {
     font-family: WendyOne;
     text-transform: lowercase;
-<<<<<<< HEAD
 }
 
 .navbar .navbar-brand{
@@ -238,21 +224,6 @@ main > .row,
     background-image: linear-gradient(0deg, rgba(199,198,140,0) 40%, #f3da95 50%)!important;
 }
 
-=======
-}
-
-.navbar .navbar-brand{
-    font-family: Amatic;
-    color:var(--accent);
-    font-size:64px;
-    font-weight:bold;
-    position: relative;
-    padding:10px;
-    margin-top:-60px;
-    background-image: linear-gradient(0deg, rgba(199,198,140,0) 40%, #f3da95 50%)!important;
-}
-
->>>>>>> c75d594e4202f88da1e29e2b804abc736aeac140
 .navbar .navbar-brand:hover{
     color:var(--brand);
 }
@@ -398,11 +369,8 @@ main > .row,
 
     .site-footer{
         background-color: var(--brand);
-<<<<<<< HEAD
-=======
         position:fixed;
         bottom:0;
->>>>>>> c75d594e4202f88da1e29e2b804abc736aeac140
     }
 }
 
@@ -527,10 +495,7 @@ main > .row,
     width:100vw;
     position:fixed;
     bottom:0;
-<<<<<<< HEAD
-=======
     z-index:-1;
->>>>>>> c75d594e4202f88da1e29e2b804abc736aeac140
 }
 
 .site-footer .navbar {
@@ -553,14 +518,11 @@ main > .row,
     padding: 20px;
 }
 
-<<<<<<< HEAD
-=======
 #tinymce{
     background-color: #fff;
     background-image:none;
 }
 
->>>>>>> c75d594e4202f88da1e29e2b804abc736aeac140
 .site-footer a{
     color: rgba(255, 226, 157,0.5)!important;
 }
@@ -963,6 +925,8 @@ tr.accountbound {
 @media only screen and (max-width: 600px) {
     .comment_replies { padding-left:1rem;}
 }
+
+/*TEST COMMENT*/
 
 /*----------------research-tree----------*/
 
