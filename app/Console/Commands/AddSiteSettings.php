@@ -101,6 +101,17 @@ class AddSiteSettings extends Command
         $this->addSiteSetting('gallery_submissions_reward_currency', 0, '0: Gallery submissions do not reward currency, 1: Gallery submissions reward currency.');
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
+        
+        $this->addSiteSetting('deactivated_privacy', 0, 'Who can view the deactivated list? 0: Admin only, 1: Staff only, 2: Members only, 3: Public.');
+
+        $this->addSiteSetting('deactivated_link', 0, '0: No link to the deactivated list is displayed anywhere, 1: Link to the deactivated list is shown on the user list.');
+
+        $this->addSiteSetting('deactivated_key', 0, 'Optional key to view the deactivated list. Enter "0" to not require one.');
+
+        $this->addSiteSetting('comment_dislikes_enabled', 0, '0: Dislikes disabled, 1: Dislikes enabled.');
+
+        $this->line("\nSite settings up to date!");
+    }
 
         /**
         * AFFILIATES
@@ -129,6 +140,7 @@ class AddSiteSettings extends Command
             $this->info("Added:   character_title_display / Default: 0");
         }
         else $this->line("Skipped: character_title_display");
+
 
         if(!DB::table('site_settings')->where('key', 'event_currency')->exists()) {
             DB::table('site_settings')->insert([

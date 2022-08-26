@@ -291,6 +291,21 @@ return [
         'url'     => 'account/bookmarks',
     ],
 
+    // USER_REACTIVATED
+    103 => [
+        'name'      => 'User Reactivated',
+        'message'   => '<a href="{user_url}">{user_name}\'s</a> account has been reactivated by <a href="{staff_url}">{staff_name}</a>.',
+        'url'       => '',
+    ],
+
+    // USER_DEACTIVATED
+    104 => [
+        'name'      => 'User Deactivated',
+        'message'   => '<a href="{user_url}">{user_name}\'s</a> account has been deactivated by <a href="{staff_url}">{staff_name}</a>.',
+        'url'       => '',
+    ],
+
+
     // A user-submitted affiliate was accepted
     // AFFILIATE_ACCEPTION
     105 => [

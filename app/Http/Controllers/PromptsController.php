@@ -124,4 +124,24 @@ class PromptsController extends Controller
             'page' => SitePage::where('key', 'event-tracker')->first()
         ]);
     }
+
+    /**
+     * Shows an individual prompt.
+     *
+     * @param mixed $id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getPrompt(Request $request, $id)
+    {
+        $prompt = Prompt::where('id', $id)->get()->first();
+
+        if (!$prompt) {
+            abort(404);
+        }
+
+        return view('prompts.prompt', [
+            'prompt' => $prompt,
+        ]);
+    }
 }
