@@ -114,7 +114,7 @@ class InventoryController extends Controller
             'has_power' => $hasPower,
             'readOnly'  => $readOnly,
             'character' => $character,
-            'owner_id'  => isset($ownerId) ? $ownerId : null,
+            'owner_id'  => $ownerId ?? null,
         ]);
     }
 

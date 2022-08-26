@@ -1,4 +1,4 @@
-@extends('user.layout')
+@extends('user.layout', ['user' => isset($user) ? $user : null])
 
 @section('profile-title') {{ $user->name }}'s Profile @endsection
 
@@ -77,6 +77,12 @@
                 <div class="col-md-4 col-4"><h5>Birthday</h5></div>
                 <div class="col-md-8 col-8">{!! $user->birthdayDisplay !!}</div>
             </div>
+@if($user->is_deactivated)
+    <div class="alert alert-info text-center">
+        <h1>{!! $user->displayName !!}</h1>
+            <p>This account is currently deactivated, be it by staff or the user's own action. All information herein is hidden until the account is reactivated.</p>
+        @if(Auth::check() && Auth::user()->isStaff)
+            <p class="mb-0">As you are staff, you can see the profile contents below and the sidebar contents.</p>
         @endif
         @if($user_enabled && isset($user->home_id))
             <div class="row col-md-6">
@@ -91,14 +97,10 @@
             </div>
         @endif
     </div>
-</div>
+@endif
 
-@if(isset($user->profile->parsed_text))
-    <div class="card mb-3" style="clear:both;">
-        <div class="card-body">
-            {!! $user->profile->parsed_text !!}
-        </div>
-    </div>
+@if(!$user->is_deactivated || Auth::check() && Auth::user()->isStaff)
+    @include('user._profile_content', ['user' => $user, 'deactivated' => $user->is_deactivated])
 @endif
 
 

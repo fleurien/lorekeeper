@@ -44,6 +44,7 @@ Route::group(['prefix' => 'sales'], function () {
 **************************************************************************************************/
 Route::get('/users', 'BrowseController@getUsers');
 Route::get('/blacklist', 'BrowseController@getBlacklist');
+Route::get('/deactivated-list', 'BrowseController@getDeactivated');
 
 // PROFILES
 Route::group(['prefix' => 'user', 'namespace' => 'Users'], function () {
@@ -125,6 +126,7 @@ Route::group(['prefix' => 'prompts'], function () {
     Route::get('/', 'PromptsController@getIndex');
     Route::get('prompt-categories', 'PromptsController@getPromptCategories');
     Route::get('prompts', 'PromptsController@getPrompts');
+    Route::get('{id}', 'PromptsController@getPrompt');
 });
 
 Route::group(['prefix' => 'shops'], function () {

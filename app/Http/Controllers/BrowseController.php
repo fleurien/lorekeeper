@@ -47,7 +47,7 @@ class BrowseController extends Controller
             $query->where('rank_id', $request->get('rank_id'));
         }
 
-        switch (isset($sort['sort']) ? $sort['sort'] : null) {
+        switch ($sort['sort'] ?? null) {
             default:
                 $query->orderBy('ranks.sort', 'DESC')->orderBy('name');
                 break;
@@ -69,9 +69,42 @@ class BrowseController extends Controller
         }
 
         return view('browse.users', [
-            'users'         => $query->paginate(30)->appends($request->query()),
-            'ranks'         => [0 => 'Any Rank'] + Rank::orderBy('ranks.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'blacklistLink' => Settings::get('blacklist_link'),
+            'users'             => $query->paginate(30)->appends($request->query()),
+            'ranks'             => [0 => 'Any Rank'] + Rank::orderBy('ranks.sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'blacklistLink'     => Settings::get('blacklist_link'),
+            'deactivatedLink'   => Settings::get('deactivated_link'),
+        ]);
+    }
+
+    /**
+     * Shows the user deactivated.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getDeactivated(Request $request)
+    {
+        $canView = false;
+        $key = Settings::get('deactivated_key');
+
+        // First, check the display settings for the deactivated...
+        $privacy = Settings::get('deactivated_privacy');
+        if ($privacy == 3 ||
+            (Auth::check() &&
+            ($privacy == 2 ||
+            ($privacy == 1 && Auth::user()->isStaff) ||
+            ($privacy == 0 && Auth::user()->isAdmin)))) {
+            // Next, check if the deactivated requires a key
+            $canView = true;
+            if ($key != '0' && ($request->get('key') != $key)) {
+                $canView = false;
+            }
+        }
+
+        return view('browse.deactivated', [
+            'canView' => $canView,
+            'privacy' => $privacy,
+            'key'     => $key,
+            'users'   => $canView ? User::where('is_deactivated', 1)->orderBy('users.name')->paginate(30)->appends($request->query()) : null,
         ]);
     }
 
@@ -229,29 +262,29 @@ class BrowseController extends Controller
 
         if ($request->get('is_gift_art_allowed')) {
             switch ($request->get('is_gift_art_allowed')) {
-            case 1:
-                $query->where('is_gift_art_allowed', 1);
-            break;
-            case 2:
-                $query->where('is_gift_art_allowed', 2);
-            break;
-            case 3:
-                $query->where('is_gift_art_allowed', '>=', 1);
-            break;
-        }
+                case 1:
+                    $query->where('is_gift_art_allowed', 1);
+                    break;
+                case 2:
+                    $query->where('is_gift_art_allowed', 2);
+                    break;
+                case 3:
+                    $query->where('is_gift_art_allowed', '>=', 1);
+                    break;
+            }
         }
         if ($request->get('is_gift_writing_allowed')) {
             switch ($request->get('is_gift_writing_allowed')) {
-            case 1:
-                $query->where('is_gift_writing_allowed', 1);
-            break;
-            case 2:
-                $query->where('is_gift_writing_allowed', 2);
-            break;
-            case 3:
-                $query->where('is_gift_writing_allowed', '>=', 1);
-            break;
-        }
+                case 1:
+                    $query->where('is_gift_writing_allowed', 1);
+                    break;
+                case 2:
+                    $query->where('is_gift_writing_allowed', 2);
+                    break;
+                case 3:
+                    $query->where('is_gift_writing_allowed', '>=', 1);
+                    break;
+            }
         }
 
         switch ($request->get('sort')) {
@@ -472,29 +505,29 @@ class BrowseController extends Controller
         }
         if ($request->get('is_gift_art_allowed')) {
             switch ($request->get('is_gift_art_allowed')) {
-            case 1:
-                $query->where('is_gift_art_allowed', 1);
-            break;
-            case 2:
-                $query->where('is_gift_art_allowed', 2);
-            break;
-            case 3:
-                $query->where('is_gift_art_allowed', '>=', 1);
-            break;
-        }
+                case 1:
+                    $query->where('is_gift_art_allowed', 1);
+                    break;
+                case 2:
+                    $query->where('is_gift_art_allowed', 2);
+                    break;
+                case 3:
+                    $query->where('is_gift_art_allowed', '>=', 1);
+                    break;
+            }
         }
         if ($request->get('is_gift_writing_allowed')) {
             switch ($request->get('is_gift_writing_allowed')) {
-            case 1:
-                $query->where('is_gift_writing_allowed', 1);
-            break;
-            case 2:
-                $query->where('is_gift_writing_allowed', 2);
-            break;
-            case 3:
-                $query->where('is_gift_writing_allowed', '>=', 1);
-            break;
-        }
+                case 1:
+                    $query->where('is_gift_writing_allowed', 1);
+                    break;
+                case 2:
+                    $query->where('is_gift_writing_allowed', 2);
+                    break;
+                case 3:
+                    $query->where('is_gift_writing_allowed', '>=', 1);
+                    break;
+            }
         }
         if ($request->get('is_sellable')) {
             $query->where('is_sellable', 1);

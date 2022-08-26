@@ -68,6 +68,10 @@
                             <a href="https://www.deviantart.com/poffinsworld" class="dropdown-item">
                                 Deviantart
                             </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url('comments/liked') }}">
+                                Liked Comments
+                            </a>
                         </div>
                     </li>
                     <li class="nav-item dropup">
