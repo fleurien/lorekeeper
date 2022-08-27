@@ -21,7 +21,6 @@ use File;
 use Illuminate\Support\Facades\Hash;
 use Image;
 use Notifications;
-use Settings;
 
 use App\Services\SubmissionManager;
 use App\Services\GalleryManager;
