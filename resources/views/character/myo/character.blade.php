@@ -17,6 +17,7 @@
     @include('character._image_info', ['image' => $character->image])
 </div>
 
+<!--
 {{-- Info --}}
 <div class="card character-bio">
     <div class="card-header">
@@ -60,7 +61,7 @@
         @endif
     </div>
 </div>
-
+--!
 @endsection
 
 @section('scripts')
