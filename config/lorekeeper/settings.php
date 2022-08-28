@@ -137,7 +137,7 @@ return [
     | 'masterlist_image_background' => 'png',
     |
     */
-    'watermark_masterlist_images' => 0,
+    'watermark_masterlist_images' => 1,
     'masterlist_image_dimension'  => 0,
     'masterlist_image_format'     => null,
     'masterlist_image_background' => '#ffffff',
