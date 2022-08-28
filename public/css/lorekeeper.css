@@ -96,6 +96,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     flex-direction: column;
+    margin-top:-3px;
 }
 
 /**************************************************************************************************
@@ -353,7 +354,7 @@ main > .row,
 @media (max-width: 767px) {
 
 	.site-mobile-header {
-		top: 54px !important;
+		top: 50px !important;
     }
 
     .timestamp {
@@ -369,21 +370,27 @@ main > .row,
 
     .site-footer{
         background-color: var(--brand);
-        position:fixed;
         bottom:0;
     }
 }
 
 @media (max-width: 991px) {
+
     .site-header-image {
         display: none;
     }
     .site-mobile-header {
         display: block;
         position: fixed;
-        z-index: 4;
+        z-index: 5;
         width: 100%;
         background-color: transparent!important;
+    }
+
+    .main-content{
+        max-height:70vh;
+        margin-top:20px;
+        overflow:auto;
     }
 
     .btn-outline-light{
@@ -413,9 +420,10 @@ main > .row,
 
     #headerNav {
         position: fixed;
-        z-index: 5;
+        z-index: 6;
         width: 100%;
         background-color: var(--brand)!important;
+        margin-top:44px;
     }
 
     main.container-fluid {
@@ -493,7 +501,6 @@ main > .row,
     text-align: center;
     align-self: flex-end;
     width:100vw;
-    position:fixed;
     bottom:0;
     z-index:-1;
 }
