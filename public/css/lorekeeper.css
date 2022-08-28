@@ -199,7 +199,6 @@ main > .row,
     background-color:rgba(194, 223, 224,0.8);
     border-radius:10px;
     height:fit-content;
-    z-index:100;
 }
 
 /* Header */
