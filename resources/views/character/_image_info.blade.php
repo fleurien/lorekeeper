@@ -1,3 +1,5 @@
+
+
 {{-- Image Data --}}
 <div class="col-md-5 d-flex">
     <div class="card character-bio" style="background-color:transparent; border-radius: 10px; height:60vh;">
@@ -192,11 +194,19 @@
 
             {{-- Skills --}}
 
-            <div class="tab-pane fade" id="skills-{{ $image->id }}">
-                <div class="row p-3 m-2" style="background-color:#f9f9f7; border-radius: 5px;">
-                    @include('character._tab_skills', ['character' => $character, 'skills' => $skills])
+            @if($character->is_myo_slot)
+                <div class="tab-pane fade" id="skills-{{ $image->id }}">
+                    <div class="row p-3 m-2" style="background-color:#f9f9f7; border-radius: 5px;">
+                        This character doesn't have skills yet
+                    </div>
                 </div>
-            </div>
+            @else
+                <div class="tab-pane fade" id="skills-{{ $image->id }}">
+                    <div class="row p-3 m-2" style="background-color:#f9f9f7; border-radius: 5px;">
+                        @include('character._tab_skills', ['character' => $character, 'skills' => $skills])
+                    </div>
+                </div>
+            @endif
 
             @if(Auth::check() && Auth::user()->hasPower('manage_characters'))
                 <div class="tab-pane fade" id="settings-{{ $image->id }}">
