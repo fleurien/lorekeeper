@@ -11,8 +11,7 @@ use App\Services\InventoryManager;
 use Auth;
 use Illuminate\Http\Request;
 
-class GrantController extends Controller
-{
+class GrantController extends Controller {
     /**
      * Grants or removes currency from a character.
      *
@@ -21,8 +20,7 @@ class GrantController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCharacterCurrency($slug, Request $request, CurrencyManager $service)
-    {
+    public function postCharacterCurrency($slug, Request $request, CurrencyManager $service) {
         $data = $request->only(['currency_id', 'quantity', 'data']);
         if ($service->grantCharacterCurrencies($data, Character::where('slug', $slug)->first(), Auth::user())) {
             flash('Currency granted successfully.')->success();
@@ -43,8 +41,7 @@ class GrantController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCharacterItems($slug, Request $request, InventoryManager $service)
-    {
+    public function postCharacterItems($slug, Request $request, InventoryManager $service) {
         $data = $request->only(['item_ids', 'quantities', 'data', 'disallow_transfer', 'notes']);
         if ($service->grantCharacterItems($data, Character::where('slug', $slug)->first(), Auth::user())) {
             flash('Items granted successfully.')->success();

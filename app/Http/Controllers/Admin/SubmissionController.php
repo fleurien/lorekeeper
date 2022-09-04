@@ -19,8 +19,7 @@ use Auth;
 use Config;
 use Illuminate\Http\Request;
 
-class SubmissionController extends Controller
-{
+class SubmissionController extends Controller {
     /**
      * Shows the submission index page.
      *
@@ -28,8 +27,7 @@ class SubmissionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getSubmissionIndex(Request $request, $status = null)
-    {
+    public function getSubmissionIndex(Request $request, $status = null) {
         $submissions = Submission::with('prompt')->where('status', $status ? ucfirst($status) : 'Pending')->whereNotNull('prompt_id');
         $data = $request->only(['prompt_category_id', 'sort']);
         if (isset($data['prompt_category_id']) && $data['prompt_category_id'] != 'none') {
@@ -64,8 +62,7 @@ class SubmissionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getSubmission($id)
-    {
+    public function getSubmission($id) {
         $submission = Submission::whereNotNull('prompt_id')->where('id', $id)->first();
         $inventory = isset($submission->data['user']) ? parseAssetData($submission->data['user']) : null;
         if (!$submission) {
@@ -103,8 +100,7 @@ class SubmissionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getClaimIndex(Request $request, $status = null)
-    {
+    public function getClaimIndex(Request $request, $status = null) {
         $submissions = Submission::where('status', $status ? ucfirst($status) : 'Pending')->whereNull('prompt_id');
         $data = $request->only(['sort']);
         if (isset($data['sort'])) {
@@ -133,8 +129,7 @@ class SubmissionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getClaim($id)
-    {
+    public function getClaim($id) {
         $submission = Submission::whereNull('prompt_id')->where('id', $id)->first();
         $inventory = isset($submission->data['user']) ? parseAssetData($submission->data['user']) : null;
         if (!$submission) {
@@ -173,8 +168,7 @@ class SubmissionController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSubmission(Request $request, SubmissionManager $service, $id, $action)
-    {
+    public function postSubmission(Request $request, SubmissionManager $service, $id, $action) {
         $data = $request->only(['slug',  'character_rewardable_quantity', 'character_rewardable_id',  'character_rewardable_type', 'character_currency_id', 'rewardable_type', 'rewardable_id', 'quantity', 'staff_comments', 'character_is_focus', 'bonus_exp', 'bonus_points', 'bonus_user_exp', 'bonus_user_points']);
         if ($action == 'reject' && $service->rejectSubmission($request->only(['staff_comments']) + ['id' => $id], Auth::user())) {
             flash('Submission rejected successfully.')->success();

@@ -9,8 +9,7 @@ use App\Models\User\User;
 use App\Models\User\UserItem;
 use Config;
 
-class Item extends Model
-{
+class Item extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -71,24 +70,21 @@ class Item extends Model
     /**
      * Get the category the item belongs to.
      */
-    public function category()
-    {
+    public function category() {
         return $this->belongsTo('App\Models\Item\ItemCategory', 'item_category_id');
     }
 
     /**
      * Get the item's tags.
      */
-    public function tags()
-    {
+    public function tags() {
         return $this->hasMany('App\Models\Item\ItemTag', 'item_id');
     }
 
     /**
      * Get the user that drew the item art.
      */
-    public function artist()
-    {
+    public function artist() {
         return $this->belongsTo('App\Models\User\User', 'artist_id');
     }
 
@@ -106,8 +102,7 @@ class Item extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
@@ -118,8 +113,7 @@ class Item extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortCategory($query)
-    {
+    public function scopeSortCategory($query) {
         if (ItemCategory::all()->count()) {
             return $query->orderBy(ItemCategory::select('sort')->whereColumn('items.item_category_id', 'item_categories.id'), 'DESC');
         }
@@ -134,8 +128,7 @@ class Item extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -146,8 +139,7 @@ class Item extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 
@@ -158,8 +150,7 @@ class Item extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeReleased($query)
-    {
+    public function scopeReleased($query) {
         return $query->whereIn('id', UserItem::pluck('item_id')->toArray())->orWhere('is_released', 1);
     }
 
@@ -174,8 +165,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-item">'.$this->name.'</a>';
     }
 
@@ -184,8 +174,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/items';
     }
 
@@ -194,8 +183,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.png';
     }
 
@@ -204,8 +192,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -214,8 +201,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
@@ -228,8 +214,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/items?name='.$this->name);
     }
 
@@ -238,8 +223,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getIdUrlAttribute()
-    {
+    public function getIdUrlAttribute() {
         return url('world/items/'.$this->id);
     }
 
@@ -248,8 +232,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'items';
     }
 
@@ -258,8 +241,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getItemArtistAttribute()
-    {
+    public function getItemArtistAttribute() {
         if (!$this->artist_url && !$this->artist_id) {
             return null;
         }
@@ -284,8 +266,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getReferenceAttribute()
-    {
+    public function getReferenceAttribute() {
         if (!$this->reference_url) {
             return null;
         }
@@ -298,8 +279,7 @@ class Item extends Model
      *
      * @return array
      */
-    public function getDataAttribute()
-    {
+    public function getDataAttribute() {
         if (!$this->id) {
             return null;
         }
@@ -312,8 +292,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getRarityAttribute()
-    {
+    public function getRarityAttribute() {
         if (!isset($this->data) || !isset($this->data['rarity'])) {
             return null;
         }
@@ -326,8 +305,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getUsesAttribute()
-    {
+    public function getUsesAttribute() {
         if (!$this->data) {
             return null;
         }
@@ -340,8 +318,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getSourceAttribute()
-    {
+    public function getSourceAttribute() {
         if (!$this->data) {
             return null;
         }
@@ -354,8 +331,7 @@ class Item extends Model
      *
      * @return string
      */
-    public function getResellAttribute()
-    {
+    public function getResellAttribute() {
         if (!$this->data) {
             return null;
         }
@@ -368,8 +344,7 @@ class Item extends Model
      *
      * @return array
      */
-    public function getShopsAttribute()
-    {
+    public function getShopsAttribute() {
         if (!$this->data) {
             return null;
         }
@@ -383,8 +358,7 @@ class Item extends Model
      *
      * @return array
      */
-    public function getPromptsAttribute()
-    {
+    public function getPromptsAttribute() {
         if (!$this->data) {
             return null;
         }
@@ -438,6 +412,24 @@ class Item extends Model
      * return 0;
      * }
      */
+    /**
+     * Gets the admin edit URL.
+     *
+     * @return string
+     */
+    public function getAdminUrlAttribute() {
+        return url('admin/data/items/edit/'.$this->id);
+    }
+
+    /**
+     * Gets the power required to edit this model.
+     *
+     * @return string
+     */
+    public function getAdminPowerAttribute() {
+        return 'edit_data';
+    }
+
     /**********************************************************************************************
 
         OTHER FUNCTIONS
@@ -451,8 +443,7 @@ class Item extends Model
      *
      * @return bool
      */
-    public function hasTag($tag)
-    {
+    public function hasTag($tag) {
         return $this->tags()->where('tag', $tag)->where('is_active', 1)->exists();
     }
 
@@ -463,8 +454,7 @@ class Item extends Model
      *
      * @return \App\Models\Item\ItemTag
      */
-    public function tag($tag)
-    {
+    public function tag($tag) {
         return $this->tags()->where('tag', $tag)->where('is_active', 1)->first();
     }
 }

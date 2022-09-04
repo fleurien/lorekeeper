@@ -12,8 +12,7 @@ use Carbon\Carbon;
 use Config;
 use DB;
 
-class ShopManager extends Service
-{
+class ShopManager extends Service {
     /*
     |--------------------------------------------------------------------------
     | Shop Manager
@@ -31,8 +30,7 @@ class ShopManager extends Service
      *
      * @return App\Models\Shop\Shop|bool
      */
-    public function buyStock($data, $user)
-    {
+    public function buyStock($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -138,8 +136,7 @@ class ShopManager extends Service
      *
      * @return bool
      */
-    public function checkPurchaseLimitReached($shopStock, $user)
-    {
+    public function checkPurchaseLimitReached($shopStock, $user) {
         if ($shopStock->purchase_limit > 0) {
             return $this->checkUserPurchases($shopStock, $user) >= $shopStock->purchase_limit;
         }
@@ -155,13 +152,11 @@ class ShopManager extends Service
      *
      * @return int
      */
-    public function checkUserPurchases($shopStock, $user)
-    {
+    public function checkUserPurchases($shopStock, $user) {
         return ShopLog::where('shop_id', $shopStock->shop_id)->where('item_id', $shopStock->item_id)->where('user_id', $user->id)->sum('quantity');
     }
 
-    public function getStockPurchaseLimit($shopStock, $user)
-    {
+    public function getStockPurchaseLimit($shopStock, $user) {
         $limit = Config::get('lorekeeper.settings.default_purchase_limit');
         if ($shopStock->purchase_limit > 0) {
             $user_purchase_limit = $shopStock->purchase_limit - $this->checkUserPurchases($shopStock, $user);

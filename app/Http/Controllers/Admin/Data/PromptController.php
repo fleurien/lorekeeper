@@ -19,8 +19,7 @@ use App\Services\PromptService;
 use Auth;
 use Illuminate\Http\Request;
 
-class PromptController extends Controller
-{
+class PromptController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Admin / Prompt Controller
@@ -35,8 +34,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('admin.prompts.prompt_categories', [
             'categories' => PromptCategory::orderBy('sort', 'DESC')->get(),
         ]);
@@ -47,8 +45,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreatePromptCategory()
-    {
+    public function getCreatePromptCategory() {
         return view('admin.prompts.create_edit_prompt_category', [
             'category' => new PromptCategory,
         ]);
@@ -61,8 +58,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditPromptCategory($id)
-    {
+    public function getEditPromptCategory($id) {
         $category = PromptCategory::find($id);
         if (!$category) {
             abort(404);
@@ -81,8 +77,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditPromptCategory(Request $request, PromptService $service, $id = null)
-    {
+    public function postCreateEditPromptCategory(Request $request, PromptService $service, $id = null) {
         $id ? $request->validate(PromptCategory::$updateRules) : $request->validate(PromptCategory::$createRules);
         $data = $request->only([
             'name', 'description', 'image', 'remove_image',
@@ -109,8 +104,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeletePromptCategory($id)
-    {
+    public function getDeletePromptCategory($id) {
         $category = PromptCategory::find($id);
 
         return view('admin.prompts._delete_prompt_category', [
@@ -126,8 +120,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeletePromptCategory(Request $request, PromptService $service, $id)
-    {
+    public function postDeletePromptCategory(Request $request, PromptService $service, $id) {
         if ($id && $service->deletePromptCategory(PromptCategory::find($id))) {
             flash('Category deleted successfully.')->success();
         } else {
@@ -146,8 +139,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortPromptCategory(Request $request, PromptService $service)
-    {
+    public function postSortPromptCategory(Request $request, PromptService $service) {
         if ($service->sortPromptCategory($request->get('sort'))) {
             flash('Category order updated successfully.')->success();
         } else {
@@ -170,8 +162,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getPromptIndex(Request $request)
-    {
+    public function getPromptIndex(Request $request) {
         $query = Prompt::query();
         $data = $request->only(['prompt_category_id', 'name']);
         if (isset($data['prompt_category_id']) && $data['prompt_category_id'] != 'none') {
@@ -192,8 +183,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreatePrompt()
-    {
+    public function getCreatePrompt() {
         return view('admin.prompts.create_edit_prompt', [
             'prompt'     => new Prompt,
             'categories' => ['none' => 'No category'] + PromptCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -217,8 +207,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditPrompt($id)
-    {
+    public function getEditPrompt($id) {
         $prompt = Prompt::find($id);
         if (!$prompt) {
             abort(404);
@@ -248,8 +237,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditPrompt(Request $request, PromptService $service, $id = null)
-    {
+    public function postCreateEditPrompt(Request $request, PromptService $service, $id = null) {
         $id ? $request->validate(Prompt::$updateRules) : $request->validate(Prompt::$createRules);
         $data = $request->only([
             'name', 'prompt_category_id', 'summary', 'description', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'is_active', 'rewardable_type',
@@ -278,8 +266,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeletePrompt($id)
-    {
+    public function getDeletePrompt($id) {
         $prompt = Prompt::find($id);
 
         return view('admin.prompts._delete_prompt', [
@@ -295,8 +282,7 @@ class PromptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeletePrompt(Request $request, PromptService $service, $id)
-    {
+    public function postDeletePrompt(Request $request, PromptService $service, $id) {
         if ($id && $service->deletePrompt(Prompt::find($id))) {
             flash('Prompt deleted successfully.')->success();
         } else {

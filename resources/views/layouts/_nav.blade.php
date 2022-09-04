@@ -12,14 +12,14 @@
             <ul class="navbar-nav mr-auto">
                 <!--
                 <li class="nav-item">
-                    @if(Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
+                    @if (Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
                         <a class="nav-link d-flex text-warning" href="{{ url('news') }}"><strong>News</strong><i class="fas fa-bell"></i></a>
                     @else
                         <a class="nav-link" href="{{ url('news') }}">News</a>
                     @endif
                 </li>
                 <li class="nav-item">
-                    @if(Auth::check() && Auth::user()->is_sales_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
+                    @if (Auth::check() && Auth::user()->is_sales_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
                         <a class="nav-link d-flex text-warning" href="{{ url('sales') }}"><strong>Sales</strong><i class="fas fa-bell"></i></a>
                     @else
                         <a class="nav-link" href="{{ url('sales') }}">Sales</a>
@@ -170,12 +170,12 @@
                         </li>
                     @endif
                 @else
-                    @if(Auth::user()->isStaff)
+                    @if (Auth::user()->isStaff)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('admin') }}"><i class="fas fa-crown"></i></a>
                         </li>
                     @endif
-                    @if(Auth::user()->notifications_unread)
+                    @if (Auth::user()->notifications_unread)
                         <li class="nav-item">
                             <a class="nav-link btn btn-secondary btn-sm" href="{{ url('notifications') }}"><span class="fas fa-envelope"></span> {{ Auth::user()->notifications_unread }}</a>
                         </li>
@@ -217,8 +217,7 @@
                             <a class="dropdown-item" href="{{ url('account/settings') }}">
                                 Settings
                             </a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>

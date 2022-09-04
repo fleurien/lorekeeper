@@ -15,8 +15,7 @@ use App\Services\ShopManager;
 use Auth;
 use Illuminate\Http\Request;
 
-class ShopController extends Controller
-{
+class ShopController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Shop Controller
@@ -31,11 +30,10 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('shops.index', [
             'shops' => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
-            ]);
+        ]);
     }
 
     /**
@@ -45,8 +43,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getShop($id)
-    {
+    public function getShop($id) {
         $categories = ItemCategory::orderBy('sort', 'DESC')->get();
         $shop = Shop::where('id', $id)->where('is_active', 1)->first();
         if (!$shop) {
@@ -72,8 +69,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getShopStock(ShopManager $service, $id, $stockId)
-    {
+    public function getShopStock(ShopManager $service, $id, $stockId) {
         $shop = Shop::where('id', $id)->where('is_active', 1)->first();
         $stock = ShopStock::with('item')->where('id', $stockId)->where('shop_id', $id)->first();
 
@@ -109,8 +105,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postBuy(Request $request, ShopManager $service)
-    {
+    public function postBuy(Request $request, ShopManager $service) {
         $request->validate(ShopLog::$createRules);
         if ($service->buyStock($request->only(['stock_id', 'shop_id', 'slug', 'bank', 'quantity']), Auth::user())) {
             flash('Successfully purchased item.')->success();
@@ -128,8 +123,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getPurchaseHistory()
-    {
+    public function getPurchaseHistory() {
         return view('shops.purchase_history', [
             'logs'  => Auth::user()->getShopLogs(0),
             'shops' => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),

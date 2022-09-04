@@ -14,8 +14,7 @@ use DB;
 use Illuminate\Support\Arr;
 use Notifications;
 
-class InventoryManager extends Service
-{
+class InventoryManager extends Service {
     /*
     |--------------------------------------------------------------------------
     | Inventory Manager
@@ -33,8 +32,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function grantItems($data, $staff)
-    {
+    public function grantItems($data, $staff) {
         DB::beginTransaction();
 
         try {
@@ -98,8 +96,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function grantCharacterItems($data, $character, $staff)
-    {
+    public function grantCharacterItems($data, $character, $staff) {
         DB::beginTransaction();
 
         try {
@@ -167,8 +164,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function transferCharacterStack($sender, $recipient, $stacks, $quantities, $user)
-    {
+    public function transferCharacterStack($sender, $recipient, $stacks, $quantities, $user) {
         DB::beginTransaction();
 
         try {
@@ -267,8 +263,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function transferStack($sender, $recipient, $stacks, $quantities)
-    {
+    public function transferStack($sender, $recipient, $stacks, $quantities) {
         DB::beginTransaction();
 
         try {
@@ -413,8 +408,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function deleteStack($owner, $stacks, $quantities, $user)
-    {
+    public function deleteStack($owner, $stacks, $quantities, $user) {
         DB::beginTransaction();
 
         try {
@@ -495,8 +489,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function resellStack($user, $stacks, $quantities)
-    {
+    public function resellStack($user, $stacks, $quantities) {
         DB::beginTransaction();
 
         try {
@@ -636,8 +629,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function creditItem($sender, $recipient, $type, $data, $item, $quantity)
-    {
+    public function creditItem($sender, $recipient, $type, $data, $item, $quantity) {
         DB::beginTransaction();
 
         try {
@@ -692,8 +684,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function moveStack($sender, $recipient, $type, $data, $stack, $quantity)
-    {
+    public function moveStack($sender, $recipient, $type, $data, $stack, $quantity) {
         DB::beginTransaction();
 
         try {
@@ -735,8 +726,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function debitStack($owner, $type, $data, $stack, $quantity)
-    {
+    public function debitStack($owner, $type, $data, $stack, $quantity) {
         DB::beginTransaction();
 
         try {
@@ -765,8 +755,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function nameStack($owner, $stacks, $name, $user)
-    {
+    public function nameStack($owner, $stacks, $name, $user) {
         DB::beginTransaction();
 
         try {
@@ -808,8 +797,7 @@ class InventoryManager extends Service
      *
      * @return int
      */
-    public function createLog($senderId, $senderType, $recipientId, $recipientType, $stackId, $type, $data, $itemId, $quantity)
-    {
+    public function createLog($senderId, $senderType, $recipientId, $recipientType, $stackId, $type, $data, $itemId, $quantity) {
         return DB::table('items_log')->insert(
             [
                 'sender_id'      => $senderId,
@@ -835,8 +823,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function consolidateInventory($user)
-    {
+    public function consolidateInventory($user) {
         DB::beginTransaction();
 
         try {

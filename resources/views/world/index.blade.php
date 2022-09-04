@@ -1,17 +1,28 @@
 @extends('world.layout')
 
-@section('title') Home @endsection
+@section('title')
+    Home
+@endsection
 
 @section('content')
-{!! breadcrumbs(['Encyclopedia' => 'world']) !!}
+    {!! breadcrumbs(['Encyclopedia' => 'world']) !!}
 
-<h1>World</h1>
-<div class="row">
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-body text-center">
-                <img src="{{ asset('images/characters.png') }}" alt="Characters" />
-                <h5 class="card-title">Characters</h5>
+    <h1>World</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <img src="{{ asset('images/characters.png') }}" alt="Characters" />
+                    <h5 class="card-title">Characters</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="{{ url('world/species') }}">Species</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/subtypes') }}">Subtypes</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/rarities') }}">Rarities</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/trait-categories') }}">Trait Categories</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/traits') }}">All Traits</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/character-categories') }}">Character Categories</a></li>
+                </ul>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a href="{{ url('world/traits') }}">All Traits</a></li>
@@ -48,5 +59,4 @@
             </ul>
         </div>
     </div>
-</div>
 @endsection

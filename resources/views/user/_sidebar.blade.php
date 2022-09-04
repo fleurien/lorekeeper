@@ -2,9 +2,9 @@
     <li class="sidebar-header"><a href="{{ $user->url }}" class="card-link" style="overflow:hidden; text-overflow: ellipsis;">{{ $user->name }}</a></li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">Gallery</div>
-        <div class="sidebar-item"><a href="{{ $user->url.'/gallery' }}" class="{{ set_active('user/'.$user->name.'/gallery*') }}">Gallery</a></div>
-        <div class="sidebar-item"><a href="{{ $user->url.'/favorites' }}" class="{{ set_active('user/'.$user->name.'/favorites*') }}">Favorites</a></div>
-        <div class="sidebar-item"><a href="{{ $user->url.'/favorites/own-characters' }}" class="{{ set_active('user/'.$user->name.'/favorites/own-characters*') }}">Own Character Favorites</a></div>
+        <div class="sidebar-item"><a href="{{ $user->url . '/gallery' }}" class="{{ set_active('user/' . $user->name . '/gallery*') }}">Gallery</a></div>
+        <div class="sidebar-item"><a href="{{ $user->url . '/favorites' }}" class="{{ set_active('user/' . $user->name . '/favorites*') }}">Favorites</a></div>
+        <div class="sidebar-item"><a href="{{ $user->url . '/favorites/own-characters' }}" class="{{ set_active('user/' . $user->name . '/favorites/own-characters*') }}">Own Character Favorites</a></div>
     </li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">User</div>
@@ -35,7 +35,7 @@
         <div class="sidebar-item"><a href="{{ $user->url.'/submissions' }}" class="{{ set_active($user->url.'/submissions*') }}">Submissions</a></div>
     </li>
 
-    @if(Auth::check() && Auth::user()->hasPower('edit_user_info'))
+    @if (Auth::check() && Auth::user()->hasPower('edit_user_info'))
         <li class="sidebar-section">
             <div class="sidebar-section-header">Admin</div>
             <div class="sidebar-item"><a href="{{ $user->adminUrl }}">Edit User</a></div>

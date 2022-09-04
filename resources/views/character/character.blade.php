@@ -1,8 +1,12 @@
 @extends('character.layout', ['isMyo' => $character->is_myo_slot])
 
-@section('profile-title') {{ $character->fullName }} @endsection
+@section('profile-title')
+    {{ $character->fullName }}
+@endsection
 
-@section('meta-img') {{ $character->image->thumbnailUrl }} @endsection
+@section('meta-img')
+    {{ $character->image->thumbnailUrl }}
+@endsection
 
 @section('profile-content')
 
@@ -14,7 +18,7 @@
 {!! breadcrumbs([($character->category->masterlist_sub_id ? $character->category->sublist->name.' Masterlist' : 'Character masterlist') => ($character->category->masterlist_sub_id ? 'sublist/'.$character->category->sublist->key : 'masterlist' ), $character->fullName => $character->url]) !!}
 @endif
 
-@include('character._header', ['character' => $character])
+    @include('character._header', ['character' => $character])
 
 {{-- Main Image --}}
 <div class="row mb-3" style="clear:both;">
@@ -24,12 +28,8 @@
                 <img src="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($character->image->imageDirectory.'/'.$character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}" class="image" alt="{{ $character->fullName }}" />
             </a>
         </div>
-        @if($character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($character->image->imageDirectory.'/'.$character->image->fullsizeFileName)))
-            <div class="text-right">You are viewing the full-size image. <a href="{{ $character->image->imageUrl }}">View watermarked image</a>?</div>
-        @endif
+        @include('character._image_info', ['image' => $character->image])
     </div>
-    @include('character._image_info', ['image' => $character->image])
-</div>
 
 <!--
 {{-- Info --}}
@@ -47,7 +47,7 @@
             </li>
             @if(Auth::check() && Auth::user()->hasPower('manage_characters'))
                 <li class="nav-item">
-                    <a class="nav-link" id="settingsTab" data-toggle="tab" href="#settings-{{ $character->slug }}" role="tab"><i class="fas fa-cog"></i></a>
+                    <a class="nav-link active" id="statsTab" data-toggle="tab" href="#stats" role="tab">Stats</a>
                 </li>
             @endif
         </ul>
@@ -73,13 +73,14 @@
                     <div class="text-right">
                         {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
                     </div>
-                {!! Form::close() !!}
-                <hr />
-                <div class="text-right">
-                    <a href="#" class="btn btn-outline-danger btn-sm delete-character" data-slug="{{ $character->slug }}">Delete</a>
+                    {!! Form::close() !!}
+                    <hr />
+                    <div class="text-right">
+                        <a href="#" class="btn btn-outline-danger btn-sm delete-character" data-slug="{{ $character->slug }}">Delete</a>
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 
 </div>

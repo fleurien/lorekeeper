@@ -23,8 +23,7 @@ use Illuminate\Support\Arr;
 use Notifications;
 use Settings;
 
-class SubmissionManager extends Service
-{
+class SubmissionManager extends Service {
     /**
      * Creates a new submission.
      *
@@ -34,8 +33,7 @@ class SubmissionManager extends Service
      *
      * @return mixed
      */
-    public function createSubmission($data, $user, $isClaim = false)
-    {
+    public function createSubmission($data, $user, $isClaim = false) {
         DB::beginTransaction();
 
         try {
@@ -147,7 +145,7 @@ class SubmissionManager extends Service
                 'data'     => json_encode([
                     'user'    => Arr::only(getDataReadyAssets($userAssets), ['user_items', 'currencies']),
                     'rewards' => getDataReadyAssets($promptRewards),
-                    ]), // list of rewards and addons
+                ]), // list of rewards and addons
             ] + ($isClaim ? [] : ['prompt_id' => $prompt->id]));
 
             // Retrieve all reward IDs for characters
@@ -165,9 +163,12 @@ class SubmissionManager extends Service
                 foreach ($data['character_rewardable_id'] as $ckey => $c) {
                     foreach ($c as $key => $id) {
                         switch ($data['character_rewardable_type'][$ckey][$key]) {
-                            case 'Currency': $currencyIds[] = $id; break;
-                            case 'Item': $itemIds[] = $id; break;
-                            case 'LootTable': $tableIds[] = $id; break;
+                            case 'Currency': $currencyIds[] = $id;
+                                break;
+                            case 'Item': $itemIds[] = $id;
+                                break;
+                            case 'LootTable': $tableIds[] = $id;
+                                break;
                         }
                     }
                 } // Expanded character rewards
@@ -232,8 +233,7 @@ class SubmissionManager extends Service
      *
      * @return mixed
      */
-    public function rejectSubmission($data, $user)
-    {
+    public function rejectSubmission($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -323,8 +323,7 @@ class SubmissionManager extends Service
      *
      * @return mixed
      */
-    public function approveSubmission($data, $user)
-    {
+    public function approveSubmission($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -431,10 +430,14 @@ class SubmissionManager extends Service
                 foreach ($data['character_rewardable_id'] as $ckey => $c) {
                     foreach ($c as $key => $id) {
                         switch ($data['character_rewardable_type'][$ckey][$key]) {
-                            case 'Currency':    $currencyIds[] = $id; break;
-                            case 'Item':        $itemIds[] = $id; break;
-                            case 'LootTable':   $tableIds[] = $id; break;
-                            case 'Award':       $awardIds[] = $id; break;
+                            case 'Currency': $currencyIds[] = $id;
+                                break;
+                            case 'Item': $itemIds[] = $id;
+                                break;
+                            case 'LootTable': $tableIds[] = $id;
+                                break;
+                            case 'Award': $awardIds[] = $id;
+                                break;
                         }
                     }
                 } // Expanded character rewards
@@ -640,8 +643,7 @@ class SubmissionManager extends Service
      *
      * @return array
      */
-    private function innerNull($value)
-    {
+    private function innerNull($value) {
         return array_values(array_filter($value));
     }
 
@@ -655,8 +657,7 @@ class SubmissionManager extends Service
      *
      * @return array
      */
-    private function processRewards($data, $isCharacter, $isStaff = false, $isClaim = false)
-    {
+    private function processRewards($data, $isCharacter, $isStaff = false, $isClaim = false) {
         if ($isCharacter) {
             $assets = createAssetsArray(true);
 
