@@ -15,7 +15,7 @@
     .main-content{
         margin-left:10vw;
         background-color:var(--light);
-        max-width:fit-content;
+        max-width:400px;
         height:fit-content;
         border-radius:10px;
     }
