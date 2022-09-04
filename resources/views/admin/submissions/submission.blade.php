@@ -98,7 +98,7 @@
         </div>
         <div id="characters" class="mb-3">
             @foreach($submission->characters as $character)
-                @include('widgets._character_select_entry', ['characterCurrencies' => $characterCurrencies, 'items' => $items, 'tables' => $tables, 'character' => $characterr, 'characterAwards' => $characterAwards, 'expanded_rewards' => $expanded_rewards, 'submission' => true])
+                @include('widgets._character_select_entry', ['characterCurrencies' => $characterCurrencies, 'items' => $items, 'tables' => $tables, 'character' => $character, 'characterAwards' => $characterAwards, 'expanded_rewards' => $expanded_rewards, 'submission' => true])
             @endforeach
         </div>
         <div class="text-right mb-3">
