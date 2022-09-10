@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\Report\Report;
 use App\Models\Sales\Sales;
 use App\Models\SitePage;
+use App\Models\TradeListing;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+
 use Notifications;
 use Settings;
 use Spatie\Honeypot\ProtectAgainstSpam;
@@ -116,6 +118,12 @@ class CommentController extends Controller implements CommentControllerInterface
                 $recipient = User::find(Settings::get('admin_user'));
                 $post = 'your site page';
                 $link = $page->url.'/#comment-'.$comment->getKey();
+                break;
+            case 'App\Models\TradeListing':
+                $listing = TradeListing::find($comment->commentable_id);
+                $recipient = $listing->user;
+                $post = 'your trade listing';
+                $link = $listing->url . '/#comment-' . $comment->getKey();
                 break;
             case 'App\Models\Gallery\GallerySubmission':
                 $submission = GallerySubmission::find($comment->commentable_id);

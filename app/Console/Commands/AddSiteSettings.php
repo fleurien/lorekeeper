@@ -28,6 +28,30 @@ class AddSiteSettings extends Command {
     }
 
     /**
+     * Add a site setting.
+     *
+     * Example usage:
+     * $this->addSiteSetting("site_setting_key", 1, "0: does nothing. 1: does something.");
+     *
+     * @param  string  $key
+     * @param  int     $value
+     * @param  string  $description
+     */
+    private function addSiteSetting($key, $value, $description) {
+        if(!DB::table('site_settings')->where('key', $key)->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key'         => $key,
+                    'value'       => $value,
+                    'description' => $description,
+                ],
+            ]);
+            $this->info( "Added:   ".$key." / Default: ".$value);
+        }
+        else $this->line("Skipped: ".$key);
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -51,6 +75,8 @@ class AddSiteSettings extends Command {
 
         $this->addSiteSetting('is_reports_open', 1, '0: New reports cannot be made (mods can work on the queue still), 1: Reports are submittable.');
 
+        $this->addSiteSetting('is_maintenance_mode', 0, '0: Site is normal, 1: Users without the Has Maintenance Access power will be redirected to the home page.');
+
         $this->addSiteSetting('is_myos_open', 1, '0: MYO slots cannot be submitted for design approval, 1: MYO slots can be submitted for approval.');
 
         $this->addSiteSetting('is_design_updates_open', 1, '0: Characters cannot be submitted for design update approval, 1: Characters can be submitted for design update approval.');
@@ -73,8 +99,6 @@ class AddSiteSettings extends Command {
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
 
-        $this->addSiteSetting('is_maintenance_mode', 0, '0: Site is normal, 1: Users without the Has Maintenance Access power will be redirected to the home page.');
-
         $this->addSiteSetting('deactivated_privacy', 0, 'Who can view the deactivated list? 0: Admin only, 1: Staff only, 2: Members only, 3: Public.');
 
         $this->addSiteSetting('deactivated_link', 0, '0: No link to the deactivated list is displayed anywhere, 1: Link to the deactivated list is shown on the user list.');
@@ -82,6 +106,8 @@ class AddSiteSettings extends Command {
         $this->addSiteSetting('deactivated_key', 0, 'Optional key to view the deactivated list. Enter "0" to not require one.');
 
         $this->addSiteSetting('comment_dislikes_enabled', 0, '0: Dislikes disabled, 1: Dislikes enabled.');
+
+        $this->addSiteSetting('trade_listing_duration', 14, 'Number of days a trade listing is displayed for.');
 
         $this->line("\nSite settings up to date!");
     }
