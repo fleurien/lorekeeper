@@ -131,6 +131,7 @@ class UserService extends Service {
 
     /**
      * Updates user's birthday.
+     * Updates the user's theme.
      *
      * @param mixed $data
      * @param mixed $user
@@ -154,16 +155,31 @@ class UserService extends Service {
 
         return true;
     }
+    
+    /**
+     * Updates the user's theme.
+     *
+     * @param  array                  $data
+     * @param  \App\Models\User\User  $user
+     * @return bool
+     */
+
+    public function updateTheme($data, $user)
+    {
+        $user->theme_id = $data['theme'];
+        $user->save();
+        return true;
+    }
 
     /**
      * Updates the user's avatar.
      *
-     * @param \App\Models\User\User $user
-     * @param mixed                 $avatar
-     *
+     * @param  array                  $data
+     * @param  \App\Models\User\User  $user
      * @return bool
      */
-    public function updateAvatar($avatar, $user) {
+    public function updateAvatar($avatar, $user)
+    {
         DB::beginTransaction();
 
         try {

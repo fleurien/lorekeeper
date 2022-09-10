@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Models\Theme;
 use App\Models\User\User;
 use App\Models\User\UserAlias;
 use App\Services\LinkService;
 use App\Services\UserService;
 use Auth;
+use File;
+use Image;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller {
@@ -52,8 +55,11 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getSettings() {
-        return view('account.settings');
+    public function getSettings()
+    {
+        return view('account.settings',[
+            'themeOptions' => Theme::where('is_active',1)->get()->pluck('displayName','id')->toArray()
+        ]);
     }
 
     /**
@@ -85,6 +91,23 @@ class AccountController extends Controller {
             }
         }
 
+        return redirect()->back();
+    }
+
+    /**
+     * Edits the user's theme.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postTheme(Request $request, UserService $service)
+    {
+        if($service->updateTheme($request->only('theme'), Auth::user())) {
+            flash('Theme updated successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
         return redirect()->back();
     }
 

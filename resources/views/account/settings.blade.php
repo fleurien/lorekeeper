@@ -9,7 +9,6 @@
 
     <h1>Settings</h1>
 
-
     <div class="card p-3 mb-2">
         <h3>Avatar</h3>
         <div class="text-left">
@@ -53,6 +52,18 @@
                     Auth::user()->settings->birthday_setting,
                     ['class' => 'form-control'],
                 ) !!}
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-3 mb-2">
+        <h3>Theme</h3>
+        <p>Change the way the site looks for you! </p>
+        {!! Form::open(['url' => 'account/theme']) !!}
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Theme</label>
+            <div class="col-md-10">
+                {!! Form::select('theme', $themeOptions, Auth::user()->theme_id ? Auth::user()->theme_id : ($defaultTheme ? $defaultTheme->id : 0) , ['class' => 'form-control']) !!}
             </div>
         </div>
         <div class="text-right">

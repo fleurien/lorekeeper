@@ -34,6 +34,7 @@ Route::group(['prefix' => 'account', 'namespace' => 'Users'], function () {
     Route::get('remove-alias/{id}', 'AccountController@getRemoveAlias');
     Route::post('remove-alias/{id}', 'AccountController@postRemoveAlias');
     Route::post('dob', 'AccountController@postBirthday');
+    Route::post('theme', 'AccountController@postTheme');
 
     Route::get('deactivate', 'AccountController@getDeactivate');
     Route::get('deactivate-confirm', 'AccountController@getDeactivateConfirmation');
