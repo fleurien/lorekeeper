@@ -111,29 +111,4 @@ class AddSiteSettings extends Command {
 
         $this->line("\nSite settings up to date!");
     }
-
-    /**
-     * Add a site setting.
-     *
-     * Example usage:
-     * $this->addSiteSetting("site_setting_key", 1, "0: does nothing. 1: does something.");
-     *
-     * @param string $key
-     * @param int    $value
-     * @param string $description
-     */
-    private function addSiteSetting($key, $value, $description) {
-        if (!DB::table('site_settings')->where('key', $key)->exists()) {
-            DB::table('site_settings')->insert([
-                [
-                    'key'         => $key,
-                    'value'       => $value,
-                    'description' => $description,
-                ],
-            ]);
-            $this->info('Added:   '.$key.' / Default: '.$value);
-        } else {
-            $this->line('Skipped: '.$key);
-        }
-    }
 }
