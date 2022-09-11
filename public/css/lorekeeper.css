@@ -239,7 +239,7 @@ main > .row,
     border-top: 2px solid var(--black);
     padding-left:100px;
     width:100vw;
-    margin-top:50px;
+    padding-top:50px;
 }
 
 .navbar-dark .navbar-nav .nav-link,
