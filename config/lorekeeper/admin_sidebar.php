@@ -305,6 +305,15 @@ return [
             ],
         ],
     ],
+    'Discord' => [
+        'power' => 'manage_discord',
+        'links' => [
+            [
+                'name' => 'Discord Rewards',
+                'url'  => 'admin/discord/rewards',
+            ],
+        ],
+    ],
     'Settings' => [
         'power' => 'edit_site_settings',
         'links' => [

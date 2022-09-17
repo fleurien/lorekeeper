@@ -251,6 +251,14 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->hasMany('App\Models\CommentLike');
     }
 
+    /**
+     * Get the user's current discord chat level.
+     */
+    public function discord()
+    {
+        return $this->belongsTo('App\Models\User\UserDiscordLevel', 'user_id');
+    }
+
     /**********************************************************************************************
 
         SCOPES

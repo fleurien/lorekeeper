@@ -466,3 +466,81 @@ function fillCharacterAssets($assets, $sender, $recipient, $logType, $data, $sub
 
     return $assets;
 }
+
+/***********************************************************************************************
+ *
+ * DISCORD REWARDS
+ *
+ ***********************************************************************************************/
+
+/**
+ * Retrieves the data associated with an asset array,
+ * basically reversing the above function.
+ * Use the data attribute after json_decode()ing it.
+ *
+ * @param array $array
+ *
+ * @return array
+ */
+function parseDiscordAssetData($array)
+{
+    $assets = createAssetsArray();
+    foreach ($array as $key => $contents) {
+        $model = getAssetModelString($key);
+        if ($model) {
+            foreach ($contents as $id => $quantity) {
+                $assets[$key][$id] = [
+                    'asset'    => $model::find($id),
+                    'quantity' => $quantity->quantity,
+                ];
+            }
+        }
+    }
+
+    return $assets;
+}
+
+/**
+ * Adds an asset to the given array.
+ * If the asset already exists, it adds to the quantity.
+ *
+ * @param array $array
+ * @param mixed $asset
+ * @param int   $quantity
+ */
+function addDiscordAsset(&$array, $asset, $quantity = 1)
+{
+    if (!$asset) {
+        return;
+    }
+    if (isset($array[$asset->assetType][$asset->id])) {
+        $array[$asset->assetType][$asset->id]['quantity'] += $quantity;
+    } else {
+        $array[$asset->assetType][$asset->id] = ['asset' => $asset, 'quantity' => $quantity];
+    }
+}
+
+/**
+ * Get a clean version of the asset array to store in the database,
+ * where each asset is listed in [id => quantity] format.
+ * json_encode this and store in the data attribute.
+ *
+ * @param array $array
+ * @param bool  $isCharacter
+ *
+ * @return array
+ */
+function getDiscordDataReadyAssets($array, $isCharacter = false)
+{
+    $result = [];
+    foreach ($array as $key => $type) {
+        if ($type && !isset($result[$key])) {
+            $result[$key] = [];
+        }
+        foreach ($type as $assetId => $assetData) {
+            $result[$key][$assetId]['quantity'] = $assetData['quantity'];
+        }
+    }
+
+    return $result;
+}

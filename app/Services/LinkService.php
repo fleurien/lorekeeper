@@ -58,6 +58,7 @@ class LinkService extends Service {
                 'alias'            => $result->nickname,
                 'is_visible'       => !$user->has_alias,
                 'is_primary_alias' => !$user->has_alias,
+                'extra_data'       => $provider == 'discord' ? $result->id : null,
             ]);
 
             // Save that the user has an alias

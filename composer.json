@@ -30,6 +30,7 @@
         "socialiteproviders/twitter": "^4.1",
         "spatie/laravel-feed": "^4.1",
         "spatie/laravel-honeypot": "^4.1"
+        "team-reflex/discord-php": "^7.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

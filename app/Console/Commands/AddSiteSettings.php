@@ -85,6 +85,10 @@ class AddSiteSettings extends Command {
 
         $this->addSiteSetting('claymore_cooldown', 0, 'Number of days to add to the cooldown timer when a pet/weapon/gear is attached.');
 
+        $this->addSiteSetting('discord_exp_multiplier', 1, '1 = default, anything past this will multiply accordingly.');
+
+        $this->addSiteSetting('discord_level_notif', 1, '0: No level up notification, 1: DM notification, 2: Give user a notification of level up in channel.');
+
         $this->line("\nSite settings up to date!");
     }
 

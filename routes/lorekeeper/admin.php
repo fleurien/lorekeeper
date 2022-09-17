@@ -580,6 +580,19 @@ Route::group(['prefix' => 'designs', 'middleware' => 'power:manage_characters'],
 });
 Route::get('{type}/{status}', 'DesignController@getDesignIndex')->where('type', 'myo-approvals|design-approvals')->where('status', 'pending|approved|rejected');
 
+// DISCORD
+Route::group(['prefix' => 'discord', 'middleware' => 'power:manage_discord'], function () {
+    // levels
+    Route::get('levels', 'DiscordController@getDiscordLevelIndex');
+    // rewards
+    Route::get('rewards', 'DiscordController@getDiscordRewardIndex');
+    Route::get('rewards/create', 'DiscordController@getCreateReward');
+    Route::get('rewards/edit/{id}', 'DiscordController@getEditReward');
+    Route::post('rewards', 'DiscordController@postCreateReward');
+    Route::post('rewards/create', 'DiscordController@postCreateEditReward');
+    Route::post('rewards/edit/{id?}', 'DiscordController@postCreateEditReward');
+});
+
 // STATS - STATS
 Route::group(['prefix' => 'stats', 'namespace' => 'Stats', 'middleware' => 'power:edit_stats'], function () {
     // GET
