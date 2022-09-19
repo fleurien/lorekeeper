@@ -1,6 +1,6 @@
 /**************************************************************************************************
-    
-    Font definitions 
+
+    Font definitions
 
 **************************************************************************************************/
 
@@ -14,21 +14,28 @@
 }
 
 /**************************************************************************************************
-    
+
     Base styles
-    
+
 **************************************************************************************************/
+
+:root{
+    --background:#F8F9FA;
+    --text:#212529;
+    --accent:rgb(117, 159, 173);
+
+}
 
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    font-family: Roboto Condensed, serif;
     font-weight: bold;
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a,
 a.h1, a.h2, a.h3, a.h4, a.h5 {
-    color: rgba(0,0,0,0.7);
+    color: var(--text);
 }
 h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover,
 a.h1:hover, a.h2:hover, a.h3:hover, a.h4:hover, a.h5:hover {
@@ -37,24 +44,25 @@ a.h1:hover, a.h2:hover, a.h3:hover, a.h4:hover, a.h5:hover {
 }
 
 a {
-    color: rgba(0,0,0,0.7);
+    color: var(--text);
 }
+
 a:hover {
-    color: rgba(0,0,0,1);
+    color: var(--text);
     text-decoration: none;
 }
 
 body {
     background-color: transparent;
-    font-family: Lato, sans-serif; 
+    font-family: Lato, sans-serif;
     min-height: 100vh;
     font-size: 80%;
 }
 
 /**************************************************************************************************
-    
+
     Helpers
-    
+
 **************************************************************************************************/
 
 .hide {
@@ -69,16 +77,16 @@ body {
 }
 
 /**************************************************************************************************
-    
+
     Layout
-    
+
 **************************************************************************************************/
 
 #app {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #ddd;
+    background-color: var(--background);
 }
 
 main {
@@ -91,8 +99,7 @@ main > .row {
 }
 
 .main-content {
-    background-color: white;
-    box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.1);
+    background-color: var(--background);
     display: flex;
     flex-direction: column;
 }
@@ -101,21 +108,43 @@ main > .row {
 
 .site-header-image {
     /*background-color: #eee;*/
-    background-repeat: repeat;
+    background-repeat: no-repeat;
     min-height: 200px;
+    background-image: url(https://images.pexels.com/photos/19670/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)!important;
+    background-size:cover;
 }
 
 .navbar .navbar-brand, .navbar .nav-item {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    font-family: Roboto Condensed, serif;
 }
 
 .navbar .row { width: 100%; }
 
+.bg-dark{
+    background-color: var(--background)!important;
+    color:var(--text)!important;
+}
+
+.bg-dark a{
+    color:var(--text)!important;
+}
+
+.bg-dark a:hover{
+    color:var(--background)!important;
+    background-color: var(--accent);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover{
+    background-color: transparent;
+    text-decoration: underline;
+    color:var(--text)!important;
+}
+
 /* Sidebar */
 
 .sidebar {
-    text-align: right;
+    text-align: center;
     padding-right: 0px;
 }
 
@@ -126,31 +155,28 @@ main > .row {
 }
 
 .sidebar ul li {
-    background-color: white;
-    border-top-left-radius: .25rem;
-    border-bottom-left-radius: .25rem;
     margin-bottom: 1em;
     padding: 0.4em 0;
-    
-    box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.1);
 }
 
 .sidebar .sidebar-header,
 .sidebar .sidebar-section .sidebar-section-header {
     text-transform: uppercase;
-    font-family: Roboto Condensed, serif; 
+    font-family: Roboto Condensed, serif;
     font-weight: bold;
+    text-decoration: underline;
 }
 
 .sidebar .sidebar-header {
-    background-color: #343a40;
+    background-color: var(--text);
 }
 .sidebar .sidebar-header a {
-    color: white;
+    color: var(--background);
 }
 .sidebar .sidebar-header a:hover {
     background-color: transparent;
-    color: rgba(255,255,255,0.8);
+    color: var(--background);
+    text-decoration: underline;
 }
 
 .sidebar a,
@@ -162,11 +188,11 @@ main > .row {
 .sidebar a {
     text-transform: uppercase;
     font-family: Roboto Condensed, serif;
-    color: rgba(0,0,0,0.4);
+    color: var(--text);
 }
 .sidebar a:hover {
-    color: #16181b;
-    background-color: #f8f9fa;
+    color: var(--accent);
+    background-color: transparent;
 }
 .sidebar a:hover, .sidebar a:active, .sidebar a:focus, .sidebar a:link {
     text-decoration: none;
@@ -175,8 +201,8 @@ main > .row {
     text-decoration: none;
 }
 .sidebar a.active, .sidebar a.active:hover {
-    color: white;
-    background-color: #343a40;
+    color: var(--background);
+    background-color: var(--accent);
 }
 
 .site-mobile-header {
@@ -188,7 +214,7 @@ main > .row {
 	.site-mobile-header {
 		top: 54px !important;
     }
-    
+
     .timestamp {
 		margin-left: 1rem!important;
 		margin-right: 1rem!important;
@@ -224,7 +250,7 @@ main > .row {
         position: absolute;
         padding-left: 0px;
         text-align: left;
-        background-color: #ddd;
+        background-color: var(--background);
         z-index: 3;
         right: 0px;
         bottom: 0px;
@@ -236,7 +262,7 @@ main > .row {
     }
     .sidebar.active {
         left: 0%;
-    } 
+    }
 
     .sidebar > ul {
         padding-top: 0px;
@@ -250,23 +276,23 @@ main > .row {
     }
 
     .sidebar ul li {
-        background-color: white;
+        background-color: var(--background);
         border-radius: 0;
         margin-bottom: 1em;
         padding: 0.4em 0;
-        
+
         box-shadow: none;
     }
-	
+
 	/*fix for screen being over-wide on mobile*/
 	.row {
 		margin:0; max-width:100%;
 	}
-    
+
 	.container-fluid {
 		padding:0px;
 	}
-    
+
 	.site-footer .navbar .navbar-nav {
 		flex-wrap: wrap; justify-content: center;
 	}
@@ -299,9 +325,9 @@ main > .row {
 }
 
 /**************************************************************************************************
-    
+
     Content
-    
+
 **************************************************************************************************/
 .modal-header {
     border-bottom: 0px;
@@ -311,7 +337,7 @@ main > .row {
 }
 
 .tooltip-inner {
-    max-width: 350px !important; 
+    max-width: 350px !important;
 }
 
 .nav-tabs .nav-link.active {
@@ -667,7 +693,7 @@ tr.accountbound {
         padding-left: 3rem;
         border-left-width: 2px!important;
     }
-    
+
 .comment>p>img {
         max-width: 100%;
         height: auto;
