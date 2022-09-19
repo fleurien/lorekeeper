@@ -2,6 +2,14 @@
 
 namespace App\Services;
 
+use Auth;
+use DB;
+use File;
+use Image;
+use Carbon\Carbon;
+use Notifications;
+use Settings;
+
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Gallery\GallerySubmission;
@@ -10,13 +18,13 @@ use App\Models\Submission\Submission;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserUpdateLog;
-use Carbon\Carbon;
-use DB;
-use File;
+
 use Illuminate\Support\Facades\Hash;
-use Image;
-use Notifications;
-use Settings;
+use Illuminate\Support\Facades\Storage;
+
+use App\Services\CharacterManager;
+use App\Services\GalleryManager;
+use App\Services\SubmissionManager;
 
 class UserService extends Service {
     /*
@@ -130,8 +138,22 @@ class UserService extends Service {
     }
 
     /**
-     * Updates user's birthday.
      * Updates the user's theme.
+     *
+     * @param  array                  $data
+     * @param  \App\Models\User\User  $user
+     * @return bool
+     */
+
+    public function updateTheme($data, $user)
+    {
+        $user->theme_id = $data['theme'];
+        $user->save();
+        return true;
+    }
+
+    /**
+     * Updates user's birthday.
      *
      * @param mixed $data
      * @param mixed $user
@@ -153,21 +175,6 @@ class UserService extends Service {
         $user->settings->birthday_setting = $data;
         $user->settings->save();
 
-        return true;
-    }
-    
-    /**
-     * Updates the user's theme.
-     *
-     * @param  array                  $data
-     * @param  \App\Models\User\User  $user
-     * @return bool
-     */
-
-    public function updateTheme($data, $user)
-    {
-        $user->theme_id = $data['theme'];
-        $user->save();
         return true;
     }
 
