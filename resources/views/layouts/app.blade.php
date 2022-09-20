@@ -76,7 +76,7 @@
     @endif
 
     @include('feed::links')
-    @if(Auth::check() && Auth::user()->theme)
+    @if (Auth::check() && Auth::user()->theme)
         @php $theme = Auth::user()->theme->cssUrl @endphp
         <link href="{{ Auth::user()->theme->cssUrl }}" rel="stylesheet">
     @elseif(isset($defaultTheme))
@@ -91,7 +91,7 @@
 <body>
     <div id="app">
 
-        @if(Auth::check() && Auth::user()->theme)
+        @if (Auth::check() && Auth::user()->theme)
             <div class="site-header-image" id="header" style="background-image: url('{{ Auth::user()->theme->imageUrl }}');"></div>
         @elseif(isset($defaultTheme) && isset($defaultTheme->imageUrl))
             <div class="site-header-image" id="header" style="background-image: url('{{ $defaultTheme->imageUrl }}');"></div>
@@ -176,7 +176,7 @@
                         '{{ asset('css/app.css') }}',
                         '{{ asset('css/lorekeeper.css') }}',
                         '{{ asset('css/custom.css') }}',
-                        '{{$theme}}'
+                        '{{ $theme }}'
                     ],
                     spoiler_caption: 'Toggle Spoiler',
                     target_list: false
