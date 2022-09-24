@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
-
 use Notifications;
 use Settings;
 use Spatie\Honeypot\ProtectAgainstSpam;
@@ -123,7 +122,7 @@ class CommentController extends Controller implements CommentControllerInterface
                 $listing = TradeListing::find($comment->commentable_id);
                 $recipient = $listing->user;
                 $post = 'your trade listing';
-                $link = $listing->url . '/#comment-' . $comment->getKey();
+                $link = $listing->url.'/#comment-'.$comment->getKey();
                 break;
             case 'App\Models\Gallery\GallerySubmission':
                 $submission = GallerySubmission::find($comment->commentable_id);

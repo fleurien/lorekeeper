@@ -2,14 +2,6 @@
 
 namespace App\Services;
 
-use Auth;
-use DB;
-use File;
-use Image;
-use Carbon\Carbon;
-use Notifications;
-use Settings;
-
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Gallery\GallerySubmission;
@@ -18,13 +10,13 @@ use App\Models\Submission\Submission;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserUpdateLog;
-
+use Carbon\Carbon;
+use DB;
+use File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-
-use App\Services\CharacterManager;
-use App\Services\GalleryManager;
-use App\Services\SubmissionManager;
+use Image;
+use Notifications;
+use Settings;
 
 class UserService extends Service {
     /*
@@ -140,15 +132,15 @@ class UserService extends Service {
     /**
      * Updates the user's theme.
      *
-     * @param  array                  $data
-     * @param  \App\Models\User\User  $user
+     * @param array                 $data
+     * @param \App\Models\User\User $user
+     *
      * @return bool
      */
-
-    public function updateTheme($data, $user)
-    {
+    public function updateTheme($data, $user) {
         $user->theme_id = $data['theme'];
         $user->save();
+
         return true;
     }
 
@@ -181,12 +173,12 @@ class UserService extends Service {
     /**
      * Updates the user's avatar.
      *
-     * @param  array                  $data
-     * @param  \App\Models\User\User  $user
+     * @param \App\Models\User\User $user
+     * @param mixed                 $avatar
+     *
      * @return bool
      */
-    public function updateAvatar($avatar, $user)
-    {
+    public function updateAvatar($avatar, $user) {
         DB::beginTransaction();
 
         try {

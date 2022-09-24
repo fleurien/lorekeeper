@@ -37,8 +37,7 @@ class CharacterController extends Controller {
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->middleware(function ($request, $next) {
             $slug = Route::current()->parameter('slug');
