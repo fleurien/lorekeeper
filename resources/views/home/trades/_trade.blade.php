@@ -5,14 +5,17 @@
                 href="{{ $trade->url }} ">Trade (#{{ $trade->id }})</a></h2>
     </div>
     <div class="card-body">
-        @if(isset($trade->terms_link) && $trade->terms_link)
+        @if (isset($trade->terms_link) && $trade->terms_link)
             <div class="row">
-                <div class="col-md-2 col-4"><h5>Proof of Terms</h5></div>
+                <div class="col-md-2 col-4">
+                    <h5>Proof of Terms</h5>
+                </div>
                 <div class="col-md-10 col-8"><a href="{{ $trade->terms_link }}">{{ $trade->terms_link }}</a></div>
             </div>
         @endif
-        @if($trade->comments)
-            <div>{!! nl2br(htmlentities($trade->comments)) !!}</div><hr />
+        @if ($trade->comments)
+            <div>{!! nl2br(htmlentities($trade->comments)) !!}</div>
+            <hr />
         @endif
         <div class="row">
             <div class="col-md-6">

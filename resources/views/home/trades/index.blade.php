@@ -11,11 +11,11 @@
         Trades
     </h1>
 
-<p>Here are your trades. Trade listings can be viewed <a href="{{ url('trades/listings') }}">here</a>.
+    <p>Here are your trades. Trade listings can be viewed <a href="{{ url('trades/listings') }}">here</a>.
 
-<div class="text-right">
-    <a href="{{ url('trades/create') }}" class="btn btn-primary">New Trade</a>
-</div>
+    <div class="text-right">
+        <a href="{{ url('trades/create') }}" class="btn btn-primary">New Trade</a>
+    </div>
 
     <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
