@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Shop\Shop;
 use DB;
 
-use App\Models\Shop\Shop;
 use App\Models\Shop\ShopLimit;
 use App\Models\Shop\ShopStock;
 
@@ -343,32 +342,5 @@ class ShopService extends Service
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
-    }
-
-    /**
-     * Processes user input for creating/updating a shop.
-     *
-     * @param array                 $data
-     * @param \App\Models\Shop\Shop $shop
-     *
-     * @return array
-     */
-    private function populateShopData($data, $shop = null) {
-        if (isset($data['description']) && $data['description']) {
-            $data['parsed_description'] = parse($data['description']);
-        } else {
-            $data['parsed_description'] = null;
-        }
-        $data['is_active'] = isset($data['is_active']);
-
-        if (isset($data['remove_image'])) {
-            if ($shop && $shop->has_image && $data['remove_image']) {
-                $data['has_image'] = 0;
-                $this->deleteImage($shop->shopImagePath, $shop->shopImageFileName);
-            }
-            unset($data['remove_image']);
-        }
-
-        return $data;
     }
 }

@@ -85,9 +85,15 @@ class AddSiteSettings extends Command {
 
         $this->addSiteSetting('trade_listing_duration', 14, 'Number of days a trade listing is displayed for.');
 
-        $this->line("\nSite settings up to date!");
-    }
         $this->addSiteSetting('shop_type', 0, '0: Default, 1: Collapsible.');
+
+        $this->addSiteSetting('coupon_settings', 0, '0: Percentage is taken from total (e.g 20% from 2 items costing a total of 100 = 80), 1: Percentage is taken from item (e.g 20% from 2 items costing a total of 100 = 90)');
+
+        $this->addSiteSetting('limited_stock_coupon_settings', 0, '0: Does not allow coupons to be used on limited stock items, 1: Allows coupons to be used on limited stock items');
+
+        $this->line("\nSite settings up to date!");
+
+    }
 
     /**
      * Add a site setting.
@@ -112,8 +118,5 @@ class AddSiteSettings extends Command {
         } else {
             $this->line('Skipped: '.$key);
         }
-        $this->addSiteSetting('coupon_settings', 0, '0: Percentage is taken from total (e.g 20% from 2 items costing a total of 100 = 80), 1: Percentage is taken from item (e.g 20% from 2 items costing a total of 100 = 90)');
-        
-        $this->addSiteSetting('limited_stock_coupon_settings', 0, '0: Does not allow coupons to be used on limited stock items, 1: Allows coupons to be used on limited stock items');
     }
 }

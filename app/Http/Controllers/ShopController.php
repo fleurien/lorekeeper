@@ -16,15 +16,8 @@ use App\Models\Shop\ShopLog;
 use App\Models\Item\Item;
 use App\Models\Item\ItemTag;
 use App\Models\Currency\Currency;
-use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
-use App\Models\Shop\Shop;
-use App\Models\Shop\ShopLog;
-use App\Models\Shop\ShopStock;
 use App\Models\User\UserItem;
-use App\Services\ShopManager;
-use Auth;
-use Illuminate\Http\Request;
 
 class ShopController extends Controller {
     /*
@@ -88,7 +81,7 @@ class ShopController extends Controller {
                 return redirect()->to('/shops');
             }
         }
-        
+
         $items = count($categories) ? $shop->displayStock()->orderByRaw('FIELD(item_category_id,'.implode(',', $categories->pluck('id')->toArray()).')')->orderBy('name')->get()->groupBy('item_category_id') : $shop->displayStock()->orderBy('name')->get()->groupBy('item_category_id');
 
         return view('shops.shop', [
@@ -113,7 +106,7 @@ class ShopController extends Controller {
         $shop = Shop::where('id', $id)->where('is_active', 1)->first();
         $stock = ShopStock::where('id', $stockId)->where('shop_id', $id)->first();
         if(!$shop) abort(404);
-        
+
         $user = Auth::user();
         $quantityLimit = 0;
         $userPurchaseCount = 0;
