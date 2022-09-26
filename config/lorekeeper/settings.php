@@ -137,10 +137,10 @@ return [
     | 'masterlist_image_background' => 'png',
     |
     */
-    'watermark_masterlist_images' => 0,
-    'masterlist_image_dimension'  => 0,
-    'masterlist_image_format'     => null,
-    'masterlist_image_background' => '#ffffff',
+    'watermark_masterlist_images' => 1,
+    'masterlist_image_dimension'  => 2000,
+    'masterlist_image_format'     => 'png',
+    'masterlist_image_background' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -202,7 +202,7 @@ return [
     | there are limits on data storage, so raising this is not recommended.
     |
     */
-    'trade_asset_limit' => 20,
+    'trade_asset_limit' => 10,
 
     /*
     |--------------------------------------------------------------------------
