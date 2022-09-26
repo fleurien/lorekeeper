@@ -84,7 +84,7 @@
                 </div>
             @endforeach
         </div>
-        
+
     </div>
     {!! $users->render() !!}
 
