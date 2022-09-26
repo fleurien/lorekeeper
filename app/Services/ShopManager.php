@@ -2,12 +2,18 @@
 
 namespace App\Services;
 
+use DB;
+use Config;
+use Settings;
+
 use App\Models\Character\Character;
 use App\Models\Shop\Shop;
 use App\Models\Shop\ShopLog;
 use App\Models\Shop\ShopStock;
-use Config;
-use DB;
+use App\Models\Shop\ShopLog;
+use App\Models\User\UserItem;
+use App\Models\Item\Item;
+use App\Models\Item\ItemTag;
 
 class ShopManager extends Service {
     /*
@@ -58,7 +64,49 @@ class ShopManager extends Service {
                 throw new \Exception('You have already purchased the maximum amount of this item you can buy.');
             }
 
-            $total_cost = $shopStock->cost * $quantity;
+
+            if(isset($data['use_coupon'])) {
+                // check if the the stock is limited stock
+                if($shopStock->is_limited_stock && !Settings::get('limited_stock_coupon_settings')) throw new \Exception('Sorry! You can\'t use coupons on limited stock items');
+
+                if(!isset($data['coupon'])) throw new \Exception('Please select a coupon to use.');
+                // finding the users tag
+                $userItem = UserItem::find($data['coupon']);
+                // check if the item id is inside allowed_coupons
+                if($shop->allowed_coupons && count(json_decode($shop->allowed_coupons, 1)) > 0 && !in_array($userItem->item_id, json_decode($shop->allowed_coupons, 1))) throw new \Exception('Sorry! You can\'t use this coupon.');
+                // finding bought item
+                $item = Item::find($userItem->item_id);
+                $tag = $item->tags()->where('tag', 'Coupon')->first();
+                $coupon = $tag->data;
+
+                if(!$coupon['discount']) throw new \Exception('No discount amount set, please contact a site admin before trying to purchase again.');
+
+                // if the coupon isn't infinite kill it
+                if(!$coupon['infinite']) {
+                    if(!(new InventoryManager)->debitStack($user, 'Coupon Used', ['data' => 'Coupon used in purchase of ' . $shopStock->item->name . ' from ' . $shop->name], $userItem, 1)) throw new \Exception("Failed to remove coupon.");
+                }
+                if(!Settings::get('coupon_settings')) {
+                    $minus = ($coupon['discount'] / 100) * ($shopStock->displayCost * $quantity);
+                    $base = ($shopStock->displayCost * $quantity);
+                        if($base <= 0) {
+                            throw new \Exception("Cannot use a coupon on an item that is free.");
+                        }
+                    $new = $base - $minus;
+                    $total_cost =  round($new);
+                }
+                else {
+                    $minus = ($coupon['discount'] / 100) * ($shopStock->displayCost);
+                    $base = ($shopStock->displayCost * $quantity);
+                        if($base <= 0) {
+                            throw new \Exception("Cannot use a coupon on an item that is free.");
+                        }
+                    $new = $base - $minus;
+                    $total_cost =  round($new);
+                }
+            }
+            else {
+                $total_cost = $shopStock->displayCost * $quantity;
+            }
 
             $character = null;
             if ($data['bank'] == 'character') {
@@ -110,11 +158,12 @@ class ShopManager extends Service {
             ]);
 
             // Give the user the item, noting down 1. whose currency was used (user or character) 2. who purchased it 3. which shop it was purchased from
-            if (!(new InventoryManager)->creditItem(null, $user, 'Shop Purchase', [
-                'data'  => $shopLog->itemData,
-                'notes' => 'Purchased '.format_date($shopLog->created_at),
-            ], $shopStock->item, $quantity)) {
-                throw new \Exception('Failed to purchase item.');
+            if($shopStock->stock_type == 'Item') {
+                if(!(new InventoryManager)->creditItem(null, $user, 'Shop Purchase', [
+                    'data' => $shopLog->itemData,
+                    'notes' => 'Purchased ' . format_date($shopLog->created_at),
+                    'disallow_transfer' => $shopStock->disallow_transfer ? 1 : null,
+                ], $shopStock->item, $quantity)) throw new \Exception("Failed to purchase item.");
             }
 
             return $this->commitReturn($shop);
@@ -149,8 +198,13 @@ class ShopManager extends Service {
      *
      * @return int
      */
-    public function checkUserPurchases($shopStock, $user) {
-        return ShopLog::where('shop_id', $shopStock->shop_id)->where('item_id', $shopStock->item_id)->where('user_id', $user->id)->sum('quantity');
+    public function checkUserPurchases($shopStock, $user)
+    {
+        $date = $shopStock->purchaseLimitDate;
+        $shopQuery = ShopLog::where('shop_id', $shopStock->shop_id)->where('cost', $shopStock->cost)->where('item_id', $shopStock->item_id)->where('user_id', $user->id);
+        $shopQuery = isset($date) ? $shopQuery->where('created_at', '>=', date("Y-m-d H:i:s", $date)) : $shopQuery;
+
+        return $shopQuery->sum('quantity');
     }
 
     public function getStockPurchaseLimit($shopStock, $user) {
