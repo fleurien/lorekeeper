@@ -24,4 +24,18 @@ return [
         'text_color' => '#ffffff',
         'background_color' => '#1fd1a7'
     ],
+    
+    // The item to wrap another item with
+    'giftwrap' => [
+        'name' => 'Giftwrap',
+        'text_color' => "#ffffff",
+        'background_color' => '#61a16c'
+    ],
+    
+    // The open-able item
+    'giftwrapped' => [
+        'name' => 'Giftwrapped',
+        'text_color' => "#ffffff",
+        'background_color' => '#c33d73'
+    ]
 ];

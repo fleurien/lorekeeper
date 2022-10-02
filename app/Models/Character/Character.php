@@ -26,6 +26,7 @@ use App\Models\Item\ItemLog;
 
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
+use App\Models\User\UserItem;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Character extends Model
@@ -278,6 +279,7 @@ class Character extends Model
     {
         if($this->designUpdate()->active()->exists()) return false;
         if($this->trade_id) return false;
+        if(UserItem::where('data', 'LIKE', '%"wrap_type":"MYO","wrap_id":"'.$this->id.'"%')->where('count', '>', '0')->first()) return false;
         if(CharacterTransfer::active()->where('character_id', $this->id)->exists()) return false;
         return true;
     }

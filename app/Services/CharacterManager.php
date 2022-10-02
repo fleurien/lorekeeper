@@ -1459,7 +1459,8 @@ class CharacterManager extends Service
             if($sender) {
                 Notifications::create('CHARACTER_SENT', $sender, [
                     'character_name' => $character->slug,
-                    'character_slug' => $character->slug,
+                    'character_type' => $character->is_myo_slot ? 'myo' : 'character',
+                    'character_slug' =>  $character->is_myo_slot ? $character->id : $character->slug,
                     'sender_name' => $user->name,
                     'sender_url' => $user->url,
                     'recipient_name' => is_object($recipient) ? $recipient->name : prettyProfileName($recipient),
@@ -1469,7 +1470,8 @@ class CharacterManager extends Service
             if(is_object($recipient)) {
                 Notifications::create('CHARACTER_RECEIVED', $recipient, [
                     'character_name' => $character->slug,
-                    'character_slug' => $character->slug,
+                    'character_type' => $character->is_myo_slot ? 'myo' : 'character',
+                    'character_slug' =>  $character->is_myo_slot ? $character->id : $character->slug,
                     'sender_name' => $user->name,
                     'sender_url' => $user->url,
                 ]);

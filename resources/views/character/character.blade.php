@@ -11,6 +11,13 @@
 {!! breadcrumbs([($character->category->masterlist_sub_id ? $character->category->sublist->name.' Masterlist' : 'Character masterlist') => ($character->category->masterlist_sub_id ? 'sublist/'.$character->category->sublist->key : 'masterlist' ), $character->fullName => $character->url]) !!}
 @endif
 
+
+@if(!$character->isAvailable)
+<div class="alert alert-info">
+    This {{ $character->is_myo_slot ? 'MYO' : 'Character' }} is currently either in an active trade, transfer, design update, or is wrapped in a box.
+</div>
+@endif
+
 @include('character._header', ['character' => $character])
 
 {{-- Main Image --}}
