@@ -29,7 +29,7 @@
         @endif
 
         <div class="row">
-            <div style="padding-right: 10px;">{!! $user->displayName !!}</div>
+
                 <div class="ulinks" style="padding-top:7px">
                     @if($user->profile->disc)
                         <span class="float-left" style="font-size: 1.1rem; padding-left: 10px; opacity: 0.4;" data-toggle="tooltip" title=" {!! $user->profile->disc !!} "><i class="fab fa-discord"></i></span>
