@@ -86,9 +86,6 @@ class GiftwrapService extends Service
      */
     public function act($stacks, $user, $data)
     {
-        // TODO: I need to also give users the option to specify if the box tells the reciever what's in it
-        //      That way the donation shop items can show what they contain
-        //      Annnnd if they have that checked when wrapping a myo / character, then I need to not hide that myo / character
         DB::beginTransaction();
 
         try {
