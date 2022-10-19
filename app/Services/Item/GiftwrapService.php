@@ -11,6 +11,8 @@ use App\Services\InventoryManager;
 use App\Models\Item\Item;
 use App\Models\User\UserItem;
 use App\Models\Character\Character;
+use App\Models\Currency\Currency;
+use App\Services\CurrencyManager;
 
 class GiftwrapService extends Service
 {
@@ -31,12 +33,14 @@ class GiftwrapService extends Service
     public function getEditData()
     {
         $user = Auth::user();
+        
         return [
             'items' => $user->items->filter(function ($value) {
                 return $value->tags->whereIn('tag', ['giftwrapped', 'giftwrap'])->count() === 0;
             })->pluck('name', 'id')->toArray(),
             // 'characters' => $user->characters->pluck('name', 'id')->toArray(),
             'myos' => $user->myoSlots->pluck('name', 'id')->toArray(),
+            'currencies' => $user->getCurrencySelect(),
             'giftwrappeds' => Item::whereHas('tags', function($q) {
                 return $q->where('tag', 'giftwrapped');
             })->pluck('name', 'id')
@@ -114,8 +118,15 @@ class GiftwrapService extends Service
                         if($inventoryManager->creditItem(null, $user, 'Wrapped Item', Arr::only($data, ['wrap_type', 'wrap_id']) + ['data' => '', 'notes' => isset($data['display_contents']) ? 'Contains '.$myo->displayName : ''], $item, 1)){
                             flash($myo->name.' successfully wrapped!');
                         } else { throw new \Exception("Failed to create wrapped item"); }
-                    }                    
-                } else {throw new \Exception("Failed to remove wrapping");}
+                    } else if($data['wrap_type'] === 'Currency') {
+                        $currency = Currency::where('id', $data['wrap_id'])->first();
+                        if((new CurrencyManager)->debitCurrency($user, null, 'Wrapped Currency', null, $currency, $data['wrap_count'])) {
+                            if($inventoryManager->creditItem(null, $user, 'Wrapped Item', Arr::only($data, ['wrap_type', 'wrap_id', 'wrap_count']) + ['data' => '', 'notes' => isset($data['display_contents']) ? 'Contains '.$currency->display($data['wrap_count']) : ''], $item, 1)){
+                                flash($currency->display($data['wrap_count']).' successfully wrapped!');
+                            } else { throw new \Exception("Failed to create wrapped item"); }
+                        } else { throw new \Exception("Failed to wrap item"); }
+                    }         
+                } else { throw new \Exception("Failed to remove wrapping"); }
             }
             return $this->commitReturn(true);
         } catch(\Exception $e) { 

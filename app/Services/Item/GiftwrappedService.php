@@ -9,7 +9,9 @@ use App\Services\InventoryManager;
 
 use App\Models\Item\Item;
 use App\Models\Character\Character;
+use App\Models\Currency\Currency;
 use App\Services\CharacterManager;
+use App\Services\CurrencyManager;
 
 class GiftwrappedService extends Service
 {
@@ -100,7 +102,12 @@ class GiftwrappedService extends Service
                         if((new CharacterManager)->adminTransfer(['recipient_id' => $user->id, 'reason' => 'Unwrapped from Box'], $myo, $user)) {
                             flash($myo->name.' recieved from box!');
                         } else { throw new \Exception("Failed to transfer wrapped item"); }
-                    } 
+                    } else if($stack->data['wrap_type'] === 'Currency') {
+                        $currency = Currency::where('id', $stack->data['wrap_id'])->first();
+                        if((new CurrencyManager)->creditCurrency(null, $user, 'Unwrapped Currency', null, $currency, $stack->data['wrap_count'])) {
+                            flash($currency->display($stack->data['wrap_count']).' recieved from box!');
+                        } else { throw new \Exception("Failed to wrap item"); }
+                    }    
                     
                 } else { throw new \Exception("Failed to remove wrapper"); }
             }
