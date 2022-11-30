@@ -1,4 +1,6 @@
-<?php namespace App\Services\Item;
+<?php
+
+namespace App\Services\Item;
 
 use App\Services\Service;
 
@@ -13,8 +15,7 @@ use App\Models\Currency\Currency;
 use App\Services\CharacterManager;
 use App\Services\CurrencyManager;
 
-class GiftwrappedService extends Service
-{
+class GiftwrappedService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Box Service
@@ -29,8 +30,7 @@ class GiftwrappedService extends Service
      *
      * @return array
      */
-    public function getEditData()
-    {
+    public function getEditData() {
         return [
             // 'characterCurrencies' => Currency::where('is_character_owned', 1)->orderBy('sort_character', 'DESC')->pluck('name', 'id'),
             // 'items' => Item::orderBy('name')->pluck('name', 'id'),
@@ -46,8 +46,7 @@ class GiftwrappedService extends Service
      * @param  object  $tag
      * @return mixed
      */
-    public function getTagData($tag)
-    {
+    public function getTagData($tag) {
         return $tag->data;
     }
 
@@ -58,13 +57,12 @@ class GiftwrappedService extends Service
      * @param  array   $data
      * @return bool
      */
-    public function updateData($tag, $data)
-    {
+    public function updateData($tag, $data) {
         DB::beginTransaction();
 
         try {
             return $this->commitReturn(true);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
@@ -79,40 +77,46 @@ class GiftwrappedService extends Service
      * @param  array                      $data
      * @return bool
      */
-    public function act($stacks, $user, $data)
-    {
+    public function act($stacks, $user, $data) {
         DB::beginTransaction();
 
         try {
-            foreach($stacks as $key=>$stack) {
-                if($stack->user_id != $user->id) throw new \Exception("This item does not belong to you.");
+            foreach ($stacks as $key => $stack) {
+                if ($stack->user_id != $user->id) throw new \Exception("This item does not belong to you.");
                 $inventoryManager = new InventoryManager;
                 // Try to delete the box item. If successful, we can distribute the wrapped item.
-                if($inventoryManager->debitStack($stack->user, 'Box Opened', ['data' => ''], $stack, $data['quantities'][$key])) {
-                    if($stack->data['wrap_type'] === 'Item') {
+                if ($inventoryManager->debitStack($stack->user, 'Box Opened', ['data' => ''], $stack, $data['quantities'][$key])) {
+                    if ($stack->data['wrap_type'] === 'Item') {
                         $item = Item::where('id', $stack->data['wrap_id'])->first();
-                        if($inventoryManager->creditItem(null, $user, 'Unwrapped Item', Arr::only($data, ['wrap_type', 'wrap_id']) + ['data' => 'Recieved from Wrapped Box'], $item, 1)){
-                            flash($item->name.' recieved from box!');
-                        } else { throw new \Exception("Failed to create wrapped item"); }
-                    } else if($stack->data['wrap_type'] === 'Character' || $stack->data['wrap_type'] === 'MYO') {
+                        if ($inventoryManager->creditItem(null, $user, 'Unwrapped Item', Arr::only($data, ['wrap_type', 'wrap_id']) + ['data' => 'Recieved from Wrapped Box'], $item, 1)) {
+                            flash($item->name . ' received from box!');
+                        } else {
+                            throw new \Exception("Failed to create wrapped item");
+                        }
+                    } else if ($stack->data['wrap_type'] === 'Character' || $stack->data['wrap_type'] === 'MYO') {
                         $myo = Character::where('id', $stack->data['wrap_id'])->first();
                         $myo->is_visible = 1;
                         $myo->save();
-                        
-                        if((new CharacterManager)->adminTransfer(['recipient_id' => $user->id, 'reason' => 'Unwrapped from Box'], $myo, $user)) {
-                            flash($myo->name.' recieved from box!');
-                        } else { throw new \Exception("Failed to transfer wrapped item"); }
-                    } else if($stack->data['wrap_type'] === 'Currency') {
+
+                        if ((new CharacterManager)->adminTransfer(['recipient_id' => $user->id, 'reason' => 'Unwrapped from Box'], $myo, $user)) {
+                            flash($myo->name . ' received from box!');
+                        } else {
+                            throw new \Exception("Failed to transfer wrapped item");
+                        }
+                    } else if ($stack->data['wrap_type'] === 'Currency') {
                         $currency = Currency::where('id', $stack->data['wrap_id'])->first();
-                        if((new CurrencyManager)->creditCurrency(null, $user, 'Unwrapped Currency', null, $currency, $stack->data['wrap_count'])) {
-                            flash($currency->display($stack->data['wrap_count']).' recieved from box!');
-                        } else { throw new \Exception("Failed to wrap item"); }
-                    }    
-                    
-                } else { throw new \Exception("Failed to remove wrapper"); }
+                        if ((new CurrencyManager)->creditCurrency(null, $user, 'Unwrapped Currency', null, $currency, $stack->data['wrap_count'])) {
+                            flash($currency->display($stack->data['wrap_count']) . ' received from box!');
+                        } else {
+                            throw new \Exception("Failed to wrap item");
+                        }
+                    }
+                } else {
+                    throw new \Exception("Failed to remove wrapper");
+                }
             }
             return $this->commitReturn(true);
-        } catch(\Exception $e) { 
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
