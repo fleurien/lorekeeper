@@ -20,6 +20,7 @@ use App\Services\InvitationService;
 use App\Services\LinkService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Laravel\Socialite\Facades\Socialite;
 
 class RegisterController extends Controller {
