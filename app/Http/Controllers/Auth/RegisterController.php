@@ -100,7 +100,11 @@ class RegisterController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function showRegistrationForm() {
-        return view('auth.register', ['userCount' => User::count()]);
+        $altRegistrations = array_filter(Config::get('lorekeeper.sites'), function ($item) {
+            return isset($item['login']) && $item['login'] === 1 && $item['display_name'] != 'tumblr';
+        });
+
+        return view('auth.register', ['userCount' => User::count(), 'altRegistrations' => $altRegistrations]);
     }
 
     /**
