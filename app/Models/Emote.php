@@ -41,7 +41,7 @@ class Emote extends Model
      */
     public static $updateRules = [
         'name' => 'required|between:3,100',
-        'image' => 'required|mimes:png,jpg,jpeg,gif',
+        'image' => 'mimes:png,jpg,jpeg,gif',
     ];
 
 
