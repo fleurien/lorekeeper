@@ -19,6 +19,7 @@ use App\Models\Prompt\Prompt;
 use App\Models\Shop\Shop;
 use App\Models\Shop\ShopStock;
 use App\Models\User\User;
+use App\Models\Emote;
 
 class WorldController extends Controller
 {
@@ -388,6 +389,23 @@ class WorldController extends Controller
         return view('world.prompts', [
             'prompts' => $query->paginate(20)->appends($request->query()),
             'categories' => ['none' => 'Any Category'] + PromptCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray()
+        ]);
+    }
+
+    /**
+     * Shows the emotes page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getEmotes(Request $request)
+    {
+        $query = Emote::active();
+        $data = $request->only(['name']);
+        if(isset($data['name']))
+            $query->where('name', 'LIKE', '%'.$data['name'].'%');
+        return view('world.emotes', [
+            'emotes' => $query->orderBy('name', 'DESC')->paginate(20)->appends($request->query()),
         ]);
     }
 }

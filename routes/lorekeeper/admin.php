@@ -437,3 +437,15 @@ Route::group(['prefix' => 'designs', 'middleware' => 'power:manage_characters'],
     Route::post('vote/{id}/{action}', 'DesignController@postVote')->where('action', 'approve|reject');
 });
 Route::get('{type}/{status}', 'DesignController@getDesignIndex')->where('type', 'myo-approvals|design-approvals')->where('status', 'pending|approved|rejected');
+
+
+    # Emotes
+    Route::group(['prefix' => 'emotes', 'middleware' => 'power:manage_data'], function() {
+        Route::get('/', 'EmoteController@getEmoteIndex');
+        Route::get('create', 'EmoteController@getCreateEmote');
+        Route::post('create', 'EmoteController@postCreateEditEmote');
+        Route::get('edit/{id}', 'EmoteController@getEditEmote');
+        Route::post('edit/{id}', 'EmoteController@postCreateEditEmote');
+        Route::get('delete/{id}', 'EmoteController@getDeleteEmote');
+        Route::post('delete/{id}', 'EmoteController@postDeleteEmote');
+    });
