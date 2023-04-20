@@ -120,6 +120,7 @@ function parse($text, &$pings = null) {
     $text = parseGalleryThumbs($text, $submissions);
     $text = parseEmoteIDs($text, $users);
     $text = parseEmoteNames($text, $users);
+    $text = parseItemIDs($text, $users);
     if($pings) $pings = ['users' => $users, 'characters' => $characters];
 
     return $text;
@@ -343,6 +344,33 @@ function parseEmoteNames($text, &$users) {
             if ($emote) {
                 $users[] = $emote;
                 $text = preg_replace('/\[emote='.$match.'\]/', '<img src="'.$emote->imageUrl.'">', $text);
+            }
+        }
+    }
+
+    return $text;
+}
+
+/**
+ * Parses a piece of user-entered text to match an item id
+ * and replace with an image.
+ *
+ * @param string $text
+ * @param mixed  $users
+ *
+ * @return string
+ */
+function parseItemIDs($text, &$users) {
+    $matches = null;
+    $users = [];
+    $count = preg_match_all('/\[item=([^\[\]&<>?"\']+)\]/', $text, $matches);
+    if ($count) {
+        $matches = array_unique($matches[1]);
+        foreach ($matches as $match) {
+            $item = \App\Models\Item\Item::released()->where('id', $match)->first();
+            if ($item) {
+                $users[] = $item;
+                $text = preg_replace('/\[item='.$match.'\]/', '<a href="'.$item->url.'"> <img src="'.$item->imageUrl.'"> </a>', $text);
             }
         }
     }

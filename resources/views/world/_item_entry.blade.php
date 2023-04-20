@@ -78,3 +78,17 @@
         </div>
     </div>
 </div>
+
+<h5 class="card-header inventory-header">
+    Use as Emote <a class="small inventory-collapse-toggle collapse-toggle collapsed" href="#{!!  str_replace(' ', '', $item->name) !!}-emote" data-toggle="collapse">Show</a></h3>
+</h5>
+    <div class="card-body inventory-body collapse collapsed" id="{!!  str_replace(' ', '', $item->name) !!}-emote">
+        In the rich text editor:
+            <div class="alert alert-secondary">
+                [item={{ $item->id }}]
+            </div>
+        In comments and forums:
+            <div class="alert alert-secondary">
+                [![{{ $item->name }}]({{ asset( $item->imageUrl) }})]({{$item->url}})
+            </div>
+    </div>
