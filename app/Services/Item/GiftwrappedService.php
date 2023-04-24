@@ -86,29 +86,31 @@ class GiftwrappedService extends Service {
                 $inventoryManager = new InventoryManager;
                 // Try to delete the box item. If successful, we can distribute the wrapped item.
                 if ($inventoryManager->debitStack($stack->user, 'Box Opened', ['data' => ''], $stack, $data['quantities'][$key])) {
-                    if ($stack->data['wrap_type'] === 'Item') {
-                        $item = Item::where('id', $stack->data['wrap_id'])->first();
-                        if ($inventoryManager->creditItem(null, $user, 'Unwrapped Item', Arr::only($data, ['wrap_type', 'wrap_id']) + ['data' => 'Recieved from Wrapped Box'], $item, 1)) {
-                            flash($item->name . ' received from box!');
-                        } else {
-                            throw new \Exception("Failed to create wrapped item");
-                        }
-                    } else if ($stack->data['wrap_type'] === 'Character' || $stack->data['wrap_type'] === 'MYO') {
-                        $myo = Character::where('id', $stack->data['wrap_id'])->first();
-                        $myo->is_visible = 1;
-                        $myo->save();
+                    for ($i = 1; $i <= $data['quantities'][$key]; $i++) {
+                        if ($stack->data['wrap_type'] === 'Item') {
+                            $item = Item::where('id', $stack->data['wrap_id'])->first();
+                            if ($inventoryManager->creditItem(null, $user, 'Unwrapped Item', Arr::only($data, ['wrap_type', 'wrap_id']) + ['data' => 'Received from Wrapped Box'], $item, 1)) {
+                                flash($item->name . ' received from box!');
+                            } else {
+                                throw new \Exception("Failed to create wrapped item");
+                            }
+                        } else if ($stack->data['wrap_type'] === 'Character' || $stack->data['wrap_type'] === 'MYO') {
+                            $myo = Character::where('id', $stack->data['wrap_id'])->first();
+                            $myo->is_visible = 1;
+                            $myo->save();
 
-                        if ((new CharacterManager)->adminTransfer(['recipient_id' => $user->id, 'reason' => 'Unwrapped from Box'], $myo, $user)) {
-                            flash($myo->name . ' received from box!');
-                        } else {
-                            throw new \Exception("Failed to transfer wrapped item");
-                        }
-                    } else if ($stack->data['wrap_type'] === 'Currency') {
-                        $currency = Currency::where('id', $stack->data['wrap_id'])->first();
-                        if ((new CurrencyManager)->creditCurrency(null, $user, 'Unwrapped Currency', null, $currency, $stack->data['wrap_count'])) {
-                            flash($currency->display($stack->data['wrap_count']) . ' received from box!');
-                        } else {
-                            throw new \Exception("Failed to wrap item");
+                            if ((new CharacterManager)->adminTransfer(['recipient_id' => $user->id, 'reason' => 'Unwrapped from Box'], $myo, $user)) {
+                                flash($myo->name . ' received from box!');
+                            } else {
+                                throw new \Exception("Failed to transfer wrapped item");
+                            }
+                        } else if ($stack->data['wrap_type'] === 'Currency') {
+                            $currency = Currency::where('id', $stack->data['wrap_id'])->first();
+                            if ((new CurrencyManager)->creditCurrency(null, $user, 'Unwrapped Currency', null, $currency, $stack->data['wrap_count'])) {
+                                flash($currency->display($stack->data['wrap_count']) . ' received from box!');
+                            } else {
+                                throw new \Exception("Failed to wrap item");
+                            }
                         }
                     }
                 } else {
