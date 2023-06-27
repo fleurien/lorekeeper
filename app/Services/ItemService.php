@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use Config;
+use DB;
+
+use App\Services\Service;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\Item\ItemTag;
-use Config;
-use DB;
 
 class ItemService extends Service
 {
@@ -525,37 +527,6 @@ class ItemService extends Service
         }
 
         return $this->rollbackReturn(false);
-    }
-
-    /**
-     * Handle category data.
-     *
-     * @param array                              $data
-     * @param \App\Models\Item\ItemCategory|null $category
-     *
-     * @return array
-     */
-    private function populateCategoryData($data, $category = null)
-    {
-        if (isset($data['description']) && $data['description']) {
-            $data['parsed_description'] = parse($data['description']);
-        } else {
-            $data['parsed_description'] = null;
-        }
-
-        isset($data['is_character_owned']) && $data['is_character_owned'] ? $data['is_character_owned'] : $data['is_character_owned'] = 0;
-        isset($data['character_limit']) && $data['character_limit'] ? $data['character_limit'] : $data['character_limit'] = 0;
-        isset($data['can_name']) && $data['can_name'] ? $data['can_name'] : $data['can_name'] = 0;
-
-        if (isset($data['remove_image'])) {
-            if ($category && $category->has_image && $data['remove_image']) {
-                $data['has_image'] = 0;
-                $this->deleteImage($category->categoryImagePath, $category->categoryImageFileName);
-            }
-            unset($data['remove_image']);
-        }
-
-        return $data;
     }
 
     /**

@@ -38,6 +38,10 @@ Route::group(['prefix' => 'account', 'namespace' => 'Users'], function () {
     Route::post('dob', 'AccountController@postBirthday');
     Route::post('socials', 'AccountController@postLinks');
 
+    Route::get('deactivate', 'AccountController@getDeactivate');
+    Route::get('deactivate-confirm', 'AccountController@getDeactivateConfirmation');
+    Route::post('deactivate', 'AccountController@postDeactivate');
+
     Route::get('bookmarks', 'BookmarkController@getBookmarks');
     Route::get('bookmarks/create', 'BookmarkController@getCreateBookmark');
     Route::get('bookmarks/edit/{id}', 'BookmarkController@getEditBookmark');
@@ -211,6 +215,8 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Route::put('/{comment}', 'CommentController@update')->name('comments.update');
     Route::post('/{comment}', 'CommentController@reply')->name('comments.reply');
     Route::post('/{id}/feature', 'CommentController@feature')->name('comments.feature');
+    Route::post('/{id}/like/{action}', 'CommentController@like')->name('comments.like');
+    Route::get('/liked', 'CommentController@getLikedComments');
 });
 
 /**************************************************************************************************

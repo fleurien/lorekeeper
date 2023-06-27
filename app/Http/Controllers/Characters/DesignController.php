@@ -19,6 +19,7 @@ use App\Models\Item\ItemCategory;
 use App\Services\CharacterManager;	
 use App\Http\Controllers\Controller;
 use App\Models\Character\CharacterTitle;
+use App\Services\DesignUpdateManager;
 
 class DesignController extends Controller
 {

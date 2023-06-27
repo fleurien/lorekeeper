@@ -2,36 +2,38 @@
 
 namespace App\Models\User;
 
+use Auth;
 use Cache;
+use Carbon\Carbon;
+use Config;
 use Settings;
+
+use App\Models\Award\AwardLog;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterBookmark;
+use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterImageCreator;
+use App\Models\Character\CharacterTransfer;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\GalleryCollaborator;
+use App\Models\Gallery\GalleryFavorite;
+use App\Models\Gallery\GallerySubmission;
 use App\Models\Item\ItemLog;
 use App\Models\Rank\RankPower;
 use App\Models\Shop\ShopLog;
-use App\Models\Award\AwardLog;
-use App\Models\User\UserCharacterLog;
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
-use App\Models\Gallery\GallerySubmission;
-use App\Models\Gallery\GalleryFavorite;
+use App\Models\Trade;
+use App\Models\User\UserCharacterLog;
 use App\Models\WorldExpansion\FactionRank;
 use App\Models\WorldExpansion\FactionRankMember;
+
 use App\Traits\Commenter;
-use Auth;
-use Carbon\Carbon;
-use Config;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
-use App\Models\Character\CharacterDesignUpdate;
-use App\Models\Character\CharacterTransfer;
-use App\Models\Trade;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -43,7 +45,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'alias', 'rank_id', 'email', 'password', 'is_news_unread', 'is_banned', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed'
+        
+        'name', 'alias', 'rank_id', 'email', 'password', 'is_news_unread', 'is_banned', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed','is_deactivated', 'deactivater_id',
     ];
 
     /**
@@ -108,6 +111,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function profile()
     {
         return $this->hasOne('App\Models\User\UserProfile');
+    }
+
+    /**
+     * Gets the account that deactivated this account.
+     */
+    public function deactivater()
+    {
+        return $this->belongsTo('App\Models\User\User', 'deactivater_id');
     }
 
     /**
@@ -222,6 +233,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Models\Character\CharacterBookmark')->where('user_id', $this->id);
     }
 
+    /**
+     * Gets all of a user's liked / disliked comments.
+     */
+    public function commentLikes()
+    {
+        return $this->hasMany('App\Models\CommentLike');
+    }
+
     /**********************************************************************************************
 
         SCOPES
@@ -237,7 +256,19 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function scopeVisible($query)
     {
-        return $query->where('is_banned', 0);
+        return $query->where('is_banned', 0)->where('is_deactivated', 0);
+    }
+
+    /**
+     * Scope a query to only show deactivated accounts.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDisabled($query)
+    {
+        return $query->where('is_deactivated', 1);
     }
 
     /**********************************************************************************************
@@ -335,7 +366,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getDisplayNameAttribute()
     {
-        return ($this->is_banned ? '<strike>' : '').'<a href="'.$this->url.'" class="display-user" '.($this->rank->color ? 'style="color: #'.$this->rank->color.';"' : '').'>'.$this->name.'</a>'.($this->is_banned ? '</strike>' : '');
+        return ($this->is_banned ? '<strike>' : '').'<a href="'.$this->url.'" class="display-user" style="'.($this->rank->color ? 'color: #'.$this->rank->color.';' : '').($this->is_deactivated ? 'opacity: 0.5;' : '').'">'.$this->name.'</a>'.($this->is_banned ? '</strike>' : '');
     }
 
     /**
@@ -464,18 +495,18 @@ class User extends Authenticatable implements MustVerifyEmail
         switch ($this->settings->birthday_setting) {
             case 0:
                 return null;
-            break;
+                break;
             case 1:
                 if (Auth::check()) {
                     return $bday->format('d M').$icon;
                 }
-            break;
+                break;
             case 2:
                 return $bday->format('d M').$icon;
-            break;
+                break;
             case 3:
                 return $bday->format('d M Y').$icon;
-            break;
+                break;
         }
     }
 
@@ -614,7 +645,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $currencies = $currencies->orderBy('sort_user', 'DESC')->get();
 
         foreach ($currencies as $currency) {
-            $currency->quantity = isset($owned[$currency->id]) ? $owned[$currency->id] : 0;
+            $currency->quantity = $owned[$currency->id] ?? 0;
         }
 
         return $currencies;
