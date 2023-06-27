@@ -184,7 +184,6 @@
                 $('.spoiler-toggle').click(function() {
                     $(this).next().toggle();
                 });
-<<<<<<< HEAD
 
                 // CLOCK
                 function time() {
@@ -203,9 +202,6 @@
                     }, 1000)} // times it out for 1 second so loop
                 
                 setInterval(time(), 1000); // loop
-=======
-            });
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
         </script>
     </div>
 </body>

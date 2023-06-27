@@ -6,11 +6,11 @@
 
 @font-face {
     font-family: Fairymuffin;
-    src: url('https://poffinsworld.com/files/FONTS/Fairymuffinroundpop-1GG5e.ttf')
+    src: url('/files/FONTS/Fairymuffinroundpop-1GG5e.ttf')
 }
 @font-face {
     font-family: Sunflowerhighway;
-    src: url('https://poffinsworld.com/files/FONTS/SunflowerHighway-mrzv.otf')
+    src: url('/files/FONTS/SunflowerHighway-mrzv.otf')
 }
 
 
