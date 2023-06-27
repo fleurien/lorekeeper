@@ -13,21 +13,6 @@
 
     <p>This is a list of characters you own. Drag and drop to rearrange them.</p>
 
-<<<<<<< HEAD
-<div id="sortable" class="row sortable">
-    @foreach($characters as $character)
-        <div class="card m-2 highlight" data-id="{{ $character->id }}">
-            <div class="card-img-top">
-                <a href="{{ $character->url }}"><img src="{{ $character->image->thumbnailUrl }}" class="img-thumbnail" alt="Thumbnail for {{ $character->fullName }}" /></a>
-            </div>
-            <div class="card-title">
-                {!! $character->displayName !!}
-            </div>
-        </div>
-    @endforeach
-</div>
-{!! Form::open(['url' => 'characters/sort', 'class' => 'text-right']) !!}
-=======
     <div id="sortable" class="row sortable">
         @foreach ($characters as $character)
             <div class="col-md-3 col-6 text-center mb-2" data-id="{{ $character->id }}">
@@ -41,10 +26,23 @@
         @endforeach
     </div>
     {!! Form::open(['url' => 'characters/sort', 'class' => 'text-right']) !!}
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
     {!! Form::hidden('sort', null, ['id' => 'sortableOrder']) !!}
     {!! Form::submit('Save Order', ['class' => 'btn btn-primary']) !!}
-    {!! Form::close() !!}
+{!! Form::close() !!}
+
+<h1>
+    Selected Character
+</h2>
+
+<p>You can select one of your characters to be featured on your profile here.</p>
+{!! Form::open(['url' => 'characters/select-character']) !!}
+    {!! Form::select('character_id', $characters->pluck('fullName', 'id'), Auth::user()->settings->selected_character_id, ['class' => 'form-control mb-2 default character-select', 'placeholder' => 'Select Character']) !!}
+    <div class="text-right">
+        {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+    </div>
+{!! Form::close() !!}
+
+
 @endsection
 @section('scripts')
     <script>
