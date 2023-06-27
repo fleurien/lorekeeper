@@ -1,29 +1,20 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\User\User;
-use App\Models\WorldExpansion\Fauna;
-use App\Models\WorldExpansion\FaunaCategory;
-use App\Models\WorldExpansion\Location;
 
 class FaunaCategory extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name',  'description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension'
+        'name',  'description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension',
     ];
-
 
     /**
      * The table associated with the model.
@@ -40,11 +31,11 @@ class FaunaCategory extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:fauna_categories|between:3,25',
+        'name'        => 'required|unique:fauna_categories|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
 
     /**
@@ -53,13 +44,12 @@ class FaunaCategory extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
-
 
     /**********************************************************************************************
 
@@ -73,9 +63,6 @@ class FaunaCategory extends Model
     {
         return $this->hasMany('App\Models\WorldExpansion\Fauna', 'category_id')->visible();
     }
-
-
-
 
     /**********************************************************************************************
 
@@ -112,7 +99,6 @@ class FaunaCategory extends Model
         return public_path($this->imageDirectory);
     }
 
-
     /**
      * Gets the file name of the model's image.
      *
@@ -120,9 +106,8 @@ class FaunaCategory extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.' . $this->image_extension;
+        return $this->id.'-image.'.$this->image_extension;
     }
-
 
     /**
      * Gets the file name of the model's thumbnail image.
@@ -131,7 +116,7 @@ class FaunaCategory extends Model
      */
     public function getThumbFileNameAttribute()
     {
-        return $this->id . '-th.'. $this->thumb_extension;
+        return $this->id.'-th.'.$this->thumb_extension;
     }
 
     /**
@@ -141,8 +126,11 @@ class FaunaCategory extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->image_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->image_extension) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -152,10 +140,12 @@ class FaunaCategory extends Model
      */
     public function getThumbUrlAttribute()
     {
-        if (!$this->thumb_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->thumbFileName);
-    }
+        if (!$this->thumb_extension) {
+            return null;
+        }
 
+        return asset($this->imageDirectory.'/'.$this->thumbFileName);
+    }
 
     /**
      * Gets the URL of the model's encyclopedia page.
@@ -176,6 +166,4 @@ class FaunaCategory extends Model
     {
         return url('world/faunas?category_id='.$this->id.'&sort=category');
     }
-
-
 }

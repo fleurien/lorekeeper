@@ -61,14 +61,14 @@ Route::group(['prefix' => 'inventory', 'namespace' => 'Users'], function () {
     Route::get('selector', 'InventoryController@getSelector');
 });
 
-Route::group(['prefix' => 'awardcase', 'namespace' => 'Users'], function() {
+Route::group(['prefix' => 'awardcase', 'namespace' => 'Users'], function () {
     Route::get('/', 'AwardCaseController@getIndex');
     Route::post('edit', 'AwardCaseController@postEdit');
 
     Route::get('selector', 'AwardCaseController@getSelector');
 });
 
-Route::group(['prefix' => 'characters', 'namespace' => 'Users'], function() {
+Route::group(['prefix' => 'characters', 'namespace' => 'Users'], function () {
     Route::get('/', 'CharacterController@getIndex');
     Route::post('sort', 'CharacterController@postSortCharacters');
 
@@ -223,7 +223,7 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Advent Calendars
 **************************************************************************************************/
 
-Route::group(['prefix' => 'advent-calendars'], function() {
+Route::group(['prefix' => 'advent-calendars'], function () {
     Route::get('{id}', 'AdventController@getAdvent');
     Route::post('{id}', 'AdventController@postClaimPrize');
 });

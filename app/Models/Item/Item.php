@@ -403,26 +403,39 @@ class Item extends Model
      */
     public function getCanDonateAttribute()
     {
-        if(!$this->allow_transfer) return 0;
+        if (!$this->allow_transfer) {
+            return 0;
+        }
         $setting = Config::get('lorekeeper.settings.donation_shop.item_donations');
-        switch($setting) {
+        switch ($setting) {
             case 0:
                 return 1;
                 break;
             case 1:
-                if($this->category->can_donate) return 1;
-                else return 0;
+                if ($this->category->can_donate) {
+                    return 1;
+                } else {
+                    return 0;
+                }
                 break;
             case 2:
-                if($this->hasTag('donateable')) return 1;
-                else return 0;
+                if ($this->hasTag('donateable')) {
+                    return 1;
+                } else {
+                    return 0;
+                }
                 break;
             case 3:
-                if($this->category->can_donate) return 1;
-                elseif($this->hasTag('donateable')) return 1;
-                else return 0;
+                if ($this->category->can_donate) {
+                    return 1;
+                } elseif ($this->hasTag('donateable')) {
+                    return 1;
+                } else {
+                    return 0;
+                }
                 break;
-        };
+        }
+
         return 0;
     }
 

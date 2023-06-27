@@ -2,27 +2,21 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-
-use DB;
-use Config;
-use Image;
-use Notifications;
-use Settings;
-
-use Illuminate\Support\Arr;
-use App\Models\User\User;
-use App\Models\User\UserItem;
-use App\Models\User\UserAward;
+use App\Models\Award\Award;
 use App\Models\Character\Character;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
-use App\Models\Award\Award;
 use App\Models\Loot\LootTable;
 use App\Models\Prompt\Prompt;
 use App\Models\Raffle\Raffle;
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
+use App\Models\User\User;
+use App\Models\User\UserItem;
+use DB;
+use Illuminate\Support\Arr;
+use Notifications;
+use Settings;
 
 class SubmissionManager extends Service
 {
@@ -375,7 +369,6 @@ class SubmissionManager extends Service
             // Get the updated set of rewards
             $rewards = $this->processRewards($data, false, true);
 
-
             // Logging data
             $promptLogType = $submission->prompt_id ? 'Prompt Rewards' : 'Claim Rewards';
             $promptData = [
@@ -388,31 +381,33 @@ class SubmissionManager extends Service
             }
 
             // Retrieve all reward IDs for characters
-            $currencyIds = []; $itemIds = []; $tableIds = []; $awardIds = [];
-            if(isset($data['character_currency_id'])) {
-                foreach($data['character_currency_id'] as $c)
-                {
-                    foreach($c as $currencyId) $currencyIds[] = $currencyId;
+            $currencyIds = [];
+            $itemIds = [];
+            $tableIds = [];
+            $awardIds = [];
+            if (isset($data['character_currency_id'])) {
+                foreach ($data['character_currency_id'] as $c) {
+                    foreach ($c as $currencyId) {
+                        $currencyIds[] = $currencyId;
+                    }
                 } // Non-expanded character rewards
-            }
-            elseif(isset($data['character_rewardable_id']))
-            {
-                $data['character_rewardable_id'] = array_map(array($this, 'innerNull'),$data['character_rewardable_id']);
-                foreach($data['character_rewardable_id'] as $ckey => $c)
-                {
-                    foreach($c as $key => $id) {
-
-                        switch($data['character_rewardable_type'][$ckey][$key])
-                        {
-                            case 'Currency':    $currencyIds[]  = $id; break;
-                            case 'Item':        $itemIds[]      = $id; break;
-                            case 'LootTable':   $tableIds[]     = $id; break;
-                            case 'Award':       $awardIds[]     = $id; break;
+            } elseif (isset($data['character_rewardable_id'])) {
+                $data['character_rewardable_id'] = array_map([$this, 'innerNull'], $data['character_rewardable_id']);
+                foreach ($data['character_rewardable_id'] as $ckey => $c) {
+                    foreach ($c as $key => $id) {
+                        switch ($data['character_rewardable_type'][$ckey][$key]) {
+                            case 'Currency':    $currencyIds[] = $id; break;
+                            case 'Item':        $itemIds[] = $id; break;
+                            case 'LootTable':   $tableIds[] = $id; break;
+                            case 'Award':       $awardIds[] = $id; break;
                         }
                     }
                 } // Expanded character rewards
             }
-            array_unique($currencyIds);            array_unique($itemIds);            array_unique($tableIds);          array_unique($awardIds);
+            array_unique($currencyIds);
+            array_unique($itemIds);
+            array_unique($tableIds);
+            array_unique($awardIds);
             $currencies = Currency::whereIn('id', $currencyIds)->where('is_character_owned', 1)->get()->keyBy('id');
             $items = Item::whereIn('id', $itemIds)->get()->keyBy('id');
             $tables = LootTable::whereIn('id', $tableIds)->get()->keyBy('id');
@@ -482,26 +477,6 @@ class SubmissionManager extends Service
 
         return $this->rollbackReturn(false);
     }
-    /*
-    |--------------------------------------------------------------------------
-    | Submission Manager
-    |--------------------------------------------------------------------------
-    |
-    | Handles creation and modification of submission data.
-    |
-    */
-
-    /**
-     * Helper function to remove all empty/zero/falsey values.
-     *
-     * @param array $value
-     *
-     * @return array
-     */
-    private function innerNull($value)
-    {
-        return array_values(array_filter($value));
-    }
 
     /**
      * Processes reward data into a format that can be used for distribution.
@@ -509,11 +484,10 @@ class SubmissionManager extends Service
      * @param array $data
      * @param bool  $isCharacter
      * @param bool  $isStaff
-     * @param bool  $isClaim
      *
      * @return array
      */
-    private function processRewards($data, $isCharacter, $isStaff = false, $isClaim = false)
+    private function processRewards($data, $isCharacter, $isStaff = false)
     {
         if ($isCharacter) {
             $assets = createAssetsArray(true);
@@ -534,6 +508,9 @@ class SubmissionManager extends Service
                         } break;
                         case 'Item': if ($data['character_rewardable_quantity'][$data['character_id']][$key]) {
                             addAsset($assets, $data['items'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]);
+                        } break;
+                        case 'Award': if ($data['character_rewardable_quantity'][$data['character_id']][$key]) {
+                            addAsset($assets, $data['awards'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]);
                         } break;
                         case 'LootTable': if ($data['character_rewardable_quantity'][$data['character_id']][$key]) {
                             addAsset($assets, $data['tables'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]);
@@ -559,6 +536,9 @@ class SubmissionManager extends Service
                                 throw new \Exception('Invalid currency selected.');
                             }
                             break;
+                        case 'Award':
+                            $reward = Award::find($data['rewardable_id'][$key]);
+                            break;
                         case 'LootTable':
                             if (!$isStaff) {
                                 break;
@@ -566,7 +546,7 @@ class SubmissionManager extends Service
                             $reward = LootTable::find($data['rewardable_id'][$key]);
                             break;
                         case 'Raffle':
-                            if (!$isStaff && !$isClaim) {
+                            if (!$isStaff) {
                                 break;
                             }
                             $reward = Raffle::find($data['rewardable_id'][$key]);
@@ -582,4 +562,26 @@ class SubmissionManager extends Service
             return $assets;
         }
     }
+    /*
+    |--------------------------------------------------------------------------
+    | Submission Manager
+    |--------------------------------------------------------------------------
+    |
+    | Handles creation and modification of submission data.
+    |
+    */
+
+    /**
+     * Helper function to remove all empty/zero/falsey values.
+     *
+     * @param array $value
+     *
+     * @return array
+     */
+    private function innerNull($value)
+    {
+        return array_values(array_filter($value));
+    }
+
+
 }

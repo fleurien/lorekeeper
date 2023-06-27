@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminLog;
+use App\Models\Affiliate;
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Currency\Currency;
@@ -11,7 +12,6 @@ use App\Models\Gallery\GallerySubmission;
 use App\Models\Report\Report;
 use App\Models\Submission\Submission;
 use App\Models\Trade;
-use App\Models\Affiliate;
 use Auth;
 use Config;
 use DB;
@@ -44,8 +44,8 @@ class HomeController extends Controller
             'galleryRequireApproval' => $galleryRequireApproval,
             'galleryCurrencyAwards'  => $galleryCurrencyAwards,
             'gallerySubmissionCount' => GallerySubmission::collaboratorApproved()->where('status', 'Pending')->count(),
-            'galleryAwardCount' => GallerySubmission::requiresAward()->where('is_valued', 0)->count(),
-            'affiliateCount' => Affiliate::where('status', 'Pending')->count(),
+            'galleryAwardCount'      => GallerySubmission::requiresAward()->where('is_valued', 0)->count(),
+            'affiliateCount'         => Affiliate::where('status', 'Pending')->count(),
         ]);
     }
 

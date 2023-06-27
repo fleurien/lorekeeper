@@ -48,8 +48,8 @@ return [
         'description' => 'Allow rank to view the submissions queue, edit rewards attached to a submission and approve/reject them.',
     ],
     'manage_world' => [
-        'name' => 'Manage World',
-        'description' => 'Allow rank to edit world information related to the World Expansion extension.'
+        'name'        => 'Manage World',
+        'description' => 'Allow rank to edit world information related to the World Expansion extension.',
     ],
     'manage_reports' => [
         'name'        => 'Manage Reports',
@@ -60,9 +60,8 @@ return [
         'description' => 'Allow rank to browse the site normally during maintenance mode.',
     ],
     'manage_affiliates' => [
-        'name' => 'Manage Affiliates',
-        'description' => 'Allow rank to view affiliate request queue, manage them, or even create new affiliates.'
+        'name'        => 'Manage Affiliates',
+        'description' => 'Allow rank to view affiliate request queue, manage them, or even create new affiliates.',
     ],
-
 
 ];

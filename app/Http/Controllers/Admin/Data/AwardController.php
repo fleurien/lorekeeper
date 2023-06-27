@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Data;
 
-use Illuminate\Http\Request;
-
-use Auth;
-
-use App\Models\Award\AwardCategory;
+use App\Http\Controllers\Controller;
 use App\Models\Award\Award;
-
-use App\Models\Shop\Shop;
+use App\Models\Award\AwardCategory;
 use App\Models\Prompt\Prompt;
 use App\Models\User\User;
-
 use App\Services\AwardService;
-
-use App\Http\Controllers\Controller;
+use Auth;
+use Illuminate\Http\Request;
 
 class AwardController extends Controller
 {
@@ -42,7 +36,7 @@ class AwardController extends Controller
     public function getIndex()
     {
         return view('admin.awards.award_categories', [
-            'categories' => AwardCategory::orderBy('sort', 'DESC')->get()
+            'categories' => AwardCategory::orderBy('sort', 'DESC')->get(),
         ]);
     }
 
@@ -54,31 +48,35 @@ class AwardController extends Controller
     public function getCreateAwardCategory()
     {
         return view('admin.awards.create_edit_award_category', [
-            'category' => new AwardCategory
+            'category' => new AwardCategory,
         ]);
     }
 
     /**
      * Shows the edit award category page.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getEditAwardCategory($id)
     {
         $category = AwardCategory::find($id);
-        if(!$category) abort(404);
+        if (!$category) {
+            abort(404);
+        }
+
         return view('admin.awards.create_edit_award_category', [
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
     /**
      * Creates or edits an award category.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\AwardService  $service
-     * @param  int|null                  $id
+     * @param App\Services\AwardService $service
+     * @param int|null                  $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postCreateEditAwardCategory(Request $request, AwardService $service, $id = null)
@@ -86,30 +84,34 @@ class AwardController extends Controller
         $id ? $request->validate(AwardCategory::$updateRules) : $request->validate(AwardCategory::$createRules);
         // TODO: Clear character references in updateAwardCategory and createAwardCategory
         $data = $request->only([
-            'name', 'description', 'image', 'remove_image'
+            'name', 'description', 'image', 'remove_image',
         ]);
-        if($id && $service->updateAwardCategory(AwardCategory::find($id), $data, Auth::user())) {
+        if ($id && $service->updateAwardCategory(AwardCategory::find($id), $data, Auth::user())) {
             flash('Award Category updated successfully.')->success();
-        }
-        else if (!$id && $category = $service->createAwardCategory($data, Auth::user())) {
+        } elseif (!$id && $category = $service->createAwardCategory($data, Auth::user())) {
             flash('Award Category created successfully.')->success();
+
             return redirect()->to('admin/data/award-categories/edit/'.$category->id);
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
     /**
      * Gets the award category deletion modal.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getDeleteAwardCategory($id)
     {
         $category = AwardCategory::find($id);
+
         return view('admin.awards._delete_award_category', [
             'category' => $category,
         ]);
@@ -118,37 +120,41 @@ class AwardController extends Controller
     /**
      * Deletes an award category.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\AwardService  $service
-     * @param  int                       $id
+     * @param App\Services\AwardService $service
+     * @param int                       $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postDeleteAwardCategory(Request $request, AwardService $service, $id)
     {
-        if($id && $service->deleteAwardCategory(AwardCategory::find($id))) {
+        if ($id && $service->deleteAwardCategory(AwardCategory::find($id))) {
             flash('Category deleted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->to('admin/data/award-categories');
     }
 
     /**
      * Sorts award categories.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\AwardService  $service
+     * @param App\Services\AwardService $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postSortAwardCategory(Request $request, AwardService $service)
     {
-        if($service->sortAwardCategory($request->get('sort'))) {
+        if ($service->sortAwardCategory($request->get('sort'))) {
             flash('Category order updated successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
@@ -161,20 +167,22 @@ class AwardController extends Controller
     /**
      * Shows the award index.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getAwardIndex(Request $request)
     {
         $query = Award::query();
         $data = $request->only(['award_category_id', 'name']);
-        if(isset($data['award_category_id']) && $data['award_category_id'] != 'none')
+        if (isset($data['award_category_id']) && $data['award_category_id'] != 'none') {
             $query->where('award_category_id', $data['award_category_id']);
-        if(isset($data['name']))
+        }
+        if (isset($data['name'])) {
             $query->where('name', 'LIKE', '%'.$data['name'].'%');
+        }
+
         return view('admin.awards.awards', [
-            'awards' => $query->paginate(20)->appends($request->query()),
-            'categories' => ['none' => 'Any Category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray()
+            'awards'     => $query->paginate(20)->appends($request->query()),
+            'categories' => ['none' => 'Any Category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -186,37 +194,41 @@ class AwardController extends Controller
     public function getCreateAward()
     {
         return view('admin.awards.create_edit_award', [
-            'award' => new Award,
-            'categories' => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'prompts' => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
-            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray()
+            'award'       => new Award,
+            'categories'  => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'prompts'     => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
+            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
         ]);
     }
 
     /**
      * Shows the edit award page.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getEditAward($id)
     {
         $award = Award::find($id);
-        if(!$award) abort(404);
+        if (!$award) {
+            abort(404);
+        }
+
         return view('admin.awards.create_edit_award', [
-            'award' => $award,
-            'categories' => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'prompts' => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
-            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray()
+            'award'       => $award,
+            'categories'  => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'prompts'     => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
+            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
         ]);
     }
 
     /**
      * Creates or edits an award.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\AwardService  $service
-     * @param  int|null                  $id
+     * @param App\Services\AwardService $service
+     * @param int|null                  $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postCreateEditAward(Request $request, AwardService $service, $id = null)
@@ -231,28 +243,32 @@ class AwardController extends Controller
             'description', 'image', 'remove_image', 'uses', 'prompts', 'release',
             'credit-name', 'credit-url', 'credit-id', 'credit-role',
         ]);
-        if($id && $service->updateAward(Award::find($id), $data, Auth::user())) {
+        if ($id && $service->updateAward(Award::find($id), $data, Auth::user())) {
             flash('Award updated successfully.')->success();
-        }
-        else if (!$id && $award = $service->createAward($data, Auth::user())) {
+        } elseif (!$id && $award = $service->createAward($data, Auth::user())) {
             flash('Award created successfully.')->success();
+
             return redirect()->to('admin/data/awards/edit/'.$award->id);
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
     /**
      * Gets the award deletion modal.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getDeleteAward($id)
     {
         $award = Award::find($id);
+
         return view('admin.awards._delete_award', [
             'award' => $award,
         ]);
@@ -261,20 +277,21 @@ class AwardController extends Controller
     /**
      * Creates or edits an award.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\AwardService  $service
-     * @param  int                       $id
+     * @param App\Services\AwardService $service
+     * @param int                       $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postDeleteAward(Request $request, AwardService $service, $id)
     {
-        if($id && $service->deleteAward(Award::find($id))) {
+        if ($id && $service->deleteAward(Award::find($id))) {
             flash('Award deleted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->to('admin/data/awards');
     }
-
 }

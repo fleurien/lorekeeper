@@ -285,18 +285,16 @@ class CurrencyManager extends Service
 
                 // If global event score tracking is enabled, and the currency is the current
                 // event currency, credit the same amount to the admin user for global tracking
-                if(Settings::get('global_event_score') && $currency->id == Settings::get('event_currency') && $recipient->id != Settings::get('admin_user')) {
+                if (Settings::get('global_event_score') && $currency->id == Settings::get('event_currency') && $recipient->id != Settings::get('admin_user')) {
                     $adminRecord = UserCurrency::where('user_id', Settings::get('admin_user'))->where('currency_id', $currency->id)->first();
-                    if($adminRecord) {
+                    if ($adminRecord) {
                         // Laravel doesn't support composite primary keys, so directly updating the DB row here
-                        DB::table('user_currencies')->where('user_id',  Settings::get('admin_user'))->where('currency_id', $currency->id)->update(['quantity' => $adminRecord->quantity + $quantity]);
-                    }
-                    else {
+                        DB::table('user_currencies')->where('user_id', Settings::get('admin_user'))->where('currency_id', $currency->id)->update(['quantity' => $adminRecord->quantity + $quantity]);
+                    } else {
                         $adminRecord = UserCurrency::create(['user_id' =>  Settings::get('admin_user'), 'currency_id' => $currency->id, 'quantity' => $quantity]);
                     }
                 }
-            }
-            else {
+            } else {
                 $record = CharacterCurrency::where('character_id', $recipient->id)->where('currency_id', $currency->id)->first();
                 if ($record) {
                     // Laravel doesn't support composite primary keys, so directly updating the DB row here

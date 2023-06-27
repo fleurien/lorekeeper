@@ -2,7 +2,6 @@
 
 namespace App\Models\Character;
 
-use Config;
 use App\Models\Model;
 
 class CharacterTitle extends Model
@@ -13,7 +12,7 @@ class CharacterTitle extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'short_title', 'sort', 'has_image', 'description', 'parsed_description', 'rarity_id'
+        'title', 'short_title', 'sort', 'has_image', 'description', 'parsed_description', 'rarity_id',
     ];
 
     /**
@@ -29,10 +28,10 @@ class CharacterTitle extends Model
      * @var array
      */
     public static $createRules = [
-        'title' => 'required|unique:character_titles|between:3,100',
+        'title'       => 'required|unique:character_titles|between:3,100',
         'short_title' => 'nullable|unique:character_titles|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**
@@ -41,10 +40,10 @@ class CharacterTitle extends Model
      * @var array
      */
     public static $updateRules = [
-        'title' => 'required|between:3,100',
+        'title'       => 'required|between:3,100',
         'short_title' => 'nullable|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -84,7 +83,7 @@ class CharacterTitle extends Model
      */
     public function getDisplayNamePartialAttribute()
     {
-        return '<a href="'.$this->url.'" class="display-rarity">'.$this->title.'</a>'.($this->rarity? ' (' . $this->rarity->displayName . ')' : '');
+        return '<a href="'.$this->url.'" class="display-rarity">'.$this->title.'</a>'.($this->rarity ? ' ('.$this->rarity->displayName.')' : '');
     }
 
     /**
@@ -94,7 +93,7 @@ class CharacterTitle extends Model
      */
     public function getDisplayNameFullAttribute()
     {
-        return '<a href="'.$this->url.'" class="display-rarity">'.$this->title.'</a>'.($this->short_title? ' (' . $this->short_title . ')' : '').($this->rarity? ' (' . $this->rarity->displayName . ')' : '');
+        return '<a href="'.$this->url.'" class="display-rarity">'.$this->title.'</a>'.($this->short_title ? ' ('.$this->short_title.')' : '').($this->rarity ? ' ('.$this->rarity->displayName.')' : '');
     }
 
     /**
@@ -124,7 +123,7 @@ class CharacterTitle extends Model
      */
     public function getTitleImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -144,8 +143,11 @@ class CharacterTitle extends Model
      */
     public function getTitleImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->titleImageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->titleImageFileName);
     }
 
     /**

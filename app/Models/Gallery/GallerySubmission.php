@@ -5,8 +5,8 @@ namespace App\Models\Gallery;
 use App\Models\Currency\Currency;
 use App\Models\Model;
 use App\Models\Prompt\Prompt;
-use App\Models\WorldExpansion\Location;
 use App\Models\Submission\Submission;
+use App\Models\WorldExpansion\Location;
 use App\Traits\Commentable;
 use Settings;
 
@@ -26,7 +26,7 @@ class GallerySubmission extends Model
         'prompt_id', 'data', 'is_visible', 'status',
         'vote_data', 'staff_id', 'is_valued',
         'staff_comments', 'parsed_staff_comments',
-        'location_id'
+        'location_id',
     ];
 
     /**
@@ -135,6 +135,7 @@ class GallerySubmission extends Model
     {
         return $this->belongsTo('App\Models\Prompt\Prompt', 'prompt_id');
     }
+
     /**
      * Get the location this submission is for if relevant.
      */

@@ -1,27 +1,20 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
-use Illuminate\Database\Eloquent\Model;
-
-use App\Models\User\User;
-use App\Models\WorldExpansion\Flora;
 use App\Models\Item\Item;
+use Illuminate\Database\Eloquent\Model;
 
 class FloraItem extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'flora_id', 'item_id'
+        'flora_id', 'item_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -29,13 +22,11 @@ class FloraItem extends Model
      * @var string
      */
     protected $table = 'flora_items';
-    
+
     public $timestamps = false;
 
-
-
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -43,18 +34,16 @@ class FloraItem extends Model
     /**
      * Get the flora attached to this.
      */
-    public function flora() 
+    public function flora()
     {
         return $this->belongsTo('App\Models\WorldExpansion\Flora', 'flora_id');
     }
+
     /**
      * Get the item attached to this.
      */
-    public function item() 
+    public function item()
     {
         return $this->belongsTo('App\Models\Item\Item', 'item_id');
     }
-
-
-
 }

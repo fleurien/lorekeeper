@@ -10,7 +10,6 @@ use App\Models\Gallery\GallerySubmission;
 use App\Models\Prompt\Prompt;
 use App\Models\User\User;
 use App\Models\WorldExpansion\Location;
-
 use App\Services\GalleryManager;
 use Auth;
 use Config;
@@ -69,11 +68,17 @@ class GalleryController extends Controller
         $query = GallerySubmission::where('gallery_id', $gallery->id)->visible(Auth::check() ? Auth::user() : null)->accepted();
         $sort = $request->only(['sort']);
 
-        if($request->get('title')) $query->where(function($query) use ($request) {
-            $query->where('gallery_submissions.title', 'LIKE', '%' . $request->get('title') . '%');
-        });
-        if($request->get('prompt_id')) $query->where('prompt_id', $request->get('prompt_id'));
-        if($request->get('location_id')) $query->where('location_id', $request->get('location_id'));
+        if ($request->get('title')) {
+            $query->where(function ($query) use ($request) {
+                $query->where('gallery_submissions.title', 'LIKE', '%'.$request->get('title').'%');
+            });
+        }
+        if ($request->get('prompt_id')) {
+            $query->where('prompt_id', $request->get('prompt_id'));
+        }
+        if ($request->get('location_id')) {
+            $query->where('location_id', $request->get('location_id'));
+        }
 
         if (isset($sort['sort'])) {
             switch ($sort['sort']) {
@@ -107,10 +112,10 @@ class GalleryController extends Controller
         }
 
         return view('galleries.gallery', [
-            'gallery' => $gallery,
-            'submissions' => $query->paginate(20)->appends($request->query()),
-            'prompts' => [0 => 'Any Prompt'] + Prompt::whereIn('id', GallerySubmission::where('gallery_id', $gallery->id)->visible(Auth::check() ? Auth::user() : null)->accepted()->whereNotNull('prompt_id')->pluck('prompt_id')->toArray())->orderBy('name')->pluck('name', 'id')->toArray(),
-            'locations' => [0 => 'Any Location'] + Location::whereIn('id', GallerySubmission::where('gallery_id', $gallery->id)->visible(Auth::check() ? Auth::user() : null)->accepted()->whereNotNull('location_id')->pluck('location_id')->toArray())->orderBy('name')->get()->pluck('styleParent', 'id')->toArray(),
+            'gallery'          => $gallery,
+            'submissions'      => $query->paginate(20)->appends($request->query()),
+            'prompts'          => [0 => 'Any Prompt'] + Prompt::whereIn('id', GallerySubmission::where('gallery_id', $gallery->id)->visible(Auth::check() ? Auth::user() : null)->accepted()->whereNotNull('prompt_id')->pluck('prompt_id')->toArray())->orderBy('name')->pluck('name', 'id')->toArray(),
+            'locations'        => [0 => 'Any Location'] + Location::whereIn('id', GallerySubmission::where('gallery_id', $gallery->id)->visible(Auth::check() ? Auth::user() : null)->accepted()->whereNotNull('location_id')->pluck('location_id')->toArray())->orderBy('name')->get()->pluck('styleParent', 'id')->toArray(),
             'childSubmissions' => GallerySubmission::whereIn('gallery_id', $gallery->children->pluck('id')->toArray())->where('is_visible', 1)->where('status', 'Accepted'),
             'galleryPage'      => true,
             'sideGallery'      => $gallery,
@@ -241,12 +246,12 @@ class GalleryController extends Controller
         return view('galleries.create_edit_submission', [
             'closed' => $closed,
         ] + ($closed ? [] : [
-            'gallery' => $gallery,
-            'submission' => new GallerySubmission,
-            'prompts' => Prompt::active()->sortAlphabetical()->pluck('name', 'id')->toArray(),
-            'locations' => Location::visible()->sortAlphabetical()->get()->sortBy('parent_id')->pluck('styleParent', 'id')->toArray(),
-            'users' => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'currency' => Currency::find(Settings::get('group_currency')),
+            'gallery'     => $gallery,
+            'submission'  => new GallerySubmission,
+            'prompts'     => Prompt::active()->sortAlphabetical()->pluck('name', 'id')->toArray(),
+            'locations'   => Location::visible()->sortAlphabetical()->get()->sortBy('parent_id')->pluck('styleParent', 'id')->toArray(),
+            'users'       => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
+            'currency'    => Currency::find(Settings::get('group_currency')),
             'galleryPage' => true,
             'sideGallery' => $gallery,
         ]));
@@ -281,13 +286,13 @@ class GalleryController extends Controller
             'closed'         => false,
             'gallery'        => $submission->gallery,
             'galleryOptions' => Gallery::orderBy('name')->pluck('name', 'id')->toArray(),
-            'prompts' => $prompts->sortAlphabetical()->pluck('name', 'id')->toArray(),
-            'locations' => Location::visible()->sortAlphabetical()->get()->sortBy('parent_id')->pluck('styleParent', 'id')->toArray(),
-            'submission' => $submission,
-            'users' => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'currency' => Currency::find(Settings::get('group_currency')),
-            'galleryPage' => true,
-            'sideGallery' => $submission->gallery
+            'prompts'        => $prompts->sortAlphabetical()->pluck('name', 'id')->toArray(),
+            'locations'      => Location::visible()->sortAlphabetical()->get()->sortBy('parent_id')->pluck('styleParent', 'id')->toArray(),
+            'submission'     => $submission,
+            'users'          => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
+            'currency'       => Currency::find(Settings::get('group_currency')),
+            'galleryPage'    => true,
+            'sideGallery'    => $submission->gallery,
         ]);
     }
 

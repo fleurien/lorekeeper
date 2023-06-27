@@ -35,6 +35,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Commenter, Notifiable;
@@ -45,8 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        
-        'name', 'alias', 'rank_id', 'email', 'password', 'is_news_unread', 'is_banned', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed','is_deactivated', 'deactivater_id',
+        'name', 'alias', 'rank_id', 'email', 'password', 'is_news_unread', 'is_banned', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed',
     ];
 
     /**
@@ -89,7 +89,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var string
      */
     public $timestamps = true;
-
 
     /**********************************************************************************************
 
@@ -416,17 +415,22 @@ class User extends Authenticatable implements MustVerifyEmail
     // Check if user is online and display When they were online
     public function isOnline()
     {
-      $onlineStatus = Cache::has('user-is-online-' . $this->id);
-      $online = Carbon::createFromTimeStamp(strtotime(Cache::get('user-is-online-time-' . $this->id)));
-      $onlineTime = $online->diffForHumans(['parts' => 2, 'join' => true, 'short' => true]);
-      $onlineYear = $online->year;
+        $onlineStatus = Cache::has('user-is-online-'.$this->id);
+        $online = Carbon::createFromTimeStamp(strtotime(Cache::get('user-is-online-time-'.$this->id)));
+        $onlineTime = $online->diffForHumans(['parts' => 2, 'join' => true, 'short' => true]);
+        $onlineYear = $online->year;
 
-      if($onlineYear < Carbon::now()->year-10) $onlineTime = "a long time ago";
+        if ($onlineYear < Carbon::now()->year - 10) {
+            $onlineTime = 'a long time ago';
+        }
 
-      if($onlineStatus) $result = '<i class="fas fa-circle text-success mr-2" data-toggle="tooltip" title="This user is online."></i>';
-      else  $result = '<i class="far fa-circle text-secondary mr-2" data-toggle="tooltip" title="This user was last online ' . $onlineTime .'."></i>';
+        if ($onlineStatus) {
+            $result = '<i class="fas fa-circle text-success mr-2" data-toggle="tooltip" title="This user is online."></i>';
+        } else {
+            $result = '<i class="far fa-circle text-secondary mr-2" data-toggle="tooltip" title="This user was last online '.$onlineTime.'."></i>';
+        }
 
-      return $result;
+        return $result;
     }
 
     /**
@@ -436,40 +440,67 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getCanChangeLocationAttribute()
     {
-        if(!isset($this->home_changed)) return true;
+        if (!isset($this->home_changed)) {
+            return true;
+        }
         $limit = Settings::get('WE_change_timelimit');
-        switch($limit){
+        switch ($limit) {
             case 0:
                 return true;
             case 1:
                 // Yearly
-                if(now()->year == $this->home_changed->year) return false;
-                else return true;
+                if (now()->year == $this->home_changed->year) {
+                    return false;
+                } else {
+                    return true;
+                }
 
             case 2:
                 // Quarterly
-                if(now()->year != $this->home_changed->year) return true;
-                if(now()->quarter != $this->home_changed->quarter) return true;
-                else return false;
+                if (now()->year != $this->home_changed->year) {
+                    return true;
+                }
+                if (now()->quarter != $this->home_changed->quarter) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             case 3:
                 // Monthly
-                if(now()->year != $this->home_changed->year) return true;
-                if(now()->month != $this->home_changed->month) return true;
-                else return false;
+                if (now()->year != $this->home_changed->year) {
+                    return true;
+                }
+                if (now()->month != $this->home_changed->month) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             case 4:
                 // Weekly
-                if(now()->year != $this->home_changed->year) return true;
-                if(now()->week != $this->home_changed->week) return true;
-                else return false;
+                if (now()->year != $this->home_changed->year) {
+                    return true;
+                }
+                if (now()->week != $this->home_changed->week) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             case 5:
                 // Daily
-                if(now()->year != $this->home_changed->year) return true;
-                if(now()->month != $this->home_changed->month) return true;
-                if(now()->day != $this->home_changed->day) return true;
-                else return false;
+                if (now()->year != $this->home_changed->year) {
+                    return true;
+                }
+                if (now()->month != $this->home_changed->month) {
+                    return true;
+                }
+                if (now()->day != $this->home_changed->day) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             default:
                 return true;
@@ -477,7 +508,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get's user birthday setting
+     * Get's user birthday setting.
      */
     public function getBirthdayDisplayAttribute()
     {
@@ -516,8 +547,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getcheckBirthdayAttribute()
     {
         $bday = $this->birthday;
-        if(!$bday || $bday->diffInYears(carbon::now()) < 13) return false;
-        else return true;
+        if (!$bday || $bday->diffInYears(carbon::now()) < 13) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -530,14 +564,18 @@ class User extends Authenticatable implements MustVerifyEmail
         // Fetch log for most recent collection
         $log = ItemLog::where('recipient_id', $this->id)->where('log_type', 'Collected from Donation Shop')->orderBy('id', 'DESC')->first();
         // If there is no log, by default, the cooldown is null
-        if(!$log) return null;
+        if (!$log) {
+            return null;
+        }
         // If the cooldown would already be up, it is null
-        if($log->created_at->addMinutes(Config::get('lorekeeper.settings.donation_shop.cooldown')) <= Carbon::now()) return null;
+        if ($log->created_at->addMinutes(Config::get('lorekeeper.settings.donation_shop.cooldown')) <= Carbon::now()) {
+            return null;
+        }
         // Otherwise, calculate the remaining time
         return $log->created_at->addMinutes(Config::get('lorekeeper.settings.donation_shop.cooldown'));
+
         return null;
     }
-
 
     /**
      * Checks if the user can change faction.
@@ -546,40 +584,67 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getCanChangeFactionAttribute()
     {
-        if(!isset($this->faction_changed)) return true;
+        if (!isset($this->faction_changed)) {
+            return true;
+        }
         $limit = Settings::get('WE_change_timelimit');
-        switch($limit){
+        switch ($limit) {
             case 0:
                 return true;
             case 1:
                 // Yearly
-                if(now()->year == $this->faction_changed->year) return false;
-                else return true;
+                if (now()->year == $this->faction_changed->year) {
+                    return false;
+                } else {
+                    return true;
+                }
 
             case 2:
                 // Quarterly
-                if(now()->year != $this->faction_changed->year) return true;
-                if(now()->quarter != $this->faction_changed->quarter) return true;
-                else return false;
+                if (now()->year != $this->faction_changed->year) {
+                    return true;
+                }
+                if (now()->quarter != $this->faction_changed->quarter) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             case 3:
                 // Monthly
-                if(now()->year != $this->faction_changed->year) return true;
-                if(now()->month != $this->faction_changed->month) return true;
-                else return false;
+                if (now()->year != $this->faction_changed->year) {
+                    return true;
+                }
+                if (now()->month != $this->faction_changed->month) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             case 4:
                 // Weekly
-                if(now()->year != $this->faction_changed->year) return true;
-                if(now()->week != $this->faction_changed->week) return true;
-                else return false;
+                if (now()->year != $this->faction_changed->year) {
+                    return true;
+                }
+                if (now()->week != $this->faction_changed->week) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             case 5:
                 // Daily
-                if(now()->year != $this->faction_changed->year) return true;
-                if(now()->month != $this->faction_changed->month) return true;
-                if(now()->day != $this->faction_changed->day) return true;
-                else return false;
+                if (now()->year != $this->faction_changed->year) {
+                    return true;
+                }
+                if (now()->month != $this->faction_changed->month) {
+                    return true;
+                }
+                if (now()->day != $this->faction_changed->day) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             default:
                 return true;
@@ -591,11 +656,18 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getFactionRankAttribute()
     {
-        if(!isset($this->faction_id) || !$this->faction->ranks()->count()) return null;
-        if(FactionRankMember::where('member_type', 'user')->where('member_id', $this->id)->first()) return FactionRankMember::where('member_type', 'user')->where('member_id', $this->id)->first()->rank;
-        if($this->faction->ranks()->where('is_open', 1)->count()) {
+        if (!isset($this->faction_id) || !$this->faction->ranks()->count()) {
+            return null;
+        }
+        if (FactionRankMember::where('member_type', 'user')->where('member_id', $this->id)->first()) {
+            return FactionRankMember::where('member_type', 'user')->where('member_id', $this->id)->first()->rank;
+        }
+        if ($this->faction->ranks()->where('is_open', 1)->count()) {
             $standing = $this->getCurrencies(true)->where('id', Settings::get('WE_faction_currency'))->first();
-            if(!$standing) return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', 0)->first();
+            if (!$standing) {
+                return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', 0)->first();
+            }
+
             return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', '<=', $standing->quantity)->orderBy('breakpoint', 'DESC')->first();
         }
     }
@@ -711,22 +783,27 @@ class User extends Authenticatable implements MustVerifyEmail
             return $query->paginate(30);
         }
     }
-        /**
+
+    /**
      * Get the user's award logs.
      *
-     * @param  int  $limit
-     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     * @param int $limit
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
      */
     public function getAwardLogs($limit = 10)
     {
         $user = $this;
-        $query = AwardLog::with('award')->where(function($query) use ($user) {
+        $query = AwardLog::with('award')->where(function ($query) use ($user) {
             $query->with('sender')->where('sender_type', 'User')->where('sender_id', $user->id)->whereNotIn('log_type', ['Staff Grant', 'Prompt Rewards', 'Claim Rewards']);
-        })->orWhere(function($query) use ($user) {
+        })->orWhere(function ($query) use ($user) {
             $query->with('recipient')->where('recipient_type', 'User')->where('recipient_id', $user->id)->where('log_type', '!=', 'Staff Removal');
         })->orderBy('id', 'DESC');
-        if($limit) return $query->take($limit)->get();
-        else return $query->paginate(30);
+        if ($limit) {
+            return $query->take($limit)->get();
+        } else {
+            return $query->paginate(30);
+        }
     }
 
     /**
@@ -849,23 +926,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return CharacterBookmark::where('user_id', $this->id)->where('character_id', $character->id)->first();
     }
 
-
-
     /**
-     * Check if there are any Admin Notifications
+     * Check if there are any Admin Notifications.
+     *
+     * @param mixed $user
      *
      * @return int
      */
-     public function hasAdminNotification($user)
-     {
-       $submissionCount = $user->hasPower('manage_submissions') ? Submission::where('status', 'Pending')->whereNotNull('prompt_id')->count() : 0;
-       $claimCount = $user->hasPower('manage_submissions') ? Submission::where('status', 'Pending')->whereNull('prompt_id')->count() : 0;
-       $designCount = $user->hasPower('manage_characters') ? CharacterDesignUpdate::characters()->where('status', 'Pending')->count() : 0;
-       $myoCount = $user->hasPower('manage_characters') ? CharacterDesignUpdate::myos()->where('status', 'Pending')->count() : 0;
-       $transferCount =  $user->hasPower('manage_characters') ? CharacterTransfer::active()->where('is_approved', 0)->count() : 0;
-       $tradeCount = $user->hasPower('manage_characters') ? Trade::where('status', 'Pending')->count() : 0;
-       $total = $submissionCount + $claimCount + $designCount + $myoCount + $transferCount + $tradeCount;
-       return $total;
-     }
+    public function hasAdminNotification($user)
+    {
+        $submissionCount = $user->hasPower('manage_submissions') ? Submission::where('status', 'Pending')->whereNotNull('prompt_id')->count() : 0;
+        $claimCount = $user->hasPower('manage_submissions') ? Submission::where('status', 'Pending')->whereNull('prompt_id')->count() : 0;
+        $designCount = $user->hasPower('manage_characters') ? CharacterDesignUpdate::characters()->where('status', 'Pending')->count() : 0;
+        $myoCount = $user->hasPower('manage_characters') ? CharacterDesignUpdate::myos()->where('status', 'Pending')->count() : 0;
+        $transferCount = $user->hasPower('manage_characters') ? CharacterTransfer::active()->where('is_approved', 0)->count() : 0;
+        $tradeCount = $user->hasPower('manage_characters') ? Trade::where('status', 'Pending')->count() : 0;
+        $total = $submissionCount + $claimCount + $designCount + $myoCount + $transferCount + $tradeCount;
 
+        return $total;
+    }
 }

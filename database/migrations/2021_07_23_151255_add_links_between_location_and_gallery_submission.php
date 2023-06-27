@@ -8,8 +8,6 @@ class AddLinksBetweenLocationAndGallerySubmission extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -20,13 +18,10 @@ class AddLinksBetweenLocationAndGallerySubmission extends Migration
         Schema::table('gallery_submissions', function (Blueprint $table) {
             $table->integer('location_id')->after('prompt_id')->unsigned()->nullable()->default(null);
         });
-
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

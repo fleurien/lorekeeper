@@ -38,9 +38,9 @@ return [
         'filename'    => 'currency.png',
     ],
     'awards' => [
-        'name' => 'Awards Icon',
+        'name'        => 'Awards Icon',
         'description' => 'The awards graphic on the front page. PNG format, default size of 200px x 200px (no restriction).',
-        'filename' => 'awards.png'
+        'filename'    => 'awards.png',
     ],
     'myo' => [
         'name'        => 'MYO Default Image',
@@ -68,18 +68,18 @@ return [
         'filename'    => 'content_warning.png',
     ],
     'affiliate' => [
-        'name' => 'Default Affiliate Image',
+        'name'        => 'Default Affiliate Image',
         'description' => 'If an affiliate doesn\'t have an affiliate image for whatever reason, use this!',
-        'filename' => 'affiliate.png'
+        'filename'    => 'affiliate.png',
     ],
     'our_affiliate' => [
-        'name' => 'Site Affiliate Image',
+        'name'        => 'Site Affiliate Image',
         'description' => 'This is your site\'s affiliate icon!',
-        'filename' => 'our_affiliate.png'
+        'filename'    => 'our_affiliate.png',
     ],
     'donation_shop' => [
-        'name' => 'Donation Shop Image',
+        'name'        => 'Donation Shop Image',
         'description' => 'Image used for the donation shop. PNG format, should be the same size as other shop images.',
-        'filename' => 'donation_shop.png'
+        'filename'    => 'donation_shop.png',
     ],
 ];

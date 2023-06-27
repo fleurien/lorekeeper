@@ -188,7 +188,7 @@ Route::group(['prefix' => 'reports', 'namespace' => 'Users'], function () {
 /**************************************************************************************************
     Affiliates
 **************************************************************************************************/
-Route::group(['prefix' => 'affiliates'], function() {
+Route::group(['prefix' => 'affiliates'], function () {
     Route::get('/', 'AffiliateController@getIndex')->name('affiliates');
     Route::get('apply', 'AffiliateController@getApply')->name('apply_affiliate');
     Route::get('status/{slug}', 'AffiliateController@getStatus')->name('affiliate_status');
@@ -198,8 +198,7 @@ Route::group(['prefix' => 'affiliates'], function() {
     World Expansion
 **************************************************************************************************/
 
-Route::group(['prefix' => 'world', 'namespace' => 'WorldExpansion'], function() {
-
+Route::group(['prefix' => 'world', 'namespace' => 'WorldExpansion'], function () {
     Route::get('info', 'LocationController@getWorld');
     Route::get('locations', 'LocationController@getLocations');
     Route::get('locations/{id}', 'LocationController@getLocation');
@@ -238,5 +237,3 @@ Route::group(['prefix' => 'world', 'namespace' => 'WorldExpansion'], function() 
     Route::get('concept-categories', 'ConceptController@getConceptCategories');
     Route::get('concept-categories/{id}', 'ConceptController@getConceptCategory');
 });
-
-

@@ -2,22 +2,19 @@
 
 namespace App\Models\WorldExpansion;
 
-use Illuminate\Database\Eloquent\Model;
-
 use App\Models\User\User;
+use Illuminate\Database\Eloquent\Model;
 
 class FactionRankMember extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'faction_id', 'rank_id', 'member_type', 'member_id'
+        'faction_id', 'rank_id', 'member_type', 'member_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -27,7 +24,6 @@ class FactionRankMember extends Model
     protected $table = 'faction_rank_members';
 
     public $timestamps = false;
-
 
     /**********************************************************************************************
 
@@ -82,11 +78,11 @@ class FactionRankMember extends Model
     /**
      * Gets the member object depending on member type.
      *
-     * @return \App\Models\WorldExpansion\Figure|\App\Models\User\User|\App\Models\Character\Character
+     * @return \App\Models\Character\Character|\App\Models\User\User|\App\Models\WorldExpansion\Figure
      */
     public function getMemberObjectAttribute()
     {
-        switch($this->member_type) {
+        switch ($this->member_type) {
             case 'figure':
                 return $this->figure;
                 break;
@@ -98,5 +94,4 @@ class FactionRankMember extends Model
                 break;
         }
     }
-
 }

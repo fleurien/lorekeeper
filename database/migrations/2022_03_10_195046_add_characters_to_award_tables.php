@@ -8,18 +8,22 @@ class AddCharactersToAwardTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         // This simply moves all existing award credits to the data column. Why bother with a command when you can do it in the migration!
-        foreach(App\Models\Award\Award::all() as $award){
+        foreach (App\Models\Award\Award::all() as $award) {
             $data = $award->data;
             $data['credits'] = [];
-            if(isset($award->reference_url)) $data['credits'][]     = [ 'name' => 'Reference',  'url' => $award->reference_url, 'id' => null,               'role' => null ];
-            if(isset($award->artist_id)) $data['credits'][]         = [ 'name' => null,         'url' => null,                  'id' => $award->artist_id,  'role' => null ];
-            if(isset($award->artist_url)) $data['credits'][]        = [ 'name' => 'Artist',     'url' => $award->artist_url,    'id' => null,               'role' => null ];
+            if (isset($award->reference_url)) {
+                $data['credits'][] = ['name' => 'Reference',  'url' => $award->reference_url, 'id' => null,               'role' => null];
+            }
+            if (isset($award->artist_id)) {
+                $data['credits'][] = ['name' => null,         'url' => null,                  'id' => $award->artist_id,  'role' => null];
+            }
+            if (isset($award->artist_url)) {
+                $data['credits'][] = ['name' => 'Artist',     'url' => $award->artist_url,    'id' => null,               'role' => null];
+            }
             $award->update(['data' => $data]);
         }
 
@@ -42,7 +46,6 @@ class AddCharactersToAwardTables extends Migration
             $table->dropColumn('artist_id');
         });
 
-
         Schema::table('award_categories', function (Blueprint $table) {
             $table->dropColumn('is_character_owned');                       // This is now covered by awards individually
             $table->dropColumn('character_limit');                          // This is now covered by awards individually
@@ -51,13 +54,10 @@ class AddCharactersToAwardTables extends Migration
         // If someone wants to take on the idea of award tags on their own, go ahead. I'm not doing it anytime soon. - Uri :)
         Schema::dropIfExists('award_tags');
         Schema::dropIfExists('character_awards_log');
-
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -93,7 +93,7 @@ class AddCharactersToAwardTables extends Migration
             $table->boolean('is_active')->default(0);
         });
 
-        Schema::create('character_awards_log', function(Blueprint $table) {
+        Schema::create('character_awards_log', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('award_id')->unsigned();
@@ -108,6 +108,5 @@ class AddCharactersToAwardTables extends Migration
 
             $table->timestamps();
         });
-
     }
 }

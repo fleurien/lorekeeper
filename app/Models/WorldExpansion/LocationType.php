@@ -4,20 +4,16 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User\User;
-
 class LocationType extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'names',  'description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension'
+        'name', 'names',  'description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension',
     ];
-
 
     /**
      * The table associated with the model.
@@ -34,12 +30,12 @@ class LocationType extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:location_types|between:3,25',
-        'names' => 'required|unique:location_types|between:3,25',
+        'name'        => 'required|unique:location_types|between:3,25',
+        'names'       => 'required|unique:location_types|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
 
     /**
@@ -48,14 +44,13 @@ class LocationType extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
-        'names' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
+        'names'       => 'required|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
-
 
     /**********************************************************************************************
 
@@ -69,9 +64,6 @@ class LocationType extends Model
     {
         return $this->hasMany('App\Models\WorldExpansion\Location', 'type_id')->visible();
     }
-
-
-
 
     /**********************************************************************************************
 
@@ -87,6 +79,7 @@ class LocationType extends Model
     {
         return '<a href="'.$this->url.'" class="display-type">'.$this->name.'</a>';
     }
+
     /**
      * Displays the location type's name, linked to its purchase page.
      *
@@ -124,9 +117,8 @@ class LocationType extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.' . $this->image_extension;
+        return $this->id.'-image.'.$this->image_extension;
     }
-
 
     /**
      * Gets the file name of the model's thumbnail image.
@@ -135,7 +127,7 @@ class LocationType extends Model
      */
     public function getThumbFileNameAttribute()
     {
-        return $this->id . '-th.'. $this->thumb_extension;
+        return $this->id.'-th.'.$this->thumb_extension;
     }
 
     /**
@@ -145,8 +137,11 @@ class LocationType extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->image_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->image_extension) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -156,10 +151,12 @@ class LocationType extends Model
      */
     public function getThumbUrlAttribute()
     {
-        if (!$this->thumb_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->thumbFileName);
-    }
+        if (!$this->thumb_extension) {
+            return null;
+        }
 
+        return asset($this->imageDirectory.'/'.$this->thumbFileName);
+    }
 
     /**
      * Gets the URL of the model's encyclopedia page.
@@ -180,6 +177,4 @@ class LocationType extends Model
     {
         return url('world/locations?type_id='.$this->id.'&sort=type');
     }
-
-
 }

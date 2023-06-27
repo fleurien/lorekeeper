@@ -296,8 +296,11 @@ class CharacterImage extends Model
      */
     public function getHasTitleAttribute()
     {
-       if(isset($this->title_id) || isset($this->title_data)) return true;
-        else return false;
+        if (isset($this->title_id) || isset($this->title_data)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

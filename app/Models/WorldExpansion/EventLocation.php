@@ -1,14 +1,8 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\User\User;
-use App\Models\WorldExpansion\Event;
-use App\Models\WorldExpansion\Location;
 
 class EventLocation extends Model
 {
@@ -18,9 +12,8 @@ class EventLocation extends Model
      * @var array
      */
     protected $fillable = [
-        'event_id', 'location_id'
+        'event_id', 'location_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -30,8 +23,6 @@ class EventLocation extends Model
     protected $table = 'event_locations';
 
     public $timestamps = false;
-
-
 
     /**********************************************************************************************
 
@@ -46,6 +37,7 @@ class EventLocation extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Event', 'event_id');
     }
+
     /**
      * Get the location attached to this.
      */
@@ -53,7 +45,4 @@ class EventLocation extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'location_id');
     }
-
-
-
 }
