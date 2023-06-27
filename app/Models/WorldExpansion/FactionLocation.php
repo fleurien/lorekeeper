@@ -1,27 +1,19 @@
 <?php
-namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
+namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User\User;
-use App\Models\WorldExpansion\Location;
-use App\Models\WorldExpansion\Faction;
-
 class FactionLocation extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'location_id', 'faction_id'
+        'location_id', 'faction_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -45,6 +37,7 @@ class FactionLocation extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'location_id');
     }
+
     /**
      * Get the item attached to this.
      */
@@ -52,5 +45,4 @@ class FactionLocation extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'faction_id');
     }
-
 }

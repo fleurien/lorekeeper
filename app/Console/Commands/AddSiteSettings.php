@@ -23,36 +23,10 @@ class AddSiteSettings extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         parent::__construct();
-    }
-
-    /**
-     * Add a site setting.
-     * 
-     * Example usage:
-     * $this->addSiteSetting("site_setting_key", 1, "0: does nothing. 1: does something.");
-     * 
-     * @param  string  $key
-     * @param  int     $value
-     * @param  string  $description
-     */
-    private function addSiteSetting($key, $value, $description) {
-        if(!DB::table('site_settings')->where('key', $key)->exists()) {
-            DB::table('site_settings')->insert([
-                [
-                    'key'         => $key,
-                    'value'       => $value,
-                    'description' => $description,
-                ],
-            ]);
-            $this->info( "Added:   ".$key." / Default: ".$value);
-        }
-        else $this->line("Skipped: ".$key);
     }
 
     /**
@@ -102,78 +76,108 @@ class AddSiteSettings extends Command
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
 
-        /**
-        * AFFILIATES
-        * Setting determines whether affiliates are open or closed.
-        */
-        if(!DB::table('site_settings')->where('key', 'affiliates_open')->exists()) {
+        /*
+         * AFFILIATES
+         * Setting determines whether affiliates are open or closed.
+         */
+        if (!DB::table('site_settings')->where('key', 'affiliates_open')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'affiliates_open',
-                    'value' => 0,
-                    'description' => 'Are you open for affiliates? 0: Disabled, 1: Enabled.'
-                ]
+                    'key'         => 'affiliates_open',
+                    'value'       => 0,
+                    'description' => 'Are you open for affiliates? 0: Disabled, 1: Enabled.',
+                ],
             ]);
-            $this->info("Added:   affiliates_open / Default: 1");
+            $this->info('Added:   affiliates_open / Default: 1');
+        } else {
+            $this->line('Skipped: affiliates_open');
         }
-        else $this->line("Skipped: affiliates_open");
-        if(!DB::table('site_settings')->where('key', 'character_title_display')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'character_title_display')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'character_title_display',
-                    'value' => 0,
-                    'description' => '0: Characters\' titles only display in their image info. 1: Characters\'s titles display alongside their category, species, rarity.'
-                ]
+                    'key'         => 'character_title_display',
+                    'value'       => 0,
+                    'description' => '0: Characters\' titles only display in their image info. 1: Characters\'s titles display alongside their category, species, rarity.',
+                ],
 
             ]);
-            $this->info("Added:   character_title_display / Default: 0");
+            $this->info('Added:   character_title_display / Default: 0');
+        } else {
+            $this->line('Skipped: character_title_display');
         }
-        else $this->line("Skipped: character_title_display");
 
-        if(!DB::table('site_settings')->where('key', 'event_currency')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'event_currency')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'event_currency',
-                    'value' => 1,
-                    'description' => 'ID of the currency used for events.'
-                ]
+                    'key'         => 'event_currency',
+                    'value'       => 1,
+                    'description' => 'ID of the currency used for events.',
+                ],
 
             ]);
-            $this->info("Added:   event_currency / Default: 1");
+            $this->info('Added:   event_currency / Default: 1');
+        } else {
+            $this->line('Skipped: event_currency');
         }
-        else $this->line("Skipped: event_currency");
 
-        if(!DB::table('site_settings')->where('key', 'global_event_score')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'global_event_score')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'global_event_score',
-                    'value' => 0,
-                    'description' => '0: Event currency is only tracked individually, 1: A global tally of all event currency is also kept.'
-                ]
+                    'key'         => 'global_event_score',
+                    'value'       => 0,
+                    'description' => '0: Event currency is only tracked individually, 1: A global tally of all event currency is also kept.',
+                ],
 
             ]);
-            $this->info("Added:   global_event_score / Default: 0");
+            $this->info('Added:   global_event_score / Default: 0');
+        } else {
+            $this->line('Skipped: global_event_score');
         }
-        else $this->line("Skipped: global_event_score");
 
-        if(!DB::table('site_settings')->where('key', 'global_event_goal')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'global_event_goal')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'global_event_goal',
-                    'value' => 0,
-                    'description' => 'Goal for global event score. Has no effect if global event score is not 1 and/or if set to 0.'
-                ]
+                    'key'         => 'global_event_goal',
+                    'value'       => 0,
+                    'description' => 'Goal for global event score. Has no effect if global event score is not 1 and/or if set to 0.',
+                ],
 
             ]);
-            $this->info("Added:   global_event_goal / Default: 0");
+            $this->info('Added:   global_event_goal / Default: 0');
+        } else {
+            $this->line('Skipped: global_event_goal');
         }
-        else $this->line("Skipped: global_event_goal");
 
         $this->addSiteSetting('featured_character', 1, 'ID of the currently featured character.');
 
         $this->line("\nSite settings up to date!");
 
-
         $this->line("\nSite settings up to date!");
+    }
+
+    /**
+     * Add a site setting.
+     *
+     * Example usage:
+     * $this->addSiteSetting("site_setting_key", 1, "0: does nothing. 1: does something.");
+     *
+     * @param string $key
+     * @param int    $value
+     * @param string $description
+     */
+    private function addSiteSetting($key, $value, $description)
+    {
+        if (!DB::table('site_settings')->where('key', $key)->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key'         => $key,
+                    'value'       => $value,
+                    'description' => $description,
+                ],
+            ]);
+            $this->info('Added:   '.$key.' / Default: '.$value);
+        } else {
+            $this->line('Skipped: '.$key);
+        }
     }
 }

@@ -1,14 +1,8 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\User\User;
-use App\Models\WorldExpansion\Flora;
-use App\Models\WorldExpansion\Location;
 
 class FloraLocation extends Model
 {
@@ -18,9 +12,8 @@ class FloraLocation extends Model
      * @var array
      */
     protected $fillable = [
-        'flora_id', 'location_id'
+        'flora_id', 'location_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -28,13 +21,11 @@ class FloraLocation extends Model
      * @var string
      */
     protected $table = 'flora_locations';
-    
+
     public $timestamps = false;
 
-
-
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -42,18 +33,16 @@ class FloraLocation extends Model
     /**
      * Get the flora attached to this.
      */
-    public function flora() 
+    public function flora()
     {
         return $this->belongsTo('App\Models\WorldExpansion\Flora', 'flora_id');
     }
+
     /**
      * Get the location attached to this.
      */
-    public function location() 
+    public function location()
     {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'location_id');
     }
-
-
-
 }

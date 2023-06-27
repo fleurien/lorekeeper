@@ -1,14 +1,8 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\User\User;
-use App\Models\WorldExpansion\Concept;
-use App\Models\WorldExpansion\Location;
 
 class ConceptLocation extends Model
 {
@@ -18,9 +12,8 @@ class ConceptLocation extends Model
      * @var array
      */
     protected $fillable = [
-        'concept_id', 'location_id'
+        'concept_id', 'location_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -30,8 +23,6 @@ class ConceptLocation extends Model
     protected $table = 'concept_locations';
 
     public $timestamps = false;
-
-
 
     /**********************************************************************************************
 
@@ -46,6 +37,7 @@ class ConceptLocation extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Concept', 'concept_id');
     }
+
     /**
      * Get the location attached to this.
      */
@@ -53,7 +45,4 @@ class ConceptLocation extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'location_id');
     }
-
-
-
 }

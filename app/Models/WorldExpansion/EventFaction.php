@@ -1,14 +1,8 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\User\User;
-use App\Models\WorldExpansion\Event;
-use App\Models\WorldExpansion\Faction;
 
 class EventFaction extends Model
 {
@@ -18,9 +12,8 @@ class EventFaction extends Model
      * @var array
      */
     protected $fillable = [
-        'event_id', 'faction_id'
+        'event_id', 'faction_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -30,8 +23,6 @@ class EventFaction extends Model
     protected $table = 'event_factions';
 
     public $timestamps = false;
-
-
 
     /**********************************************************************************************
 
@@ -46,6 +37,7 @@ class EventFaction extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Event', 'event_id');
     }
+
     /**
      * Get the location attached to this.
      */
@@ -53,7 +45,4 @@ class EventFaction extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'faction_id');
     }
-
-
-
 }

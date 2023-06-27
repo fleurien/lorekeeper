@@ -1,29 +1,20 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\User\User;
-use App\Models\WorldExpansion\Figure;
-use App\Models\WorldExpansion\FigureCategory;
-use App\Models\WorldExpansion\Location;
 
 class FigureCategory extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name',  'description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension'
+        'name',  'description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension',
     ];
-
 
     /**
      * The table associated with the model.
@@ -40,11 +31,11 @@ class FigureCategory extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:figure_categories|between:3,25',
+        'name'        => 'required|unique:figure_categories|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
 
     /**
@@ -53,13 +44,12 @@ class FigureCategory extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
-
 
     /**********************************************************************************************
 
@@ -73,9 +63,6 @@ class FigureCategory extends Model
     {
         return $this->hasMany('App\Models\WorldExpansion\Figure', 'category_id')->visible();
     }
-
-
-
 
     /**********************************************************************************************
 
@@ -119,9 +106,8 @@ class FigureCategory extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.' . $this->image_extension;
+        return $this->id.'-image.'.$this->image_extension;
     }
-
 
     /**
      * Gets the file name of the model's thumbnail image.
@@ -130,7 +116,7 @@ class FigureCategory extends Model
      */
     public function getThumbFileNameAttribute()
     {
-        return $this->id . '-th.'. $this->thumb_extension;
+        return $this->id.'-th.'.$this->thumb_extension;
     }
 
     /**
@@ -140,8 +126,11 @@ class FigureCategory extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->image_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->image_extension) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -151,10 +140,12 @@ class FigureCategory extends Model
      */
     public function getThumbUrlAttribute()
     {
-        if (!$this->thumb_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->thumbFileName);
-    }
+        if (!$this->thumb_extension) {
+            return null;
+        }
 
+        return asset($this->imageDirectory.'/'.$this->thumbFileName);
+    }
 
     /**
      * Gets the URL of the model's encyclopedia page.
@@ -175,6 +166,4 @@ class FigureCategory extends Model
     {
         return url('world/figures?category_id='.$this->id.'&sort=category');
     }
-
-
 }

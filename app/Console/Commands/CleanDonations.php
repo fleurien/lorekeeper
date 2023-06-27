@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\ShopManager;
+use Illuminate\Console\Command;
 
 class CleanDonations extends Command
 {
@@ -23,8 +23,6 @@ class CleanDonations extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {

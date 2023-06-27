@@ -2,10 +2,8 @@
 
 namespace App\Models\Advent;
 
-use Config;
-use DB;
-use Carbon\Carbon;
 use App\Models\Model;
+use Carbon\Carbon;
 
 class AdventParticipant extends Model
 {
@@ -15,7 +13,7 @@ class AdventParticipant extends Model
      * @var array
      */
     protected $fillable = [
-        'advent_id', 'user_id', 'day', 'claimed_at'
+        'advent_id', 'user_id', 'day', 'claimed_at',
     ];
 
     /**
@@ -75,5 +73,4 @@ class AdventParticipant extends Model
     {
         return 'Claimed from '.$this->advent->displayLink.' day '.$this->day.' by '.$this->user->displayName.'.';
     }
-
 }

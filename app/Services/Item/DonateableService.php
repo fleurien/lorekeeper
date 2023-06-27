@@ -1,4 +1,6 @@
-<?php namespace App\Services\Item;
+<?php
+
+namespace App\Services\Item;
 
 use App\Services\Service;
 use DB;
@@ -28,8 +30,9 @@ class DonateableService extends Service
     /**
      * Processes the data attribute of the tag and returns it in the preferred format.
      *
-     * @param  string  $tag
-     * @param  array   $data
+     * @param string $tag
+     * @param array  $data
+     *
      * @return bool
      */
     public function updateData($tag, $data)
@@ -37,11 +40,11 @@ class DonateableService extends Service
         DB::beginTransaction();
 
         try {
-
             return $this->commitReturn(true);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 }

@@ -222,8 +222,8 @@ return [
 
     'donation_shop' => [
         'item_donations' => 0,
-        'cooldown' => 5,
-        'expiry' => 0,
+        'cooldown'       => 5,
+        'expiry'         => 0,
     ],
 
     /*

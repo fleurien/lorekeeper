@@ -2,21 +2,16 @@
 
 namespace App\Models\WorldExpansion;
 
-use DB;
+use App\Models\Character\Character;
+use App\Models\User\User;
 use Auth;
-use Config;
-use Settings;
-
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-use App\Models\User\User;
-use App\Models\Character\Character;
-use App\Models\WorldExpansion\FactionType;
+use Settings;
 
 class Faction extends Model
 {
-
     use SoftDeletes;
 
     /**
@@ -25,11 +20,10 @@ class Faction extends Model
      * @var array
      */
     protected $fillable = [
-        'name','description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension',
+        'name', 'description', 'summary', 'parsed_description', 'sort', 'image_extension', 'thumb_extension',
         'parent_id', 'type_id', 'is_active', 'display_style', 'is_character_faction', 'is_user_faction',
 
     ];
-
 
     /**
      * The table associated with the model.
@@ -46,11 +40,11 @@ class Faction extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:factions|between:3,25',
+        'name'        => 'required|unique:factions|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
 
     /**
@@ -59,13 +53,12 @@ class Faction extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
         'description' => 'nullable',
-        'summary' => 'nullable|max:300',
-        'image' => 'mimes:png,gif,jpg,jpeg',
-        'image_th' => 'mimes:png,gif,jpg,jpeg',
+        'summary'     => 'nullable|max:300',
+        'image'       => 'mimes:png,gif,jpg,jpeg',
+        'image_th'    => 'mimes:png,gif,jpg,jpeg',
     ];
-
 
     /**********************************************************************************************
 
@@ -146,31 +139,39 @@ class Faction extends Model
     /**
      * Scope a query to only include visible posts.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeVisible($query)
     {
-        if(!Auth::check() || !(Auth::check() && Auth::user()->isStaff)) return $query->where('is_active', 1);
-        else return $query;
+        if (!Auth::check() || !(Auth::check() && Auth::user()->isStaff)) {
+            return $query->where('is_active', 1);
+        } else {
+            return $query;
+        }
     }
 
     /**
      * Scope a query to sort items in category order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortFactionType($query)
     {
         $ids = LocationType::orderBy('sort', 'DESC')->pluck('id')->toArray();
+
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(type_id, '.implode(',', $ids).')')) : $query;
     }
+
     /**
      * Scope a query to sort items in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortAlphabetical($query, $reverse = false)
@@ -181,7 +182,8 @@ class Faction extends Model
     /**
      * Scope a query to sort items by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortNewest($query)
@@ -192,7 +194,8 @@ class Faction extends Model
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortOldest($query)
@@ -213,8 +216,11 @@ class Faction extends Model
      */
     public function getDisplayNameAttribute()
     {
-        if($this->is_active) {return '<a href="'.$this->url.'" class="display-location">'.$this->name.'</a>';}
-        else {return '<s><a href="'.$this->url.'" class="display-location text-muted">'.$this->name.'</a></s>';}
+        if ($this->is_active) {
+            return '<a href="'.$this->url.'" class="display-location">'.$this->name.'</a>';
+        } else {
+            return '<s><a href="'.$this->url.'" class="display-location text-muted">'.$this->name.'</a></s>';
+        }
     }
 
     /**
@@ -224,10 +230,12 @@ class Faction extends Model
      */
     public function getFullDisplayNameAttribute()
     {
-        if($this->is_active) {return '<a href="'.$this->url.'" class="display-location">'.$this->style.'</a>';}
-        else {return '<s><a href="'.$this->url.'" class="display-location text-muted">'.$this->style.'</a></s>';}
+        if ($this->is_active) {
+            return '<a href="'.$this->url.'" class="display-location">'.$this->style.'</a>';
+        } else {
+            return '<s><a href="'.$this->url.'" class="display-location text-muted">'.$this->style.'</a></s>';
+        }
     }
-
 
     /**
      * Displays the faction's name, linked to its page.
@@ -236,8 +244,11 @@ class Faction extends Model
      */
     public function getFullDisplayNameUCAttribute()
     {
-        if($this->is_active) {return '<a href="'.$this->url.'" class="display-location">'.ucfirst($this->style).'</a>';}
-        else {return '<s><a href="'.$this->url.'" class="display-location text-muted">'.ucfirst($this->style).'</a></s>';}
+        if ($this->is_active) {
+            return '<a href="'.$this->url.'" class="display-location">'.ucfirst($this->style).'</a>';
+        } else {
+            return '<s><a href="'.$this->url.'" class="display-location text-muted">'.ucfirst($this->style).'</a></s>';
+        }
     }
 
     /**
@@ -267,7 +278,7 @@ class Faction extends Model
      */
     public function getImageFileNameAttribute()
     {
-        return $this->id . '-image.' . $this->image_extension;
+        return $this->id.'-image.'.$this->image_extension;
     }
 
     /**
@@ -277,7 +288,7 @@ class Faction extends Model
      */
     public function getThumbFileNameAttribute()
     {
-        return $this->id . '-th.'. $this->thumb_extension;
+        return $this->id.'-th.'.$this->thumb_extension;
     }
 
     /**
@@ -287,8 +298,11 @@ class Faction extends Model
      */
     public function getImageUrlAttribute()
     {
-        if (!$this->image_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+        if (!$this->image_extension) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -298,8 +312,11 @@ class Faction extends Model
      */
     public function getThumbUrlAttribute()
     {
-        if (!$this->thumb_extension) return null;
-        return asset($this->imageDirectory . '/' . $this->thumbFileName);
+        if (!$this->thumb_extension) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->thumbFileName);
     }
 
     /**
@@ -320,12 +337,12 @@ class Faction extends Model
     public function getDisplayStylesAttribute()
     {
         return
-            array(
+            [
                 0 => $this->name,
                 1 => 'the '.$this->type->name.' of '.$this->name,
                 2 => $this->type->name.' of '.$this->name,
                 3 => $this->name.' '.$this->type->name,
-            );
+            ];
     }
 
     /**
@@ -349,12 +366,16 @@ class Faction extends Model
         $users = Settings::get('WE_user_factions') > 0 && $this->is_user_faction ? User::visible()->where('faction_id', $this->id)->get() : null;
         $characters = Settings::get('WE_character_factions') > 0 && $this->is_character_faction ? Character::visible()->where('faction_id', $this->id)->get() : null;
 
-        if($users && $characters) return $users->concat($characters);
-        elseif($users || $characters) {
-            if(!$users) return $characters;
-            elseif(!$characters) return $users;
+        if ($users && $characters) {
+            return $users->concat($characters);
+        } elseif ($users || $characters) {
+            if (!$users) {
+                return $characters;
+            } elseif (!$characters) {
+                return $users;
+            }
+        } else {
+            return null;
         }
-        else return null;
     }
-
 }

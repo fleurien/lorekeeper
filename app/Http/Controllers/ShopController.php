@@ -151,18 +151,19 @@ class ShopController extends Controller
             $object->displayStock()->orderBy('name')->get()->groupBy('item_category_id');
 
         return view('shops.donation_shop', [
-            'text' => SitePage::where('key', 'donation-shop')->first(),
+            'text'       => SitePage::where('key', 'donation-shop')->first(),
             'categories' => $categories->keyBy('id'),
-            'items' => $items,
-            'shops' => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get()
+            'items'      => $items,
+            'shops'      => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
         ]);
     }
 
     /**
      * Gets the donation shop stock modal.
      *
-     * @param  App\Services\ShopManager  $service
-     * @param  int                       $id
+     * @param App\Services\ShopManager $service
+     * @param int                      $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getDonationShopStock(ShopManager $service, $id)
@@ -170,25 +171,27 @@ class ShopController extends Controller
         $stock = UserItemDonation::where('id', $id)->first();
 
         return view('shops._donation_stock_modal', [
-            'stock' => $stock
-		]);
+            'stock' => $stock,
+        ]);
     }
 
     /**
      * Collects an item from the donation shop.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\ShopManager  $service
+     * @param App\Services\ShopManager $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postCollect(Request $request, ShopManager $service)
     {
-        if($service->collectDonation($request->only(['stock_id']), Auth::user())) {
+        if ($service->collectDonation($request->only(['stock_id']), Auth::user())) {
             flash('Successfully collected item.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 }

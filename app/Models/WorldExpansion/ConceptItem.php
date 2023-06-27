@@ -1,27 +1,20 @@
 <?php
+
 namespace App\Models\WorldExpansion;
 
-use Config;
-use DB;
-
-use Illuminate\Database\Eloquent\Model;
-
-use App\Models\User\User;
-use App\Models\WorldExpansion\Concept;
 use App\Models\Item\Item;
+use Illuminate\Database\Eloquent\Model;
 
 class ConceptItem extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'concept_id', 'item_id'
+        'concept_id', 'item_id',
     ];
-
 
     /**
      * The table associated with the model.
@@ -31,8 +24,6 @@ class ConceptItem extends Model
     protected $table = 'concept_items';
 
     public $timestamps = false;
-
-
 
     /**********************************************************************************************
 
@@ -47,6 +38,7 @@ class ConceptItem extends Model
     {
         return $this->belongsTo('App\Models\WorldExpansion\Concept', 'concept_id');
     }
+
     /**
      * Get the item attached to this.
      */
@@ -54,7 +46,4 @@ class ConceptItem extends Model
     {
         return $this->belongsTo('App\Models\Item\Item', 'item_id');
     }
-
-
-
 }

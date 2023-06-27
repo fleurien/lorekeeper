@@ -4,20 +4,16 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User\User;
-
 class FactionRank extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'faction_id', 'name', 'description', 'sort', 'is_open', 'amount', 'breakpoint'
+        'faction_id', 'name', 'description', 'sort', 'is_open', 'amount', 'breakpoint',
     ];
-
 
     /**
      * The table associated with the model.
@@ -27,7 +23,6 @@ class FactionRank extends Model
     protected $table = 'faction_ranks';
 
     public $timestamps = false;
-
 
     /**********************************************************************************************
 
@@ -64,5 +59,4 @@ class FactionRank extends Model
     {
         return '<a href="'.$this->faction->url.'" class="display-location text-muted">'.$this->name.'</a>';
     }
-
 }

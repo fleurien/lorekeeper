@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
+use Carbon\Carbon;
 use Config;
 use DB;
-use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class AddWorldExpansion extends Command
 {
@@ -26,8 +25,6 @@ class AddWorldExpansion extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -47,76 +44,80 @@ class AddWorldExpansion extends Command
 
         $this->line("Adding world expansion settings...existing entries will be skipped.\n");
 
-        if(!DB::table('site_settings')->where('key', 'WE_change_timelimit')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'WE_change_timelimit')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'WE_change_timelimit',
-                    'value' => 0,
-                    'description' => 'Is there a limit to how often users can change their location? 0: No Limit. 1: Yearly. 2: Quarterly. 3: Monthly. 4: Weekly. 5: Daily.'
-                ]
+                    'key'         => 'WE_change_timelimit',
+                    'value'       => 0,
+                    'description' => 'Is there a limit to how often users can change their location? 0: No Limit. 1: Yearly. 2: Quarterly. 3: Monthly. 4: Weekly. 5: Daily.',
+                ],
 
             ]);
-            $this->info("Added:   WE_change_timelimit / Default: 0");
+            $this->info('Added:   WE_change_timelimit / Default: 0');
+        } else {
+            $this->line('Skipped: WE_change_timelimit');
         }
-        else $this->line("Skipped: WE_change_timelimit");
 
-        if(!DB::table('site_settings')->where('key', 'WE_user_locations')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'WE_user_locations')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'WE_user_locations',
-                    'value' => 0,
-                    'description' => '0: Users do not have locations. 1: Users can freely change locations. 2: Only admins can freely change user locations.'
-                ]
+                    'key'         => 'WE_user_locations',
+                    'value'       => 0,
+                    'description' => '0: Users do not have locations. 1: Users can freely change locations. 2: Only admins can freely change user locations.',
+                ],
 
             ]);
-            $this->info("Added:   WE_user_locations / Default: 0");
+            $this->info('Added:   WE_user_locations / Default: 0');
+        } else {
+            $this->line('Skipped: WE_user_locations');
         }
-        else $this->line("Skipped: WE_user_locations");
 
-        if(!DB::table('site_settings')->where('key', 'WE_user_factions')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'WE_user_factions')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'WE_user_factions',
-                    'value' => 0,
-                    'description' => '0: Users do not have factions. 1: Users can freely change factions. 2: Only admins can freely change user factions.'
-                ]
+                    'key'         => 'WE_user_factions',
+                    'value'       => 0,
+                    'description' => '0: Users do not have factions. 1: Users can freely change factions. 2: Only admins can freely change user factions.',
+                ],
 
             ]);
-            $this->info("Added:   WE_user_factions / Default: 0");
+            $this->info('Added:   WE_user_factions / Default: 0');
+        } else {
+            $this->line('Skipped: WE_user_factions');
         }
-        else $this->line("Skipped: WE_user_factions");
 
-        if(!DB::table('site_settings')->where('key', 'WE_character_locations')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'WE_character_locations')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'WE_character_locations',
-                    'value' => 0,
-                    'description' => '0: Characters do not have locations. 1: Characters\' locations are the same as their owners. 2: Users can edit their own character locations. 3: Only admins can edit character locations.'
-                ]
+                    'key'         => 'WE_character_locations',
+                    'value'       => 0,
+                    'description' => '0: Characters do not have locations. 1: Characters\' locations are the same as their owners. 2: Users can edit their own character locations. 3: Only admins can edit character locations.',
+                ],
 
             ]);
-            $this->info("Added:   WE_character_locations / Default: 0");
+            $this->info('Added:   WE_character_locations / Default: 0');
+        } else {
+            $this->line('Skipped: WE_character_locations');
         }
-        else $this->line("Skipped: WE_character_locations");
 
-        if(!DB::table('site_settings')->where('key', 'WE_character_factions')->exists()) {
+        if (!DB::table('site_settings')->where('key', 'WE_character_factions')->exists()) {
             DB::table('site_settings')->insert([
                 [
-                    'key' => 'WE_character_factions',
-                    'value' => 0,
-                    'description' => '0: Characters do not have factions. 1: Characters\' factions are the same as their owners. 2: Users can edit their own character factions. 3: Only admins can edit character factions.'
-                ]
+                    'key'         => 'WE_character_factions',
+                    'value'       => 0,
+                    'description' => '0: Characters do not have factions. 1: Characters\' factions are the same as their owners. 2: Users can edit their own character factions. 3: Only admins can edit character factions.',
+                ],
 
             ]);
-            $this->info("Added:   WE_character_factions / Default: 0");
+            $this->info('Added:   WE_character_factions / Default: 0');
+        } else {
+            $this->line('Skipped: WE_character_factions');
         }
-        else $this->line("Skipped: WE_character_factions");
 
         $this->line("\nWorld Expansion settings up to date!");
 
         //
         $pages = Config::get('lorekeeper.text_pages');
-
 
         $this->line("\n");
         $this->info('******************');
@@ -125,23 +126,21 @@ class AddWorldExpansion extends Command
 
         $this->line("Adding site page...existing entries will be skipped.\n");
 
-
-        if(!DB::table('site_pages')->where('key', 'world')->exists()) {
+        if (!DB::table('site_pages')->where('key', 'world')->exists()) {
             DB::table('site_pages')->insert([
                 [
-                    'key' => 'world',
-                    'title' => 'World',
-                    'text' => '<p>This is the world information page. Edit this from your Pages!</p>',
+                    'key'         => 'world',
+                    'title'       => 'World',
+                    'text'        => '<p>This is the world information page. Edit this from your Pages!</p>',
                     'parsed_text' => '<p>This is the world information page. Edit this from your Pages!</p>',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ]
+                    'created_at'  => Carbon::now(),
+                    'updated_at'  => Carbon::now(),
+                ],
 
             ]);
-            $this->info("Added:   World Info Page");
+            $this->info('Added:   World Info Page');
+        } else {
+            $this->line('Skipped: World Info Page');
         }
-        else $this->line("Skipped: World Info Page");
-
-
     }
 }

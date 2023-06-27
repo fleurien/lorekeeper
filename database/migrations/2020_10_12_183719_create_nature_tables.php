@@ -1,15 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateNatureTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,14 +16,14 @@ class CreateNatureTables extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('name');
-            $table->string('summary', 300)->nullable()->default(null); 
+            $table->string('summary', 300)->nullable()->default(null);
 
             $table->text('description')->nullable()->default(null);
             $table->text('parsed_description')->nullable()->default(null);
 
-            $table->string('image_extension', 191)->nullable()->default(null); 
-            $table->string('thumb_extension', 191)->nullable()->default(null); 
-            $table->integer('sort')->unsigned()->default(0); 
+            $table->string('image_extension', 191)->nullable()->default(null);
+            $table->string('thumb_extension', 191)->nullable()->default(null);
+            $table->integer('sort')->unsigned()->default(0);
 
             $table->boolean('is_active')->default(1);
 
@@ -38,14 +36,14 @@ class CreateNatureTables extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('name');
-            $table->string('summary', 300)->nullable()->default(null); 
+            $table->string('summary', 300)->nullable()->default(null);
 
             $table->text('description')->nullable()->default(null);
             $table->text('parsed_description')->nullable()->default(null);
 
-            $table->string('image_extension', 191)->nullable()->default(null); 
-            $table->string('thumb_extension', 191)->nullable()->default(null); 
-            $table->integer('sort')->unsigned()->default(0); 
+            $table->string('image_extension', 191)->nullable()->default(null);
+            $table->string('thumb_extension', 191)->nullable()->default(null);
+            $table->integer('sort')->unsigned()->default(0);
 
             $table->boolean('is_active')->default(1);
 
@@ -59,14 +57,14 @@ class CreateNatureTables extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('name');
-            $table->string('summary', 300)->nullable()->default(null); 
+            $table->string('summary', 300)->nullable()->default(null);
 
             $table->text('description')->nullable()->default(null);
             $table->text('parsed_description')->nullable()->default(null);
 
-            $table->string('image_extension', 191)->nullable()->default(null); 
-            $table->string('thumb_extension', 191)->nullable()->default(null); 
-            $table->integer('sort')->unsigned()->default(0); 
+            $table->string('image_extension', 191)->nullable()->default(null);
+            $table->string('thumb_extension', 191)->nullable()->default(null);
+            $table->integer('sort')->unsigned()->default(0);
 
             $table->integer('category_id')->nullable()->default(null)->unsigned();
             $table->foreign('category_id')->references('id')->on('fauna_categories')->onDelete('cascade');
@@ -83,14 +81,14 @@ class CreateNatureTables extends Migration
             $table->increments('id')->unsigned();
 
             $table->string('name');
-            $table->string('summary', 300)->nullable()->default(null); 
+            $table->string('summary', 300)->nullable()->default(null);
 
             $table->text('description')->nullable()->default(null);
             $table->text('parsed_description')->nullable()->default(null);
 
-            $table->string('image_extension', 191)->nullable()->default(null); 
-            $table->string('thumb_extension', 191)->nullable()->default(null); 
-            $table->integer('sort')->unsigned()->default(0); 
+            $table->string('image_extension', 191)->nullable()->default(null);
+            $table->string('thumb_extension', 191)->nullable()->default(null);
+            $table->integer('sort')->unsigned()->default(0);
 
             $table->integer('category_id')->nullable()->default(null)->unsigned();
             $table->foreign('category_id')->references('id')->on('flora_categories')->onDelete('cascade');
@@ -136,8 +134,6 @@ class CreateNatureTables extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

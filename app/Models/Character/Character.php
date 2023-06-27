@@ -2,35 +2,23 @@
 
 namespace App\Models\Character;
 
-use Config;
-use DB;
-use Settings;
-use App\Models\Model;
+use App\Models\Award\Award;
+use App\Models\Award\AwardLog;
 
-
-use App\Models\Character\Character;
-use App\Models\Character\CharacterCategory;
-use App\Models\Character\CharacterTransfer;
-use App\Models\Character\CharacterBookmark;
-
-use App\Models\Character\CharacterCurrency;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Item\Item;
 use App\Models\Item\ItemLog;
-use App\Models\Award\Award;
-use App\Models\Award\AwardLog;
-
+use App\Models\Model;
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
 use App\Models\User\User;
 use App\Models\User\UserCharacterLog;
+use App\Models\WorldExpansion\FactionRankMember;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Notifications;
-
-use App\Models\WorldExpansion\FactionRank;
-use App\Models\WorldExpansion\FactionRankMember;
+use Settings;
 
 class Character extends Model
 {
@@ -47,7 +35,7 @@ class Character extends Model
         'is_sellable', 'is_tradeable', 'is_giftable',
         'sale_value', 'transferrable_at', 'is_visible',
         'is_gift_art_allowed', 'is_gift_writing_allowed', 'is_trading', 'sort',
-        'is_myo_slot', 'name', 'trade_id', 'owner_url', 'home_id', 'home_changed', 'faction_id', 'faction_changed'
+        'is_myo_slot', 'name', 'trade_id', 'owner_url', 'home_id', 'home_changed', 'faction_id', 'faction_changed',
     ];
 
     /**
@@ -58,18 +46,18 @@ class Character extends Model
     protected $table = 'characters';
 
     /**
+     * Dates on the model to convert to Carbon instances.
+     *
+     * @var array
+     */
+    protected $dates = ['transferrable_at', 'home_changed', 'faction_changed'];
+
+    /**
      * Whether the model contains timestamps to be saved and updated.
      *
      * @var string
      */
     public $timestamps = true;
-
-    /**
-     * Dates on the model to convert to Carbon instances.
-     *
-     * @var array
-     */
-    protected $dates = ['transferrable_at','home_changed', 'faction_changed'];
 
     /**
      * Accessors to append to the model.
@@ -229,6 +217,7 @@ class Character extends Model
     {
         return $this->belongsToMany('App\Models\Item\Item', 'character_items')->withPivot('count', 'data', 'updated_at', 'id')->whereNull('character_items.deleted_at');
     }
+
     /**
      * Get the character's awards.
      */
@@ -420,20 +409,29 @@ class Character extends Model
     {
         $setting = $this->homeSetting;
 
-
-        switch($setting) {
+        switch ($setting) {
             case 1:
-                if(!$this->user) return null;
-                elseif(!$this->user->home) return null;
-                else return $this->user->home->fullDisplayName;
+                if (!$this->user) {
+                    return null;
+                } elseif (!$this->user->home) {
+                    return null;
+                } else {
+                    return $this->user->home->fullDisplayName;
+                }
 
             case 2:
-                if(!$this->home) return null;
-                else return $this->home->fullDisplayName;
+                if (!$this->home) {
+                    return null;
+                } else {
+                    return $this->home->fullDisplayName;
+                }
 
             case 3:
-                if(!$this->home) return null;
-                else return $this->home->fullDisplayName;
+                if (!$this->home) {
+                    return null;
+                } else {
+                    return $this->home->fullDisplayName;
+                }
 
             default:
                 return null;
@@ -449,19 +447,29 @@ class Character extends Model
     {
         $setting = $this->factionSetting;
 
-        switch($setting) {
+        switch ($setting) {
             case 1:
-                if(!$this->user) return null;
-                elseif(!$this->user->faction) return null;
-                else return $this->user->faction->fullDisplayName;
+                if (!$this->user) {
+                    return null;
+                } elseif (!$this->user->faction) {
+                    return null;
+                } else {
+                    return $this->user->faction->fullDisplayName;
+                }
 
             case 2:
-                if(!$this->faction) return null;
-                else return $this->faction->fullDisplayName;
+                if (!$this->faction) {
+                    return null;
+                } else {
+                    return $this->faction->fullDisplayName;
+                }
 
             case 3:
-                if(!$this->faction) return null;
-                else return $this->faction->fullDisplayName;
+                if (!$this->faction) {
+                    return null;
+                } else {
+                    return $this->faction->fullDisplayName;
+                }
 
             default:
                 return null;
@@ -473,11 +481,18 @@ class Character extends Model
      */
     public function getFactionRankAttribute()
     {
-        if(!isset($this->faction_id) || !$this->faction->ranks()->count()) return null;
-        if(FactionRankMember::where('member_type', 'character')->where('member_id', $this->id)->first()) return FactionRankMember::where('member_type', 'character')->where('member_id', $this->id)->first()->rank;
-        if($this->faction->ranks()->where('is_open', 1)->count()) {
+        if (!isset($this->faction_id) || !$this->faction->ranks()->count()) {
+            return null;
+        }
+        if (FactionRankMember::where('member_type', 'character')->where('member_id', $this->id)->first()) {
+            return FactionRankMember::where('member_type', 'character')->where('member_id', $this->id)->first()->rank;
+        }
+        if ($this->faction->ranks()->where('is_open', 1)->count()) {
             $standing = $this->getCurrencies(true)->where('id', Settings::get('WE_faction_currency'))->first();
-            if(!$standing) return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', 0)->first();
+            if (!$standing) {
+                return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', 0)->first();
+            }
+
             return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', '<=', $standing->quantity)->orderBy('breakpoint', 'DESC')->first();
         }
     }
@@ -602,21 +617,25 @@ class Character extends Model
     /**
      * Get the character's award logs.
      *
-     * @param  int  $limit
-     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     * @param int $limit
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection
      */
     public function getAwardLogs($limit = 10)
     {
         $character = $this;
 
-        $query = AwardLog::with('award')->where(function($query) use ($character) {
+        $query = AwardLog::with('award')->where(function ($query) use ($character) {
             $query->with('sender.rank')->where('sender_type', 'Character')->where('sender_id', $character->id)->where('log_type', '!=', 'Staff Grant');
-        })->orWhere(function($query) use ($character) {
+        })->orWhere(function ($query) use ($character) {
             $query->with('recipient.rank')->where('recipient_type', 'Character')->where('recipient_id', $character->id)->where('log_type', '!=', 'Staff Removal');
         })->orderBy('id', 'DESC');
 
-        if($limit) return $query->take($limit)->get();
-        else return $query->paginate(30);
+        if ($limit) {
+            return $query->take($limit)->get();
+        } else {
+            return $query->paginate(30);
+        }
     }
 
     /**

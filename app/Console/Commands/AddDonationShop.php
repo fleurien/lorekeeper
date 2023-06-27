@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Config;
-use DB;
 use Carbon\Carbon;
+use DB;
+use Illuminate\Console\Command;
 
 class AddDonationShop extends Command
 {
@@ -25,8 +24,6 @@ class AddDonationShop extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -44,21 +41,22 @@ class AddDonationShop extends Command
         $text = '<p>This is the shop text for the Donation Shop! It can be edited from the site pages admin panel.</p>
         <p>Items in this shop are donated by users of this site and can be collected at no cost.</p>';
 
-        if(!DB::table('site_pages')->where('key', 'donation-shop')->exists()) {
+        if (!DB::table('site_pages')->where('key', 'donation-shop')->exists()) {
             DB::table('site_pages')->insert([
                 [
-                    'key' => 'donation-shop',
-                    'title' => 'Donation Shop',
-                    'text' => $text,
+                    'key'         => 'donation-shop',
+                    'title'       => 'Donation Shop',
+                    'text'        => $text,
                     'parsed_text' => $text,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                    'is_visible' => 0,
-                ]
+                    'created_at'  => Carbon::now(),
+                    'updated_at'  => Carbon::now(),
+                    'is_visible'  => 0,
+                ],
 
             ]);
-            $this->info("Added: Donation Shop Text");
+            $this->info('Added: Donation Shop Text');
+        } else {
+            $this->line('Skipped: Donation Shop Text');
         }
-        else $this->line("Skipped: Donation Shop Text");
     }
 }

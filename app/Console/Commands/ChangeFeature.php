@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use DB;
-use Settings;
-use Log;
-use Illuminate\Console\Command;
 use App\Models\Character\Character;
+use DB;
+use Illuminate\Console\Command;
+use Settings;
 
 class ChangeFeature extends Command
 {
@@ -26,8 +25,6 @@ class ChangeFeature extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -44,19 +41,20 @@ class ChangeFeature extends Command
         $characterCount = Character::count();
         $setting = Settings::get('featured_character');
         //
-        if($characterCount && $setting) {
+        if ($characterCount && $setting) {
             $id = mt_rand(1, $characterCount);
             //
-            if($id == $setting && $id != 1) {
-                if($id <= 5) {
+            if ($id == $setting && $id != 1) {
+                if ($id <= 5) {
                     $id = $id + mt_rand(-2, 2);
-                }
-                else {
+                } else {
                     $id = $id + mt_rand(-5, 5);
                 }
             }
             //
-            if($id < 0) $id = abs($id);
+            if ($id < 0) {
+                $id = abs($id);
+            }
 
             DB::table('site_settings')->where('key', 'featured_character')->update(['value' => $id]);
         }

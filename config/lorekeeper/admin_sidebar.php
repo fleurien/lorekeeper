@@ -45,13 +45,13 @@ return [
         'links' => [
             [
                 'name' => 'Approved Affiliates',
-                'url' => 'admin/affiliates/current'
+                'url'  => 'admin/affiliates/current',
             ],
             [
                 'name' => 'Affiliate Requests',
-                'url' => 'admin/affiliates/pending'
+                'url'  => 'admin/affiliates/pending',
             ],
-        ]
+        ],
     ],
     'Site' => [
         'power' => 'edit_pages',
@@ -117,13 +117,13 @@ return [
             ],
             [
                 'name' => 'Award Grants',
-                'url' => 'admin/grants/awards'
+                'url'  => 'admin/grants/awards',
             ],
             [
                 'name' => 'Event Currency',
-                'url' => 'admin/grants/event-currency'
+                'url'  => 'admin/grants/event-currency',
             ],
-        ]
+        ],
     ],
     'Masterlist' => [
         'power' => 'manage_characters',
@@ -163,11 +163,11 @@ return [
             ],
             [
                 'name' => 'Award Categories',
-                'url' => 'admin/data/award-categories'
+                'url'  => 'admin/data/award-categories',
             ],
             [
                 'name' => 'Awards',
-                'url' => 'admin/data/awards'
+                'url'  => 'admin/data/awards',
             ],
             [
                 'name' => 'Character Categories',
@@ -195,7 +195,7 @@ return [
             ],
             [
                 'name' => 'Character Titles',
-                'url' => 'admin/data/character-titles'
+                'url'  => 'admin/data/character-titles',
             ],
             [
                 'name' => 'Shops',
@@ -219,42 +219,42 @@ return [
             ],
             [
                 'name' => 'Advent Calendars',
-                'url' => 'admin/data/advent-calendars'
+                'url'  => 'admin/data/advent-calendars',
             ],
-        ]
+        ],
     ],
     'World.Expanded' => [
         'power' => 'manage_world',
         'links' => [
             [
                 'name' => 'Locations',
-                'url' => 'admin/world/locations'
+                'url'  => 'admin/world/locations',
             ],
             [
                 'name' => 'Fauna',
-                'url' => 'admin/world/faunas'
+                'url'  => 'admin/world/faunas',
             ],
             [
                 'name' => 'Flora',
-                'url' => 'admin/world/floras'
+                'url'  => 'admin/world/floras',
             ],
             [
                 'name' => ' Events',
-                'url' => 'admin/world/events'
+                'url'  => 'admin/world/events',
             ],
             [
                 'name' => ' Figures',
-                'url' => 'admin/world/figures'
+                'url'  => 'admin/world/figures',
             ],
             [
                 'name' => 'Factions',
-                'url' => 'admin/world/factions'
+                'url'  => 'admin/world/factions',
             ],
             [
                 'name' => 'Concepts',
-                'url' => 'admin/world/concepts'
+                'url'  => 'admin/world/concepts',
             ],
-        ]
+        ],
     ],
     'Raffles' => [
         'power' => 'manage_raffles',

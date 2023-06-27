@@ -2,7 +2,6 @@
 
 namespace App\Models\Award;
 
-use Config;
 use App\Models\Model;
 
 class AwardCategory extends Model
@@ -29,9 +28,9 @@ class AwardCategory extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:award_categories|between:3,25',
+        'name'        => 'required|unique:award_categories|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**
@@ -40,9 +39,9 @@ class AwardCategory extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -78,7 +77,7 @@ class AwardCategory extends Model
      */
     public function getCategoryImageFileNameAttribute()
     {
-        return $this->id . '-image.png';
+        return $this->id.'-image.png';
     }
 
     /**
@@ -98,8 +97,11 @@ class AwardCategory extends Model
      */
     public function getCategoryImageUrlAttribute()
     {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->categoryImageFileName);
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->categoryImageFileName);
     }
 
     /**

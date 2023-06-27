@@ -8,8 +8,6 @@ class RemoveCategoryActiveToggles extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -24,18 +22,29 @@ class RemoveCategoryActiveToggles extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
-        Schema::table('location_types', function (Blueprint $table) {                   $table->boolean('is_active')->default(1);           });
-        Schema::table('fauna_categories', function (Blueprint $table) {                 $table->boolean('is_active')->default(1);           });
-        Schema::table('flora_categories', function (Blueprint $table) {                 $table->boolean('is_active')->default(1);           });
-        Schema::table('event_categories', function (Blueprint $table) {                 $table->boolean('is_active')->default(1);           });
-        Schema::table('figure_categories', function (Blueprint $table) {                $table->boolean('is_active')->default(1);           });
-        Schema::table('faction_types', function (Blueprint $table) {                    $table->boolean('is_active')->default(1);           });
-        Schema::table('concept_categories', function (Blueprint $table) {               $table->boolean('is_active')->default(1);           });
-
+        Schema::table('location_types', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1);
+        });
+        Schema::table('fauna_categories', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1);
+        });
+        Schema::table('flora_categories', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1);
+        });
+        Schema::table('event_categories', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1);
+        });
+        Schema::table('figure_categories', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1);
+        });
+        Schema::table('faction_types', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1);
+        });
+        Schema::table('concept_categories', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1);
+        });
     }
 }
