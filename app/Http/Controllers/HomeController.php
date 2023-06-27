@@ -15,8 +15,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Settings;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Home Controller
@@ -53,8 +52,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLink(Request $request)
-    {
+    public function getLink(Request $request) {
         // If the user already has a username associated with their account, redirect them
         if (Auth::check() && Auth::user()->hasAlias) {
             redirect()->to('home');
@@ -69,8 +67,7 @@ class HomeController extends Controller
      *
      * @param string $provider
      */
-    public function getAuthRedirect(LinkService $service, $provider)
-    {
+    public function getAuthRedirect(LinkService $service, $provider) {
         if (!$this->checkProvider($provider, Auth::user())) {
             flash($this->error)->error();
 
@@ -86,8 +83,7 @@ class HomeController extends Controller
      *
      * @param string $provider
      */
-    public function getAuthCallback(LinkService $service, $provider)
-    {
+    public function getAuthCallback(LinkService $service, $provider) {
         if (!$this->checkProvider($provider, Auth::user())) {
             flash($this->error)->error();
 
@@ -119,8 +115,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getBirthday(Request $request)
-    {
+    public function getBirthday(Request $request) {
         // If the user already has a username associated with their account, redirect them
         if (Auth::check() && Auth::user()->birthday) {
             return redirect()->to('/');
@@ -135,8 +130,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function postBirthday(Request $request)
-    {
+    public function postBirthday(Request $request) {
         $service = new UserService;
         // Make birthday into format we can store
         $data = $request->input('dob');
@@ -161,8 +155,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getBirthdayBlocked(Request $request)
-    {
+    public function getBirthdayBlocked(Request $request) {
         // If the user already has a username associated with their account, redirect them
         if (Auth::check() && Auth::user()->checkBirthday) {
             return redirect()->to('/');
@@ -176,8 +169,7 @@ class HomeController extends Controller
         return view('auth.blocked');
     }
 
-    private function checkProvider($provider, $user)
-    {
+    private function checkProvider($provider, $user) {
         // Check if the site can be used for authentication
         $isAllowed = false;
         foreach (Config::get('lorekeeper.sites') as $key => $site) {

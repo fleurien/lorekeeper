@@ -5,18 +5,18 @@ namespace App\Models\Feature;
 use App\Models\Model;
 use App\Models\Rarity;
 use App\Models\Species\Species;
+use App\Models\Species\Subtype;
 use Config;
 use DB;
 
-class Feature extends Model
-{
+class Feature extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'feature_category_id', 'species_id', 'subtype_id', 'rarity_id', 'name', 'has_image', 'description', 'parsed_description',
+        'feature_category_id', 'species_id', 'subtype_id', 'rarity_id', 'name', 'has_image', 'description', 'parsed_description', 'is_visible',
     ];
 
     /**
@@ -64,32 +64,28 @@ class Feature extends Model
     /**
      * Get the rarity of this feature.
      */
-    public function rarity()
-    {
+    public function rarity() {
         return $this->belongsTo('App\Models\Rarity');
     }
 
     /**
      * Get the species the feature belongs to.
      */
-    public function species()
-    {
+    public function species() {
         return $this->belongsTo('App\Models\Species\Species');
     }
 
     /**
      * Get the subtype the feature belongs to.
      */
-    public function subtype()
-    {
+    public function subtype() {
         return $this->belongsTo('App\Models\Species\Subtype');
     }
 
     /**
      * Get the category the feature belongs to.
      */
-    public function category()
-    {
+    public function category() {
         return $this->belongsTo('App\Models\Feature\FeatureCategory', 'feature_category_id');
     }
 
@@ -107,8 +103,7 @@ class Feature extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
@@ -119,8 +114,7 @@ class Feature extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortCategory($query)
-    {
+    public function scopeSortCategory($query) {
         if (FeatureCategory::all()->count()) {
             return $query->orderBy(FeatureCategory::select('sort')->whereColumn('features.feature_category_id', 'feature_categories.id'), 'DESC');
         }
@@ -135,11 +129,23 @@ class Feature extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortSpecies($query)
-    {
+    public function scopeSortSpecies($query) {
         $ids = Species::orderBy('sort', 'DESC')->pluck('id')->toArray();
 
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(species_id, '.implode(',', $ids).')')) : $query;
+    }
+
+    /**
+     * Scope a query to sort features in subtype order.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSortSubtype($query) {
+        $ids = Subtype::orderBy('sort', 'DESC')->pluck('id')->toArray();
+
+        return count($ids) ? $query->orderByRaw(DB::raw('FIELD(subtype_id, '.implode(',', $ids).')')) : $query;
     }
 
     /**
@@ -150,8 +156,7 @@ class Feature extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortRarity($query, $reverse = false)
-    {
+    public function scopeSortRarity($query, $reverse = false) {
         $ids = Rarity::orderBy('sort', $reverse ? 'ASC' : 'DESC')->pluck('id')->toArray();
 
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(rarity_id, '.implode(',', $ids).')')) : $query;
@@ -164,8 +169,7 @@ class Feature extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -176,9 +180,24 @@ class Feature extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
+    }
+
+    /**
+     * Scope a query to show only visible features.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $withHidden
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query, $withHidden = 0) {
+        if ($withHidden) {
+            return $query;
+        }
+
+        return $query->where('is_visible', 1);
     }
 
     /**********************************************************************************************
@@ -192,8 +211,7 @@ class Feature extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-trait">'.$this->name.'</a>'.($this->rarity ? ' ('.$this->rarity->displayName.')' : '');
     }
 
@@ -202,8 +220,7 @@ class Feature extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/traits';
     }
 
@@ -212,8 +229,7 @@ class Feature extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.png';
     }
 
@@ -222,8 +238,7 @@ class Feature extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -232,8 +247,7 @@ class Feature extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
@@ -246,8 +260,7 @@ class Feature extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/traits?name='.$this->name);
     }
 
@@ -256,9 +269,26 @@ class Feature extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         return url('masterlist?feature_id[]='.$this->id);
+    }
+
+    /**
+     * Gets the admin edit URL.
+     *
+     * @return string
+     */
+    public function getAdminUrlAttribute() {
+        return url('admin/data/traits/edit/'.$this->id);
+    }
+
+    /**
+     * Gets the power required to edit this model.
+     *
+     * @return string
+     */
+    public function getAdminPowerAttribute() {
+        return 'edit_data';
     }
 
     /**********************************************************************************************
@@ -267,12 +297,15 @@ class Feature extends Model
 
     **********************************************************************************************/
 
-    public static function getDropdownItems()
-    {
+    public static function getDropdownItems($withHidden = 0) {
         if (Config::get('lorekeeper.extensions.organised_traits_dropdown')) {
-            $sorted_feature_categories = collect(FeatureCategory::all()->sortBy('sort')->pluck('name')->toArray());
+            $visibleOnly = 1;
+            if ($withHidden) {
+                $visibleOnly = 0;
+            }
+            $sorted_feature_categories = collect(FeatureCategory::all()->where('is_visible', '>=', $visibleOnly)->sortBy('sort')->pluck('name')->toArray());
 
-            $grouped = self::select('name', 'id', 'feature_category_id')->with('category')->orderBy('name')->get()->keyBy('id')->groupBy('category.name', $preserveKeys = true)->toArray();
+            $grouped = self::visible($withHidden)->select('name', 'id', 'feature_category_id')->with('category')->orderBy('name')->get()->keyBy('id')->groupBy('category.name', $preserveKeys = true)->toArray();
             if (isset($grouped[''])) {
                 if (!$sorted_feature_categories->contains('Miscellaneous')) {
                     $sorted_feature_categories->push('Miscellaneous');
@@ -285,7 +318,7 @@ class Feature extends Model
             });
 
             foreach ($grouped as $category => $features) {
-                foreach ($features as $id => $feature) {
+                foreach ($features as $id  => $feature) {
                     $grouped[$category][$id] = $feature['name'];
                 }
             }
@@ -295,7 +328,7 @@ class Feature extends Model
 
             return $features_by_category;
         } else {
-            return self::orderBy('name')->pluck('name', 'id')->toArray();
+            return self::visible($withHidden)->orderBy('name')->pluck('name', 'id')->toArray();
         }
     }
 }

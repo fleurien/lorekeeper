@@ -10,8 +10,7 @@ use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\Item\ItemTag;
 
-class ItemService extends Service
-{
+class ItemService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Item Service
@@ -35,8 +34,7 @@ class ItemService extends Service
      *
      * @return \App\Models\Item\ItemCategory|bool
      */
-    public function createItemCategory($data, $user)
-    {
+    public function createItemCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -78,8 +76,7 @@ class ItemService extends Service
      *
      * @return \App\Models\Item\ItemCategory|bool
      */
-    public function updateItemCategory($category, $data, $user)
-    {
+    public function updateItemCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -123,8 +120,7 @@ class ItemService extends Service
      *
      * @return bool
      */
-    public function deleteItemCategory($category, $user)
-    {
+    public function deleteItemCategory($category, $user) {
         DB::beginTransaction();
 
         try {
@@ -156,8 +152,7 @@ class ItemService extends Service
      *
      * @return bool
      */
-    public function sortItemCategory($data)
-    {
+    public function sortItemCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -190,8 +185,7 @@ class ItemService extends Service
      *
      * @return \App\Models\Item\Item|bool
      */
-    public function createItem($data, $user)
-    {
+    public function createItem($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -227,7 +221,7 @@ class ItemService extends Service
                     'release' => isset($data['release']) && $data['release'] ? $data['release'] : null,
                     'prompts' => isset($data['prompts']) && $data['prompts'] ? $data['prompts'] : null,
                     'resell'  => isset($data['currency_quantity']) ? [$data['currency_id'] => $data['currency_quantity']] : null,
-                    ]), // rarity, availability info (original source, purchase locations, drop locations)
+                ]), // rarity, availability info (original source, purchase locations, drop locations)
             ]);
 
             if ($image) {
@@ -251,8 +245,7 @@ class ItemService extends Service
      *
      * @return \App\Models\Item\Item|bool
      */
-    public function updateItem($item, $data, $user)
-    {
+    public function updateItem($item, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -268,7 +261,7 @@ class ItemService extends Service
                 throw new \Exception('The selected item category is invalid.');
             }
 
-            $data = $this->populateData($data);
+            $data = $this->populateData($data, $item);
 
             $image = null;
             if (isset($data['image']) && $data['image']) {
@@ -290,7 +283,7 @@ class ItemService extends Service
                     'release' => isset($data['release']) && $data['release'] ? $data['release'] : null,
                     'prompts' => isset($data['prompts']) && $data['prompts'] ? $data['prompts'] : null,
                     'resell'  => isset($data['currency_quantity']) ? [$data['currency_id'] => $data['currency_quantity']] : null,
-                    ]), // rarity, availability info (original source, purchase locations, drop locations)
+                ]), // rarity, availability info (original source, purchase locations, drop locations)
             ]);
 
             if ($item) {
@@ -313,8 +306,7 @@ class ItemService extends Service
      *
      * @return bool
      */
-    public function deleteItem($item, $user)
-    {
+    public function deleteItem($item, $user) {
         DB::beginTransaction();
 
         try {
@@ -367,8 +359,7 @@ class ItemService extends Service
      *
      * @return array
      */
-    public function getItemTags()
-    {
+    public function getItemTags() {
         $tags = Config::get('lorekeeper.item_tags');
         $result = [];
         foreach ($tags as $tag => $tagData) {
@@ -387,8 +378,7 @@ class ItemService extends Service
      *
      * @return bool|string
      */
-    public function addItemTag($item, $tag, $user)
-    {
+    public function addItemTag($item, $tag, $user) {
         DB::beginTransaction();
 
         try {
@@ -429,8 +419,7 @@ class ItemService extends Service
      *
      * @return bool|string
      */
-    public function editItemTag($item, $tag, $data, $user)
-    {
+    public function editItemTag($item, $tag, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -474,8 +463,7 @@ class ItemService extends Service
      *
      * @return bool|string
      */
-    public function deleteItemTag($item, $tag, $user)
-    {
+    public function deleteItemTag($item, $tag, $user) {
         DB::beginTransaction();
 
         try {
@@ -508,8 +496,7 @@ class ItemService extends Service
      *
      * @return array
      */
-    private function populateCategoryData($data, $category = null)
-    {
+    private function populateCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -518,6 +505,10 @@ class ItemService extends Service
         isset($data['character_limit']) && $data['character_limit'] ? $data['character_limit'] : $data['character_limit'] = 0;
         isset($data['can_donate']) && $data['is_character_owned'] ? $data['can_donate'] : $data['can_donate'] = 0;
         isset($data['can_name']) && $data['can_name'] ? $data['can_name'] : $data['can_name'] = 0;
+
+        if (!isset($data['is_visible'])) {
+            $data['is_visible'] = 0;
+        }
 
         if (isset($data['remove_image'])) {
             if ($category && $category->has_image && $data['remove_image']) {
@@ -540,8 +531,7 @@ class ItemService extends Service
      *
      * @return array
      */
-    private function populateData($data, $item = null)
-    {
+    private function populateData($data, $item = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         } else {

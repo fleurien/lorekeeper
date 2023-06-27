@@ -7,8 +7,7 @@ use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use DB;
 
-class SpeciesService extends Service
-{
+class SpeciesService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Species Service
@@ -26,8 +25,7 @@ class SpeciesService extends Service
      *
      * @return \App\Models\Species\Species|bool
      */
-    public function createSpecies($data, $user)
-    {
+    public function createSpecies($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -65,8 +63,7 @@ class SpeciesService extends Service
      *
      * @return \App\Models\Species\Species|bool
      */
-    public function updateSpecies($species, $data, $user)
-    {
+    public function updateSpecies($species, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -105,8 +102,7 @@ class SpeciesService extends Service
      *
      * @return bool
      */
-    public function deleteSpecies($species)
-    {
+    public function deleteSpecies($species) {
         DB::beginTransaction();
 
         try {
@@ -135,8 +131,7 @@ class SpeciesService extends Service
      *
      * @return bool
      */
-    public function sortSpecies($data)
-    {
+    public function sortSpecies($data) {
         DB::beginTransaction();
 
         try {
@@ -163,8 +158,7 @@ class SpeciesService extends Service
      *
      * @return \App\Models\Species\Subtype|bool
      */
-    public function createSubtype($data, $user)
-    {
+    public function createSubtype($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -202,8 +196,7 @@ class SpeciesService extends Service
      *
      * @return \App\Models\Species\Subtype|bool
      */
-    public function updateSubtype($subtype, $data, $user)
-    {
+    public function updateSubtype($subtype, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -237,8 +230,7 @@ class SpeciesService extends Service
      *
      * @return bool
      */
-    public function deleteSubtype($subtype)
-    {
+    public function deleteSubtype($subtype) {
         DB::beginTransaction();
 
         try {
@@ -267,8 +259,7 @@ class SpeciesService extends Service
      *
      * @return bool
      */
-    public function sortSubtypes($data)
-    {
+    public function sortSubtypes($data) {
         DB::beginTransaction();
 
         try {
@@ -295,8 +286,61 @@ class SpeciesService extends Service
      *
      * @return array
      */
-    private function populateData($data, $species = null)
-    {
+    private function populateData($data, $species = null) {
+        if (isset($data['description']) && $data['description']) {
+            $data['parsed_description'] = parse($data['description']);
+        }
+
+        if (!isset($data['is_visible'])) {
+            $data['is_visible'] = 0;
+        }
+        if (isset($data['remove_image'])) {
+            if ($species && $species->has_image && $data['remove_image']) {
+                $data['has_image'] = 0;
+                $this->deleteImage($species->speciesImagePath, $species->speciesImageFileName);
+            }
+            unset($data['remove_image']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Processes user input for creating/updating a subtype.
+     *
+     * @param array                       $data
+     * @param \App\Models\Species\Subtype $subtype
+     *
+     * @return array
+     */
+    private function populateSubtypeData($data, $subtype = null) {
+        if (isset($data['description']) && $data['description']) {
+            $data['parsed_description'] = parse($data['description']);
+        }
+
+        if (!isset($data['is_visible'])) {
+            $data['is_visible'] = 0;
+        }
+        if (isset($data['remove_image'])) {
+            if ($subtype && $subtype->has_image && $data['remove_image']) {
+                $data['has_image'] = 0;
+                $this->deleteImage($subtype->subtypeImagePath, $subtype->subtypeImageFileName);
+            }
+            unset($data['remove_image']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Processes user input for creating/updating a species.
+     *
+     * @param array                       $data
+     * @param \App\Models\Species\Species $species
+     *
+     * @return array
+     */
+    private function populateData($data, $species = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -320,8 +364,7 @@ class SpeciesService extends Service
      *
      * @return array
      */
-    private function populateSubtypeData($data, $subtype = null)
-    {
+    private function populateSubtypeData($data, $subtype = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }

@@ -10,8 +10,7 @@ use App\Models\WorldExpansion\Location;
 use App\Traits\Commentable;
 use Settings;
 
-class GallerySubmission extends Model
-{
+class GallerySubmission extends Model {
     use Commentable;
 
     /**
@@ -75,64 +74,56 @@ class GallerySubmission extends Model
     /**
      * Get the user who made the submission.
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('App\Models\User\User', 'user_id');
     }
 
     /**
      * Get the staff member who last edited the submission's comments.
      */
-    public function staff()
-    {
+    public function staff() {
         return $this->belongsTo('App\Models\User\User', 'staff_id');
     }
 
     /**
      * Get the collaborating users on the submission.
      */
-    public function collaborators()
-    {
+    public function collaborators() {
         return $this->hasMany('App\Models\Gallery\GalleryCollaborator', 'gallery_submission_id')->where('type', 'Collab');
     }
 
     /**
      * Get the user(s) who are related to the submission in some way.
      */
-    public function participants()
-    {
+    public function participants() {
         return $this->hasMany('App\Models\Gallery\GalleryCollaborator', 'gallery_submission_id')->where('type', '!=', 'Collab');
     }
 
     /**
      * Get the characters associated with the submission.
      */
-    public function characters()
-    {
+    public function characters() {
         return $this->hasMany('App\Models\Gallery\GalleryCharacter', 'gallery_submission_id');
     }
 
     /**
      * Get any favorites on the submission.
      */
-    public function favorites()
-    {
+    public function favorites() {
         return $this->hasMany('App\Models\Gallery\GalleryFavorite', 'gallery_submission_id');
     }
 
     /**
      * Get the gallery this submission is in.
      */
-    public function gallery()
-    {
+    public function gallery() {
         return $this->belongsTo('App\Models\Gallery\Gallery', 'gallery_id');
     }
 
     /**
      * Get the prompt this submission is for if relevant.
      */
-    public function prompt()
-    {
+    public function prompt() {
         return $this->belongsTo('App\Models\Prompt\Prompt', 'prompt_id');
     }
 
@@ -157,8 +148,7 @@ class GallerySubmission extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePending($query)
-    {
+    public function scopePending($query) {
         return $query->where('status', 'Pending');
     }
 
@@ -169,8 +159,7 @@ class GallerySubmission extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeCollaboratorApproved($query)
-    {
+    public function scopeCollaboratorApproved($query) {
         return $query->whereNotIn('id', GalleryCollaborator::where('has_approved', 0)->pluck('gallery_submission_id')->toArray());
     }
 
@@ -181,8 +170,7 @@ class GallerySubmission extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAccepted($query)
-    {
+    public function scopeAccepted($query) {
         return $query->where('status', 'Accepted');
     }
 
@@ -193,8 +181,7 @@ class GallerySubmission extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeRejected($query)
-    {
+    public function scopeRejected($query) {
         return $query->where('status', 'Rejected');
     }
 
@@ -205,8 +192,7 @@ class GallerySubmission extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeRequiresAward($query)
-    {
+    public function scopeRequiresAward($query) {
         if (!Settings::get('gallery_submissions_reward_currency')) {
             return $query->whereNull('id');
         }
@@ -218,12 +204,11 @@ class GallerySubmission extends Model
      * Scope a query to only include submissions the user has either submitted or collaborated on.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param                                       $user
+     * @param mixed                                 $user
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUserSubmissions($query, $user)
-    {
+    public function scopeUserSubmissions($query, $user) {
         return $query->where('user_id', $user->id)->orWhereIn('id', GalleryCollaborator::where('user_id', $user->id)->where('type', 'Collab')->pluck('gallery_submission_id')->toArray());
     }
 
@@ -235,8 +220,7 @@ class GallerySubmission extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query, $user = null)
-    {
+    public function scopeVisible($query, $user = null) {
         if ($user && $user->hasPower('manage_submissions')) {
             return $query->where('status', 'Accepted');
         }
@@ -255,8 +239,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/gallery/'.floor($this->id / 1000);
     }
 
@@ -265,8 +248,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'_'.$this->hash.'.'.$this->extension;
     }
 
@@ -275,8 +257,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -285,8 +266,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!isset($this->hash)) {
             return null;
         }
@@ -299,8 +279,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getThumbnailFileNameAttribute()
-    {
+    public function getThumbnailFileNameAttribute() {
         return $this->id.'_'.$this->hash.'_th.'.$this->extension;
     }
 
@@ -309,8 +288,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getThumbnailPathAttribute()
-    {
+    public function getThumbnailPathAttribute() {
         return $this->imagePath;
     }
 
@@ -319,8 +297,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getThumbnailUrlAttribute()
-    {
+    public function getThumbnailUrlAttribute() {
         if (!isset($this->hash)) {
             return null;
         }
@@ -333,8 +310,7 @@ class GallerySubmission extends Model
      *
      * @return array
      */
-    public function getDataAttribute()
-    {
+    public function getDataAttribute() {
         return json_decode($this->attributes['data'], true);
     }
 
@@ -343,8 +319,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getVoteDataAttribute()
-    {
+    public function getVoteDataAttribute() {
         return collect(json_decode($this->attributes['vote_data'], true));
     }
 
@@ -353,8 +328,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getDisplayTitleAttribute()
-    {
+    public function getDisplayTitleAttribute() {
         return $this->prefix.$this->attributes['title'];
     }
 
@@ -363,8 +337,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'">'.$this->displayTitle.'</a>';
     }
 
@@ -373,8 +346,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('gallery/view/'.$this->id);
     }
 
@@ -383,8 +355,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getPrefixAttribute()
-    {
+    public function getPrefixAttribute() {
         $currencyName = Currency::find(Settings::get('group_currency'))->abbreviation ? Currency::find(Settings::get('group_currency'))->abbreviation : Currency::find(Settings::get('group_currency'))->name;
 
         $prefixList = [];
@@ -426,8 +397,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getQueueUrlAttribute()
-    {
+    public function getQueueUrlAttribute() {
         return url('gallery/queue/'.$this->id);
     }
 
@@ -436,8 +406,7 @@ class GallerySubmission extends Model
      *
      * @return bool
      */
-    public function getIsVisibleAttribute()
-    {
+    public function getIsVisibleAttribute() {
         if ($this->attributes['is_visible'] && $this->status == 'Accepted') {
             return true;
         }
@@ -448,10 +417,9 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getCreditsAttribute()
-    {
+    public function getCreditsAttribute() {
         if ($this->collaborators->count()) {
-            foreach ($this->collaborators as $count=>$collaborator) {
+            foreach ($this->collaborators as $count=> $collaborator) {
                 $collaboratorList[] = $collaborator->user->displayName;
             }
 
@@ -466,10 +434,9 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getCreditsPlainAttribute()
-    {
+    public function getCreditsPlainAttribute() {
         if ($this->collaborators->count()) {
-            foreach ($this->collaborators as $count=>$collaborator) {
+            foreach ($this->collaborators as $count=> $collaborator) {
                 $collaboratorList[] = $collaborator->user->name;
             }
 
@@ -484,8 +451,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getCollaboratorApprovedAttribute()
-    {
+    public function getCollaboratorApprovedAttribute() {
         if ($this->collaborators->where('has_approved', 0)->count()) {
             return false;
         }
@@ -498,8 +464,7 @@ class GallerySubmission extends Model
      *
      * @return array
      */
-    public function getPromptSubmissionsAttribute()
-    {
+    public function getPromptSubmissionsAttribute() {
         // Only returns submissions which are viewable to everyone,
         // but given that this is for the sake of public display, that's fine
         return Submission::viewable()->whereNotNull('prompt_id')->where('url', $this->url)->get();
@@ -510,8 +475,7 @@ class GallerySubmission extends Model
      *
      * @return array
      */
-    public function getPromptsAttribute()
-    {
+    public function getPromptsAttribute() {
         // Only returns submissions which are viewable to everyone,
         // but given that this is for the sake of public display, that's fine
         return Prompt::whereIn('id', $this->promptSubmissions->pluck('prompt_id'))->get();
@@ -546,8 +510,7 @@ class GallerySubmission extends Model
      *
      * @return string
      */
-    public function getExcerptAttribute()
-    {
+    public function getExcerptAttribute() {
         if (!isset($this->parsed_text)) {
             return null;
         } else {

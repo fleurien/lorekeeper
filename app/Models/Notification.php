@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Config;
 
-class Notification extends Model
-{
+class Notification extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -38,8 +37,7 @@ class Notification extends Model
     /**
      * Get the user who owns notification.
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('App\Models\User\User');
     }
 
@@ -54,8 +52,7 @@ class Notification extends Model
      *
      * @return array
      */
-    public function getDataAttribute()
-    {
+    public function getDataAttribute() {
         return json_decode($this->attributes['data'], true);
     }
 
@@ -64,8 +61,7 @@ class Notification extends Model
      *
      * @return array
      */
-    public function getMessageAttribute()
-    {
+    public function getMessageAttribute() {
         $notification = Config::get('lorekeeper.notifications.'.$this->notification_type_id);
 
         $message = $notification['message'];
@@ -91,8 +87,7 @@ class Notification extends Model
      *
      * @return array
      */
-    public static function getNotificationId($type)
-    {
+    public static function getNotificationId($type) {
         return constant('self::'.$type);
     }
     /**********************************************************************************************

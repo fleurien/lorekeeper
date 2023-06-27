@@ -15,8 +15,7 @@ use App\Services\CharacterManager;
 use Auth;
 use Illuminate\Http\Request;
 
-class CharacterImageController extends Controller
-{
+class CharacterImageController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Admin / Character Image Controller
@@ -33,8 +32,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getNewImage($slug)
-    {
+    public function getNewImage($slug) {
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);
@@ -46,7 +44,7 @@ class CharacterImageController extends Controller
             'specieses' => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes'  => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $this->character->image->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'users'     => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'features'  => Feature::getDropdownItems(),
+            'features'  => Feature::getDropdownItems(1),
             'isMyo'     => false,
         ]);
     }
@@ -56,15 +54,14 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getNewImageSubtype(Request $request)
-    {
+    public function getNewImageSubtype(Request $request) {
         $species = $request->input('species');
         $id = $request->input('id');
 
         return view('character.admin._upload_image_subtype', [
-          'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-          'subtype'  => $id,
-      ]);
+            'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'subtype'  => $id,
+        ]);
     }
 
     /**
@@ -75,8 +72,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postNewImage(Request $request, CharacterManager $service, $slug)
-    {
+    public function postNewImage(Request $request, CharacterManager $service, $slug) {
         $request->validate(CharacterImage::$createRules);
         $data = $request->only(['image', 'thumbnail', 'x0', 'x1', 'y0', 'y1', 'use_cropper', 'artist_url', 'artist_id', 'artist_type', 'designer_url', 'designer_id', 'designer_type', 'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data', 'is_valid', 'is_visible']);
         $this->character = Character::where('slug', $slug)->first();
@@ -103,8 +99,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditImageFeatures($id)
-    {
+    public function getEditImageFeatures($id) {
         $image = CharacterImage::find($id);
 
         return view('character.admin._edit_features_modal', [
@@ -113,7 +108,7 @@ class CharacterImageController extends Controller
             'titles'    => ['0' => 'Select Title', 'custom' => 'Custom Title'] + CharacterTitle::orderBy('sort', 'DESC')->pluck('title', 'id')->toArray(),
             'specieses' => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes'  => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $image->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features'  => Feature::getDropdownItems(),
+            'features'  => Feature::getDropdownItems(1),
         ]);
     }
 
@@ -148,15 +143,14 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditImageSubtype(Request $request)
-    {
+    public function getEditImageSubtype(Request $request) {
         $species = $request->input('species');
         $id = $request->input('id');
 
         return view('character.admin._edit_features_subtype', [
-          'image'    => CharacterImage::find($id),
-          'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-      ]);
+            'image'    => CharacterImage::find($id),
+            'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+        ]);
     }
 
     /**
@@ -166,8 +160,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditImageNotes($id)
-    {
+    public function getEditImageNotes($id) {
         return view('character.admin._edit_notes_modal', [
             'image' => CharacterImage::find($id),
         ]);
@@ -181,8 +174,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postEditImageNotes(Request $request, CharacterManager $service, $id)
-    {
+    public function postEditImageNotes(Request $request, CharacterManager $service, $id) {
         $data = $request->only(['description']);
         $image = CharacterImage::find($id);
         if (!$image) {
@@ -206,8 +198,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditImageCredits($id)
-    {
+    public function getEditImageCredits($id) {
         return view('character.admin._edit_credits_modal', [
             'image' => CharacterImage::find($id),
             'users' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
@@ -247,8 +238,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getImageReupload($id)
-    {
+    public function getImageReupload($id) {
         return view('character.admin._reupload_image_modal', [
             'image' => CharacterImage::find($id),
         ]);
@@ -262,8 +252,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postImageReupload(Request $request, CharacterManager $service, $id)
-    {
+    public function postImageReupload(Request $request, CharacterManager $service, $id) {
         $data = $request->only(['image', 'thumbnail', 'x0', 'x1', 'y0', 'y1', 'use_cropper']);
         $image = CharacterImage::find($id);
         if (!$image) {
@@ -288,8 +277,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postImageSettings(Request $request, CharacterManager $service, $id)
-    {
+    public function postImageSettings(Request $request, CharacterManager $service, $id) {
         $data = $request->only(['is_valid', 'is_visible']);
         $image = CharacterImage::find($id);
         if (!$image) {
@@ -313,8 +301,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getImageActive($id)
-    {
+    public function getImageActive($id) {
         return view('character.admin._active_image_modal', [
             'image' => CharacterImage::find($id),
         ]);
@@ -328,8 +315,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postImageActive(Request $request, CharacterManager $service, $id)
-    {
+    public function postImageActive(Request $request, CharacterManager $service, $id) {
         $image = CharacterImage::find($id);
         if (!$image) {
             abort(404);
@@ -352,8 +338,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getImageDelete($id)
-    {
+    public function getImageDelete($id) {
         return view('character.admin._delete_image_modal', [
             'image' => CharacterImage::find($id),
         ]);
@@ -367,8 +352,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postImageDelete(Request $request, CharacterManager $service, $id)
-    {
+    public function postImageDelete(Request $request, CharacterManager $service, $id) {
         $image = CharacterImage::find($id);
         if (!$image) {
             abort(404);
@@ -392,8 +376,7 @@ class CharacterImageController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortImages(Request $request, CharacterManager $service, $slug)
-    {
+    public function postSortImages(Request $request, CharacterManager $service, $slug) {
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);

@@ -53,5 +53,9 @@
     </div>
 </div>
 
+<<<<<<< HEAD
 </div>
 @include('widgets._affiliates', ['affiliates' => $affiliates, 'featured' => $featured_affiliates, 'open' => $open])
+=======
+@include('widgets._recent_gallery_submissions', ['gallerySubmissions' => $gallerySubmissions])
+>>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56

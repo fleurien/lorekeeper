@@ -1,9 +1,11 @@
 @extends('admin.layout')
 
-@section('admin-title') Dashboard @endsection
+@section('admin-title')
+    Dashboard
+@endsection
 
 @section('admin-content')
-{!! breadcrumbs(['Admin Panel' => 'admin', 'Home' => 'admin']) !!}
+    {!! breadcrumbs(['Admin Panel' => 'admin', 'Home' => 'admin']) !!}
 
 <h1>Admin Dashboard</h1>
 <div class="row">

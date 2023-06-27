@@ -11,8 +11,7 @@ use DB;
 use Notifications;
 use Settings;
 
-class CurrencyManager extends Service
-{
+class CurrencyManager extends Service {
     /*
     |--------------------------------------------------------------------------
     | Currency Service
@@ -30,8 +29,7 @@ class CurrencyManager extends Service
      *
      * @return bool
      */
-    public function grantUserCurrencies($data, $staff)
-    {
+    public function grantUserCurrencies($data, $staff) {
         DB::beginTransaction();
 
         try {
@@ -101,8 +99,7 @@ class CurrencyManager extends Service
      *
      * @return bool
      */
-    public function grantCharacterCurrencies($data, $character, $staff)
-    {
+    public function grantCharacterCurrencies($data, $character, $staff) {
         DB::beginTransaction();
 
         try {
@@ -126,25 +123,25 @@ class CurrencyManager extends Service
                 $this->debitCurrency($character, $staff, 'Staff Removal', $data['data'], $currency, -$data['quantity']);
                 if (isset($character->user)) {
                     Notifications::create('CHARACTER_CURRENCY_REMOVAL', $character->user, [
-                      'currency_name'     => $currency->name,
-                      'currency_quantity' => -$data['quantity'],
-                      'sender_url'        => $staff->url,
-                      'sender_name'       => $staff->name,
-                      'character_name'    => $character->fullName,
-                      'character_slug'    => $character->slug,
-                  ]);
+                        'currency_name'     => $currency->name,
+                        'currency_quantity' => -$data['quantity'],
+                        'sender_url'        => $staff->url,
+                        'sender_name'       => $staff->name,
+                        'character_name'    => $character->fullName,
+                        'character_slug'    => $character->slug,
+                    ]);
                 }
             } else {
                 $this->creditCurrency($staff, $character, 'Staff Grant', $data['data'], $currency, $data['quantity']);
                 if (isset($character->user)) {
                     Notifications::create('CHARACTER_CURRENCY_GRANT', $character->user, [
-                      'currency_name'     => $currency->name,
-                      'currency_quantity' => $data['quantity'],
-                      'sender_url'        => $staff->url,
-                      'sender_name'       => $staff->name,
-                      'character_name'    => $character->fullName,
-                      'character_slug'    => $character->slug,
-                  ]);
+                        'currency_name'     => $currency->name,
+                        'currency_quantity' => $data['quantity'],
+                        'sender_url'        => $staff->url,
+                        'sender_name'       => $staff->name,
+                        'character_name'    => $character->fullName,
+                        'character_slug'    => $character->slug,
+                    ]);
                 }
             }
 
@@ -166,8 +163,7 @@ class CurrencyManager extends Service
      *
      * @return bool
      */
-    public function transferCurrency($sender, $recipient, $currency, $quantity)
-    {
+    public function transferCurrency($sender, $recipient, $currency, $quantity) {
         DB::beginTransaction();
 
         try {
@@ -217,8 +213,7 @@ class CurrencyManager extends Service
      *
      * @return bool
      */
-    public function transferCharacterCurrency($sender, $recipient, $currency, $quantity)
-    {
+    public function transferCharacterCurrency($sender, $recipient, $currency, $quantity) {
         DB::beginTransaction();
 
         try {
@@ -266,8 +261,7 @@ class CurrencyManager extends Service
      *
      * @return bool
      */
-    public function creditCurrency($sender, $recipient, $type, $data, $currency, $quantity)
-    {
+    public function creditCurrency($sender, $recipient, $type, $data, $currency, $quantity) {
         DB::beginTransaction();
 
         try {
@@ -336,8 +330,7 @@ class CurrencyManager extends Service
      *
      * @return bool
      */
-    public function debitCurrency($sender, $recipient, $type, $data, $currency, $quantity)
-    {
+    public function debitCurrency($sender, $recipient, $type, $data, $currency, $quantity) {
         DB::beginTransaction();
 
         try {
@@ -394,8 +387,7 @@ class CurrencyManager extends Service
      *
      * @return int
      */
-    public function createLog($senderId, $senderType, $recipientId, $recipientType, $type, $data, $currencyId, $quantity)
-    {
+    public function createLog($senderId, $senderType, $recipientId, $recipientType, $type, $data, $currencyId, $quantity) {
         return DB::table('currencies_log')->insert(
             [
                 'sender_id'      => $senderId,

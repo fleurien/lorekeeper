@@ -19,8 +19,7 @@
  *
  * @return int
  */
-function calculateGroupCurrency($data)
-{
+function calculateGroupCurrency($data) {
     // Sets a starting point for the total so that numbers can be added to it.
     // Don't change this!
     $total = 0;
@@ -71,8 +70,7 @@ function calculateGroupCurrency($data)
  *
  * @return array
  */
-function getAssetKeys($isCharacter = false)
-{
+function getAssetKeys($isCharacter = false) {
     if (!$isCharacter) {
         return ['items', 'awards', 'currencies', 'raffle_tickets', 'loot_tables', 'user_items', 'user_awards', 'characters'];
     } else {
@@ -89,8 +87,7 @@ function getAssetKeys($isCharacter = false)
  *
  * @return string
  */
-function getAssetModelString($type, $namespaced = true)
-{
+function getAssetModelString($type, $namespaced = true) {
     switch ($type) {
         case 'items':
             if ($namespaced) {
@@ -175,8 +172,7 @@ function getAssetModelString($type, $namespaced = true)
  *
  * @return array
  */
-function createAssetsArray($isCharacter = false)
-{
+function createAssetsArray($isCharacter = false) {
     $keys = getAssetKeys($isCharacter);
     $assets = [];
     foreach ($keys as $key) {
@@ -194,8 +190,7 @@ function createAssetsArray($isCharacter = false)
  *
  * @return array
  */
-function mergeAssetsArrays($first, $second)
-{
+function mergeAssetsArrays($first, $second) {
     $keys = getAssetKeys();
     foreach ($keys as $key) {
         foreach ($second[$key] as $item) {
@@ -217,8 +212,7 @@ function mergeAssetsArrays($first, $second)
  * @param mixed $asset
  * @param int   $quantity
  */
-function addAsset(&$array, $asset, $quantity = 1)
-{
+function addAsset(&$array, $asset, $quantity = 1) {
     if (!$asset) {
         return;
     }
@@ -239,8 +233,7 @@ function addAsset(&$array, $asset, $quantity = 1)
  *
  * @return array
  */
-function getDataReadyAssets($array, $isCharacter = false)
-{
+function getDataReadyAssets($array, $isCharacter = false) {
     $result = [];
     foreach ($array as $key => $type) {
         if ($type && !isset($result[$key])) {
@@ -263,8 +256,7 @@ function getDataReadyAssets($array, $isCharacter = false)
  *
  * @return array
  */
-function parseAssetData($array)
-{
+function parseAssetData($array) {
     $assets = createAssetsArray();
     foreach ($array as $key => $contents) {
         $model = getAssetModelString($key);
@@ -293,8 +285,7 @@ function parseAssetData($array)
  *
  * @return array
  */
-function fillUserAssets($assets, $sender, $recipient, $logType, $data)
-{
+function fillUserAssets($assets, $sender, $recipient, $logType, $data) {
     // Roll on any loot tables
     if (isset($assets['loot_tables'])) {
         foreach ($assets['loot_tables'] as $table) {
@@ -372,8 +363,7 @@ function fillUserAssets($assets, $sender, $recipient, $logType, $data)
  *
  * @return array
  */
-function fillCharacterAssets($assets, $sender, $recipient, $logType, $data, $submitter = null)
-{
+function fillCharacterAssets($assets, $sender, $recipient, $logType, $data, $submitter = null) {
     if (!Config::get('lorekeeper.extensions.character_reward_expansion.default_recipient') && $recipient->user) {
         $item_recipient = $recipient->user;
     } else {

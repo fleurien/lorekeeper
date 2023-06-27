@@ -10,22 +10,33 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
+<<<<<<< HEAD
                 <!-- <li class="nav-item">
                     @if(Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
+=======
+                <li class="nav-item">
+                    @if (Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
+>>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                         <a class="nav-link d-flex text-warning" href="{{ url('news') }}"><strong>News</strong><i class="fas fa-bell"></i></a>
                     @else
                         <a class="nav-link" href="{{ url('news') }}">News</a>
                     @endif
                 </li>
                 <li class="nav-item">
-                    @if(Auth::check() && Auth::user()->is_sales_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
+                    @if (Auth::check() && Auth::user()->is_sales_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
                         <a class="nav-link d-flex text-warning" href="{{ url('sales') }}"><strong>Sales</strong><i class="fas fa-bell"></i></a>
                     @else
                         <a class="nav-link" href="{{ url('sales') }}">Sales</a>
                     @endif
+<<<<<<< HEAD
                 </li> -->
                 @if(Auth::check())
                     <li class="nav-item dropup">
+=======
+                </li>
+                @if (Auth::check())
+                    <li class="nav-item dropdown">
+>>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                         <a id="inventoryDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Account
                         </a>
@@ -163,6 +174,7 @@
                         </li>
                     @endif
                 @else
+<<<<<<< HEAD
                     @if(Auth::user()->isStaff)
                         <li class="nav-item d-flex">
                             <a class="nav-link position-relative display-inline-block" href="{{ url('admin') }}"><i class="fas fa-crown"></i>
@@ -172,15 +184,25 @@
                                 </span>
                               @endif
                             </a>
+=======
+                    @if (Auth::user()->isStaff)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('admin') }}"><i class="fas fa-crown"></i></a>
+>>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                         </li>
                     @endif
-                    @if(Auth::user()->notifications_unread)
+                    @if (Auth::user()->notifications_unread)
                         <li class="nav-item">
                             <a class="nav-link btn btn-secondary btn-sm" href="{{ url('notifications') }}"><span class="fas fa-envelope"></span> {{ Auth::user()->notifications_unread }}</a>
                         </li>
                     @endif
+<<<<<<< HEAD
                     
                     <li class="nav-item dropup">
+=======
+
+                    <li class="nav-item dropdown">
+>>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                         <a id="browseDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Submit
                         </a>
@@ -197,8 +219,13 @@
                             </a>
                         </div>
                     </li>
+<<<<<<< HEAD
                     
                     <li class="nav-item dropup">
+=======
+
+                    <li class="nav-item dropdown">
+>>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="{{ Auth::user()->url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
@@ -216,8 +243,7 @@
                             <a class="dropdown-item" href="{{ url('account/settings') }}">
                                 Settings
                             </a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>

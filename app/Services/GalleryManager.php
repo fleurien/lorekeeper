@@ -17,8 +17,7 @@ use Image;
 use Notifications;
 use Settings;
 
-class GalleryManager extends Service
-{
+class GalleryManager extends Service {
     /*
     |--------------------------------------------------------------------------
     | Gallery Manager
@@ -37,8 +36,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GallerySubmission|bool
      */
-    public function createSubmission($data, $currencyFormData, $user)
-    {
+    public function createSubmission($data, $currencyFormData, $user) {
         DB::beginTransaction();
 
         try {
@@ -121,7 +119,7 @@ class GalleryManager extends Service
 
             if (isset($data['collaborator_id']) && $collaborators->count()) {
                 // Attach any collaborators to the submission
-                foreach ($data['collaborator_id'] as $key=>$collaborator) {
+                foreach ($data['collaborator_id'] as $key=> $collaborator) {
                     GalleryCollaborator::create([
                         'user_id'               => $collaborator,
                         'gallery_submission_id' => $submission->id,
@@ -142,7 +140,7 @@ class GalleryManager extends Service
 
             if (isset($data['participant_id']) && $participants->count()) {
                 // Attach any participants to the submission
-                foreach ($data['participant_id'] as $key=>$participant) {
+                foreach ($data['participant_id'] as $key=> $participant) {
                     GalleryCollaborator::create([
                         'user_id'               => $participant,
                         'gallery_submission_id' => $submission->id,
@@ -182,8 +180,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GallerySubmission|bool
      */
-    public function updateSubmission($submission, $data, $user)
-    {
+    public function updateSubmission($submission, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -222,7 +219,7 @@ class GalleryManager extends Service
 
                 if (isset($data['collaborator_id']) && $collaborators->count()) {
                     // Attach any collaborators to the submission
-                    foreach ($data['collaborator_id'] as $key=>$collaborator) {
+                    foreach ($data['collaborator_id'] as $key=> $collaborator) {
                         GalleryCollaborator::create([
                             'user_id'               => $collaborator,
                             'gallery_submission_id' => $submission->id,
@@ -247,7 +244,7 @@ class GalleryManager extends Service
 
                 if (isset($data['participant_id']) && $participants->count()) {
                     // Attach any participants to the submission
-                    foreach ($data['participant_id'] as $key=>$participant) {
+                    foreach ($data['participant_id'] as $key=> $participant) {
                         GalleryCollaborator::create([
                             'user_id'               => $participant,
                             'gallery_submission_id' => $submission->id,
@@ -347,8 +344,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GalleryFavorite|bool
      */
-    public function editCollaborator($submission, $data, $user)
-    {
+    public function editCollaborator($submission, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -403,8 +399,7 @@ class GalleryManager extends Service
      *
      * @return bool
      */
-    public function castVote($action, $submission, $user)
-    {
+    public function castVote($action, $submission, $user) {
         DB::beginTransaction();
 
         try {
@@ -439,7 +434,7 @@ class GalleryManager extends Service
             // Count up the existing votes to see if the required number has been reached
             $rejectSum = 0;
             $approveSum = 0;
-            foreach ($submission->voteData as $voter=>$vote) {
+            foreach ($submission->voteData as $voter=> $vote) {
                 if ($vote == 1) {
                     $rejectSum += 1;
                 }
@@ -477,8 +472,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GalleryFavorite|bool
      */
-    public function postStaffComments($id, $data, $user)
-    {
+    public function postStaffComments($id, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -527,8 +521,7 @@ class GalleryManager extends Service
      *
      * @return bool
      */
-    public function archiveSubmission($submission, $user)
-    {
+    public function archiveSubmission($submission, $user) {
         DB::beginTransaction();
 
         try {
@@ -568,8 +561,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GalleryFavorite|bool
      */
-    public function postValueSubmission($id, $data, $user)
-    {
+    public function postValueSubmission($id, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -638,11 +630,11 @@ class GalleryManager extends Service
                 // Collect and json encode existing as well as new data for storage
                 if (isset($submission->data['total'])) {
                     $valueData = collect([
-                    'currencyData' => $submission->data['currencyData'],
-                    'total'        => $submission->data['total'],
-                    'value'        => $data['value'],
-                    'staff'        => $user->id,
-                ])->toJson();
+                        'currencyData' => $submission->data['currencyData'],
+                        'total'        => $submission->data['total'],
+                        'value'        => $data['value'],
+                        'staff'        => $user->id,
+                    ])->toJson();
                 } else {
                     $valueData = collect(['value' => $data['value'], 'staff' => $user->id])->toJson();
                 }
@@ -658,7 +650,7 @@ class GalleryManager extends Service
                 }
 
                 // Send a notification to each user that received a currency award
-                foreach ($grantedList as $key=>$grantedUser) {
+                foreach ($grantedList as $key=> $grantedUser) {
                     Notifications::create('GALLERY_SUBMISSION_VALUED', $grantedUser, [
                         'currency_quantity' => $awardQuantity[$key],
                         'currency_name'     => $currency->name,
@@ -670,11 +662,11 @@ class GalleryManager extends Service
                 // Collect and json encode existing as well as new data for storage
                 if (isset($submission->data['total'])) {
                     $valueData = collect([
-                    'currencyData' => $submission->data['currencyData'],
-                    'total'        => $submission->data['total'],
-                    'ineligible'   => 1,
-                    'staff'        => $user->id,
-                ])->toJson();
+                        'currencyData' => $submission->data['currencyData'],
+                        'total'        => $submission->data['total'],
+                        'ineligible'   => 1,
+                        'staff'        => $user->id,
+                    ])->toJson();
                 } else {
                     $valueData = collect(['ineligible' => 1, 'staff' => $user->id])->toJson();
                 }
@@ -702,8 +694,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GalleryFavorite|bool
      */
-    public function favoriteSubmission($submission, $user)
-    {
+    public function favoriteSubmission($submission, $user) {
         DB::beginTransaction();
 
         try {
@@ -751,8 +742,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GallerySubmission|bool
      */
-    public function rejectSubmission($submission, $user)
-    {
+    public function rejectSubmission($submission, $user) {
         DB::beginTransaction();
 
         try {
@@ -790,8 +780,7 @@ class GalleryManager extends Service
      *
      * @return array
      */
-    private function populateData($data)
-    {
+    private function populateData($data) {
         // Parse any text
         if (isset($data['text']) && $data['text']) {
             $data['parsed_text'] = parse($data['text']);
@@ -811,8 +800,7 @@ class GalleryManager extends Service
      *
      * @return array
      */
-    private function processImage($data, $submission)
-    {
+    private function processImage($data, $submission) {
         if (isset($submission->hash)) {
             unlink($submission->imagePath.'/'.$submission->imageFileName);
             unlink($submission->imagePath.'/'.$submission->thumbnailFileName);
@@ -844,8 +832,7 @@ class GalleryManager extends Service
      *
      * @return \App\Models\Gallery\GallerySubmission|bool
      */
-    private function acceptSubmission($submission)
-    {
+    private function acceptSubmission($submission) {
         DB::beginTransaction();
 
         try {

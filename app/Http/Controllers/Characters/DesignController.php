@@ -17,8 +17,7 @@ use App\Models\User\UserItem;
 use Auth;
 use Illuminate\Http\Request;
 
-class DesignController extends Controller
-{
+class DesignController extends Controller {
     /**
      * Shows the index of character design update submissions.
      *
@@ -26,8 +25,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDesignUpdateIndex($type = null)
-    {
+    public function getDesignUpdateIndex($type = null) {
         $requests = CharacterDesignUpdate::where('user_id', Auth::user()->id);
         if (!$type) {
             $type = 'draft';
@@ -47,8 +45,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDesignUpdate($id)
-    {
+    public function getDesignUpdate($id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
@@ -66,8 +63,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getComments($id)
-    {
+    public function getComments($id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
@@ -86,8 +82,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postComments(Request $request, DesignUpdateManager $service, $id)
-    {
+    public function postComments(Request $request, DesignUpdateManager $service, $id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r) {
             abort(404);
@@ -114,8 +109,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getImage($id)
-    {
+    public function getImage($id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
@@ -135,8 +129,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postImage(Request $request, DesignUpdateManager $service, $id)
-    {
+    public function postImage(Request $request, DesignUpdateManager $service, $id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r) {
             abort(404);
@@ -165,8 +158,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getAddons($id)
-    {
+    public function getAddons($id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
@@ -179,7 +171,7 @@ class DesignController extends Controller
 
         return view('character.design.addons', [
             'request'     => $r,
-            'categories'  => ItemCategory::orderBy('sort', 'DESC')->get(),
+            'categories'  => ItemCategory::visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC')->get(),
             'inventory'   => $inventory,
             'items'       => Item::all()->keyBy('id'),
             'item_filter' => Item::orderBy('name')->get()->keyBy('id'),
@@ -195,8 +187,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postAddons(Request $request, DesignUpdateManager $service, $id)
-    {
+    public function postAddons(Request $request, DesignUpdateManager $service, $id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r) {
             abort(404);
@@ -223,8 +214,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFeatures($id)
-    {
+    public function getFeatures($id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
@@ -232,8 +222,8 @@ class DesignController extends Controller
 
         return view('character.design.features', [
             'request'   => $r,
-            'specieses' => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes'  => ['0' => 'No Subtype'] + Subtype::where('species_id', '=', $r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'specieses' => ['0' => 'Select Species'] + Species::visible()->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'subtypes'  => ['0' => 'No Subtype'] + Subtype::visible()->where('species_id', '=', $r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'rarities'  => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'titles'    => ['0' => 'Select Title', 'custom' => 'Custom Title'] + CharacterTitle::orderBy('sort', 'DESC')->pluck('title', 'id')->toArray(),
             'features'  => Feature::orderBy('name')->pluck('name', 'id')->toArray(),
@@ -245,15 +235,14 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFeaturesSubtype(Request $request)
-    {
+    public function getFeaturesSubtype(Request $request) {
         $species = $request->input('species');
         $id = $request->input('id');
 
         return view('character.design._features_subtype', [
-          'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-          'subtype'  => $id,
-      ]);
+            'subtypes' => ['0' => 'Select Subtype'] + Subtype::visible()->where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'subtype'  => $id,
+        ]);
     }
 
     /**
@@ -264,8 +253,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postFeatures(Request $request, DesignUpdateManager $service, $id)
-    {
+    public function postFeatures(Request $request, DesignUpdateManager $service, $id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r) {
             abort(404);
@@ -292,8 +280,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getConfirm($id)
-    {
+    public function getConfirm($id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
@@ -312,8 +299,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSubmit(DesignUpdateManager $service, $id)
-    {
+    public function postSubmit(DesignUpdateManager $service, $id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r) {
             abort(404);
@@ -340,8 +326,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDelete($id)
-    {
+    public function getDelete($id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
@@ -360,8 +345,7 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDelete(DesignUpdateManager $service, $id)
-    {
+    public function postDelete(DesignUpdateManager $service, $id) {
         $r = CharacterDesignUpdate::find($id);
         if (!$r) {
             abort(404);

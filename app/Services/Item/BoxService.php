@@ -5,16 +5,13 @@ namespace App\Services\Item;
 use App\Models\Award\Award;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
-use App\Models\Item\Item;
 use App\Models\Loot\LootTable;
 use App\Models\Raffle\Raffle;
-use App\Services\InventoryManager;
 use App\Services\InventoryManager;
 use App\Services\Service;
 use DB;
 
-class BoxService extends Service
-{
+class BoxService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Box Service
@@ -48,8 +45,7 @@ class BoxService extends Service
      *
      * @return mixed
      */
-    public function getTagData($tag)
-    {
+    public function getTagData($tag) {
         $rewards = [];
         if ($tag->data) {
             $assets = parseAssetData($tag->data);
@@ -76,8 +72,7 @@ class BoxService extends Service
      *
      * @return bool
      */
-    public function updateData($tag, $data)
-    {
+    public function updateData($tag, $data) {
         DB::beginTransaction();
 
         try {
@@ -131,12 +126,11 @@ class BoxService extends Service
      *
      * @return bool
      */
-    public function act($stacks, $user, $data)
-    {
+    public function act($stacks, $user, $data) {
         DB::beginTransaction();
 
         try {
-            foreach ($stacks as $key=>$stack) {
+            foreach ($stacks as $key=> $stack) {
                 // We don't want to let anyone who isn't the owner of the box open it,
                 // so do some validation...
                 if ($stack->user_id != $user->id) {
@@ -172,8 +166,7 @@ class BoxService extends Service
      *
      * @return string
      */
-    private function getBoxRewardsString($rewards)
-    {
+    private function getBoxRewardsString($rewards) {
         $results = 'You have received: ';
         $result_elements = [];
         foreach ($rewards as $assetType) {

@@ -24,7 +24,7 @@ return [
     | Do not change this value!
     |
     */
-    'version' => '2.0.0',
+    'version'                                           => '3.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -49,6 +49,21 @@ return [
     |
     */
     'site_desc' => 'A PoffinsWorld ARPG',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Alias Requirement
+    |--------------------------------------------------------------------------
+    |
+    | Whether or not users are required to link an off-site account to access
+    | the site's full features. Note that this does not disable aliases outright,
+    | and you should still set up at least one of the auth options provided.
+    | Note also that any functionality which makes use of the alias system
+    | (e.g. ownership checking for characters only associated with an off-site account)
+    | will still work provided users link the relevant alias(es).
+    |
+    */
+    'require_alias'                                     => 1,
 
     /*
     |--------------------------------------------------------------------------
@@ -107,13 +122,13 @@ return [
     |       Default: 0/Disabled, 1 to enable.
     |
     */
-    'character_codes'         => '{category}-{number}',
-    'character_number_digits' => 3,
-    'character_pull_number'   => 'all',
+    'character_codes'                                   => '{category}-{number}',
+    'character_number_digits'                           => 3,
+    'character_pull_number'                             => 'all',
 
-    'reset_character_status_on_transfer'  => 0,
-    'reset_character_profile_on_transfer' => 0,
-    'clear_myo_slot_name_on_approval'     => 0,
+    'reset_character_status_on_transfer'                => 0,
+    'reset_character_profile_on_transfer'               => 0,
+    'clear_myo_slot_name_on_approval'                   => 0,
 
     /*
     |--------------------------------------------------------------------------
@@ -154,8 +169,8 @@ return [
     | Images above this cap in either dimension will be resized to suit. Enter "0" to disable resizing.
     |
     */
-    'store_masterlist_fullsizes' => 0,
-    'masterlist_fullsizes_cap'   => 0,
+    'store_masterlist_fullsizes'                        => 0,
+    'masterlist_fullsizes_cap'                          => 0,
 
     /*
     |--------------------------------------------------------------------------
@@ -170,11 +185,37 @@ return [
     | Expects the whole of the character to be visible in the thumbnail.
     |
     */
-    'masterlist_thumbnails' => [
+    'masterlist_thumbnails'                             => [
         'width'  => 200,
         'height' => 200,
     ],
-    'watermark_masterlist_thumbnails' => 0,
+
+    'watermark_masterlist_thumbnails'                   => 0,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Watermark Resizing
+    |--------------------------------------------------------------------------
+    |
+    | This affects the size of the watermark, resizing it to fit the masterlist image.
+    | This requires the 'watermark_masterlist_images' option to be set to 1.
+    |
+    | 0: Does not automatically resize watermark. 1: Resize watermarks.
+    | Expects the whole of the character to be visible in the thumbnail.
+    |
+    | The watermark percent is the scale of the watermark.
+    | The default is '0.9', or 90 percent of the image to be watermarked.
+    |
+    | The final option is to also resize watermarks on thumbnails.
+    | It will assume the same scale as masterlist image.
+    | 0: Does not resize thumbnail watermarks. 1: Resizes thumbnail watermarks.
+    | This requires the 'watermark_masterlist_thumbnails' option to be set to 1.
+    |
+    */
+
+    'watermark_resizing'                                => 0,
+    'watermark_percent'                                 => 0.9,
+    'watermark_resizing_thumb'                          => 0,
 
     /*
     |--------------------------------------------------------------------------
@@ -190,7 +231,26 @@ return [
     | Simply change to "1" to enable, or keep at "0" to disable.
     |
     */
-    'masterlist_image_automation' => 0,
+    'masterlist_image_automation'                       => 0,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Masterlist Image Automation Removing Manual Upload For Users
+    |--------------------------------------------------------------------------
+    |
+    | NOTE: This feature will only function if the above feature, the
+    | Masterlist Image Automation Replacing Cropper, is also enabled.
+    |
+    | The following option is for if you DO want to disable the manual uploading
+    | of thumbnails, to ensure users do not attempt to upload their
+    | own thumbnails regardless of the automation.
+    | This will remove it purely for users, not administration.
+    |
+    | 0: Keeps the manual thumbnail upload for users.
+    | 1: Hides the thumbnail upload for users.
+    |
+    */
+    'masterlist_image_automation_hide_manual_thumbnail' => 0,
 
     /*
     |--------------------------------------------------------------------------
@@ -202,7 +262,7 @@ return [
     | there are limits on data storage, so raising this is not recommended.
     |
     */
-    'trade_asset_limit' => 20,
+    'trade_asset_limit'                                 => 20,
 
     /*
     |--------------------------------------------------------------------------
@@ -219,7 +279,7 @@ return [
     |       Expiry: Time (in months) before items are automatically deleted from the donation shop. Set to 0 to disable expiry. Default: 0.
     |
     */
-    'default_purchase_limit' => 99,
+    'default_purchase_limit'                            => 99,
 
     'donation_shop' => [
         'item_donations' => 0,
@@ -235,6 +295,6 @@ return [
     | Symbol for the (real world) currency used for sales posts.
     |
     */
-    'currency_symbol' => '$',
+    'currency_symbol'                                   => '$',
 
 ];

@@ -19,9 +19,12 @@
         <div class="sidebar-item"><a href="{{ url('world/items') }}" class="{{ set_active('world/items*') }}">All Items</a></div>
         <div class="sidebar-item"><a href="{{ url('world/currencies') }}" class="{{ set_active('world/currencies*') }}">Currencies</a></div>
     </li>
+<<<<<<< HEAD
     <li class="sidebar-section">
         <div class="sidebar-section-header">Awards</div>
         <div class="sidebar-item"><a href="{{ url('world/award-categories') }}" class="{{ set_active('world/award-categories*') }}">Award Categories</a></div>
         <div class="sidebar-item"><a href="{{ url('world/awards') }}" class="{{ set_active('world/awards*') }}">All Awards</a></div>
     </li>
+=======
+>>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
 </ul>

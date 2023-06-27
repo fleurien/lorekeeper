@@ -21,10 +21,8 @@ use Notifications;
 use Settings;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
-class CommentController extends Controller implements CommentControllerInterface
-{
-    public function __construct()
-    {
+class CommentController extends Controller {
+    public function __construct() {
         $this->middleware('web');
 
         if (Config::get('comments.guest_commenting') == true) {
@@ -37,9 +35,23 @@ class CommentController extends Controller implements CommentControllerInterface
 
     /**
      * Creates a new comment for given model.
+     *
+     * @param mixed $model
+     * @param mixed $id
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request, $model, $id) {
+        $model = urldecode(base64_decode($model));
+
+        $accepted_models = Config::get('lorekeeper.allowed_comment_models');
+        if (!count($accepted_models)) {
+            flash('Invalid Models')->error();
+
+            return redirect()->back();
+        }
+
+        if (!in_array($model, $accepted_models)) {
+            abort(404);
+        }
 
         // If guest commenting is turned off, authorize this action.
         if (Config::get('comments.guest_commenting') == false) {
@@ -56,12 +68,15 @@ class CommentController extends Controller implements CommentControllerInterface
 
         // Merge guest rules, if any, with normal validation rules.
         Validator::make($request->all(), array_merge($guest_rules ?? [], [
-            'commentable_type' => 'required|string',
-            'commentable_id'   => 'required|string|min:1',
             'message'          => 'required|string',
         ]))->validate();
 
-        $model = $request->commentable_type::findOrFail($request->commentable_id);
+        $base = $model::findOrFail($id);
+        if (isset($base->is_visible) && !$base->is_visible) {
+            flash('Invalid Model')->error();
+
+            return redirect()->back();
+        }
 
         $commentClass = Config::get('comments.model');
         $comment = new $commentClass;
@@ -73,7 +88,7 @@ class CommentController extends Controller implements CommentControllerInterface
             $comment->commenter()->associate(Auth::user());
         }
 
-        $comment->commentable()->associate($model);
+        $comment->commentable()->associate($base);
         $comment->comment = $request->message;
         $comment->approved = !Config::get('comments.approval_required');
         $comment->type = isset($request['type']) && $request['type'] ? $request['type'] : 'User-User';
@@ -86,7 +101,7 @@ class CommentController extends Controller implements CommentControllerInterface
         $sender = User::find($comment->commenter_id);
         $type = $comment->type;
 
-        switch ($model_type) {
+        switch ($model) {
             case 'App\Models\User\UserProfile':
                 $recipient = User::find($comment->commentable_id);
                 $post = 'your profile';
@@ -131,6 +146,9 @@ class CommentController extends Controller implements CommentControllerInterface
                 $post = (($type != 'User-User') ? 'your gallery submission\'s staff comments' : 'your gallery submission');
                 $link = (($type != 'User-User') ? $submission->queueUrl.'/#comment-'.$comment->getKey() : $submission->url.'/#comment-'.$comment->getKey());
                 break;
+            default:
+                throw new \Exception('Comment type not supported.');
+                break;
         }
 
         if ($recipient != $sender) {
@@ -148,8 +166,7 @@ class CommentController extends Controller implements CommentControllerInterface
     /**
      * Updates the message of the comment.
      */
-    public function update(Request $request, Comment $comment)
-    {
+    public function update(Request $request, Comment $comment) {
         Gate::authorize('edit-comment', $comment);
 
         Validator::make($request->all(), [
@@ -166,8 +183,7 @@ class CommentController extends Controller implements CommentControllerInterface
     /**
      * Deletes a comment.
      */
-    public function destroy(Comment $comment)
-    {
+    public function destroy(Comment $comment) {
         Gate::authorize('delete-comment', $comment);
 
         if (Config::get('comments.soft_deletes') == true) {
@@ -182,8 +198,7 @@ class CommentController extends Controller implements CommentControllerInterface
     /**
      * Creates a reply "comment" to a comment.
      */
-    public function reply(Request $request, Comment $comment)
-    {
+    public function reply(Request $request, Comment $comment) {
         Gate::authorize('reply-to-comment', $comment);
 
         Validator::make($request->all(), [
@@ -208,9 +223,9 @@ class CommentController extends Controller implements CommentControllerInterface
         // if($sender == $recipient)
         if ($recipient != $sender) {
             Notifications::create('COMMENT_REPLY', $recipient, [
-            'sender_url'  => $sender->url,
-            'sender'      => $sender->name,
-            'comment_url' => $comment->id,
+                'sender_url'  => $sender->url,
+                'sender'      => $sender->name,
+                'comment_url' => $comment->id,
             ]);
         }
 
@@ -222,8 +237,7 @@ class CommentController extends Controller implements CommentControllerInterface
      *
      * @param mixed $id
      */
-    public function feature($id)
-    {
+    public function feature($id) {
         $comment = Comment::find($id);
         if ($comment->is_featured == 0) {
             $comment->update(['is_featured' => 1]);
@@ -240,8 +254,7 @@ class CommentController extends Controller implements CommentControllerInterface
      * @param mixed $id
      * @param mixed $action
      */
-    public function like(Request $request, $id, $action = 1)
-    {
+    public function like(Request $request, $id, $action = 1) {
         $user = Auth::user();
         if (!$user) {
             return Redirect::back();
@@ -273,8 +286,7 @@ class CommentController extends Controller implements CommentControllerInterface
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLikedComments(Request $request)
-    {
+    public function getLikedComments(Request $request) {
         return view('home.liked_comments', [
             'user' => Auth::user(),
         ]);

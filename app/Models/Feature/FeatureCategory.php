@@ -4,15 +4,14 @@ namespace App\Models\Feature;
 
 use App\Models\Model;
 
-class FeatureCategory extends Model
-{
+class FeatureCategory extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'has_image', 'description', 'parsed_description',
+        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_visible',
     ];
 
     /**
@@ -21,6 +20,7 @@ class FeatureCategory extends Model
      * @var string
      */
     protected $table = 'feature_categories';
+
     /**
      * Validation rules for creation.
      *
@@ -45,6 +45,28 @@ class FeatureCategory extends Model
 
     /**********************************************************************************************
 
+        SCOPES
+
+    **********************************************************************************************/
+
+    /**
+     * Scope a query to show only visible categories.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed|null                            $user
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query, $user = null) {
+        if ($user && $user->hasPower('edit_data')) {
+            return $query;
+        }
+
+        return $query->where('is_visible', 1);
+    }
+
+    /**********************************************************************************************
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -54,8 +76,7 @@ class FeatureCategory extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-category">'.$this->name.'</a>';
     }
 
@@ -64,8 +85,7 @@ class FeatureCategory extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/trait-categories';
     }
 
@@ -74,8 +94,7 @@ class FeatureCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImageFileNameAttribute()
-    {
+    public function getCategoryImageFileNameAttribute() {
         return $this->id.'-image.png';
     }
 
@@ -84,8 +103,7 @@ class FeatureCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImagePathAttribute()
-    {
+    public function getCategoryImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -94,8 +112,7 @@ class FeatureCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImageUrlAttribute()
-    {
+    public function getCategoryImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
@@ -108,8 +125,7 @@ class FeatureCategory extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/trait-categories?name='.$this->name);
     }
 
@@ -118,8 +134,25 @@ class FeatureCategory extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         return url('world/traits?feature_category_id='.$this->id);
+    }
+
+    /**
+     * Gets the admin edit URL.
+     *
+     * @return string
+     */
+    public function getAdminUrlAttribute() {
+        return url('admin/data/trait-categories/edit/'.$this->id);
+    }
+
+    /**
+     * Gets the power required to edit this model.
+     *
+     * @return string
+     */
+    public function getAdminPowerAttribute() {
+        return 'edit_data';
     }
 }

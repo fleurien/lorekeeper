@@ -38,8 +38,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function grantItems($data, $staff)
-    {
+    public function grantItems($data, $staff) {
         DB::beginTransaction();
 
         try {
@@ -103,8 +102,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function grantCharacterItems($data, $character, $staff)
-    {
+    public function grantCharacterItems($data, $character, $staff) {
         DB::beginTransaction();
 
         try {
@@ -172,12 +170,11 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function transferCharacterStack($sender, $recipient, $stacks, $quantities, $user)
-    {
+    public function transferCharacterStack($sender, $recipient, $stacks, $quantities, $user) {
         DB::beginTransaction();
 
         try {
-            foreach ($stacks as $key=>$stack) {
+            foreach ($stacks as $key=> $stack) {
                 $quantity = $quantities[$key];
 
                 if (!$stack) {
@@ -614,9 +611,13 @@ class InventoryManager extends Service
         } catch (\Exception $e) {	
             $this->setError('error', $e->getMessage());	
         }	
-        return $this->rollbackReturn(false);	
-    }
+        return $this->rollbackReturn(false); }	
+    
 
+    
+    
+
+    
     /**
      * Names an item stack.
      *
@@ -627,12 +628,11 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function nameStack($owner, $stacks, $name, $user)
-    {
+    public function nameStack($owner, $stacks, $name, $user) {
         DB::beginTransaction();
 
         try {
-            foreach ($stacks as $key=>$stack) {
+            foreach ($stacks as $key=> $stack) {
                 if (!$user->hasAlias) {
                     throw new \Exception('You need to have a linked social media account before you can perform this action.');
                 }
@@ -696,8 +696,7 @@ class InventoryManager extends Service
      *
      * @return bool
      */
-    public function consolidateInventory($user)
-    {
+    public function consolidateInventory($user) {
         DB::beginTransaction();
 
         try {
@@ -711,13 +710,13 @@ class InventoryManager extends Service
             // Group owned items by ID.
             // We'll exclude stacks that are partially contained in trades, updates and submissions.
             $items = UserItem::where('user_id', $user->id)->whereNull('deleted_at')
-                             ->where(function ($query) {
-                                 $query->where('trade_count', 0)->orWhereNull('trade_count');
-                             })->where(function ($query) {
-                                 $query->where('update_count', 0)->orWhereNull('update_count');
-                             })->where(function ($query) {
-                                 $query->where('submission_count', 0)->orWhereNull('submission_count');
-                             })->get()->groupBy('item_id');
+                ->where(function ($query) {
+                    $query->where('trade_count', 0)->orWhereNull('trade_count');
+                })->where(function ($query) {
+                    $query->where('update_count', 0)->orWhereNull('update_count');
+                })->where(function ($query) {
+                    $query->where('submission_count', 0)->orWhereNull('submission_count');
+                })->get()->groupBy('item_id');
 
             foreach ($items as $itemId => $itemVariations) {
                 $variations = [];

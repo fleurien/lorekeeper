@@ -4,15 +4,14 @@ namespace App\Models\Character;
 
 use App\Models\Model;
 
-class CharacterCategory extends Model
-{
+class CharacterCategory extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'code', 'name', 'sort', 'has_image', 'description', 'parsed_description', 'masterlist_sub_id',
+        'code', 'name', 'sort', 'has_image', 'description', 'parsed_description', 'masterlist_sub_id', 'is_visible',
     ];
 
     /**
@@ -21,6 +20,7 @@ class CharacterCategory extends Model
      * @var string
      */
     protected $table = 'character_categories';
+
     /**
      * Validation rules for creation.
      *
@@ -54,9 +54,30 @@ class CharacterCategory extends Model
     /**
      * Get the sub masterlist for this species.
      */
-    public function sublist()
-    {
+    public function sublist() {
         return $this->belongsTo('App\Models\Character\Sublist', 'masterlist_sub_id');
+    }
+
+    /**********************************************************************************************
+
+        SCOPES
+
+    **********************************************************************************************/
+
+    /**
+     * Scope a query to show only visible categories.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed|null                            $user
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query, $user = null) {
+        if ($user && $user->hasPower('edit_data')) {
+            return $query;
+        }
+
+        return $query->where('is_visible', 1);
     }
 
     /**********************************************************************************************
@@ -70,8 +91,7 @@ class CharacterCategory extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-category">'.$this->name.' ('.$this->code.')</a>';
     }
 
@@ -80,8 +100,7 @@ class CharacterCategory extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/character-categories';
     }
 
@@ -90,8 +109,7 @@ class CharacterCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImageFileNameAttribute()
-    {
+    public function getCategoryImageFileNameAttribute() {
         return $this->id.'-image.png';
     }
 
@@ -100,8 +118,7 @@ class CharacterCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImagePathAttribute()
-    {
+    public function getCategoryImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -110,8 +127,7 @@ class CharacterCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImageUrlAttribute()
-    {
+    public function getCategoryImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
@@ -124,8 +140,7 @@ class CharacterCategory extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/character-categories?name='.$this->name);
     }
 
@@ -134,12 +149,29 @@ class CharacterCategory extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         if ($this->masterlist_sub_id != 0 && $this->sublist->show_main == 0) {
             return url('sublist/'.$this->sublist->key.'?character_category_id='.$this->id);
         } else {
             return url('masterlist?character_category_id='.$this->id);
         }
+    }
+
+    /**
+     * Gets the admin edit URL.
+     *
+     * @return string
+     */
+    public function getAdminUrlAttribute() {
+        return url('admin/data/character-categories/edit/'.$this->id);
+    }
+
+    /**
+     * Gets the power required to edit this model.
+     *
+     * @return string
+     */
+    public function getAdminPowerAttribute() {
+        return 'edit_data';
     }
 }

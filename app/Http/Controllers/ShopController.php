@@ -19,8 +19,7 @@ use App\Models\User\UserItem;
 
 use App\Services\ShopManager;
 
-class ShopController extends Controller
-{
+class ShopController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Shop Controller
@@ -35,11 +34,10 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('shops.index', [
             'shops' => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
-            ]);
+        ]);
     }
 
     /**
@@ -49,14 +47,19 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getShop($id)
-    {
-        $categories = ItemCategory::orderBy('sort', 'DESC')->get();
+    public function getShop($id) {
+        $categories = ItemCategory::visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC')->get();
         $shop = Shop::where('id', $id)->where('is_active', 1)->first();
         if (!$shop) {
             abort(404);
         }
-        $items = count($categories) ? $shop->displayStock()->orderByRaw('FIELD(item_category_id,'.implode(',', $categories->pluck('id')->toArray()).')')->orderBy('name')->get()->groupBy('item_category_id') : $shop->displayStock()->orderBy('name')->get()->groupBy('item_category_id');
+
+        $query = $shop->displayStock()->where(function ($query) use ($categories) {
+            $query->whereIn('item_category_id', $categories->pluck('id')->toArray())
+                ->orWhereNull('item_category_id');
+        });
+
+        $items = count($categories) ? $query->orderByRaw('FIELD(item_category_id,'.implode(',', $categories->pluck('id')->toArray()).')')->orderBy('name')->get()->groupBy('item_category_id') : $shop->displayStock()->orderBy('name')->get()->groupBy('item_category_id');
 
         return view('shops.shop', [
             'shop'       => $shop,
@@ -76,8 +79,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getShopStock(ShopManager $service, $id, $stockId)
-    {
+    public function getShopStock(ShopManager $service, $id, $stockId) {
         $shop = Shop::where('id', $id)->where('is_active', 1)->first();
         $stock = ShopStock::with('item')->where('id', $stockId)->where('shop_id', $id)->first();
 
@@ -113,8 +115,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postBuy(Request $request, ShopManager $service)
-    {
+    public function postBuy(Request $request, ShopManager $service) {
         $request->validate(ShopLog::$createRules);
         if ($service->buyStock($request->only(['stock_id', 'shop_id', 'slug', 'bank', 'quantity']), Auth::user())) {
             flash('Successfully purchased item.')->success();
@@ -132,8 +133,7 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getPurchaseHistory()
-    {
+    public function getPurchaseHistory() {
         return view('shops.purchase_history', [
             'logs'  => Auth::user()->getShopLogs(0),
             'shops' => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),

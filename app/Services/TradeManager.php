@@ -14,8 +14,7 @@ use DB;
 use Notifications;
 use Settings;
 
-class TradeManager extends Service
-{
+class TradeManager extends Service {
     /*
     |--------------------------------------------------------------------------
     | Trade Manager
@@ -33,8 +32,7 @@ class TradeManager extends Service
      *
      * @return \App\Models\Trade|bool
      */
-    public function createTrade($data, $user)
-    {
+    public function createTrade($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -87,8 +85,7 @@ class TradeManager extends Service
      *
      * @return \App\Models\Trade|bool
      */
-    public function editTrade($data, $user)
-    {
+    public function editTrade($data, $user) {
         DB::beginTransaction();
         try {
             if (!isset($data['trade'])) {
@@ -130,8 +127,7 @@ class TradeManager extends Service
      *
      * @return \App\Models\Trade|bool
      */
-    public function cancelTrade($data, $user)
-    {
+    public function cancelTrade($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -176,8 +172,7 @@ class TradeManager extends Service
      *
      * @return \App\Models\Trade|bool
      */
-    public function confirmOffer($data, $user)
-    {
+    public function confirmOffer($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -243,8 +238,7 @@ class TradeManager extends Service
      *
      * @return \App\Models\Trade|bool
      */
-    public function confirmTrade($data, $user)
-    {
+    public function confirmTrade($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -297,7 +291,6 @@ class TradeManager extends Service
                     ]);
                 }
             } else {
-
                 // Notify the other user
                 Notifications::create('TRADE_UPDATE', $user->id == $trade->sender_id ? $trade->recipient : $trade->sender, [
                     'sender_url'  => $user->url,
@@ -323,8 +316,7 @@ class TradeManager extends Service
      *
      * @return \App\Models\Trade|bool
      */
-    public function approveTrade($data, $user)
-    {
+    public function approveTrade($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -374,8 +366,7 @@ class TradeManager extends Service
      *
      * @return \App\Models\Trade|bool
      */
-    public function rejectTrade($data, $user)
-    {
+    public function rejectTrade($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -425,8 +416,7 @@ class TradeManager extends Service
      *
      * @return array|bool
      */
-    private function handleTradeAssets($trade, $data, $user)
-    {
+    private function handleTradeAssets($trade, $data, $user) {
         DB::beginTransaction();
         try {
             $tradeData = $trade->data;
@@ -438,7 +428,7 @@ class TradeManager extends Service
             // First return any item stacks attached to the trade
 
             if (isset($tradeData[$type]['user_items'])) {
-                foreach ($tradeData[$type]['user_items'] as $userItemId=>$quantity) {
+                foreach ($tradeData[$type]['user_items'] as $userItemId=> $quantity) {
                     $quantity = (int) $quantity;
                     $userItemRow = UserItem::find($userItemId);
                     if (!$userItemRow) {
@@ -456,7 +446,7 @@ class TradeManager extends Service
             // This is stored in the data attribute
             $currencyManager = new CurrencyManager;
             if (isset($tradeData[$type]['currencies'])) {
-                foreach ($tradeData[$type]['currencies'] as $currencyId=>$quantity) {
+                foreach ($tradeData[$type]['currencies'] as $currencyId=> $quantity) {
                     $quantity = (int) $quantity;
                     $currencyManager->creditCurrency(null, $user, null, null, $currencyId, $quantity);
                 }
@@ -502,7 +492,7 @@ class TradeManager extends Service
                 //dd([$data['currency_id'], $data['currency_quantity']]);
                 $data['currency_id'] = $data['currency_id']['user-'.$user->id];
                 $data['currency_quantity'] = $data['currency_quantity']['user-'.$user->id];
-                foreach ($data['currency_id'] as $key=>$currencyId) {
+                foreach ($data['currency_id'] as $key=> $currencyId) {
                     $currency = Currency::where('allow_user_to_user', 1)->where('id', $currencyId)->first();
                     if (!$currency) {
                         throw new \Exception('Invalid currency selected.');
@@ -568,8 +558,7 @@ class TradeManager extends Service
      *
      * @return bool
      */
-    private function returnAttachments($trade)
-    {
+    private function returnAttachments($trade) {
         DB::beginTransaction();
 
         try {
@@ -625,8 +614,7 @@ class TradeManager extends Service
      *
      * @return bool
      */
-    private function creditAttachments($trade, $data = [])
-    {
+    private function creditAttachments($trade, $data = []) {
         DB::beginTransaction();
 
         try {

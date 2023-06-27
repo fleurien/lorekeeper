@@ -11,8 +11,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
-class PromptsController extends Controller
-{
+class PromptsController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Prompts Controller
@@ -28,8 +27,7 @@ class PromptsController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('prompts.index');
     }
 
@@ -38,8 +36,7 @@ class PromptsController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getPromptCategories(Request $request)
-    {
+    public function getPromptCategories(Request $request) {
         $query = PromptCategory::query();
         $name = $request->get('name');
         if ($name) {
@@ -56,15 +53,33 @@ class PromptsController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getPrompts(Request $request)
-    {
+    public function getPrompts(Request $request) {
         $query = Prompt::active()->staffOnly(Auth::check() ? Auth::user() : null)->with('category');
-        $data = $request->only(['prompt_category_id', 'name', 'sort']);
+        $data = $request->only(['prompt_category_id', 'name', 'sort', 'open_prompts']);
         if (isset($data['prompt_category_id']) && $data['prompt_category_id'] != 'none') {
-            $query->where('prompt_category_id', $data['prompt_category_id']);
+            if ($data['prompt_category_id'] == 'withoutOption') {
+                $query->whereNull('prompt_category_id');
+            } else {
+                $query->where('prompt_category_id', $data['prompt_category_id']);
+            }
         }
         if (isset($data['name'])) {
             $query->where('name', 'LIKE', '%'.$data['name'].'%');
+        }
+
+        if (isset($data['open_prompts'])) {
+            switch ($data['open_prompts']) {
+                case 'open':
+                    $query->open(true);
+                    break;
+                case 'closed':
+                    $query->open(false);
+                    break;
+                case 'any':
+                default:
+                    // Don't filter
+                    break;
+            }
         }
 
         if (isset($data['sort'])) {
@@ -103,7 +118,7 @@ class PromptsController extends Controller
 
         return view('prompts.prompts', [
             'prompts'    => $query->paginate(20)->appends($request->query()),
-            'categories' => ['none' => 'Any Category'] + PromptCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'categories' => ['none' => 'Any Category'] + ['withoutOption' => 'Without Category'] + PromptCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -135,9 +150,8 @@ class PromptsController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getPrompt(Request $request, $id)
-    {
-        $prompt = Prompt::where('id', $id)->get()->first();
+    public function getPrompt(Request $request, $id) {
+        $prompt = Prompt::active()->where('id', $id)->first();
 
         if (!$prompt) {
             abort(404);

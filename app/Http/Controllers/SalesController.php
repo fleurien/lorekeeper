@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Sales\Sales;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
-class SalesController extends Controller
-{
+class SalesController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | sales Controller
@@ -18,12 +18,19 @@ class SalesController extends Controller
     */
 
     /**
+     * Create a new controller instance.
+     */
+    public function __construct() {
+        View::share('forsale', Sales::visible()->orderBy('updated_at', 'DESC')->where('is_open', 1)->get());
+        View::share('recentsales', Sales::visible()->orderBy('updated_at', 'DESC')->take(10)->get());
+    }
+
+    /**
      * Shows the sales index.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex(Request $request)
-    {
+    public function getIndex(Request $request) {
         if (Auth::check() && Auth::user()->is_sales_unread) {
             Auth::user()->update(['is_sales_unread' => 0]);
         }
@@ -75,8 +82,7 @@ class SalesController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getSales($id, $slug = null)
-    {
+    public function getSales($id, $slug = null) {
         $sales = Sales::where('id', $id)->where('is_visible', 1)->first();
         if (!$sales) {
             abort(404);

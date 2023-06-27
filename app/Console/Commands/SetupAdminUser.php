@@ -10,8 +10,7 @@ use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class SetupAdminUser extends Command
-{
+class SetupAdminUser extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -29,8 +28,7 @@ class SetupAdminUser extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -39,15 +37,13 @@ class SetupAdminUser extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $this->info('********************');
         $this->info('* ADMIN USER SETUP *');
         $this->info('********************'."\n");
 
         // First things first, check if user ranks exist...
         if (!Rank::count()) {
-
             // These need to be created even if the seeder isn't run for the site to work correctly.
             $adminRank = Rank::create([
                 'name'        => 'Admin',
@@ -98,11 +94,11 @@ class SetupAdminUser extends Command
             if ($confirm) {
                 $service = new UserService;
                 $user = $service->createUser([
-                    'name'     => $name,
-                    'email'    => $email,
-                    'rank_id'  => $adminRank->id,
-                    'password' => $password,
-                    'dob'      => [
+                    'name'      => $name,
+                    'email'     => $email,
+                    'rank_id'   => $adminRank->id,
+                    'password'  => $password,
+                    'dob'       => [
                         'day'   => '01',
                         'month' => '01',
                         'year'  => '1970',

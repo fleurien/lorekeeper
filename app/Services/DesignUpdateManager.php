@@ -21,8 +21,7 @@ use Illuminate\Support\Arr;
 use Image;
 use Notifications;
 
-class DesignUpdateManager extends Service
-{
+class DesignUpdateManager extends Service {
     /*
     |--------------------------------------------------------------------------
     | Design Update Manager
@@ -40,8 +39,7 @@ class DesignUpdateManager extends Service
      *
      * @return \App\Models\Character\CharacterDesignUpdate|bool
      */
-    public function createDesignUpdateRequest($character, $user)
-    {
+    public function createDesignUpdateRequest($character, $user) {
         DB::beginTransaction();
 
         try {
@@ -64,9 +62,9 @@ class DesignUpdateManager extends Service
                 'update_type'   => $character->is_myo_slot ? 'MYO' : 'Character',
 
                 // Set some data based on the character's existing stats
-                'rarity_id'  => $character->image->rarity_id,
-                'species_id' => $character->image->species_id,
-                'subtype_id' => $character->image->subtype_id,
+                'rarity_id'     => $character->image->rarity_id,
+                'species_id'    => $character->image->species_id,
+                'subtype_id'    => $character->image->subtype_id,
             ];
 
             $request = CharacterDesignUpdate::create($data);
@@ -102,8 +100,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function saveRequestComment($data, $request)
-    {
+    public function saveRequestComment($data, $request) {
         DB::beginTransaction();
 
         try {
@@ -129,8 +126,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function saveRequestImage($data, $request, $isAdmin = false)
-    {
+    public function saveRequestImage($data, $request, $isAdmin = false) {
         DB::beginTransaction();
 
         try {
@@ -243,15 +239,14 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function saveRequestAddons($data, $request)
-    {
+    public function saveRequestAddons($data, $request) {
         DB::beginTransaction();
 
         try {
             $requestData = $request->data;
             // First return any item stacks associated with this request
             if (isset($requestData['user']) && isset($requestData['user']['user_items'])) {
-                foreach ($requestData['user']['user_items'] as $userItemId=>$quantity) {
+                foreach ($requestData['user']['user_items'] as $userItemId=> $quantity) {
                     $userItemRow = UserItem::find($userItemId);
                     if (!$userItemRow) {
                         throw new \Exception('Cannot return an invalid item. ('.$userItemId.')');
@@ -268,12 +263,12 @@ class DesignUpdateManager extends Service
             // This is stored in the data attribute
             $currencyManager = new CurrencyManager;
             if (isset($requestData['user']) && isset($requestData['user']['currencies'])) {
-                foreach ($requestData['user']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['user']['currencies'] as $currencyId=> $quantity) {
                     $currencyManager->creditCurrency(null, $request->user, null, null, $currencyId, $quantity);
                 }
             }
             if (isset($requestData['character']) && isset($requestData['character']['currencies'])) {
-                foreach ($requestData['character']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['character']['currencies'] as $currencyId=> $quantity) {
                     $currencyManager->creditCurrency(null, $request->character, null, null, $currencyId, $quantity);
                 }
             }
@@ -302,7 +297,7 @@ class DesignUpdateManager extends Service
 
             // Attach currencies.
             if (isset($data['currency_id'])) {
-                foreach ($data['currency_id'] as $holderKey=>$currencyIds) {
+                foreach ($data['currency_id'] as $holderKey=> $currencyIds) {
                     $holder = explode('-', $holderKey);
                     $holderType = $holder[0];
                     $holderId = $holder[1];
@@ -315,7 +310,7 @@ class DesignUpdateManager extends Service
                         throw new \Exception('Error attaching currencies to this request. (2)');
                     }
 
-                    foreach ($currencyIds as $key=>$currencyId) {
+                    foreach ($currencyIds as $key=> $currencyId) {
                         $currency = Currency::find($currencyId);
                         if (!$currency) {
                             throw new \Exception('Invalid currency selected.');
@@ -356,8 +351,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function saveRequestFeatures($data, $request)
-    {
+    public function saveRequestFeatures($data, $request) {
         DB::beginTransaction();
 
         try {
@@ -432,8 +426,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function submitRequest($request)
-    {
+    public function submitRequest($request) {
         DB::beginTransaction();
 
         try {
@@ -472,8 +465,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function approveRequest($data, $request, $user)
-    {
+    public function approveRequest($data, $request, $user) {
         DB::beginTransaction();
 
         try {
@@ -501,7 +493,7 @@ class DesignUpdateManager extends Service
             $inventoryManager = new InventoryManager;
             if (isset($requestData['user']) && isset($requestData['user']['user_items'])) {
                 $stacks = $requestData['user']['user_items'];
-                foreach ($requestData['user']['user_items'] as $userItemId=>$quantity) {
+                foreach ($requestData['user']['user_items'] as $userItemId=> $quantity) {
                     $userItemRow = UserItem::find($userItemId);
                     if (!$userItemRow) {
                         throw new \Exception('Cannot return an invalid item. ('.$userItemId.')');
@@ -514,7 +506,7 @@ class DesignUpdateManager extends Service
                 }
 
                 $staff = $user;
-                foreach ($stacks as $stackId=>$quantity) {
+                foreach ($stacks as $stackId=> $quantity) {
                     $stack = UserItem::find($stackId);
                     $user = User::find($request->user_id);
                     if (!$inventoryManager->debitStack($user, $request->character->is_myo_slot ? 'MYO Design Approved' : 'Character Design Updated', ['data' => 'Item used in '.($request->character->is_myo_slot ? 'MYO design approval' : 'Character design update').' (<a href="'.$request->url.'">#'.$request->id.'</a>)'], $stack, $quantity)) {
@@ -525,7 +517,7 @@ class DesignUpdateManager extends Service
             }
             $currencyManager = new CurrencyManager;
             if (isset($requestData['user']['currencies']) && $requestData['user']['currencies']) {
-                foreach ($requestData['user']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['user']['currencies'] as $currencyId=> $quantity) {
                     $currency = Currency::find($currencyId);
                     if (!$currencyManager->createLog(
                         $request->user_id,
@@ -542,7 +534,7 @@ class DesignUpdateManager extends Service
                 }
             }
             if (isset($requestData['character']['currencies']) && $requestData['character']['currencies']) {
-                foreach ($requestData['character']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['character']['currencies'] as $currencyId=> $quantity) {
                     $currency = Currency::find($currencyId);
                     if (!$currencyManager->createLog(
                         $request->character_id,
@@ -723,8 +715,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function rejectRequest($data, $request, $user, $forceReject = false, $notification = true)
-    {
+    public function rejectRequest($data, $request, $user, $forceReject = false, $notification = true) {
         DB::beginTransaction();
 
         try {
@@ -743,7 +734,7 @@ class DesignUpdateManager extends Service
             $requestData = $request->data;
             // Return all added items/currency
             if (isset($requestData['user']) && isset($requestData['user']['user_items'])) {
-                foreach ($requestData['user']['user_items'] as $userItemId=>$quantity) {
+                foreach ($requestData['user']['user_items'] as $userItemId=> $quantity) {
                     $userItemRow = UserItem::find($userItemId);
                     if (!$userItemRow) {
                         throw new \Exception('Cannot return an invalid item. ('.$userItemId.')');
@@ -758,7 +749,7 @@ class DesignUpdateManager extends Service
 
             $currencyManager = new CurrencyManager;
             if (isset($requestData['user']['currencies']) && $requestData['user']['currencies']) {
-                foreach ($requestData['user']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['user']['currencies'] as $currencyId=> $quantity) {
                     $currency = Currency::find($currencyId);
                     if (!$currency) {
                         throw new \Exception('Cannot return an invalid currency. ('.$currencyId.')');
@@ -769,7 +760,7 @@ class DesignUpdateManager extends Service
                 }
             }
             if (isset($requestData['character']['currencies']) && $requestData['character']['currencies']) {
-                foreach ($requestData['character']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['character']['currencies'] as $currencyId=> $quantity) {
                     $currency = Currency::find($currencyId);
                     if (!$currency) {
                         throw new \Exception('Cannot return an invalid currency. ('.$currencyId.')');
@@ -812,8 +803,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function cancelRequest($data, $request, $user)
-    {
+    public function cancelRequest($data, $request, $user) {
         DB::beginTransaction();
 
         try {
@@ -861,8 +851,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function deleteRequest($request)
-    {
+    public function deleteRequest($request) {
         DB::beginTransaction();
 
         try {
@@ -878,7 +867,7 @@ class DesignUpdateManager extends Service
             $requestData = $request->data;
             // Return all added items/currency
             if (isset($requestData['user']) && isset($requestData['user']['user_items'])) {
-                foreach ($requestData['user']['user_items'] as $userItemId=>$quantity) {
+                foreach ($requestData['user']['user_items'] as $userItemId=> $quantity) {
                     $userItemRow = UserItem::find($userItemId);
                     if (!$userItemRow) {
                         throw new \Exception('Cannot return an invalid item. ('.$userItemId.')');
@@ -893,7 +882,7 @@ class DesignUpdateManager extends Service
 
             $currencyManager = new CurrencyManager;
             if (isset($requestData['user']['currencies']) && $requestData['user']['currencies']) {
-                foreach ($requestData['user']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['user']['currencies'] as $currencyId=> $quantity) {
                     $currency = Currency::find($currencyId);
                     if (!$currency) {
                         throw new \Exception('Cannot return an invalid currency. ('.$currencyId.')');
@@ -904,7 +893,7 @@ class DesignUpdateManager extends Service
                 }
             }
             if (isset($requestData['character']['currencies']) && $requestData['character']['currencies']) {
-                foreach ($requestData['character']['currencies'] as $currencyId=>$quantity) {
+                foreach ($requestData['character']['currencies'] as $currencyId=> $quantity) {
                     $currency = Currency::find($currencyId);
                     if (!$currency) {
                         throw new \Exception('Cannot return an invalid currency. ('.$currencyId.')');
@@ -935,8 +924,7 @@ class DesignUpdateManager extends Service
      *
      * @return bool
      */
-    public function voteRequest($action, $request, $user)
-    {
+    public function voteRequest($action, $request, $user) {
         DB::beginTransaction();
 
         try {

@@ -21,8 +21,7 @@ use Config;
 use Illuminate\Http\Request;
 use Settings;
 
-class CharacterController extends Controller
-{
+class CharacterController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Admin / Character Controller
@@ -39,8 +38,7 @@ class CharacterController extends Controller
      *
      * @return string
      */
-    public function getPullNumber(Request $request, CharacterManager $service)
-    {
+    public function getPullNumber(Request $request, CharacterManager $service) {
         return $service->pullNumber($request->get('category'));
     }
 
@@ -49,8 +47,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateCharacter()
-    {
+    public function getCreateCharacter() {
         return view('admin.masterlist.create_character', [
             'categories'  => CharacterCategory::orderBy('sort')->get(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
@@ -59,6 +56,7 @@ class CharacterController extends Controller
             'specieses'   => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes'    => ['0' => 'Pick a Species First'],
             'features'    => Feature::orderBy('name')->pluck('name', 'id')->toArray(),
+            'features'    => Feature::getDropdownItems(1),
             'isMyo'       => false,
         ]);
     }
@@ -68,14 +66,13 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateMyo()
-    {
+    public function getCreateMyo() {
         return view('admin.masterlist.create_character', [
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
             'rarities'    => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'specieses'   => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes'    => ['0' => 'Pick a Species First'],
-            'features'    => Feature::getDropdownItems(),
+            'features'    => Feature::getDropdownItems(1),
             'isMyo'       => true,
         ]);
     }
@@ -85,14 +82,13 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateCharacterMyoSubtype(Request $request)
-    {
+    public function getCreateCharacterMyoSubtype(Request $request) {
         $species = $request->input('species');
 
         return view('admin.masterlist._create_character_subtype', [
-          'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-          'isMyo'    => $request->input('myo'),
-      ]);
+            'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'isMyo'    => $request->input('myo'),
+        ]);
     }
 
     /**
@@ -102,8 +98,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateCharacter(Request $request, CharacterManager $service)
-    {
+    public function postCreateCharacter(Request $request, CharacterManager $service) {
         $request->validate(Character::$createRules);
         $data = $request->only([
             'user_id', 'owner_url', 'character_category_id', 'number', 'slug',
@@ -135,8 +130,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateMyo(Request $request, CharacterManager $service)
-    {
+    public function postCreateMyo(Request $request, CharacterManager $service) {
         $request->validate(Character::$myoRules);
         $data = $request->only([
             'user_id', 'owner_url', 'name',
@@ -168,8 +162,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditCharacterStats($slug)
-    {
+    public function getEditCharacterStats($slug) {
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);
@@ -191,8 +184,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditMyoStats($id)
-    {
+    public function getEditMyoStats($id) {
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();
         if (!$this->character) {
             abort(404);
@@ -213,8 +205,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postEditCharacterStats(Request $request, CharacterManager $service, $slug)
-    {
+    public function postEditCharacterStats(Request $request, CharacterManager $service, $slug) {
         $request->validate(Character::$updateRules);
         $data = $request->only([
             'character_category_id', 'number', 'slug',
@@ -246,8 +237,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postEditMyoStats(Request $request, CharacterManager $service, $id)
-    {
+    public function postEditMyoStats(Request $request, CharacterManager $service, $id) {
         $request->validate(Character::$myoRules);
         $data = $request->only([
             'name',
@@ -278,8 +268,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditCharacterDescription($slug)
-    {
+    public function getEditCharacterDescription($slug) {
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);
@@ -298,8 +287,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditMyoDescription($id)
-    {
+    public function getEditMyoDescription($id) {
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();
         if (!$this->character) {
             abort(404);
@@ -319,8 +307,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postEditCharacterDescription(Request $request, CharacterManager $service, $slug)
-    {
+    public function postEditCharacterDescription(Request $request, CharacterManager $service, $slug) {
         $data = $request->only([
             'description',
         ]);
@@ -349,8 +336,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postEditMyoDescription(Request $request, CharacterManager $service, $id)
-    {
+    public function postEditMyoDescription(Request $request, CharacterManager $service, $id) {
         $data = $request->only([
             'description',
         ]);
@@ -379,8 +365,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCharacterSettings(Request $request, CharacterManager $service, $slug)
-    {
+    public function postCharacterSettings(Request $request, CharacterManager $service, $slug) {
         $data = $request->only([
             'is_visible',
         ]);
@@ -409,8 +394,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postMyoSettings(Request $request, CharacterManager $service, $id)
-    {
+    public function postMyoSettings(Request $request, CharacterManager $service, $id) {
         $data = $request->only([
             'is_visible',
         ]);
@@ -438,8 +422,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterDelete($slug)
-    {
+    public function getCharacterDelete($slug) {
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);
@@ -458,8 +441,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getMyoDelete($id)
-    {
+    public function getMyoDelete($id) {
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();
         if (!$this->character) {
             abort(404);
@@ -479,8 +461,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCharacterDelete(Request $request, CharacterManager $service, $slug)
-    {
+    public function postCharacterDelete(Request $request, CharacterManager $service, $slug) {
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);
@@ -507,8 +488,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postMyoDelete(Request $request, CharacterManager $service, $id)
-    {
+    public function postMyoDelete(Request $request, CharacterManager $service, $id) {
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();
         if (!$this->character) {
             abort(404);
@@ -535,8 +515,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postTransfer(Request $request, CharacterManager $service, $slug)
-    {
+    public function postTransfer(Request $request, CharacterManager $service, $slug) {
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);
@@ -561,8 +540,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postMyoTransfer(Request $request, CharacterManager $service, $id)
-    {
+    public function postMyoTransfer(Request $request, CharacterManager $service, $id) {
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();
         if (!$this->character) {
             abort(404);
@@ -586,8 +564,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getTransferQueue($type)
-    {
+    public function getTransferQueue($type) {
         $transfers = CharacterTransfer::query();
         $user = Auth::user();
 
@@ -618,8 +595,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getTransferModal($id, $action)
-    {
+    public function getTransferModal($id, $action) {
         if ($action != 'approve' && $action != 'reject') {
             abort(404);
         }
@@ -642,8 +618,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postTransferQueue(Request $request, CharacterManager $service, $id)
-    {
+    public function postTransferQueue(Request $request, CharacterManager $service, $id) {
         if (!Auth::check()) {
             abort(404);
         }
@@ -672,8 +647,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getTradeQueue($type)
-    {
+    public function getTradeQueue($type) {
         $trades = Trade::query();
         $user = Auth::user();
 
@@ -689,11 +663,11 @@ class CharacterController extends Controller
 
         $stacks = [];
         foreach ($trades->get() as $trade) {
-            foreach ($trade->data as $side=>$assets) {
+            foreach ($trade->data as $side=> $assets) {
                 if (isset($assets['user_items'])) {
                     $user_items = UserItem::with('item')->find(array_keys($assets['user_items']));
                     $items = [];
-                    foreach ($assets['user_items'] as $id=>$quantity) {
+                    foreach ($assets['user_items'] as $id=> $quantity) {
                         $user_item = $user_items->find($id);
                         $user_item['quantity'] = $quantity;
                         array_push($items, $user_item);
@@ -722,8 +696,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getTradeModal($id, $action)
-    {
+    public function getTradeModal($id, $action) {
         if ($action != 'approve' && $action != 'reject') {
             abort(404);
         }
@@ -746,8 +719,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postTradeQueue(Request $request, TradeManager $service, $id)
-    {
+    public function postTradeQueue(Request $request, TradeManager $service, $id) {
         if (!Auth::check()) {
             abort(404);
         }
@@ -771,8 +743,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getMyoIndex()
-    {
+    public function getMyoIndex() {
         return view('admin.masterlist.myo_index', [
             'slots' => Character::myo(1)->orderBy('id', 'DESC')->paginate(30),
         ]);
