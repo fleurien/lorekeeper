@@ -11,7 +11,6 @@
 <div class="temp">
 
 <div class="row">
-    <p>TEXTING TESTING 123</P>
     <div class="col-md-6">
         <div class="card mb-4">
             <div class="card-body text-center">
