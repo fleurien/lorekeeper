@@ -48,11 +48,12 @@ class TradeManager extends Service {
             }
 
             $trade = Trade::create([
-                'sender_id'              => $user->id,
-                'recipient_id'           => $data['recipient_id'],
-                'status'                 => 'Open',
-                'comments'               => $data['comments'] ?? null,
-                'is_sender_confirmed'    => 0,
+                'sender_id' => $user->id,
+                'recipient_id' => $data['recipient_id'],
+                'status' => 'Open',
+                'terms_link' => $data['terms_link'],
+                'comments' => isset($data['comments']) ? $data['comments'] : null,
+                'is_sender_confirmed' => 0,
                 'is_recipient_confirmed' => 0,
                 'data'                   => null,
             ]);

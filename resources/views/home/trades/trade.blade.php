@@ -13,37 +13,34 @@
     </h1>
 
 
-    <div class="mb-1">
+<div class="mb-1">
+    <div class="row">
+        <div class="col-md-2 col-4"><h5>Sender</h5></div>
+        <div class="col-md-10 col-8">{!! $trade->sender->displayName !!}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-4"><h5>Created</h5></div>
+        <div class="col-md-10 col-8">{!! format_date($trade->created_at) !!} ({{ $trade->created_at->diffForHumans() }})</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-4"><h5>{{ $trade->status == 'Rejected' || ($trade->status == 'Completed' && $trade->staff_id) ? 'Processed' : 'Last Updated' }}</h5></div>
+        <div class="col-md-10 col-8">{!! format_date($trade->updated_at) !!} ({{ $trade->updated_at->diffForHumans() }})</div>
+    </div>
+    @if(isset($trade->terms_link) && $trade->terms_link)
         <div class="row">
-            <div class="col-md-2 col-4">
-                <h5>Sender</h5>
-            </div>
-            <div class="col-md-10 col-8">{!! $trade->sender->displayName !!}</div>
+            <div class="col-md-2 col-4"><h5>Proof of Terms</h5></div>
+            <div class="col-md-10 col-8"><a href="{{ $trade->terms_link }}">{{ $trade->terms_link }}</a></div>
         </div>
-        <div class="row">
-            <div class="col-md-2 col-4">
-                <h5>Created</h5>
-            </div>
-            <div class="col-md-10 col-8">{!! format_date($trade->created_at) !!} ({{ $trade->created_at->diffForHumans() }})</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2 col-4">
-                <h5>{{ $trade->status == 'Rejected' || ($trade->status == 'Completed' && $trade->staff_id) ? 'Processed' : 'Last Updated' }}</h5>
-            </div>
-            <div class="col-md-10 col-8">{!! format_date($trade->updated_at) !!} ({{ $trade->updated_at->diffForHumans() }})</div>
-        </div>
-        <div>
-            <div>
-                <h5>Sender's Comments</h5>
-            </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    @if ($trade->comments)
-                        {!! nl2br(htmlentities($trade->comments)) !!}
-                    @else
-                        No comment given.
-                    @endif
-                </div>
+    @endif
+    <div>
+        <div><h5>Sender's Comments</h5></div>
+        <div class="card mb-3">
+            <div class="card-body">
+                @if($trade->comments)
+                    {!! nl2br(htmlentities($trade->comments)) !!}
+                @else 
+                    No comment given.
+                @endif
             </div>
         </div>
     </div>

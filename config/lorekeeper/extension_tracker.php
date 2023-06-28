@@ -21,6 +21,15 @@ return [
         ]),
         'version' => '1.0.1',
     ],
+    
+    'trade_listings' => [
+        'key' => 'Trade_Listings',
+        'wiki_key' => 'Trade_Listings',
+        'creators' => json_encode([
+            'Mercury' => 'https://github.com/itinerare/',
+        ]),
+        'version' => '1.0.1',
+    ],
     'selected_character' => [
         'key' => 'selected_character',
         'wiki_key' => 'Selected_Character',

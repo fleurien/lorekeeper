@@ -106,6 +106,7 @@ class AddSiteSettings extends Command {
         $this->addSiteSetting('deactivated_key', 0, 'Optional key to view the deactivated list. Enter "0" to not require one.');
 
         $this->addSiteSetting('comment_dislikes_enabled', 0, '0: Dislikes disabled, 1: Dislikes enabled.');
+        $this->addSiteSetting('trade_listing_duration', 14, 'Number of days a trade listing is displayed for.');
 
         $this->line("\nSite settings up to date!");
 

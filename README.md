@@ -74,4 +74,6 @@ You will need to send yourself the verification email and then link your social 
 
 ## Contact
 
+
 If you have any questions, please feel free to ask in the Discord server: https://discord.gg/U4JZfsu
+
