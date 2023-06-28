@@ -24,14 +24,7 @@
     <table class="table table-sm">
         <tbody id="lootRow">
             <tr class="loot-row">
-<<<<<<< HEAD
                 <td>{!! Form::select('rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency', 'Award' => 'Award'] + ($showLootTables ? ['LootTable' => 'Loot Table'] : []) + ($showRaffles ? ['Raffle' => 'Raffle Ticket'] : []), null, ['class' => 'form-control reward-type', 'placeholder' => 'Select Reward Type']) !!}</td>
-=======
-                <td>{!! Form::select('rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency'] + ($showLootTables ? ['LootTable' => 'Loot Table'] : []) + ($showRaffles ? ['Raffle' => 'Raffle Ticket'] : []), null, [
-                    'class' => 'form-control reward-type',
-                    'placeholder' => 'Select Reward Type',
-                ]) !!}</td>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                 <td class="loot-row-select"></td>
                 <td>{!! Form::text('quantity[]', 1, ['class' => 'form-control']) !!}</td>
                 <td class="text-right"><a href="#" class="btn btn-danger remove-loot-button">Remove</a></td>
@@ -40,12 +33,8 @@
     </table>
     {!! Form::select('rewardable_id[]', $items, null, ['class' => 'form-control item-select', 'placeholder' => 'Select Item']) !!}
     {!! Form::select('rewardable_id[]', $currencies, null, ['class' => 'form-control currency-select', 'placeholder' => 'Select Currency']) !!}
-<<<<<<< HEAD
     {!! Form::select('rewardable_id[]', $awards, null, ['class' => 'form-control award-select', 'placeholder' => 'Select Award']) !!}
     @if($showLootTables)
-=======
-    @if ($showLootTables)
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
         {!! Form::select('rewardable_id[]', $tables, null, ['class' => 'form-control table-select', 'placeholder' => 'Select Loot Table']) !!}
     @endif
     @if ($showRaffles)
