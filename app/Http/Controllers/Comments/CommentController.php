@@ -23,7 +23,7 @@ use Notifications;
 use Settings;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
-class CommentController extends Controller implements CommentControllerInterface
+class CommentController extends Controller 
 {
     public function __construct()
     {

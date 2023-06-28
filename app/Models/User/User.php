@@ -28,12 +28,14 @@ use App\Models\Trade;
 use App\Models\User\UserCharacterLog;
 use App\Models\WorldExpansion\FactionRank;
 use App\Models\WorldExpansion\FactionRankMember;
+use App\Models\Report\Report;
 
 use App\Traits\Commenter;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -928,16 +930,27 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return int
      */
-    public function hasAdminNotification($user)
-    {
-        $submissionCount = $user->hasPower('manage_submissions') ? Submission::where('status', 'Pending')->whereNotNull('prompt_id')->count() : 0;
-        $claimCount = $user->hasPower('manage_submissions') ? Submission::where('status', 'Pending')->whereNull('prompt_id')->count() : 0;
-        $designCount = $user->hasPower('manage_characters') ? CharacterDesignUpdate::characters()->where('status', 'Pending')->count() : 0;
-        $myoCount = $user->hasPower('manage_characters') ? CharacterDesignUpdate::myos()->where('status', 'Pending')->count() : 0;
-        $transferCount = $user->hasPower('manage_characters') ? CharacterTransfer::active()->where('is_approved', 0)->count() : 0;
-        $tradeCount = $user->hasPower('manage_characters') ? Trade::where('status', 'Pending')->count() : 0;
-        $total = $submissionCount + $claimCount + $designCount + $myoCount + $transferCount + $tradeCount;
+     public function hasAdminNotification($user)
+     {
+        $count = [];
+        $count[] = $this->hasPower('manage_submissions')    ? Submission::where('status', 'Pending')->whereNotNull('prompt_id')->count()    : 0; //submissionCount
+        $count[] = $this->hasPower('manage_submissions')    ? Submission::where('status', 'Pending')->whereNull('prompt_id')->count()       : 0; //claimCount
+        $count[] = $this->hasPower('manage_characters')     ? CharacterDesignUpdate::characters()->where('status', 'Pending')->count()      : 0; //designCount
+        $count[] = $this->hasPower('manage_characters')     ? CharacterDesignUpdate::myos()->where('status', 'Pending')->count()            : 0; //myoCount
+        $count[] = $this->hasPower('manage_characters')     ? CharacterTransfer::active()->where('is_approved', 0)->count()                 : 0; //transferCount
+        $count[] = $this->hasPower('manage_characters')     ? Trade::where('status', 'Pending')->count()                                    : 0; //tradeCount
+        $count[] = $this->hasPower('manage_characters')     ? Trade::where('status', 'Pending')->count()                                    : 0; //tradeCount
+        $count[] = $this->hasPower('manage_submissions')    ? GallerySubmission::pending()->collaboratorApproved()->count()                 : 0; //galleryCount
+        $count[] = $this->hasPower('manage_reports')        ? Report::where('status', 'Pending')->count()                                   : 0; //reportCount
+        $count[] = $this->hasPower('manage_reports')        ? Report::assignedToMe($this)->count()                                          : 0; //assignedReportCount
 
-        return $total;
+        // If Adoption Center is installed:
+        // $count[] = $this->hasPower('manage_submissions') && $this->hasPower('manage_characters') ? Surrender::where('status', 'Pending')->count() : 0; //surrenderCount
+
+        // If Affiliates is installed:
+        // $count[] = $this->hasPower('manage_affiliates')     ? Affiliate::where('status', 'Pending')->count()                                : 0; //affiliateCount
+
+        return array_sum($count);
+
     }
 }

@@ -19,19 +19,10 @@
                 {{-- Comment block header --}}
                 <div class="row mx-0 px-0 align-items-md-end">
                     <h5 class="mt-0 mb-1 col mx-0 px-0">
-<<<<<<< HEAD
                         {!! $comment->commenter->commentDisplayName !!} @if($comment->commenter->isStaff == true)<small>Staff Member</small>@endif
                     </h5>
                     @if($comment->is_featured)
                         <div class="ml-1 text-muted text-right col-6 mx-0 pr-1"><small>Featured by Owner</small></div> 
-=======
-                        {!! $comment->commenter->commentDisplayName !!} @if ($comment->commenter->isStaff == true)
-                            <small class="text-success">Staff Member</small>
-                        @endif
-                    </h5>
-                    @if ($comment->is_featured)
-                        <div class="ml-1 text-muted text-right col-6 mx-0 pr-1"><small class="text-success">Featured by Owner</small></div>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                     @endif
                 </div>
 
