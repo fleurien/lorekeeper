@@ -137,7 +137,6 @@
                 <div class="col-md-10 col-8">{!! $request->rarity ? $request->rarity->displayName : 'None Selected' !!}</div>
             </div>
         </div>
-<<<<<<< HEAD
         @endif
         <div class="row">
             <div class="col-md-2 col-4"><h5>Rarity</h5></div>
@@ -155,29 +154,6 @@
         @if($request->character && $request->character->is_myo_slot && $request->character->image->features)
             @foreach($request->character->image->features as $feature)
                 <div>@if($feature->feature->feature_category_id) <strong>{!! $feature->feature->category->displayName !!}:</strong> @endif {!! $feature->feature->displayName !!} @if($feature->data) ({{ $feature->data }}) @endif <span class="text-danger">*Required</span></div>
-=======
-        <h5>Traits</h5>
-        <div>
-            @if ($request->character && $request->character->is_myo_slot && $request->character->image->features)
-                @foreach ($request->character->image->features as $feature)
-                    <div>
-                        @if ($feature->feature->feature_category_id)
-                            <strong>{!! $feature->feature->category->displayName !!}:</strong>
-                            @endif {!! $feature->feature->displayName !!} @if ($feature->data)
-                                ({{ $feature->data }})
-                            @endif <span class="text-danger">*Required</span>
-                    </div>
-                @endforeach
-            @endif
-            @foreach ($request->features as $feature)
-                <div>
-                    @if ($feature->feature->feature_category_id)
-                        <strong>{!! $feature->feature->category->displayName !!}:</strong>
-                        @endif {!! $feature->feature->displayName !!} @if ($feature->data)
-                            ({{ $feature->data }})
-                        @endif
-                </div>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
             @endforeach
         </div>
     @endif

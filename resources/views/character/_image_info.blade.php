@@ -165,13 +165,8 @@
                         <h5>Design</h5>
                     </div>
                     <div class="col-lg-8 col-md-6 col-8">
-<<<<<<< HEAD
                         @foreach($image->designers as $designer)
                             <div>{!! $designer->displayLink() !!} {{ $designer->credit_type ? '(' . $designer->credit_type . ')' : null}}</div>
-=======
-                        @foreach ($image->designers as $designer)
-                            <div>{!! $designer->displayLink() !!}</div>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                         @endforeach
                     </div>
                 </div>
@@ -180,13 +175,8 @@
                         <h5>Art</h5>
                     </div>
                     <div class="col-lg-8 col-md-6 col-8">
-<<<<<<< HEAD
                         @foreach($image->artists as $artist)
                             <div>{!! $artist->displayLink() !!} {{ $artist->credit_type ? '(' . $artist->credit_type . ')' : null}}</div>
-=======
-                        @foreach ($image->artists as $artist)
-                            <div>{!! $artist->displayLink() !!}</div>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                         @endforeach
                     </div>
                 </div>

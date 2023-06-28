@@ -9,7 +9,6 @@
 @endsection
 
 @section('profile-content')
-<<<<<<< HEAD
 
 @include('widgets._awardcase_feature', ['target' => $character, 'count' => Config::get('lorekeeper.extensions.awards.character_featured'), 'float' => true])
 
@@ -18,20 +17,9 @@
 @else
 {!! breadcrumbs([($character->category->masterlist_sub_id ? $character->category->sublist->name.' Masterlist' : 'Character masterlist') => ($character->category->masterlist_sub_id ? 'sublist/'.$character->category->sublist->key : 'masterlist' ), $character->fullName => $character->url]) !!}
 @endif
-=======
-    @if ($character->is_myo_slot)
-        {!! breadcrumbs(['MYO Slot Masterlist' => 'myos', $character->fullName => $character->url]) !!}
-    @else
-        {!! breadcrumbs([
-            $character->category->masterlist_sub_id ? $character->category->sublist->name . ' Masterlist' : 'Character masterlist' => $character->category->masterlist_sub_id ? 'sublist/' . $character->category->sublist->key : 'masterlist',
-            $character->fullName => $character->url,
-        ]) !!}
-    @endif
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
 
     @include('character._header', ['character' => $character])
 
-<<<<<<< HEAD
 {{-- Main Image --}}
 <div class="row mb-3" style="clear:both;">
     <div class="col-md-7">
@@ -61,20 +49,6 @@
                 <li class="nav-item">
                     <a class="nav-link" id="settingsTab" data-toggle="tab" href="#settings-{{ $character->slug }}" role="tab"><i class="fas fa-cog"></i></a>
                 </li>
-=======
-    {{-- Main Image --}}
-    <div class="row mb-3">
-        <div class="col-md-7">
-            <div class="text-center">
-                <a href="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($character->image->imageDirectory . '/' . $character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}"
-                    data-lightbox="entry" data-title="{{ $character->fullName }}">
-                    <img src="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($character->image->imageDirectory . '/' . $character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}"
-                        class="image" alt="{{ $character->fullName }}" />
-                </a>
-            </div>
-            @if ($character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($character->image->imageDirectory . '/' . $character->image->fullsizeFileName)))
-                <div class="text-right">You are viewing the full-size image. <a href="{{ $character->image->imageUrl }}">View watermarked image</a>?</div>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
             @endif
         </div>
         @include('character._image_info', ['image' => $character->image])

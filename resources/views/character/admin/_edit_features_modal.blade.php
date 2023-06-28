@@ -14,7 +14,6 @@
     {!! Form::select('rarity_id', $rarities, $image->rarity_id, ['class' => 'form-control']) !!}
 </div>
 
-<<<<<<< HEAD
     <div class="row no-gutters">
         <div class="col-md-6 pr-2">
             <div class="form-group">
@@ -52,19 +51,6 @@
             {!! Form::text('feature_data[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Extra Info (Optional)']) !!}
             <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
         </div>
-=======
-<div class="form-group">
-    {!! Form::label('Traits') !!}
-    <div><a href="#" class="btn btn-primary mb-2" id="add-feature">Add Trait</a></div>
-    <div id="featureList">
-        @foreach ($image->features as $feature)
-            <div class="d-flex mb-2">
-                {!! Form::select('feature_id[]', $features, $feature->feature_id, ['class' => 'form-control mr-2 feature-select original', 'placeholder' => 'Select Trait']) !!}
-                {!! Form::text('feature_data[]', $feature->data, ['class' => 'form-control mr-2', 'placeholder' => 'Extra Info (Optional)']) !!}
-                <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
-            </div>
-        @endforeach
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
     </div>
     <div class="feature-row hide mb-2">
         {!! Form::select('feature_id[]', $features, null, ['class' => 'form-control mr-2 feature-select', 'placeholder' => 'Select Trait']) !!}

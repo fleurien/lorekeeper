@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {!! Form::open(['url' => 'admin/character/image/'.$image->id.'/credits']) !!}
     <div class="form-group">
         {!! Form::label('Designer(s)') !!}
@@ -78,17 +77,6 @@
             <a href="#" class="add-artist btn btn-link mb-2" data-toggle="tooltip" title="Add another artist">+</a>
         </div>
     </div>
-=======
-{!! Form::open(['url' => 'admin/character/image/' . $image->id . '/credits']) !!}
-<div class="form-group">
-    {!! Form::label('Designer(s)') !!}
-    <div id="designerList">
-        <?php $designerCount = count($image->designers); ?>
-        @foreach ($image->designers as $count => $designer)
-            <div class="mb-2 d-flex">
-                {!! Form::select('designer_id[' . $designer->id . ']', $users, $designer->user_id, ['class' => 'form-control mr-2 selectize', 'placeholder' => 'Select a Designer']) !!}
-                {!! Form::text('designer_url[' . $designer->id . ']', $designer->url, ['class' => 'form-control mr-2', 'placeholder' => 'Designer URL']) !!}
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
 
                 <a href="#" class="add-designer btn btn-link" data-toggle="tooltip" title="Add another designer" @if ($count != $designerCount - 1) style="visibility: hidden;" @endif>+</a>
             </div>

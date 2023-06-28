@@ -10,6 +10,7 @@ use App\Models\Feature\Feature;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\Rarity;
+use App\Services\DesignUpdateManager;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\User\User;
