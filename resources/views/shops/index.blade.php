@@ -21,7 +21,6 @@
                     <a href="{{ $shop->url }}" class="h5 mb-0">{{ $shop->name }}</a>
                 </div>
             </div>
-<<<<<<< HEAD
             <div class="shop-name mt-1">
                 <a href="{{ $shop->url }}" class="h5 mb-0">{{ $shop->name }}</a>
             </div>
@@ -37,8 +36,4 @@
     </div>
 </div>
 
-=======
-        @endforeach
-    </div>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
 @endsection

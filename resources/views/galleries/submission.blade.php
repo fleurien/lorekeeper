@@ -104,7 +104,6 @@
                         <div class="card-body">
                             {!! $submission->parsed_description ? $submission->parsed_description : '<i>No description provided.</i>' !!}
 
-<<<<<<< HEAD
                         <hr/>
                         <p>
                             <strong>Submitted By</strong> {!! $submission->user->displayName !!}
@@ -121,22 +120,6 @@
                             <strong>Submitted:</strong> {!! pretty_date($submission->created_at) !!} ・
                             <strong>Last Updated:</strong> {!! pretty_date($submission->updated_at) !!}
                         </p>
-=======
-                            <hr />
-                            <p>
-                                <strong>Submitted By</strong> {!! $submission->user->displayName !!}
-                                @if ($submission->prompt_id)
-                                    <strong>for</strong> {!! $submission->prompt->displayName !!}
-                                @endif
-                                @if ($submission->favorites->count())
-                                    ・ <a class="view-favorites" href="#">View Favorites</a>
-                                @endif
-                                <br />
-                                <strong>Submitted:</strong> {!! pretty_date($submission->created_at) !!} ・
-                                <strong>Last Updated:</strong> {!! pretty_date($submission->updated_at) !!}
-                            </p>
-                        </div>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                     </div>
                 </div>
             </div>

@@ -46,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'alias', 'rank_id', 'email', 'email_verified_at', 'password', 'is_news_unread', 'is_banned', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed', 'is_deactivated', 'deactivater_id',
+        'name', 'alias', 'rank_id', 'email', 'email_verified_at', 'password', 'is_news_unread', 'is_banned', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed', 'is_deactivated', 'deactivater_id', 'theme_id',
     ];
 
     /**
@@ -101,6 +101,14 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function settings() {
         return $this->hasOne('App\Models\User\UserSettings');
+    }
+
+    /**
+     * Get user theme.
+     */
+    public function theme()
+    {
+        return $this->belongsTo('App\Models\Theme');
     }
 
     /**
@@ -214,7 +222,8 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get all of the user's character bookmarks.
      */
-    public function bookmarks() {
+    public function bookmarks()
+    {
         return $this->hasMany('App\Models\Character\CharacterBookmark')->where('user_id', $this->id);
     }
 

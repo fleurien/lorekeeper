@@ -35,7 +35,8 @@ class UserController extends Controller {
     /**
      * Create a new controller instance.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $name = Route::current()->parameter('name');
         $this->user = User::where('name', $name)->first();
@@ -58,14 +59,12 @@ class UserController extends Controller {
      */
     public function getUser($name) {
         $characters = $this->user->characters();
-        if (!Auth::check() || !(Auth::check() && Auth::user()->hasPower('manage_characters'))) {
-            $characters->visible();
-        }
 
         $aliases = $this->user->aliases();
         if (!Auth::check() || !(Auth::check() && Auth::user()->hasPower('edit_user_info'))) {
             $aliases->visible();
         }
+        if(!Auth::check() || !(Auth::check() && Auth::user()->hasPower('manage_characters'))) $characters->visible();
 
         return view('user.profile', [
             'user'                  => $this->user,

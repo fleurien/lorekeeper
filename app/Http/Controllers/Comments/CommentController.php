@@ -23,8 +23,10 @@ use Notifications;
 use Settings;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
-class CommentController extends Controller {
-    public function __construct() {
+class CommentController extends Controller implements CommentControllerInterface
+{
+    public function __construct()
+    {
         $this->middleware('web');
 
         if (Config::get('comments.guest_commenting') == true) {

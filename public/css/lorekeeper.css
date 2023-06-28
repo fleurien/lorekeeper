@@ -239,10 +239,12 @@ main > .row {
 .site-header-image {
     /*background-color: #eee;*/
     background-repeat: repeat;
-    min-height: 200px;
+    min-height: 275px;
     width: 67%;
     margin-left: auto;
     margin-right: auto;
+    border-start-end-radius: 150px;
+border-start-start-radius: 150px;
 }
 
 .navbar {

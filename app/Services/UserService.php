@@ -231,10 +231,21 @@ class UserService extends Service {
     }
 
     /**
-     * Updates user's birthday.
+     * Updates the user's theme.
      *
-     * @param mixed $data
-     * @param mixed $user
+     * @param  array                  $data
+     * @param  \App\Models\User\User  $user
+     * @return bool
+     */
+    public function updateTheme($data, $user)
+    {
+        $user->theme_id = $data['theme'];
+        $user->save();
+        return true;
+    }
+
+    /**
+     * Updates user's birthday
      */
     public function updateBirthday($data, $user) {
         $user->birthday = $data;
@@ -305,7 +316,7 @@ class UserService extends Service {
             $user->save();
 
             return $this->commitReturn($avatar);
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
