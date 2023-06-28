@@ -33,9 +33,8 @@
             {!! Form::label('name', 'Name') !!}
             {!! Form::text('name', $character->name, ['class' => 'form-control']) !!}
         </div>
-<<<<<<< HEAD
     @endif
-@endif
+
 
 @if(!$character->is_myo_slot && ($char_enabled == 2 || (Auth::user()->isStaff && $char_enabled == 3)))
 @if(Auth::user()->isStaff && $char_enabled == 3)
@@ -73,16 +72,13 @@
             <div class="col-md form-group">
                 {!! Form::label('is_gift_art_allowed', 'Allow Gift Art', ['class' => 'form-check-label mb-3']) !!} {!! add_help('This will place the character on the list of characters that can be drawn for gift art. This does not have any other functionality, but allow users looking for characters to draw to find your character easily.') !!}
                 {!! Form::select('is_gift_art_allowed', [0 => 'No', 1 => 'Yes', 2 => 'Ask First'], $character->is_gift_art_allowed, ['class' => 'form-control user-select']) !!}
-=======
         @if (Config::get('lorekeeper.extensions.character_TH_profile_link'))
             <div class="form-group">
                 {!! Form::label('link', 'Profile Link') !!}
                 {!! Form::text('link', $character->profile->link, ['class' => 'form-control']) !!}
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
             </div>
         @endif
     @endif
-<<<<<<< HEAD
     @if($character->is_tradeable ||  $character->is_sellable)
         <div class="form-group disabled">
             {!! Form::checkbox('is_trading', 1, $character->is_trading, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
@@ -93,15 +89,11 @@
     @endif
 @endif
 @if($character->user_id != Auth::user()->id)
-=======
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
     <div class="form-group">
         {!! Form::label('text', 'Profile Content') !!}
         {!! Form::textarea('text', $character->profile->text, ['class' => 'wysiwyg form-control']) !!}
     </div>
 
-<<<<<<< HEAD
-=======
     @if ($character->user_id == Auth::user()->id)
         @if (!$character->is_myo_slot)
             <div class="row">
@@ -132,10 +124,10 @@
             {!! Form::label('alert_user', 'Notify User', ['class' => 'form-check-label ml-3']) !!} {!! add_help('This will send a notification to the user that their character profile has been edited. A notification will not be sent if the character is not visible.') !!}
         </div>
     @endif
+    @endif
     <div class="text-right">
         {!! Form::submit('Edit Profile', ['class' => 'btn btn-primary']) !!}
     </div>
     {!! Form::close() !!}
 
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
 @endsection

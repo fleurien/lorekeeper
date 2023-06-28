@@ -31,7 +31,7 @@
                         <i class="fa-solid fa-dice"></i> Raffles
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="templink">
+                        <a class="dropdown-item" href="/trades/listings">
                         <i class="fa-solid fa-right-left"></i> Trades
                         </a>
                     </div>
@@ -48,7 +48,7 @@
                         <i class="fa-solid fa-dice"></i> Raffles
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="templink">
+                        <a class="dropdown-item" href="/trades/listings">
                         <i class="fa-solid fa-right-left"></i> Trades
                         </a>
                     </div>

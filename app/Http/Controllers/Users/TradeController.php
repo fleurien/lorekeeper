@@ -15,6 +15,7 @@ use App\Models\Item\ItemCategory;
 use App\Models\Item\Item;
 use App\Models\User\User;
 use App\Models\User\UserItem;
+use App\Models\Currency\Currency;
 use App\Services\TradeManager;
 use App\Services\TradeListingManager;
 
