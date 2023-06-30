@@ -67,6 +67,8 @@ class DesignUpdateManager extends Service {
                 'rarity_id'     => $character->image->rarity_id,
                 'species_id'    => $character->image->species_id,
                 'subtype_id'    => $character->image->subtype_id,
+                'transformation_id' => $character->image->transformation_id
+                
             ];
 
             $request = CharacterDesignUpdate::create($data);
@@ -557,6 +559,7 @@ class DesignUpdateManager extends Service {
                 'species_id'    => $request->species_id,
                 'subtype_id'    => ($request->character->is_myo_slot && isset($request->character->image->subtype_id)) ? $request->character->image->subtype_id : $request->subtype_id,
                 'rarity_id'     => $request->rarity_id,
+                'transformation_id' => ($request->character->is_myo_slot && isset($request->character->image->transformation_id)) ? $request->character->image->transformation_id : $request->transformation_id,
                 'sort'          => 0,
             ]);
 
