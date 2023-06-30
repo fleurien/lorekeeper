@@ -98,6 +98,7 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function ()
     Route::get('{slug}/children', 'CharacterLineageController@getCharacterChildren');
     Route::get('{slug}/grandchildren', 'CharacterLineageController@getCharacterGrandChildren');
     Route::get('{slug}/great-grandchildren', 'CharacterLineageController@getCharacterGreatGrandChildren');
+    Route::get('{slug}/image/{id}', 'CharacterController@getCharacterImage');
 });
 Route::group(['prefix' => 'myo', 'namespace' => 'Characters'], function () {
     Route::get('{id}', 'MyoController@getCharacter');
@@ -136,6 +137,7 @@ Route::group(['prefix' => 'world'], function () {
     Route::get(__('volumes.library').'/'.__('volumes.book').'/{id}', 'WorldController@getBook');
     Route::get(__('volumes.library').'/'.__('volumes.volumes'), 'WorldController@getVolumes');
 
+    Route::get(__('transformations.transformations'), 'WorldController@getTransformations');
 });
 
 Route::group(['prefix' => 'prompts'], function () {

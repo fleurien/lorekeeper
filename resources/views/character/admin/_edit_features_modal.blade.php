@@ -9,10 +9,6 @@
     {!! Form::select('subtype_id', $subtypes, $image->subtype_id, ['class' => 'form-control', 'id' => 'subtype']) !!}
 </div>
 
-<div class="form-group">
-    {!! Form::label('Character Rarity') !!}
-    {!! Form::select('rarity_id', $rarities, $image->rarity_id, ['class' => 'form-control']) !!}
-</div>
 
     <div class="row no-gutters">
         <div class="col-md-6 pr-2">
@@ -32,6 +28,14 @@
                 </div>
             </div>
         </div>
+    <div class="form-group" id="transformations">
+        {!! Form::label(ucfirst(__('transformations.transformation')).' (Optional)') !!}
+        {!! Form::select('transformation_id', $transformations, $image->transformation_id, ['class' => 'form-control', 'id' => 'transformation']) !!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('Character Rarity') !!}
+        {!! Form::select('rarity_id', $rarities, $image->rarity_id, ['class' => 'form-control']) !!}
     </div>
 
     <div class="form-group">

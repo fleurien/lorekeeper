@@ -130,6 +130,7 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function ()
 
     Route::post('{slug}/approval', 'CharacterController@postCharacterApproval');
     Route::get('{slug}/approval', 'CharacterController@getCharacterApproval');
+    Route::post('{slug}/approval/{id}', 'CharacterController@postCharacterApprovalSpecificImage');
 });
 Route::group(['prefix' => 'myo', 'namespace' => 'Characters'], function () {
     Route::get('{id}/profile/edit', 'MyoController@getEditCharacterProfile');
@@ -141,6 +142,8 @@ Route::group(['prefix' => 'myo', 'namespace' => 'Characters'], function () {
 
     Route::post('{id}/approval', 'MyoController@postCharacterApproval');
     Route::get('{id}/approval', 'MyoController@getCharacterApproval');
+    //this is useless but im not sure if we dont include it things will get weird or not
+    Route::post('{slug}/approval/{id}', 'CharacterController@postCharacterApprovalSpecificImage');
 });
 Route::group(['prefix' => 'breeding-permissions', 'namespace' => 'Users'], function() {
     Route::get('/', 'AccountController@getBreedingPermissions');

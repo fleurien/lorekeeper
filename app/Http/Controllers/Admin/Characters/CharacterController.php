@@ -27,6 +27,8 @@ use Settings;
 use App\Models\Character\CharacterGenome;
 use App\Models\Genetics\Loci;
 use App\Models\Genetics\LociAllele;
+use App\Models\Character\CharacterTransformation as Transformation;
+
 
 class CharacterController extends Controller
 {
@@ -68,6 +70,7 @@ class CharacterController extends Controller
             'features'    => Feature::getDropdownItems(1),
             'isMyo'       => false,
             'characterOptions' => CharacterLineageBlacklist::getAncestorOptions(),
+            'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -86,6 +89,7 @@ class CharacterController extends Controller
             'features'    => Feature::getDropdownItems(1),
             'isMyo'       => true,
             'characterOptions' => CharacterLineageBlacklist::getAncestorOptions(),
+            'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -116,6 +120,18 @@ class CharacterController extends Controller
             'loci' => $loci,
             'alleles' => $alleles,
             'isMyo' => $request->input('myo'),
+        ]);
+    }
+
+    /**
+     * Shows the edit image transformation portion of the modal.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCreateCharacterMyoTransformation(Request $request) {
+        return view('admin.masterlist._create_character_Transformation', [
+            'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'isMyo'           => $request->input('myo'),
         ]);
     }
 
@@ -156,7 +172,7 @@ class CharacterController extends Controller
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'gene_id', 'gene_allele_id', 'gene_numeric_data', 'gene_gradient_data',
             'genome_visibility',            
-            'image', 'thumbnail', 'image_description',
+            'image', 'thumbnail', 'image_description', 'transformation_id',
         ]);
         if ($character = $service->createCharacter($data, Auth::user())) {
             flash('Character created successfully.')->success();
@@ -208,7 +224,7 @@ class CharacterController extends Controller
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'gene_id', 'gene_allele_id', 'gene_numeric_data', 'gene_gradient_data',
             'genome_visibility',
-            'image', 'thumbnail',
+            'image', 'thumbnail', 'transformation_id',
         ]);
         if ($character = $service->createCharacter($data, Auth::user(), true)) {
             flash('MYO slot created successfully.')->success();

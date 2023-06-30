@@ -20,8 +20,25 @@
 
     @include('character._header', ['character' => $character])
 
+@if ($character->images()->where('is_valid', 1)->whereNotNull('transformation_id')->exists())
+        <div class="card-header mb-2">
+            <ul class="nav nav-tabs card-header-tabs">
+                @foreach ($character->images()->where('is_valid', 1)->get() as $image)
+                    <li class="nav-item">
+                        <a class="nav-link form-data-button {{ $image->id == $character->image->id ? 'active' : '' }}" data-toggle="tab" role="tab" data-id="{{ $image->id }}">
+                            {{ $image->transformation_id ? $image->transformation->name : 'Main' }}
+                        </a>
+                    </li>
+                @endforeach
+                <li>
+                    <h3>{!! add_help('Click on a '.__('transformations.transformation').' to view the image. If you don\'t see the '.__('transformations.transformation').' you\'re looking for, it may not have been uploaded yet.') !!}</h3>
+                </li>
+            </ul>
+        </div>
+@endif
+
 {{-- Main Image --}}
-<div class="row mb-3" style="clear:both;">
+<div class="row mb-3" id="main-tab">
     <div class="col-md-7">
         @if(isset($background) && Config::get('lorekeeper.extensions.character_backgrounds.enabled'))
             <div class="text-center" style="{{ implode('; ',$background) }}; background-size: cover; background-repeat:no-repeat;">
@@ -117,4 +134,5 @@
 @section('scripts')
     @parent
     @include('character._image_js', ['character' => $character])
+    @include('character._transformation_js')
 @endsection

@@ -36,7 +36,17 @@
                     {!! Form::select('subtype_id', $subtypes, $request->subtype_id, ['class' => 'form-control', 'id' => 'subtype']) !!}
                 </div>
             @endif
+        </div>
 
+        <div class="form-group">
+            {!! Form::label('transformation_id', 'Transformation') !!}
+            @if ($request->character->is_myo_slot && $request->character->image->transformation_id)
+                <div class="alert alert-secondary">{!! $request->character->image->transformation->displayName !!}</div>
+            @else
+                <div id="transformations">
+                    {!! Form::select('transformation_id', $transformations, $request->transformation_id, ['class' => 'form-control', 'id' => 'transformation']) !!}
+                </div>
+            @endif
         </div>
 
         <div class="form-group">
@@ -137,6 +147,20 @@
                 <div class="col-md-10 col-8">{!! $request->rarity ? $request->rarity->displayName : 'None Selected' !!}</div>
             </div>
         </div>
+        @endif
+        @if($request->transformation_id)
+                <div class="row">
+                    <div class="col-md-2 col-4">
+                        <h5>{{ ucfirst(__('transformations.transformation')) }}</h5>
+                    </div>
+                    <div class="col-md-10 col-8">
+                        @if ($request->character->is_myo_slot && $request->character->image->transformation_id)
+                            {!! $request->character->image->transformation->displayName !!}
+                        @else
+                            {!! $request->transformation_id ? $request->transformation->displayName : 'None Selected' !!}
+                        @endif
+                    </div>
+                </div>
         @endif
         <div class="row">
             <div class="col-md-2 col-4"><h5>Rarity</h5></div>

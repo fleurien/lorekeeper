@@ -326,7 +326,10 @@
         {!! Form::label('Character Rarity') !!} @if($isMyo) {!! add_help('This will lock the slot into a particular rarity. Leave it blank if you would like to give the user more choices.') !!} @endif
         {!! Form::select('rarity_id', $rarities, old('rarity_id'), ['class' => 'form-control']) !!}
     </div>
-
+<div>
+{!! Form::label(ucfirst(__('transformations.transformation')).' (Optional)') !!} {!! add_help('This will make the image have the selected '.__('transformations.transformation').' id.') !!}
+        {!! Form::select('transformation_id', $transformations, null, ['class' => 'form-control']) !!}
+    </div>
     <div class="form-group">
             {!! Form::label('Traits') !!} @if ($isMyo)
                 {!! add_help(

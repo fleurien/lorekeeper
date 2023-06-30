@@ -251,6 +251,10 @@ return [
                 'name' => 'Library',
                 'url' => 'admin/data/volumes'
             ],
+            [
+                'name' => 'Transformations',
+                'url'  => 'admin/data/transformations',
+            ],
         ]
     ],
     'World.Expanded' => [

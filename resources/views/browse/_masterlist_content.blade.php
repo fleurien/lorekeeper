@@ -5,7 +5,6 @@
             {!! Form::label('name', 'Character Name/Code: ', ['class' => 'mr-2']) !!}
             {!! Form::text('name', Request::get('name'), ['class' => 'form-control']) !!}
         </div>
-<<<<<<< HEAD
         <div class="text-right mb-3"><a href="#advancedSearch" class="btn btn-sm btn-outline-info" data-toggle="collapse">Show Advanced Search Options <i class="fas fa-caret-down"></i></a></div>
         <div class="card bg-light mb-3 collapse" id="advancedSearch">
             <div class="card-body masterlist-advanced-search">
@@ -18,13 +17,60 @@
                         {!! Form::label('subtype_id', 'Species Subtype: ') !!}
                         {!! Form::select('subtype_id', $subtypes, Request::get('subtype_id'), ['class' => 'form-control']) !!}
                     </div>
+
+                    <div class="masterlist-search-field">
+                    {!! Form::label('transformation_id', ucfirst(__('transformations.transformation')).': ') !!}
+                    {!! Form::select('transformation_id', $transformations, Request::get('transformation_id'), ['class' => 'form-control']) !!}
+                    </div>
+                    <div class="masterlist-search-field">
+                        {!! Form::label('has_transformation', 'Has a '.ucfirst(__('transformations.transformation')).': ') !!}
+                        {!! Form::select('has_transformation', ['1' => 'Has a '.__('transformations.transformation').'.'], Request::get('has_transformation'), ['class' => 'form-control', 'placeholder' => 'Any']) !!}
+                    </div>
+                    <hr />
+                @endif
+                <hr/>
+                <div class="masterlist-search-field">
+                    {!! Form::label('owner', 'Owner Username: ') !!}
+                    {!! Form::select('owner', $userOptions, Request::get('owner'), ['class'=> 'form-control mr-2 userselectize', 'style' => 'width: 250px', 'placeholder' => 'Select a User']) !!}
+                </div>
+                <div class="masterlist-search-field">
+                    {!! Form::label('artist', 'Artist: ') !!}
+                    {!! Form::select('artist', $userOptions, Request::get('artist'), ['class'=> 'form-control mr-2 userselectize', 'style' => 'width: 250px', 'placeholder' => 'Select a User']) !!}
+                </div>
+                <div class="masterlist-search-field">
+                    {!! Form::label('designer', 'Designer: ') !!}
+                    {!! Form::select('designer', $userOptions, Request::get('designer'), ['class'=> 'form-control mr-2 userselectize', 'style' => 'width: 250px', 'placeholder' => 'Select a User']) !!}
+                </div>
+                <hr />
+                <div class="masterlist-search-field">
+                    {!! Form::label('owner_url', 'Owner URL / Username: ') !!} {!! add_help ('Example: https://deviantart.com/username OR username') !!}
+                    {!! Form::text('owner_url', Request::get('owner_url'), ['class'=> 'form-control mr-2', 'style' => 'width: 250px', 'placeholder' => 'Type a Username']) !!}
+                </div>
+                <div class="masterlist-search-field">
+                    {!! Form::label('artist_url', 'Artist URL / Username: ') !!} {!! add_help ('Example: https://deviantart.com/username OR username') !!}
+                    {!! Form::text('artist_url', Request::get('artist_url'), ['class'=> 'form-control mr-2', 'style' => 'width: 250px', 'placeholder' => 'Type a Username']) !!}
+                </div>
+                <div class="masterlist-search-field">
+                    {!! Form::label('designer_url', 'Designer URL / Username: ') !!} {!! add_help ('Example: https://deviantart.com/username OR username') !!}
+                    {!! Form::text('designer_url', Request::get('designer_url'), ['class'=> 'form-control mr-2', 'style' => 'width: 250px', 'placeholder' => 'Type a Username']) !!}
+                </div>
+                <hr/>
+                <div class="masterlist-search-field">
+                    {!! Form::label('sale_value_min', 'Resale Minimum ($): ') !!}
+                    {!! Form::text('sale_value_min', Request::get('sale_value_min'), ['class' => 'form-control']) !!}
+                </div>
+                <div class="masterlist-search-field">
+                    {!! Form::label('sale_value_max', 'Resale Maximum ($): ') !!}
+                    {!! Form::text('sale_value_max', Request::get('sale_value_max'), ['class' => 'form-control']) !!}
+                </div>
+                @if(!$isMyo)
                     <div class="masterlist-search-field">
                         {!! Form::label('title_id', 'Title: ') !!}
                         {!! Form::select('title_id', $titles, Request::get('title_id'), ['class' => 'form-control']) !!}
                     </div>
                 @endif
                 <hr/>
-=======
+
         <div class="form-group mb-3">
             {!! Form::select('rarity_id', $rarities, Request::get('rarity_id'), ['class' => 'form-control mr-3']) !!}
         </div>
@@ -36,7 +82,7 @@
     <div class="card bg-light mb-3 collapse" id="advancedSearch">
         <div class="card-body masterlist-advanced-search">
             @if (!$isMyo)
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
+
                 <div class="masterlist-search-field">
                     {!! Form::label('character_category_id', 'Category: ') !!}
                     {!! Form::select('character_category_id', $categories, Request::get('character_category_id'), ['class' => 'form-control']) !!}
@@ -184,7 +230,6 @@
                         {!! $character->image->species_id ? $character->image->species->displayName : 'No Species' !!} ・ {!! $character->image->rarity_id ? $character->image->rarity->displayName : 'No Rarity' !!} ・ {!! $character->displayOwner !!}
                     </div>
                 </div>
-<<<<<<< HEAD
                 <div class="mt-1">
                     <a href="{{ $character->url }}" class="h5 mb-0">@if(!$character->is_visible) <i class="fas fa-eye-slash"></i> @endif {{ Illuminate\Support\Str::limit($character->fullName, 20, $end='...') }} </a>
                 </div>
@@ -196,8 +241,6 @@
                      ・ {!! $character->displayOwner !!}
                 </div>
             </div>
-=======
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
             @endforeach
         </div>
     @endforeach

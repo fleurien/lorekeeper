@@ -13,6 +13,7 @@
         <div class="sidebar-item"><a href="{{ url('world/traits') }}" class="{{ set_active('world/traits*') }}">All Traits</a></div>
         <div class="sidebar-item"><a href="{{ url('world/character-categories') }}" class="{{ set_active('world/character-categories*') }}">Character Categories</a></div>
         <div class="sidebar-item"><a href="{{ url('world/character-titles') }}" class="{{ set_active('world/character-titles*') }}">Character Titles</a></div>
+        <div class="sidebar-item"><a href="{{ url('world/'.__('transformations.transformations')) }}" class="{{ set_active('world/'.__('transformations.transformations')) }}">{{ ucfirst(__('transformations.transformations')) }}</a></div>
     </li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">Items</div>
@@ -22,12 +23,9 @@
         <div class="sidebar-item"><a href="{{ url('world/'.__('volumes.library')) }}" class="{{ set_active('world/'.__('volumes.library')) }}">{{ ucfirst(__('volumes.library')) }}</a></div>
         <div class="sidebar-item"><a href="{{ url('world/'.__('volumes.library').'/'.__('volumes.volumes')) }}" class="{{ set_active('world/'.__('volumes.library').'/'.__('volumes.volumes')) }}">All {{ ucfirst(__('volumes.volumes')) }}</a></div>
     </li>
-<<<<<<< HEAD
     <li class="sidebar-section">
         <div class="sidebar-section-header">Awards</div>
         <div class="sidebar-item"><a href="{{ url('world/award-categories') }}" class="{{ set_active('world/award-categories*') }}">Award Categories</a></div>
         <div class="sidebar-item"><a href="{{ url('world/awards') }}" class="{{ set_active('world/awards*') }}">All Awards</a></div>
     </li>
-=======
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
 </ul>

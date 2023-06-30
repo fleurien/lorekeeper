@@ -33,7 +33,16 @@
                             <div class="text-right">You are viewing the full-size image. <a href="{{ $image->imageUrl }}">View watermarked image</a>?</div>
                         @endif
                     </div>
-                    @include('character._image_info', ['image' => $image])
+                    @if($image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($image->imageDirectory.'/'.$image->fullsizeFileName)))
+                        <div class="text-right">You are viewing the full-size image. <a href="{{ $image->imageUrl }}">View watermarked image</a>?</div>
+                    @endif
+                    @if(Auth::check() && !$image->character->is_myo_slot && $character->user_id == Auth::user()->id)
+                        {!! Form::open(['url' => $image->character->is_myo_slot ? 'myo/'.$image->character->id.'/approval/'.$image->id : 'character/'.$image->character->slug.'/approval/'.$image->id]) !!}
+                        <div class="text-right">
+                            {!! Form::submit('Update Design', ['class' => 'btn btn-primary']) !!}
+                        </div>
+                        {!! Form::close() !!}
+                    @endif
                 </div>
             </div>
         @endforeach
