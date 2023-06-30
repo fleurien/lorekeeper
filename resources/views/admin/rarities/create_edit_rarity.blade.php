@@ -22,13 +22,39 @@
         {!! Form::text('name', $rarity->name, ['class' => 'form-control']) !!}
     </div>
 
-    <div class="form-group">
-        {!! Form::label('Colour (Hex code; optional)') !!}
-        <div class="input-group cp">
-            {!! Form::text('color', $rarity->color, ['class' => 'form-control']) !!}
-            <span class="input-group-append">
-                <span class="input-group-text colorpicker-input-addon"><i></i></span>
-            </span>
+<div class="form-group">
+    {!! Form::label('World Page Image (Optional)') !!} {!! add_help('This image is used only on the world information pages.') !!}
+    <div>{!! Form::file('image') !!}</div>
+    <div class="text-muted">Recommended size: 200px x 200px</div>
+    @if($rarity->has_image)
+        <div class="form-check">
+            {!! Form::checkbox('remove_image', 1, false, ['class' => 'form-check-input']) !!}
+            {!! Form::label('remove_image', 'Remove current image', ['class' => 'form-check-label']) !!}
+        </div>
+    @endif
+</div>
+
+<div class="form-group">
+    {!! Form::label('Description (Optional)') !!}
+    {!! Form::textarea('description', $rarity->description, ['class' => 'form-control wysiwyg']) !!}
+</div>
+
+@include('admin.lineage._edit_lineage_blacklist', [
+    'lineageBlacklist' => $lineageBlacklist,
+    'type' => 'rarity'
+])
+
+<div class="text-right">
+    {!! Form::submit($rarity->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}
+</div>
+
+{!! Form::close() !!}
+
+@if($rarity->id)
+    <h3>Preview</h3>
+    <div class="card mb-3">
+        <div class="card-body">
+            @include('world._entry', ['imageUrl' => $rarity->rarityImageUrl, 'name' => $rarity->displayName, 'description' => $rarity->parsed_description])
         </div>
     </div>
 

@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Character\CharacterImage;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use DB;
+use App\Models\Character\CharacterImage;
+use App\Models\Character\CharacterLineageBlacklist;
 
 class SpeciesService extends Service {
     /*
@@ -41,6 +42,7 @@ class SpeciesService extends Service {
             }
 
             $species = Species::create($data);
+            $blacklist = CharacterLineageBlacklist::searchAndSet($data['lineage-blacklist'], 'species', $species->id);
 
             if ($image) {
                 $this->handleImage($image, $species->speciesImagePath, $species->speciesImageFileName);
@@ -82,6 +84,7 @@ class SpeciesService extends Service {
             }
 
             $species->update($data);
+            $blacklist = CharacterLineageBlacklist::searchAndSet($data['lineage-blacklist'], 'species', $species->id);
 
             if ($species) {
                 $this->handleImage($image, $species->speciesImagePath, $species->speciesImageFileName);
@@ -115,6 +118,8 @@ class SpeciesService extends Service {
                 $this->deleteImage($species->speciesImagePath, $species->speciesImageFileName);
             }
             $species->delete();
+
+            CharacterLineageBlacklist::searchAndSet(0, 'species', $species->id);
 
             return $this->commitReturn(true);
         } catch (\Exception $e) {
@@ -179,6 +184,8 @@ class SpeciesService extends Service {
                 $this->handleImage($image, $subtype->subtypeImagePath, $subtype->subtypeImageFileName);
             }
 
+            $blacklist = CharacterLineageBlacklist::searchAndSet($data['lineage-blacklist'], 'subtype', $subtype->id);
+
             return $this->commitReturn($subtype);
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
@@ -215,6 +222,8 @@ class SpeciesService extends Service {
                 $this->handleImage($image, $subtype->subtypeImagePath, $subtype->subtypeImageFileName);
             }
 
+            $blacklist = CharacterLineageBlacklist::searchAndSet($data['lineage-blacklist'], 'subtype', $subtype->id);
+
             return $this->commitReturn($subtype);
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
@@ -243,6 +252,8 @@ class SpeciesService extends Service {
                 $this->deleteImage($subtype->subtypeImagePath, $subtype->subtypeImageFileName);
             }
             $subtype->delete();
+
+            CharacterLineageBlacklist::searchAndSet(0, 'subtype', $subtype->id);
 
             return $this->commitReturn(true);
         } catch (\Exception $e) {

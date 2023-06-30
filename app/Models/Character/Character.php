@@ -13,6 +13,8 @@ use Settings;
 
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
+use App\Models\Character\CharacterLineage;
+use App\Models\Character\CharacterLineageBlacklist;
 use App\Models\Item\Item;
 use App\Models\Item\ItemLog;
 use App\Models\Submission\Submission;
@@ -223,12 +225,20 @@ class Character extends Model {
     {
         return $this->hasMany('App\Models\Character\BreedingPermission', 'character_id');
     }
-        /**
+
+    /**
      * Get the character's genomes.
      */
     public function genomes()
     {
         return $this->hasMany('App\Models\Character\CharacterGenome', 'character_id');
+    }
+        /**
+        * Get the lineage of the character.
+     */
+    public function lineage()
+    {
+        return $this->hasOne('App\Models\Character\CharacterLineage', 'character_id');
     }
 
     /**********************************************************************************************
@@ -734,4 +744,18 @@ class Character extends Model {
             }
         }
     }
-}
+
+    /**
+     * Finds the lineage blacklist level of this character.
+     * 0 is no restriction at all
+     * 1 is no ancestors but no children
+     * 2 is no lineage at all
+     *
+     * @return int
+     */
+    public function getLineageBlacklistLevel($maxLevel = 2)
+    {
+        return CharacterLineageBlacklist::getBlacklistLevel($this, $maxLevel);
+        }
+    }
+

@@ -8,6 +8,7 @@ use App\Models\Character\CharacterCategory;
 use App\Models\Character\CharacterTitle;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Feature\Feature;
+use App\Models\Character\CharacterLineageBlacklist;
 use App\Models\Rarity;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
@@ -66,6 +67,7 @@ class CharacterController extends Controller
             'features'    => Feature::orderBy('name')->pluck('name', 'id')->toArray(),
             'features'    => Feature::getDropdownItems(1),
             'isMyo'       => false,
+            'characterOptions' => CharacterLineageBlacklist::getAncestorOptions(),
         ]);
     }
 
@@ -83,6 +85,7 @@ class CharacterController extends Controller
             'genes' => ['0' => 'Select Gene Group'] + Loci::orderBy('sort', 'desc')->pluck('name', 'id')->toArray(),
             'features'    => Feature::getDropdownItems(1),
             'isMyo'       => true,
+            'characterOptions' => CharacterLineageBlacklist::getAncestorOptions(),
         ]);
     }
 
@@ -130,8 +133,26 @@ class CharacterController extends Controller
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
             'sale_value', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
-            'designer_id', 'designer_url', 'designer_type',
-            'artist_id', 'artist_url', 'artist_type',
+            'designer_alias', 'designer_url',
+            'artist_alias', 'artist_url',
+
+            // hello darkness my old friend //
+            'sire_id',           'sire_name',
+            'sire_sire_id',      'sire_sire_name',
+            'sire_sire_sire_id', 'sire_sire_sire_name',
+            'sire_sire_dam_id',  'sire_sire_dam_name',
+            'sire_dam_id',       'sire_dam_name',
+            'sire_dam_sire_id',  'sire_dam_sire_name',
+            'sire_dam_dam_id',   'sire_dam_dam_name',
+            'dam_id',            'dam_name',
+            'dam_sire_id',       'dam_sire_name',
+            'dam_sire_sire_id',  'dam_sire_sire_name',
+            'dam_sire_dam_id',   'dam_sire_dam_name',
+            'dam_dam_id',        'dam_dam_name',
+            'dam_dam_sire_id',   'dam_dam_sire_name',
+            'dam_dam_dam_id',    'dam_dam_dam_name',
+            'generate_ancestors',
+
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'gene_id', 'gene_allele_id', 'gene_numeric_data', 'gene_gradient_data',
             'genome_visibility',            
@@ -164,8 +185,26 @@ class CharacterController extends Controller
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
             'sale_value', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
-            'designer_id', 'designer_url', 'designer_type',
-            'artist_id', 'artist_url', 'artist_type',
+            'designer_alias', 'designer_url',
+            'artist_alias', 'artist_url',
+
+            // i've come to speak with you again //
+            'sire_id',           'sire_name',
+            'sire_sire_id',      'sire_sire_name',
+            'sire_sire_sire_id', 'sire_sire_sire_name',
+            'sire_sire_dam_id',  'sire_sire_dam_name',
+            'sire_dam_id',       'sire_dam_name',
+            'sire_dam_sire_id',  'sire_dam_sire_name',
+            'sire_dam_dam_id',   'sire_dam_dam_name',
+            'dam_id',            'dam_name',
+            'dam_sire_id',       'dam_sire_name',
+            'dam_sire_sire_id',  'dam_sire_sire_name',
+            'dam_sire_dam_id',   'dam_sire_dam_name',
+            'dam_dam_id',        'dam_dam_name',
+            'dam_dam_sire_id',   'dam_dam_sire_name',
+            'dam_dam_dam_id',    'dam_dam_dam_name',
+            'generate_ancestors',
+
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'gene_id', 'gene_allele_id', 'gene_numeric_data', 'gene_gradient_data',
             'genome_visibility',
