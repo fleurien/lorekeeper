@@ -10,4 +10,8 @@
         <div class="text-right">You are viewing the full-size image. <a href="{{ $image->imageUrl }}">View watermarked image</a>?</div>
     @endif
 </div>
+<<<<<<< HEAD
 @include('character._image_info', ['image' => $image])
+=======
+@include('character._image_info', ['image' => $image])
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317

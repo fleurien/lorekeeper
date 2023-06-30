@@ -50,6 +50,7 @@
                         <div class="col-lg-8 col-md-6 col-8">{!! $image->subtype_id ? $image->subtype->displayName : 'None' !!}</div>
                     </div>
                 @endif
+<<<<<<< HEAD
                 @if($image->character->homeSetting)
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-4"><h5>Home</h5></div>
@@ -65,6 +66,13 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-4">
                             <h5>{{ ucfirst(__('transformations.form')) }} {!! add_help('The main image is always the active image') !!}</h5>
+=======
+
+                @if ($image->transformation_id)
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-4">
+                            <h5>Form {!! add_help('The main image is always the active image') !!}</h5>
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
                         </div>
                         <div class="col-lg-8 col-md-6 col-8">
                             <a href="{{ $image->transformation->url }}">

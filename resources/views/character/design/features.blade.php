@@ -48,6 +48,10 @@
                 </div>
             @endif
         </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         <div class="form-group">
             {!! Form::label('rarity_id', 'Character Rarity') !!}
             @if ($request->character->is_myo_slot && $request->character->image->rarity_id)
@@ -135,6 +139,20 @@
                             {!! $request->character->image->subtype->displayName !!}
                         @else
                             {!! $request->subtype_id ? $request->subtype->displayName : 'None Selected' !!}
+                        @endif
+                    </div>
+                </div>
+            @endif
+            @if ($request->transformation_id)
+                <div class="row">
+                    <div class="col-md-2 col-4">
+                        <h5>Transformation</h5>
+                    </div>
+                    <div class="col-md-10 col-8">
+                        @if ($request->character->is_myo_slot && $request->character->image->transformation_id)
+                            {!! $request->character->image->transformation->displayName !!}
+                        @else
+                            {!! $request->transformation_id ? $request->transformation->displayName : 'None Selected' !!}
                         @endif
                     </div>
                 </div>

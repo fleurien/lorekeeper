@@ -46,10 +46,28 @@ class CharacterTransformation extends Model {
     ];
 
     /**********************************************************************************************
+<<<<<<< HEAD
         ACCESSORS
     **********************************************************************************************/
 
     /**
+=======
+
+        ACCESSORS
+
+    **********************************************************************************************/
+
+    /**
+     * Displays the transformation's name.
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
      * Displays the model's name, linked to its encyclopedia page.
      *
      * @return string
@@ -104,7 +122,11 @@ class CharacterTransformation extends Model {
      * @return string
      */
     public function getUrlAttribute() {
+<<<<<<< HEAD
         return url('world/'.__('transformations.transformations').'?name='.$this->name);
+=======
+        return url('world/transformations?name='.$this->name);
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
     }
 
     /**
@@ -115,4 +137,8 @@ class CharacterTransformation extends Model {
     public function getSearchUrlAttribute() {
         return url('masterlist?transformation_id='.$this->id);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317

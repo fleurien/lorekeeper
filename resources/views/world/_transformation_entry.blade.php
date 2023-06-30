@@ -9,4 +9,8 @@
             {!! $transformation->parsed_description !!}
         </div>
     </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317

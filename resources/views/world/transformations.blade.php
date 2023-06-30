@@ -1,12 +1,21 @@
 @extends('world.layout')
 
 @section('title')
+<<<<<<< HEAD
 {{ucfirst(__('transformations.transformations'))}}
 @endsection
 
 @section('content')
     {!! breadcrumbs(['World' => 'world', ucfirst(__('transformations.transformations')) => 'world/'.__('transformations.transformations')]) !!}
     <h1>{{ucfirst(__('transformations.transformations'))}}</h1>
+=======
+    Transformations
+@endsection
+
+@section('content')
+    {!! breadcrumbs(['World' => 'world', 'Transformations' => 'world/transformations']) !!}
+    <h1>Transformations</h1>
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 
     <div>
         {!! Form::open(['method' => 'GET', 'class' => 'form-inline justify-content-end']) !!}
@@ -30,4 +39,8 @@
     {!! $transformations->render() !!}
 
     <div class="text-center mt-4 small text-muted">{{ $transformations->total() }} result{{ $transformations->total() == 1 ? '' : 's' }} found.</div>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317

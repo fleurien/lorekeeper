@@ -10,6 +10,7 @@ use App\Models\Character\CharacterAward;
 use App\Models\Character\BreedingPermission;
 use App\Models\Character\BreedingPermissionLog;
 use App\Models\Character\CharacterCurrency;
+use App\Models\Character\CharacterImage;
 use App\Models\Character\CharacterItem;
 use App\Models\Character\CharacterProfile;
 use App\Models\Character\CharacterTransfer;
@@ -241,10 +242,33 @@ class CharacterController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getCharacterImages($slug) {
+        $character = $this->character;
+        $query = $character->images->whereNull('transformation_id');
+
         return view('character.images', [
             'user'                  => Auth::check() ? Auth::user() : null,
             'character'             => $this->character,
+            'regular_images'        => $query,
             'extPrevAndNextBtnsUrl' => '/images',
+        ]);
+    }
+
+    /**
+     * Shows a character's images.
+     *
+     * @param string $slug
+     * @param mixed  $id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCharacterImage($slug, $id) {
+        $image = CharacterImage::where('character_id', $this->character->id)->where('id', $id)->first();
+
+        return view('character.image', [
+            'user'      => Auth::check() ? Auth::user() : null,
+            'character' => $this->character,
+            'image'     => $image,
+            'ajax'      => true,
         ]);
     }
 

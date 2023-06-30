@@ -342,7 +342,10 @@ class SpeciesService extends Service {
 
         return $data;
     }
+<<<<<<< HEAD
 
 
    
+=======
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 }

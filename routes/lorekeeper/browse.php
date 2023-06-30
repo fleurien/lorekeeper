@@ -82,6 +82,7 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function ()
     Route::get('{slug}/bank', 'CharacterController@getCharacterBank');
     Route::get('{slug}/inventory', 'CharacterController@getCharacterInventory');
     Route::get('{slug}/images', 'CharacterController@getCharacterImages');
+    Route::get('{slug}/image/{id}', 'CharacterController@getCharacterImage');
 
     Route::get('{slug}/award-logs', 'CharacterController@getCharacterAwardLogs');
     Route::get('{slug}/currency-logs', 'CharacterController@getCharacterCurrencyLogs');
@@ -119,6 +120,7 @@ Route::group(['prefix' => 'world'], function () {
     Route::get('genetics', 'WorldController@getGenetics');
     Route::get('species', 'WorldController@getSpecieses');
     Route::get('subtypes', 'WorldController@getSubtypes');
+    Route::get('transformations', 'WorldController@getTransformations');
     Route::get('species/{id}/traits', 'WorldController@getSpeciesFeatures');
     Route::get('species/{speciesId}/trait/{id}', 'WorldController@getSpeciesFeatureDetail')->where(['id' => '[0-9]+', 'speciesId' => '[0-9]+']);
     Route::get('item-categories', 'WorldController@getItemCategories');

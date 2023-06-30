@@ -1,8 +1,11 @@
 <?php
 
 return [
+<<<<<<< HEAD
     
     
+=======
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 
     // FORMAT EXAMPLE.
     //
@@ -15,6 +18,7 @@ return [
     //     'version' => '1.0.0',
     // ],
 
+<<<<<<< HEAD
     'character_genetic_data' => [
         'key' => 'character_genetic_data',
         'wiki_key' => 'Character_Genetic_Data',
@@ -169,4 +173,6 @@ return [
             ]),
             'version' => '1.0.0',
         ],
+=======
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 ];

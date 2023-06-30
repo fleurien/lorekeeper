@@ -216,6 +216,10 @@ return [
                 'url'  => 'admin/data/subtypes',
             ],
             [
+                'name' => 'Transformations',
+                'url'  => 'admin/data/transformations',
+            ],
+            [
                 'name' => 'Traits',
                 'url'  => 'admin/data/traits',
             ],

@@ -27,6 +27,7 @@ class RaffleTicket extends Model {
      * @var array
      */
     protected $dates = ['created_at'];
+
     /**
      * Validation rules for creation.
      *

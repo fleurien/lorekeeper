@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Award\Award;
 use App\Models\Award\AwardCategory;
 use App\Models\Character\CharacterCategory;
+<<<<<<< HEAD
 use App\Models\Character\CharacterTitle;
+=======
+use App\Models\Character\CharacterTransformation as Transformation;
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 use App\Models\Currency\Currency;
 use App\Models\Feature\Feature;
 use App\Models\Feature\FeatureCategory;
@@ -141,6 +145,23 @@ class WorldController extends Controller
 
         return view('world.subtypes', [
             'subtypes' => $query->with('species')->visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+        ]);
+    }
+
+    /**
+     * Shows the Transformations page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getTransformations(Request $request) {
+        $query = Transformation::query();
+        $name = $request->get('name');
+        if ($name) {
+            $query->where('name', 'LIKE', '%'.$name.'%');
+        }
+
+        return view('world.transformations', [
+            'transformations' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
         ]);
     }
 

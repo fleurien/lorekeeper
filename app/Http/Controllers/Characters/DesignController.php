@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Characters;
 use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterDesignUpdate;
+<<<<<<< HEAD
 use App\Models\Character\CharacterTitle;
+=======
+use App\Models\Character\CharacterTransformation as Transformation;
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 use App\Models\Feature\Feature;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
@@ -223,6 +227,7 @@ class DesignController extends Controller {
         }
 
         return view('character.design.features', [
+<<<<<<< HEAD
             'request'   => $r,
             'specieses' => ['0' => 'Select Species'] + Species::visible()->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes'  => ['0' => 'No Subtype'] + Subtype::visible()->where('species_id', '=', $r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -231,6 +236,14 @@ class DesignController extends Controller {
             'features'  => Feature::orderBy('name')->pluck('name', 'id')->toArray(),
             'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
 
+=======
+            'request'         => $r,
+            'specieses'       => ['0' => 'Select Species'] + Species::visible()->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'subtypes'        => ['0' => 'No Subtype'] + Subtype::visible()->where('species_id', '=', $r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'rarities'        => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'transformations' => ['0' => 'Select Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'features'        => Feature::getDropdownItems(),
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         ]);
     }
 
@@ -246,6 +259,20 @@ class DesignController extends Controller {
         return view('character.design._features_subtype', [
             'subtypes' => ['0' => 'Select Subtype'] + Subtype::visible()->where('species_id', '=', $species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtype'  => $id,
+        ]);
+    }
+
+    /**
+     * Shows the edit image transformation portion of the modal.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getFeaturesTransformation(Request $request) {
+        $id = $request->input('id');
+
+        return view('character.design._features_transformation', [
+            'transformations' => ['0' => 'Select Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'transformation'  => $id,
         ]);
     }
 

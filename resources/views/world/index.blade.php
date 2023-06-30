@@ -16,6 +16,7 @@
                     <h5 class="card-title">Characters</h5>
                 </div>
                 <ul class="list-group list-group-flush">
+<<<<<<< HEAD
                 <li class="list-group-item"><a href="{{ url('world/species') }}">Species</a></li>
 				<li class="list-group-item"><a href="{{ url('world/subtypes') }}">Subtypes</a></li>
                 <li class="list-group-item"><a href="{{ url('world/rarities') }}">Rarities</a></li>
@@ -25,6 +26,16 @@
                 <li class="list-group-item"><a href="{{ url('world/character-categories') }}">Character Categories</a></li>
                 <li class="list-group-item"><a href="{{ url('world/'.__('transformations.transformations')) }}">{{ ucfirst(__('transformations.transformations')) }}</a></li>
             </ul>
+=======
+                    <li class="list-group-item"><a href="{{ url('world/species') }}">Species</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/subtypes') }}">Subtypes</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/transformations') }}">Transformations</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/rarities') }}">Rarities</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/trait-categories') }}">Trait Categories</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/traits') }}">All Traits</a></li>
+                    <li class="list-group-item"><a href="{{ url('world/character-categories') }}">Character Categories</a></li>
+                </ul>
+>>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
             </div>
         </div>
         <div class="col-md-6">
