@@ -223,6 +223,13 @@ class Character extends Model {
     {
         return $this->hasMany('App\Models\Character\BreedingPermission', 'character_id');
     }
+        /**
+     * Get the character's genomes.
+     */
+    public function genomes()
+    {
+        return $this->hasMany('App\Models\Character\CharacterGenome', 'character_id');
+    }
 
     /**********************************************************************************************
 
