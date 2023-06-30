@@ -30,6 +30,15 @@ return [
         ]),
         'version' => '1.0.1',
     ],
+
+    'breeding_permissions' => [
+        'key' => 'breeding_permissions',
+        'wiki_key' => 'Breeding_Permissions',
+        'creators' => json_encode([
+            'Mercury' => 'https://github.com/itinerare/',
+        ]),
+        'version' => '1.0.1',
+    ],
     
     'trade_listings' => [
         'key' => 'Trade_Listings',
