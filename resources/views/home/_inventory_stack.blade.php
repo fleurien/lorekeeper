@@ -104,7 +104,6 @@
                         </div>
                     </li>
                 @endif
-<<<<<<< HEAD
                 @if($item->canDonate)
                     <li class="list-group-item">
                         <a class="card-title h5 collapse-title" data-toggle="collapse" href="#donateForm">@if($stack->first()->user_id != $user->id) [ADMIN] @endif Donate Item</a>
@@ -117,9 +116,6 @@
                     </li>
                 @endif
                 @if(isset($item->data['resell']) && App\Models\Currency\Currency::where('id', $item->resell->flip()->pop())->first() && Config::get('lorekeeper.extensions.item_entry_expansion.resale_function'))
-=======
-                @if (isset($item->data['resell']) && App\Models\Currency\Currency::where('id', $item->resell->flip()->pop())->first() && Config::get('lorekeeper.extensions.item_entry_expansion.resale_function'))
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                     <li class="list-group-item">
                         <a class="card-title h5 collapse-title" data-toggle="collapse" href="#resellForm">
                             @if ($stack->first()->user_id != $user->id)
