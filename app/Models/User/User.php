@@ -2,6 +2,10 @@
 
 namespace App\Models\User;
 
+
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Auth;
 use Cache;
 use Carbon\Carbon;
