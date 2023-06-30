@@ -126,6 +126,13 @@ class AddSiteSettings extends Command {
             ]
         ]);
         $this->info("Added:   affiliates_open / Default: 1");
+        $this->addSiteSetting('claymore_cooldown', 0, 'Number of days to add to the cooldown timer when a pet/weapon/gear is attached.');
+
+        $this->addSiteSetting('shop_type', 0, '0: Default, 1: Collapsible.');
+
+        $this->addSiteSetting('coupon_settings', 0, '0: Percentage is taken from total (e.g 20% from 2 items costing a total of 100 = 80), 1: Percentage is taken from item (e.g 20% from 2 items costing a total of 100 = 90)');
+        
+        $this->addSiteSetting('limited_stock_coupon_settings', 0, '0: Does not allow coupons to be used on limited stock items, 1: Allows coupons to be used on limited stock items');
     }
     else $this->line("Skipped: affiliates_open");
 

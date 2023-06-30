@@ -17,6 +17,14 @@ use DB;
 use Illuminate\Support\Arr;
 use Notifications;
 use Settings;
+use App\Models\Pet\Pet;
+use App\Models\Skill\Skill;
+use App\Models\Claymore\Gear;
+use App\Models\Claymore\Weapon;
+
+use App\Services\Stat\ExperienceManager;
+use App\Services\Stat\StatManager;
+use App\Services\SkillManager;
 
 class SubmissionManager extends Service {
     /**
@@ -483,16 +491,7 @@ class SubmissionManager extends Service {
     |
     */
 
-    /**
-     * Helper function to remove all empty/zero/falsey values.
-     *
-     * @param array $value
-     *
-     * @return array
-     */
-    private function innerNull($value) {
-        return array_values(array_filter($value));
-    }
+
 
     /**
      * Processes reward data into a format that can be used for distribution.
@@ -554,6 +553,10 @@ class SubmissionManager extends Service {
                         case 'Award':
                             $reward = Award::find($data['rewardable_id'][$key]);
                             break;
+                        case 'Pet':
+                            if (!$isStaff) break;
+                            $reward = Pet::find($data['rewardable_id'][$key]);
+                            break;
                         case 'LootTable':
                             if (!$isStaff) {
                                 break;
@@ -565,6 +568,14 @@ class SubmissionManager extends Service {
                                 break;
                             }
                             $reward = Raffle::find($data['rewardable_id'][$key]);
+                            break;
+                        case 'Gear':
+                            if (!$isStaff) break;
+                            $reward = Gear::find($data['rewardable_id'][$key]);
+                            break;
+                        case 'Weapon':
+                            if (!$isStaff) break;
+                            $reward = Weapon::find($data['rewardable_id'][$key]);
                             break;
                     }
                     if (!$reward) {
@@ -579,5 +590,8 @@ class SubmissionManager extends Service {
     }
    
 
+    
+
+   
 
 }

@@ -66,10 +66,8 @@
     </div>
     {!! Form::close() !!}
 
-    @include('widgets._character_select', [
-        'characterCurrencies' => \App\Models\Currency\Currency::where('is_character_owned', 1)->orderBy('sort_character', 'DESC')->pluck('name', 'id'),
-    ])
-    @include('widgets._loot_select_row', ['showLootTables' => false])
+@include('widgets._character_select', ['characterCurrencies' => $characterCurrencies])
+@include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'gears' => $gears, 'weapons' => $weapons, 'pets' => $pets, 'showLootTables' => false])
 
 
     <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">

@@ -3,6 +3,9 @@ $( document ).ready(function() {
     var $lootTable  = $('#lootTableBody');
     var $lootRow = $('#lootRow').find('.loot-row');
     var $itemSelect = $('#lootRowData').find('.item-select');
+    var $PetSelect = $('#lootRowData').find('.pet-select');
+    var $WeaponSelect = $('#lootRowData').find('.weapon-select');
+    var $GearSelect = $('#lootRowData').find('.gear-select');
     var $currencySelect = $('#lootRowData').find('.currency-select');
     var $awardSelect = $('#lootRowData').find('.award-select');
     @if($showLootTables)
@@ -24,7 +27,25 @@ $( document ).ready(function() {
             attachRemoveListener($clone.find('.remove-loot-button'));
         });
 
-        $('.reward-type').on('change', function(e) {
+        var $clone = null;
+        if(val == 'Item') $clone = $itemSelect.clone();
+        else if (val == 'Currency') $clone = $currencySelect.clone();
+        else if (val == 'Pet') $clone = $PetSelect.clone();
+        else if (val == 'Weapon') $clone = $WeaponSelect.clone();
+        else if (val == 'Gear') $clone = $GearSelect.clone();
+        @if($showLootTables)
+            else if (val == 'LootTable') $clone = $tableSelect.clone();
+        @endif
+        @if($showRaffles)
+            else if (val == 'Raffle') $clone = $raffleSelect.clone();
+        @endif
+
+        $cell.html('');
+        $cell.append($clone);
+    });
+
+    function attachRewardTypeListener(node) {
+        node.on('change', function(e) {
             var val = $(this).val();
             var $cell = $(this).parent().parent().find('.loot-row-select');
 
@@ -32,6 +53,9 @@ $( document ).ready(function() {
             if (val == 'Item') $clone = $itemSelect.clone();
             else if (val == 'Currency') $clone = $currencySelect.clone();
             else if (val == 'Award') $clone = $awardSelect.clone();
+            else if (val == 'Pet') $clone = $PetSelect.clone();
+            else if (val == 'Weapon') $clone = $WeaponSelect.clone();
+            else if (val == 'Gear') $clone = $GearSelect.clone();
             @if($showLootTables)
                 else if (val == 'LootTable') $clone = $tableSelect.clone();
             @endif

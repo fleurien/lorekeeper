@@ -13,6 +13,7 @@
         @if($character->getLineageBlacklistLevel() < 1)
             <div class="sidebar-item"><a href="{{ $character->url . '/lineage' }}" class="{{ set_active('character/'.$character->slug.'/lineage') }}">Lineage</a></div>
         @endif
+        <div class="sidebar-item"><a href="{{ $character->url . '/level' }}" class="{{ set_active('character/'.$character->slug.'/level') }}">Level Logs</a></div>
     </li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">History</div>
@@ -21,10 +22,16 @@
         <div class="sidebar-item"><a href="{{ $character->url . '/ownership' }}" class="{{ set_active('character/'.$character->slug.'/ownership') }}">Ownership History</a></div>
         <div class="sidebar-item"><a href="{{ $character->url . '/item-logs' }}" class="{{ set_active('character/'.$character->slug.'/item-logs') }}">Item Logs</a></div>
         <div class="sidebar-item"><a href="{{ $character->url . '/currency-logs' }}" class="{{ set_active('character/'.$character->slug.'/currency-logs') }}">Currency Logs</a></div>
+        <div class="sidebar-item"><a href="{{ $character->url . '/skill-logs' }}" class="{{ set_active('character/'.$character->slug.'/skill-logs') }}">Skill Logs</a></div>
         <div class="sidebar-item"><a href="{{ $character->url . '/submissions' }}" class="{{ set_active('character/'.$character->slug.'/submissions') }}">Submissions</a></div>
         <div class="sidebar-item"><a href="{{ $character->url . '/award-logs' }}" class="{{ set_active('character/'.$character->slug.'/award-logs') }}">Award Logs</a></div>
 
     @if (Auth::check() && (Auth::user()->id == $character->user_id || Auth::user()->hasPower('manage_characters')))
+        <li class="sidebar-section">
+            <div class="sidebar-section-header">Level + Stats</div>
+            <div class="sidebar-item"><a href="{{ $character->url . '/level-area' }}" class="{{ set_active('character/'.$character->slug.'/level-area') }}">Level Area</a></div>
+            <div class="sidebar-item"><a href="{{ $character->url . '/stats-area' }}" class="{{ set_active('character/'.$character->slug.'/stats-area') }}">Stats Area</a></div>
+        </li>
         <li class="sidebar-section">
             <div class="sidebar-section-header">Settings</div>
             <div class="sidebar-item"><a href="{{ $character->url . '/profile/edit' }}" class="{{ set_active('character/' . $character->slug . '/profile/edit') }}">Edit Profile</a></div>

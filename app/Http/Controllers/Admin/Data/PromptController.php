@@ -14,7 +14,22 @@ use App\Services\PromptService;
 use Auth;
 use Illuminate\Http\Request;
 
-class PromptController extends Controller {
+
+
+
+use App\Models\Skill\Skill;
+
+
+use App\Models\Pet\Pet;
+use App\Models\Claymore\Gear;
+use App\Models\Claymore\Weapon;
+
+
+
+
+
+class PromptController extends Controller
+{
     /*
     |--------------------------------------------------------------------------
     | Admin / Prompt Controller
@@ -186,6 +201,10 @@ class PromptController extends Controller {
             'awards'     => Award::orderBy('name')->pluck('name', 'id'),
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
             'tables'     => LootTable::orderBy('name')->pluck('name', 'id'),
+            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
+            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
+            'skills' => Skill::pluck('name', 'id')->toArray(),
+            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
             'raffles'    => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
         ]);
     }
@@ -208,9 +227,13 @@ class PromptController extends Controller {
             'categories' => ['none' => 'No category'] + PromptCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'items'      => Item::orderBy('name')->pluck('name', 'id'),
             'awards'     => Award::orderBy('name')->pluck('name', 'id'),
+            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
+            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
+            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
             'tables'     => LootTable::orderBy('name')->pluck('name', 'id'),
             'raffles'    => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'skills' => Skill::pluck('name', 'id')->toArray()
         ]);
     }
 
@@ -225,7 +248,9 @@ class PromptController extends Controller {
     public function postCreateEditPrompt(Request $request, PromptService $service, $id = null) {
         $id ? $request->validate(Prompt::$updateRules) : $request->validate(Prompt::$createRules);
         $data = $request->only([
-            'name', 'prompt_category_id', 'summary', 'description', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'is_active', 'rewardable_type', 'rewardable_id', 'quantity', 'image', 'remove_image', 'prefix', 'hide_submissions', 'staff_only',
+            'name', 'prompt_category_id', 'summary', 'description', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'is_active', 'rewardable_type',
+             'rewardable_id', 'quantity', 'image', 'remove_image', 'prefix', 'hide_submissions',
+             'chara_exp', 'chara_points', 'user_exp', 'user_points', 'level_req', 'level_check', 'skill_id', 'skill_quantity'
         ]);
         if ($id && $service->updatePrompt(Prompt::find($id), $data, Auth::user())) {
             flash('Prompt updated successfully.')->success();

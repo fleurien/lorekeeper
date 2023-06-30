@@ -9,6 +9,7 @@ use App\Models\Character\CharacterTitle;
 use App\Models\Character\CharacterTransfer;
 use App\Models\Feature\Feature;
 use App\Models\Character\CharacterLineageBlacklist;
+use App\Models\Character\CharacterClass;
 use App\Models\Rarity;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
@@ -16,6 +17,7 @@ use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserItem;
 use App\Models\Character\BreedingPermission;
+use App\Models\Stat\Stat;
 
 use App\Services\CharacterManager;
 use App\Services\TradeManager;
@@ -68,6 +70,7 @@ class CharacterController extends Controller
             'genes' => ['0' => 'Select Gene Group'] + Loci::orderBy('sort', 'desc')->pluck('name', 'id')->toArray(),
             'features'    => Feature::orderBy('name')->pluck('name', 'id')->toArray(),
             'features'    => Feature::getDropdownItems(1),
+            'stats' => Stat::orderBy('name')->get(),
             'isMyo'       => false,
             'characterOptions' => CharacterLineageBlacklist::getAncestorOptions(),
             'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -87,6 +90,7 @@ class CharacterController extends Controller
             'subtypes'    => ['0' => 'Pick a Species First'],
             'genes' => ['0' => 'Select Gene Group'] + Loci::orderBy('sort', 'desc')->pluck('name', 'id')->toArray(),
             'features'    => Feature::getDropdownItems(1),
+            'stats' => Stat::orderBy('name')->get(),
             'isMyo'       => true,
             'characterOptions' => CharacterLineageBlacklist::getAncestorOptions(),
             'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -172,7 +176,7 @@ class CharacterController extends Controller
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'gene_id', 'gene_allele_id', 'gene_numeric_data', 'gene_gradient_data',
             'genome_visibility',            
-            'image', 'thumbnail', 'image_description', 'transformation_id',
+            'image', 'thumbnail', 'image_description', 'transformation_id', 'stats'
         ]);
         if ($character = $service->createCharacter($data, Auth::user())) {
             flash('Character created successfully.')->success();
@@ -224,7 +228,7 @@ class CharacterController extends Controller
             'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
             'gene_id', 'gene_allele_id', 'gene_numeric_data', 'gene_gradient_data',
             'genome_visibility',
-            'image', 'thumbnail', 'transformation_id',
+            'image', 'thumbnail', 'transformation_id', 'stats'
         ]);
         if ($character = $service->createCharacter($data, Auth::user(), true)) {
             flash('MYO slot created successfully.')->success();

@@ -52,4 +52,15 @@ return [
         'text_color' => '#ffffff',
         'background_color' => '#A8CE5E'
     ],
+    'splice' => [
+        'name' => 'Splice',
+        'text_color' => '#ffffff',
+        'background_color' => '#a69bc6'
+    ],
+
+    'coupon' => [
+        'name' => 'Coupon',
+        'text_color' => '#ffffff',
+        'background_color' => '#ff5ca8'
+    ],
 ];
