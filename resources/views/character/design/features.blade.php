@@ -48,7 +48,6 @@
                 </div>
             @endif
         </div>
-
         <div class="form-group">
             {!! Form::label('rarity_id', 'Character Rarity') !!}
             @if ($request->character->is_myo_slot && $request->character->image->rarity_id)
@@ -162,25 +161,7 @@
                     </div>
                 </div>
         @endif
-        <div class="row">
-            <div class="col-md-2 col-4"><h5>Rarity</h5></div>
-            <div class="col-md-10 col-8">{!! $request->rarity ? $request->rarity->displayName : 'None Selected' !!}</div>
-        </div>
-        @if(isset($request->title_id) || isset($request->title_data))
-            <div class="row">
-                <div class="col-md-2 col-4"><h5>Title</h5></div>
-                <div class="col-md-10 col-8">{!! $request->title_id ? $request->title->displayNamePartial.(isset($request->title_data) ? ' ('.nl2br(htmlentities($request->title_data['full'])).')' : null) : (nl2br(htmlentities($request->title_data['full']))) !!}</div>
-            </div>
-        @endif
-    </div>
-    <h5>Traits</h5>
-    <div>
-        @if($request->character && $request->character->is_myo_slot && $request->character->image->features)
-            @foreach($request->character->image->features as $feature)
-                <div>@if($feature->feature->feature_category_id) <strong>{!! $feature->feature->category->displayName !!}:</strong> @endif {!! $feature->feature->displayName !!} @if($feature->data) ({{ $feature->data }}) @endif <span class="text-danger">*Required</span></div>
-            @endforeach
-        </div>
-    @endif
+
 
 @endsection
 
