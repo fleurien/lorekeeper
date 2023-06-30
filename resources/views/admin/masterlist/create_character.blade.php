@@ -224,51 +224,7 @@
             <a href="#" class="add-artist btn btn-link mb-2" data-toggle="tooltip" title="Add another artist">+</a>
         </div>
     </div>
-    @if(!$isMyo)
-        <div class="form-group">
-            {!! Form::label('Species') !!} @if ($isMyo)
-                {!! add_help('This will lock the slot into a particular species. Leave it blank if you would like to give the user a choice.') !!}
-            @endif
-            {!! Form::select('species_id', $specieses, old('species_id'), ['class' => 'form-control', 'id' => 'species']) !!}
-        </div>
 
-        <div class="form-group" id="subtypes">
-            {!! Form::label('Subtype (Optional)') !!} @if ($isMyo)
-                {!! add_help(
-                    'This will lock the slot into a particular subtype. Leave it blank if you would like to give the user a choice, or not select a subtype. The subtype must match the species selected above, and if no species is specified, the subtype will not be applied.',
-                ) !!}
-            @endif
-            {!! Form::select('subtype_id', $subtypes, old('subtype_id'), ['class' => 'form-control disabled', 'id' => 'subtype']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('Character Rarity') !!} @if ($isMyo)
-                {!! add_help('This will lock the slot into a particular rarity. Leave it blank if you would like to give the user more choices.') !!}
-            @endif
-            {!! Form::select('rarity_id', $rarities, old('rarity_id'), ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('Traits') !!} @if ($isMyo)
-                {!! add_help(
-                    'These traits will be listed as required traits for the slot. The user will still be able to add on more traits, but not be able to remove these. This is allowed to conflict with the rarity above; you may add traits above the character\'s specified rarity.',
-                ) !!}
-            @endif
-            <div><a href="#" class="btn btn-primary mb-2" id="add-feature">Add Trait</a></div>
-            <div id="featureList">
-            </div>
-            <div class="feature-row hide mb-2">
-                {!! Form::select('feature_id[]', $features, null, ['class' => 'form-control mr-2 feature-select', 'placeholder' => 'Select Trait']) !!}
-                {!! Form::text('feature_data[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Extra Info (Optional)']) !!}
-                <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
-            </div>
-        </div>
-
-        <div class="text-right">
-            {!! Form::submit('Create Character', ['class' => 'btn btn-primary']) !!}
-        </div>
-        {!! Form::close() !!}
-    @endif
 
     <h3>Traits</h3>
 
@@ -286,6 +242,22 @@
         {!! Form::label('Character Rarity') !!} @if($isMyo) {!! add_help('This will lock the slot into a particular rarity. Leave it blank if you would like to give the user more choices.') !!} @endif
         {!! Form::select('rarity_id', $rarities, old('rarity_id'), ['class' => 'form-control']) !!}
     </div>
+
+    <div class="form-group">
+            {!! Form::label('Traits') !!} @if ($isMyo)
+                {!! add_help(
+                    'These traits will be listed as required traits for the slot. The user will still be able to add on more traits, but not be able to remove these. This is allowed to conflict with the rarity above; you may add traits above the character\'s specified rarity.',
+                ) !!}
+            @endif
+            <div><a href="#" class="btn btn-primary mb-2" id="add-feature">Add Trait</a></div>
+            <div id="featureList">
+            </div>
+            <div class="feature-row hide mb-2">
+                {!! Form::select('feature_id[]', $features, null, ['class' => 'form-control mr-2 feature-select', 'placeholder' => 'Select Trait']) !!}
+                {!! Form::text('feature_data[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Extra Info (Optional)']) !!}
+                <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
+            </div>
+        </div>
 
     @if(!$isMyo)
     <div class="row no-gutters">
@@ -309,17 +281,7 @@
     </div>
     @endif
 
-    <div class="form-group">
-        {!! Form::label('Traits') !!} @if($isMyo) {!! add_help('These traits will be listed as required traits for the slot. The user will still be able to add on more traits, but not be able to remove these. This is allowed to conflict with the rarity above; you may add traits above the character\'s specified rarity.') !!} @endif
-        <div id="featureList">
-        </div>
-        <div><a href="#" class="btn btn-primary" id="add-feature">Add Trait</a></div>
-        <div class="feature-row hide mb-2">
-            {!! Form::select('feature_id[]', $features, null, ['class' => 'form-control mr-2 feature-select', 'placeholder' => 'Select Trait']) !!}
-            {!! Form::text('feature_data[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Extra Info (Optional)']) !!}
-            <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
-        </div>
-    </div>
+
 
     <div class="form-group">
         @php $dVis = Settings::get('genome_default_visibility'); @endphp
@@ -362,15 +324,7 @@
     @include('widgets._character_code_js')
 @endif
 
-<script>
-    $( "#species" ).change(function() {
-      var species = $('#species').val();
-      var myo = '<?php echo($isMyo); ?>';
-      $.ajax({
-        type: "GET", url: "{{ url('admin/masterlist/check-subtype') }}?species="+species+"&myo="+myo, dataType: "text"
-      }).done(function (res) { $("#subtypes").html(res); }).fail(function (jqXHR, textStatus, errorThrown) { alert("AJAX call failed: " + textStatus + ", " + errorThrown); });
-    });
-</script>
+
 
     <script>
         $("#species").change(function() {
