@@ -230,7 +230,11 @@ return [
                 'name' => 'Advent Calendars',
                 'url'  => 'admin/data/advent-calendars',
             ],
-        ],
+        [
+                'name' => 'Library',
+                'url' => 'admin/data/volumes'
+            ],
+        ]
     ],
     'World.Expanded' => [
         'power' => 'manage_world',

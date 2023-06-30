@@ -22,7 +22,11 @@ use Auth;
 use Config;
 use Illuminate\Http\Request;
 
-class WorldController extends Controller {
+use App\Models\Volume\Volume;
+use App\Models\Volume\Book;
+
+class WorldController extends Controller
+{
     /*
     |--------------------------------------------------------------------------
     | World Controller
@@ -617,4 +621,101 @@ class WorldController extends Controller {
             'categories' => ['none' => 'Any Category'] + PromptCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
+
+    /**
+     * Shows the items page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getVolumes(Request $request)
+    {
+        $query = Volume::visible();
+        $data = $request->only(['name', 'sort', 'book_id']);
+        if(isset($data['name']))
+            $query->where('name', 'LIKE', '%'.$data['name'].'%');
+        if(isset($data['book_id']) && $data['book_id'] != 'none') 
+            $query->where('book_id', $data['book_id']);
+
+        if(isset($data['sort']))
+        {
+            switch($data['sort']) {
+                case 'alpha':
+                    $query->sortAlphabetical();
+                    break;
+                case 'alpha-reverse':
+                    $query->sortAlphabetical(true);
+                    break;
+                case 'newest':
+                    $query->sortNewest();
+                    break;
+                case 'oldest':
+                    $query->sortOldest();
+                    break;
+            }
+        }
+        else $query->sortNewest();
+
+        return view('world.volumes.volumes', [
+            'volumes' => $query->paginate(20)->appends($request->query()),
+            'books' => ['none' => 'Any Book'] + Book::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
+        ]);
+    }
+
+    /**
+     * Shows an individual volume's page.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getVolume($id)
+    {
+        $volume = Volume::visible()->where('id', $id)->first();
+        $books = Book::orderBy('name', 'DESC')->get();
+        if(!$volume) abort(404);
+
+        return view('world.volumes._volume_page', [
+            'volume' => $volume,
+            'imageUrl' => $volume->imageUrl,
+            'name' => $volume->displayName,
+            'description' => $volume->parsed_description,
+        ]);
+    }
+
+     /**
+     * Shows the library page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getLibrary(Request $request)
+    {
+        $query = Book::visible();
+        $data = $request->only(['name']);
+        if(isset($data['name'])) 
+            $query->where('name', 'LIKE', '%'.$data['name'].'%');
+        return view('world.volumes.library', [  
+            'books' => $query->orderBy('name', 'DESC')->paginate(20)->appends($request->query())
+        ]);
+    }
+
+    /**
+     * Shows an individual book's page.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getBook($id)
+    {
+        $book = Book::visible()->where('id', $id)->first();
+        if(!$book) abort(404);
+
+        return view('world.volumes._book_page', [
+            'book' => $book,
+            'imageUrl' => $book->imageUrl,
+            'name' => $book->displayName,
+            'description' => $book->parsed_description,
+        ]);
+    }
+
 }

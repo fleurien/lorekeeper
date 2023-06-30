@@ -120,7 +120,16 @@ Route::group(['prefix' => 'world'], function () {
     Route::get('trait-categories', 'WorldController@getFeatureCategories');
     Route::get('traits', 'WorldController@getFeatures');
     Route::get('character-categories', 'WorldController@getCharacterCategories');
+<<<<<<< HEAD
     Route::get('character-titles', 'WorldController@getCharacterTitles');
+=======
+
+    Route::get(__('volumes.library'), 'WorldController@getLibrary');
+    Route::get(__('volumes.library').'/'.__('volumes.volume').'/{id}', 'WorldController@getVolume');
+    Route::get(__('volumes.library').'/'.__('volumes.book').'/{id}', 'WorldController@getBook');
+    Route::get(__('volumes.library').'/'.__('volumes.volumes'), 'WorldController@getVolumes');
+
+>>>>>>> b09cee5f1210a52c51d642cd58108234e132596a
 });
 
 Route::group(['prefix' => 'prompts'], function () {

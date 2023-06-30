@@ -35,6 +35,9 @@ use App\Models\WorldExpansion\FactionRankMember;
 use App\Models\Report\Report;
 
 use App\Traits\Commenter;
+use App\Models\User\UserVolume;
+use App\Models\Volume\Volume;
+use App\Models\Volume\Book;
 
 class User extends Authenticatable implements MustVerifyEmail {
     use Notifiable, Commenter;
@@ -899,4 +902,64 @@ class User extends Authenticatable implements MustVerifyEmail {
         return array_sum($count);
 
     }
+    /**
+     * Get the user's owned volumes.
+     */
+    public function volumes()
+    {
+        return $this->belongsToMany('App\Models\Volume\Volume', 'user_volumes')->withPivot('id');
+    }
+
+    /**
+     * Get the user's volume logs.
+     *
+     * @param  int  $limit
+     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getVolumeLogs($limit = 10)
+    {
+        $user = $this;
+        $query = UserVolumeLog::with('volume')->where(function($query) use ($user) {
+            $query->with('sender')->where('sender_id', $user->id)->whereNotIn('log_type', ['Staff Grant', 'Prompt Rewards', 'Claim Rewards']);
+        })->orWhere(function($query) use ($user) {
+            $query->with('recipient')->where('recipient_id', $user->id)->where('log_type', '!=', 'Staff Removal');
+        })->orderBy('id', 'DESC');
+        if($limit) return $query->take($limit)->get();
+        else return $query->paginate(30);
+    }
+
+     /**
+     * Checks if the user has the named volume
+     *
+     * @return bool
+     */
+    public function hasVolume($volume_id)
+    {
+        $volume = Volume::find($volume_id);
+        $user_has = $this->volumes->contains($volume);
+        return $user_has;
+    }
+
+
+    /**
+     * Returned volume listed that are owned
+     * Reversal simply
+     *
+     * @return object
+     */
+    public function ownedVolumes($ids, $reverse = false)
+    {
+        $volumes = Volume::find($ids); $ownedvolumes = [];
+        foreach($volumes as $volume)
+        {
+            if($reverse) {
+                if(!$this->volumes->contains($volume)) $ownedvolumes[] = $volume;
+            }
+            else {
+                if($this->volumes->contains($volume)) $ownedvolumes[] = $volume;
+            }
+        }
+        return $ownedvolumes;
+    }
+
 }

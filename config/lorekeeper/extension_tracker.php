@@ -12,6 +12,15 @@ return [
     //     ]),
     //     'version' => '1.0.0',
     // ],
+    
+    'Books' => [
+        'key' => 'Books',
+            'wiki_key' => 'Books',
+            'creators' => json_encode([
+                'CH3RVB' => 'https://github.com/CH3RVB/',
+            ]),
+            'version' => '1.0.0',
+        ],
 
     'advent_calendars' => [
         'key'      => 'advent_calendars',
