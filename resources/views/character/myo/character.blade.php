@@ -39,7 +39,7 @@
                 <li class="nav-item">
                     <a class="nav-link" id="notesTab" data-toggle="tab" href="#notes" role="tab">Description</a>
                 </li>
-                @if (Auth::check() && Auth::user()->hasPower('manage_characters'))
+                
                     <li class="nav-item">
                         <a class="nav-link" id="settingsTab" data-toggle="tab" href="#settings-all" role="tab"><i class="fas fa-cog"></i></a>
                     </li>
@@ -76,4 +76,5 @@
 @section('scripts')
     @parent
     @include('character._image_js')
-@endsection
+    @endsection
+
