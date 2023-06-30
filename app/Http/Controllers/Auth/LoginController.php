@@ -35,9 +35,7 @@ class LoginController extends Controller {
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
-        parent::__construct();
+    public function __construct() {
         $this->middleware('guest')->except('logout');
     }
 
@@ -50,27 +48,22 @@ class LoginController extends Controller {
         $altLogins = array_filter(Config::get('lorekeeper.sites'), function ($item) {
             return isset($item['login']) && $item['login'] === 1 && $item['display_name'] != 'tumblr';
         });
-
         return view('auth.login', ['userCount' => User::count(), 'altLogins' => $altLogins]);
     }
 
     /**
-     * Authenticate via Aliases.
-     *
-     * @param mixed $provider
+     * Authenticate via Aliases
      *
      * @return \Illuminate\Http\Response
      */
     public function getAuthRedirect(LinkService $service, $provider) {
         $result = $service->getAuthRedirect($provider, true);
-
         return $result;
     }
 
+
     /**
-     * Authenticate via Aliases.
-     *
-     * @param mixed $provider
+     * Authenticate via Aliases
      *
      * @return \Illuminate\Http\Response
      */
@@ -79,13 +72,11 @@ class LoginController extends Controller {
         // admin suggested the easy fix (to use stateless)
         $socialite = $provider == 'toyhouse' ? Socialite::driver($provider)->stateless() : Socialite::driver($provider);
         // Needs to match for the user call to work
-        $socialite->redirectUrl(str_replace('auth', 'login', url(Config::get('services.'.$provider.'.redirect'))));
+        $socialite->redirectUrl(str_replace('auth', 'login', url(Config::get('services.' . $provider . '.redirect'))));
         $result = $socialite->user();
 
         $user = UserAlias::where('user_snowflake', $result->id)->first();
-        if (!$user) {
-            return redirect('/register/'.$provider)->with(['userData' => $result]);
-        }
+        if (!$user) return redirect('/register/' . $provider)->with(['userData' => $result]);
 
         Auth::login($user->user);
 

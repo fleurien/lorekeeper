@@ -21,18 +21,20 @@ Route::get('/login/callback/{driver}', 'Auth\LoginController@getAuthCallback');
 Route::get('register/{driver}', 'Auth\RegisterController@getRegisterWithDriver');
 Route::post('register/{driver}', 'Auth\RegisterController@postRegisterWithDriver');
 
+
 Auth::routes(['verify' => true]);
 
-// BROWSE
-require_once __DIR__.'/lorekeeper/browse.php';
+# BROWSE
+require_once __DIR__ . '/lorekeeper/browse.php';
 
 Route::feeds('feeds');
 
 /**************************************************************************************************
     Routes that require login
-**************************************************************************************************/
+ **************************************************************************************************/
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    // LINK DA ACCOUNT
+
+    # LINK DA ACCOUNT
     Route::get('/link', 'HomeController@getLink')->name('link');
 
     Route::get('/auth/redirect/{driver}', 'HomeController@getAuthRedirect');

@@ -12,7 +12,7 @@ class UserAlias extends Model {
      * @var array
      */
     protected $fillable = [
-        'user_id', 'site', 'alias', 'is_visible', 'is_primary_alias', 'user_snowflake',
+        'user_id', 'site', 'alias', 'is_visible', 'is_primary_alias', 'user_snowflake'
     ];
 
     /**
@@ -64,13 +64,8 @@ class UserAlias extends Model {
      * @return string
      */
     public function getUrlAttribute() {
-        if ($this->site == 'tumblr') {
-            return 'https://'.$this->alias.'.'.Config::get('lorekeeper.sites.tumblr.link');
-        } elseif ($this->site == 'discord') {
-            return null;
-        } else {
-            return 'https://'.Config::get('lorekeeper.sites.'.$this->site.'.link').'/'.$this->alias;
-        }
+        if ($this->site == 'tumblr') return 'https://' . $this->alias . Config::get('lorekeeper.sites.tumblr.link');
+        else return 'https://' . Config::get('lorekeeper.sites.' . $this->site . '.link') . '/' . $this->alias;
     }
 
     /**
@@ -79,11 +74,7 @@ class UserAlias extends Model {
      * @return string
      */
     public function getDisplayAliasAttribute() {
-        if ($this->site == 'discord') {
-            return '<span>'.$this->alias.'@'.$this->siteDisplayName.'</span>';
-        } else {
-            return '<a href="'.$this->url.'">'.$this->alias.'@'.$this->siteDisplayName.'</a>';
-        }
+        return '<a href="' . $this->url . '">' . $this->alias . '@' . $this->siteDisplayName . '</a>';
     }
 
     /**
@@ -92,7 +83,7 @@ class UserAlias extends Model {
      * @return string
      */
     public function getConfigAttribute() {
-        return Config::get('lorekeeper.sites.'.$this->site);
+        return Config::get('lorekeeper.sites.' . $this->site);
     }
 
     /**
@@ -101,7 +92,7 @@ class UserAlias extends Model {
      * @return string
      */
     public function getSiteDisplayNameAttribute() {
-        return Config::get('lorekeeper.sites.'.$this->site.'.display_name');
+        return Config::get('lorekeeper.sites.' . $this->site . '.display_name');
     }
 
     /**
@@ -110,6 +101,6 @@ class UserAlias extends Model {
      * @return string
      */
     public function getCanMakePrimaryAttribute() {
-        return Config::get('lorekeeper.sites.'.$this->site.'.primary_alias');
+        return Config::get('lorekeeper.sites.' . $this->site . '.primary_alias');
     }
 }

@@ -32,15 +32,8 @@ use App\Models\Report\Report;
 
 use App\Traits\Commenter;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-
-
-
-class User extends Authenticatable implements MustVerifyEmail
-{
-    use Commenter, Notifiable;
+class User extends Authenticatable implements MustVerifyEmail {
+    use Notifiable, Commenter;
 
     /**
      * The attributes that are mass assignable.
@@ -48,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'alias', 'rank_id', 'email', 'email_verified_at', 'password', 'is_news_unread', 'is_banned', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed', 'is_deactivated', 'deactivater_id', 'theme_id',
+        'name', 'alias', 'rank_id', 'email', 'email_verified_at', 'password', 'is_news_unread', 'is_banned', 'has_alias', 'disc', 'insta', 'house', 'arch', 'avatar', 'is_sales_unread', 'birthday', 'home_id', 'home_changed', 'faction_id', 'faction_changed', 'is_deactivated', 'deactivater_id', 'theme_id',
     ];
 
     /**
@@ -224,8 +217,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get all of the user's character bookmarks.
      */
-    public function bookmarks()
-    {
+    public function bookmarks() {
         return $this->hasMany('App\Models\Character\CharacterBookmark')->where('user_id', $this->id);
     }
 
@@ -285,10 +277,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return bool
      */
     public function getHasAliasAttribute() {
-        if (!config('lorekeeper.settings.require_alias')) {
-            return true;
-        }
-
         return $this->attributes['has_alias'];
     }
 
@@ -307,7 +295,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return bool
      */
     public function getIsStaffAttribute() {
-        return RankPower::where('rank_id', $this->rank_id)->exists() || $this->isAdmin;
+        return (RankPower::where('rank_id', $this->rank_id)->exists() || $this->isAdmin);
     }
 
     /**
@@ -336,7 +324,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return string
      */
     public function getUrlAttribute() {
-        return url('user/'.$this->name);
+        return url('user/' . $this->name);
     }
 
     /**
@@ -345,7 +333,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return string
      */
     public function getAdminUrlAttribute() {
-        return url('admin/users/'.$this->name.'/edit');
+        return url('admin/users/' . $this->name . '/edit');
     }
 
     /**
@@ -372,13 +360,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return string
      */
     public function getDisplayAliasAttribute() {
-        if (!config('lorekeeper.settings.require_alias') && !$this->attributes['has_alias']) {
-            return '(No Alias)';
-        }
-        if (!$this->hasAlias) {
-            return '(Unverified)';
-        }
-
+        if (!$this->hasAlias) return '(Unverified)';
         return $this->primaryAlias->displayAlias;
     }
 
@@ -388,29 +370,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return string
      */
     public function getAvatar() {
-        return $this->avatar;
-    }
-
-    /**
-     * Gets the display URL for a user's avatar, or the default avatar if they don't have one.
-     *
-     * @return url
-     */
-    public function getAvatarUrlAttribute() {
-        if ($this->avatar == 'default.jpg' && Config::get('lorekeeper.extensions.use_gravatar')) {
-            // check if a gravatar exists
-            $hash = md5(strtolower(trim($this->email)));
-            $url = 'https://www.gravatar.com/avatar/'.$hash.'??d=mm&s=200';
-            $headers = @get_headers($url);
-
-            if (!preg_match('|200|', $headers[0])) {
-                return url('images/avatars/default.jpg');
-            } else {
-                return 'https://www.gravatar.com/avatar/'.$hash.'?d=mm&s=200';
-            }
-        }
-
-        return url('images/avatars/'.$this->avatar);
+        return ($this->avatar);
     }
 
     /**
@@ -712,18 +672,15 @@ class User extends Authenticatable implements MustVerifyEmail
         $owned = UserCurrency::where('user_id', $this->id)->pluck('quantity', 'currency_id')->toArray();
 
         $currencies = Currency::where('is_user_owned', 1);
-        if ($showAll) {
-            $currencies->where(function ($query) use ($owned) {
-                $query->where('is_displayed', 1)->orWhereIn('id', array_keys($owned));
-            });
-        } else {
-            $currencies = $currencies->where('is_displayed', 1);
-        }
+        if ($showAll) $currencies->where(function ($query) use ($owned) {
+            $query->where('is_displayed', 1)->orWhereIn('id', array_keys($owned));
+        });
+        else $currencies = $currencies->where('is_displayed', 1);
 
         $currencies = $currencies->orderBy('sort_user', 'DESC')->get();
 
         foreach ($currencies as $currency) {
-            $currency->quantity = $owned[$currency->id] ?? 0;
+            $currency->quantity = isset($owned[$currency->id]) ? $owned[$currency->id] : 0;
         }
 
         return $currencies;
@@ -738,10 +695,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getCurrencySelect($isTransferrable = false) {
         $query = UserCurrency::query()->where('user_id', $this->id)->leftJoin('currencies', 'user_currencies.currency_id', '=', 'currencies.id')->orderBy('currencies.sort_user', 'DESC');
-        if ($isTransferrable) {
-            $query->where('currencies.allow_user_to_user', 1);
-        }
-
+        if ($isTransferrable) $query->where('currencies.allow_user_to_user', 1);
         return $query->get()->pluck('name_with_quantity', 'currency_id')->toArray();
     }
 
@@ -759,11 +713,8 @@ class User extends Authenticatable implements MustVerifyEmail
         })->orWhere(function ($query) use ($user) {
             $query->with('recipient')->where('recipient_type', 'User')->where('recipient_id', $user->id)->where('log_type', '!=', 'Staff Removal');
         })->orderBy('id', 'DESC');
-        if ($limit) {
-            return $query->take($limit)->get();
-        } else {
-            return $query->paginate(30);
-        }
+        if ($limit) return $query->take($limit)->get();
+        else return $query->paginate(30);
     }
 
     /**
@@ -819,11 +770,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getShopLogs($limit = 10) {
         $user = $this;
         $query = ShopLog::where('user_id', $this->id)->with('character')->with('shop')->with('item')->with('currency')->orderBy('id', 'DESC');
-        if ($limit) {
-            return $query->take($limit)->get();
-        } else {
-            return $query->paginate(30);
-        }
+        if ($limit) return $query->take($limit)->get();
+        else return $query->paginate(30);
     }
 
     /**
@@ -846,9 +794,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * Checks if there are characters credited to the user's alias and updates ownership to their account accordingly.
      */
     public function updateCharacters() {
-        if (!$this->attributes['has_alias']) {
-            return;
-        }
+        if (!$this->hasAlias) return;
 
         // Pluck alias from url and check for matches
         $urlCharacters = Character::whereNotNull('owner_url')->pluck('owner_url', 'id');
@@ -856,15 +802,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $count = 0;
         foreach ($this->aliases as $alias) {
             // Find all urls from the same site as this alias
-            foreach ($urlCharacters as $key=> $character) {
-                preg_match_all(Config::get('lorekeeper.sites.'.$alias->site.'.regex'), $character, $matches[$key]);
-            }
+            foreach ($urlCharacters as $key => $character) preg_match_all(Config::get('lorekeeper.sites.' . $alias->site . '.regex'), $character, $matches[$key]);
             // Find all alias matches within those, and update the character's owner
-            foreach ($matches as $key=> $match) {
-                if ($match[1] != [] && strtolower($match[1][0]) == strtolower($alias->alias)) {
-                    Character::find($key)->update(['owner_url' => null, 'user_id' => $this->id]);
-                    $count += 1;
-                }
+            foreach ($matches as $key => $match) if ($match[1] != [] && strtolower($match[1][0]) == strtolower($alias->alias)) {
+                Character::find($key)->update(['owner_url' => null, 'user_id' => $this->id]);
+                $count += 1;
             }
         }
 
@@ -879,24 +821,16 @@ class User extends Authenticatable implements MustVerifyEmail
      * Checks if there are art or design credits credited to the user's alias and credits them to their account accordingly.
      */
     public function updateArtDesignCredits() {
-        if (!$this->attributes['has_alias']) {
-            return;
-        }
+        if (!$this->hasAlias) return;
 
         // Pluck alias from url and check for matches
         $urlCreators = CharacterImageCreator::whereNotNull('url')->pluck('url', 'id');
         $matches = [];
         foreach ($this->aliases as $alias) {
             // Find all urls from the same site as this alias
-            foreach ($urlCreators as $key=> $creator) {
-                preg_match_all(Config::get('lorekeeper.sites.'.$alias->site.'.regex'), $creator, $matches[$key]);
-            }
+            foreach ($urlCreators as $key => $creator) preg_match_all(Config::get('lorekeeper.sites.' . $alias->site . '.regex'), $creator, $matches[$key]);
             // Find all alias matches within those, and update the relevant CharacterImageCreator
-            foreach ($matches as $key=> $match) {
-                if ($match[1] != [] && strtolower($match[1][0]) == strtolower($alias->alias)) {
-                    CharacterImageCreator::find($key)->update(['url' => null, 'user_id' => $this->id]);
-                }
-            }
+            foreach ($matches as $key => $match) if ($match[1] != [] && strtolower($match[1][0]) == strtolower($alias->alias)) CharacterImageCreator::find($key)->update(['url' => null, 'user_id' => $this->id]);
         }
     }
 

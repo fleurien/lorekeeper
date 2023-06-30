@@ -29,18 +29,13 @@ class LinkService extends Service {
     public function getAuthRedirect($provider, $login = false) {
         $socialite = Socialite::driver($provider);
 
-        if ($provider == 'deviantart') {
-            $socialite->setScopes(['user']);
-        }
+        if ($provider == 'deviantart') $socialite->setScopes(['user']);
         // We want to go to a different endpoint if we're trying to login
         if ($login && $provider == 'tumblr') {
             flash('Tumblr is currently unsupported for login')->error();
-
             return redirect()->back();
         }
-        if ($login) {
-            $socialite->redirectUrl(str_replace('auth', 'login', url(Config::get('services.'.$provider.'.redirect'))));
-        }
+        if ($login) $socialite->redirectUrl(str_replace('auth', 'login', url(Config::get('services.' . $provider . '.redirect'))));
 
         return $socialite->redirect();
     }
@@ -56,13 +51,9 @@ class LinkService extends Service {
         DB::beginTransaction();
 
         try {
-            if (!$result || !$result->nickname) {
-                throw new \Exception('Unable to retrieve user data.');
-            }
+            if (!$result || !$result->nickname) throw new \Exception("Unable to retrieve user data.");
 
-            if (DB::table('user_aliases')->where('site', $provider)->where('alias', $result->nickname)->exists()) {
-                throw new \Exception('Cannot link the same account multiple times and/or to different site accounts.');
-            }
+            if (DB::table('user_aliases')->where('site', $provider)->where('alias', $result->nickname)->exists()) throw new \Exception("Cannot link the same account multiple times and/or to different site accounts.");
 
             // Save the user's alias and set it as the primary alias
             UserAlias::create([
@@ -101,12 +92,8 @@ class LinkService extends Service {
         try {
             $alias = UserAlias::where('id', $aliasId)->where('user_id', $user->id)->where('is_primary_alias', 0)->first();
 
-            if (!$alias) {
-                throw new \Exception('Invalid alias selected.');
-            }
-            if (!$alias->canMakePrimary) {
-                throw new \Exception('This alias cannot be made your primary alias.');
-            }
+            if (!$alias) throw new \Exception("Invalid alias selected.");
+            if (!$alias->canMakePrimary) throw new \Exception("This alias cannot be made your primary alias.");
 
             // Unset the current primary alias
             UserAlias::where('user_id', $user->id)->where('is_primary_alias', 1)->update(['is_primary_alias' => 0]);
@@ -143,9 +130,7 @@ class LinkService extends Service {
                 $alias = $alias->first();
             }
 
-            if (!$alias) {
-                throw new \Exception('Invalid alias selected.');
-            }
+            if (!$alias) throw new \Exception("Invalid alias selected.");
 
             // Update the alias's visibility
             $alias->is_visible = !$alias->is_visible;
@@ -181,6 +166,8 @@ class LinkService extends Service {
             if (!$alias) {
                 throw new \Exception('Invalid alias selected.');
             }
+
+            if (!$alias) throw new \Exception("Invalid alias selected.");
 
             UserUpdateLog::create(['user_id' => $user->id, 'data' => json_encode(['alias' => $alias->alias, 'site' => $alias->site]), 'type' => 'Alias Deleted']);
 
