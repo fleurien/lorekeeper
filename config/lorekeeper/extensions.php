@@ -103,4 +103,11 @@ return [
     // use gravatar for user avatars - Newt
     'use_gravatar' => 0,
 
+
+    // Character Backgrounds - Uri
+    'character_backgrounds' => [
+        'enabled' => 1, // 0 for disabled
+        'profiles_enabled' => 1 // 0 to disable this effect on Character Profiles (versus their masterlist page)
+    ],
+
 ];
