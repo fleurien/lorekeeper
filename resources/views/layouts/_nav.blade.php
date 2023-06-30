@@ -95,6 +95,9 @@
                         <a class="dropdown-item" href="templink">
                         <i class="fa-solid fa-book-atlas"></i> Lore
                         </a>
+                        <a class="dropdown-item" href="{{ url('foraging') }}">
+                            Foraging
+                        </a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
