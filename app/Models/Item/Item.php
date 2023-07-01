@@ -4,15 +4,16 @@ namespace App\Models\Item;
 
 use Config;
 use DB;
-
-use App\Models\Item\ItemCategory;
 use App\Models\Model;
-use App\Models\Prompt\Prompt;
-use App\Models\Shop\Shop;
+use App\Models\Item\ItemCategory;
+
 use App\Models\User\User;
+use App\Models\Shop\Shop;
+use App\Models\Prompt\Prompt;
 use App\Models\User\UserItem;
 
-class Item extends Model {
+class Item extends Model
+{
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +21,7 @@ class Item extends Model {
      */
     protected $fillable = [
         'item_category_id', 'name', 'has_image', 'description', 'parsed_description', 'allow_transfer',
-        'data', 'reference_url', 'artist_alias', 'artist_url', 'artist_id', 'is_released',
+        'data', 'reference_url', 'artist_alias', 'artist_url', 'artist_id', 'is_released'
     ];
 
     protected $appends = ['image_url'];
@@ -31,20 +32,21 @@ class Item extends Model {
      * @var string
      */
     protected $table = 'items';
+
     /**
      * Validation rules for creation.
      *
      * @var array
      */
     public static $createRules = [
-        'item_category_id'  => 'nullable',
-        'name'              => 'required|unique:items|between:3,100',
-        'description'       => 'nullable',
-        'image'             => 'mimes:png',
-        'rarity'            => 'nullable',
-        'reference_url'     => 'nullable|between:3,200',
-        'uses'              => 'nullable|between:3,250',
-        'release'           => 'nullable|between:3,100',
+        'item_category_id' => 'nullable',
+        'name' => 'required|unique:items|between:3,100',
+        'description' => 'nullable',
+        'image' => 'mimes:png',
+        'rarity' => 'nullable',
+        'reference_url' => 'nullable|between:3,200',
+        'uses' => 'nullable|between:3,250',
+        'release' => 'nullable|between:3,100',
         'currency_quantity' => 'nullable|integer|min:1',
     ];
 
@@ -54,13 +56,13 @@ class Item extends Model {
      * @var array
      */
     public static $updateRules = [
-        'item_category_id'  => 'nullable',
-        'name'              => 'required|between:3,100',
-        'description'       => 'nullable',
-        'image'             => 'mimes:png',
-        'reference_url'     => 'nullable|between:3,200',
-        'uses'              => 'nullable|between:3,250',
-        'release'           => 'nullable|between:3,100',
+        'item_category_id' => 'nullable',
+        'name' => 'required|between:3,100',
+        'description' => 'nullable',
+        'image' => 'mimes:png',
+        'reference_url' => 'nullable|between:3,200',
+        'uses' => 'nullable|between:3,250',
+        'release' => 'nullable|between:3,100',
         'currency_quantity' => 'nullable|integer|min:1',
     ];
 
@@ -73,21 +75,24 @@ class Item extends Model {
     /**
      * Get the category the item belongs to.
      */
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo('App\Models\Item\ItemCategory', 'item_category_id');
     }
 
     /**
      * Get the item's tags.
      */
-    public function tags() {
+    public function tags()
+    {
         return $this->hasMany('App\Models\Item\ItemTag', 'item_id');
     }
 
     /**
      * Get the user that drew the item art.
      */
-    public function artist() {
+    public function artist()
+    {
         return $this->belongsTo('App\Models\User\User', 'artist_id');
     }
 
@@ -100,60 +105,57 @@ class Item extends Model {
     /**
      * Scope a query to sort items in alphabetical order.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param bool                                  $reverse
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  bool                                   $reverse
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false) {
+    public function scopeSortAlphabetical($query, $reverse = false)
+    {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
     /**
      * Scope a query to sort items in category order.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortCategory($query) {
-        if (ItemCategory::all()->count()) {
-            return $query->orderBy(ItemCategory::select('sort')->whereColumn('items.item_category_id', 'item_categories.id'), 'DESC');
-        }
-
-        return $query;
+    public function scopeSortCategory($query)
+    {
+        $ids = ItemCategory::orderBy('sort', 'DESC')->pluck('id')->toArray();
+        return count($ids) ? $query->orderByRaw(DB::raw('FIELD(item_category_id, '.implode(',', $ids).')')) : $query;
     }
 
     /**
      * Scope a query to sort items by newest first.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query) {
+    public function scopeSortNewest($query)
+    {
         return $query->orderBy('id', 'DESC');
     }
 
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query) {
+    public function scopeSortOldest($query)
+    {
         return $query->orderBy('id');
     }
 
     /**
      * Scope a query to show only released or "released" (at least one user-owned stack has ever existed) items.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeReleased($query) {
+    public function scopeReleased($query)
+    {
         return $query->whereIn('id', UserItem::pluck('item_id')->toArray())->orWhere('is_released', 1);
     }
 
@@ -168,7 +170,8 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getDisplayNameAttribute() {
+    public function getDisplayNameAttribute()
+    {
         return '<a href="'.$this->url.'" class="display-item">'.$this->name.'</a>';
     }
 
@@ -177,7 +180,8 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getImageDirectoryAttribute() {
+    public function getImageDirectoryAttribute()
+    {
         return 'images/data/items';
     }
 
@@ -186,8 +190,9 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getImageFileNameAttribute() {
-        return $this->id.'-image.png';
+    public function getImageFileNameAttribute()
+    {
+        return $this->id . '-image.png';
     }
 
     /**
@@ -195,7 +200,8 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getImagePathAttribute() {
+    public function getImagePathAttribute()
+    {
         return public_path($this->imageDirectory);
     }
 
@@ -204,12 +210,10 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getImageUrlAttribute() {
-        if (!$this->has_image) {
-            return null;
-        }
-
-        return asset($this->imageDirectory.'/'.$this->imageFileName);
+    public function getImageUrlAttribute()
+    {
+        if (!$this->has_image) return null;
+        return asset($this->imageDirectory . '/' . $this->imageFileName);
     }
 
     /**
@@ -217,7 +221,8 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getUrlAttribute() {
+    public function getUrlAttribute()
+    {
         return url('world/items?name='.$this->name);
     }
 
@@ -226,7 +231,8 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getIdUrlAttribute() {
+    public function getIdUrlAttribute()
+    {
         return url('world/items/'.$this->id);
     }
 
@@ -235,7 +241,8 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getAssetTypeAttribute() {
+    public function getAssetTypeAttribute()
+    {
         return 'items';
     }
 
@@ -244,22 +251,24 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getItemArtistAttribute() {
-        if (!$this->artist_url && !$this->artist_id) {
-            return null;
-        }
+    public function getItemArtistAttribute()
+    {
+        if(!$this->artist_url && !$this->artist_id) return null;
 
         // Check to see if the artist exists on site
         $artist = checkAlias($this->artist_url, false);
-        if (is_object($artist)) {
+        if(is_object($artist)) {
             $this->artist_id = $artist->id;
             $this->artist_url = null;
             $this->save();
         }
 
-        if ($this->artist_id) {
+        if($this->artist_id)
+        {
             return $this->artist->displayName;
-        } elseif ($this->artist_url) {
+        }
+        else if ($this->artist_url)
+        {
             return prettyProfileLink($this->artist_url);
         }
     }
@@ -269,11 +278,9 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getReferenceAttribute() {
-        if (!$this->reference_url) {
-            return null;
-        }
-
+    public function getReferenceAttribute()
+    {
+        if (!$this->reference_url) return null;
         return $this->reference_url;
     }
 
@@ -282,11 +289,9 @@ class Item extends Model {
      *
      * @return array
      */
-    public function getDataAttribute() {
-        if (!$this->id) {
-            return null;
-        }
-
+    public function getDataAttribute()
+    {
+        if (!$this->id) return null;
         return json_decode($this->attributes['data'], true);
     }
 
@@ -295,11 +300,9 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getRarityAttribute() {
-        if (!isset($this->data) || !isset($this->data['rarity'])) {
-            return null;
-        }
-
+    public function getRarityAttribute()
+    {
+        if (!isset($this->data) || !isset($this->data['rarity'])) return null;
         return $this->data['rarity'];
     }
 
@@ -308,11 +311,9 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getUsesAttribute() {
-        if (!$this->data) {
-            return null;
-        }
-
+    public function getUsesAttribute()
+    {
+        if (!$this->data) return null;
         return $this->data['uses'];
     }
 
@@ -321,11 +322,9 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getSourceAttribute() {
-        if (!$this->data) {
-            return null;
-        }
-
+    public function getSourceAttribute()
+    {
+        if (!$this->data) return null;
         return $this->data['release'];
     }
 
@@ -334,11 +333,9 @@ class Item extends Model {
      *
      * @return string
      */
-    public function getResellAttribute() {
-        if (!$this->data) {
-            return null;
-        }
-
+    public function getResellAttribute()
+    {
+        if (!$this->data) return null;
         return collect($this->data['resell']);
     }
 
@@ -347,12 +344,10 @@ class Item extends Model {
      *
      * @return array
      */
-    public function getShopsAttribute() {
-        if (!$this->data) {
-            return null;
-        }
+    public function getShopsAttribute()
+    {
+        if (!$this->data) return null;
         $itemShops = $this->data['shops'];
-
         return Shop::whereIn('id', $itemShops)->get();
     }
 
@@ -361,56 +356,11 @@ class Item extends Model {
      *
      * @return array
      */
-    public function getPromptsAttribute() {
-        if (!$this->data) {
-            return null;
-        }
-        $itemPrompts = $this->data['prompts'];
-
-        return Prompt::whereIn('id', $itemPrompts)->get();
-    }
-
-    /**
-     * Check if an item can be donated.
-     *
-     * @return bool
-     */
-    public function getCanDonateAttribute()
+    public function getPromptsAttribute()
     {
-        if (!$this->allow_transfer) {
-            return 0;
-        }
-        $setting = Config::get('lorekeeper.settings.donation_shop.item_donations');
-        switch ($setting) {
-            case 0:
-                return 1;
-                break;
-            case 1:
-                if ($this->category->can_donate) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-                break;
-            case 2:
-                if ($this->hasTag('donateable')) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-                break;
-            case 3:
-                if ($this->category->can_donate) {
-                    return 1;
-                } elseif ($this->hasTag('donateable')) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-                break;
-        }
-
-        return 0;
+        if (!$this->data) return null;
+        $itemPrompts = $this->data['prompts'];
+        return Prompt::whereIn('id', $itemPrompts)->get();
     }
 
     /**********************************************************************************************
@@ -422,22 +372,20 @@ class Item extends Model {
     /**
      * Checks if the item has a particular tag.
      *
-     * @param mixed $tag
-     *
      * @return bool
      */
-    public function hasTag($tag) {
+    public function hasTag($tag)
+    {
         return $this->tags()->where('tag', $tag)->where('is_active', 1)->exists();
     }
 
     /**
      * Gets a particular tag attached to the item.
      *
-     * @param mixed $tag
-     *
      * @return \App\Models\Item\ItemTag
      */
-    public function tag($tag) {
+    public function tag($tag)
+    {
         return $this->tags()->where('tag', $tag)->where('is_active', 1)->first();
     }
 }

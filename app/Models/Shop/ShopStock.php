@@ -4,7 +4,9 @@ namespace App\Models\Shop;
 
 use App\Models\Model;
 
-class ShopStock extends Model {
+class ShopStock extends Model
+{
+
     /**
      * The attributes that are mass assignable.
      *
