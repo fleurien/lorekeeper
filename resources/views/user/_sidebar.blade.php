@@ -36,6 +36,7 @@
         <div class="sidebar-item"><a href="{{ $user->url.'/pet-logs' }}" class="{{ set_active($user->url.'/pet-logs*') }}">Pet Logs</a></div>
 >>>>>>> a065cf0f0bd9f09fb40f23bd38fab2b604d1cd0c
         <div class="sidebar-item"><a href="{{ $user->url.'/submissions' }}" class="{{ set_active($user->url.'/submissions*') }}">Submissions</a></div>
+<<<<<<< HEAD
 =======
         <div class="sidebar-item"><a href="{{ $user->url . '/myos' }}" class="{{ set_active('user/' . $user->name . '/myos*') }}">MYO Slots</a></div>
         <div class="sidebar-item"><a href="{{ $user->url . '/inventory' }}" class="{{ set_active('user/' . $user->name . '/inventory*') }}">Inventory</a></div>
@@ -48,6 +49,9 @@
         <div class="sidebar-item"><a href="{{ $user->url . '/currency-logs' }}" class="{{ set_active($user->url . '/currency-logs*') }}">Currency Logs</a></div>
         <div class="sidebar-item"><a href="{{ $user->url . '/submissions' }}" class="{{ set_active($user->url . '/submissions*') }}">Submissions</a></div>
 >>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
+=======
+        <div class="sidebar-item"><a href="{{ $user->url.'/collection-logs' }}" class="{{ set_active($user->url.'/collection-logs*') }}">Collection Logs</a></div>
+>>>>>>> 56998441bf67d7ea4ee34db330c0f335d16db3e6
     </li>
 
     @if (Auth::check() && Auth::user()->hasPower('edit_user_info'))

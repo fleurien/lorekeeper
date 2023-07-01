@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\View;
 use Route;
 use Settings;
 
+use App\Models\Character\CharacterCategory;
+use App\Models\Collection\CollectionCategory;
 
 use App\Models\Character\BreedingPermission;
 
@@ -101,6 +103,7 @@ class UserController extends Controller
             'user_enabled'          => Settings::get('WE_user_locations'),
             'user_factions_enabled' => Settings::get('WE_user_factions'),
             'aliases'    => $aliases->orderBy('is_primary_alias', 'DESC')->orderBy('site')->get(),
+            'collections' => $this->user->collections()->orderBy('user_collections.updated_at', 'DESC')->take(4)->get(),
         ]);
     }
 
@@ -610,4 +613,36 @@ class UserController extends Controller
             'favorites'  => $this->user->characters->count() ? GallerySubmission::whereIn('id', $userFavorites)->whereIn('id', GalleryCharacter::whereIn('character_id', $userCharacters)->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->accepted()->orderBy('created_at', 'DESC')->paginate(20)->appends($request->query()) : null,
         ]);
     }
+
+    /**
+     * Shows a user's collection logs.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getUserCollectionLogs($name)
+    {
+        $user = $this->user;
+        $categories = CollectionCategory::orderBy('sort', 'DESC')->get();
+        $collections = count($categories) ?
+        $user->collections()
+            ->orderByRaw('FIELD(collection_category_id,'.implode(',', $categories->pluck('id')->toArray()).')')
+            ->orderBy('name')
+            ->orderBy('updated_at')
+            ->get()
+            ->groupBy(['collection_category_id', 'id']) :
+        $user->collections()
+            ->orderBy('name')
+            ->orderBy('updated_at')
+            ->get()
+            ->groupBy(['collection_category_id', 'id']);
+        return view('user.collection_logs', [
+            'user' => $this->user,
+            'logs' => $this->user->getCollectionLogs(0),
+            'categories' => $categories->keyBy('id'),
+            'collections' => $collections,
+            'sublists' => Sublist::orderBy('sort', 'DESC')->get()
+        ]);
+    }
+
 }

@@ -23,6 +23,8 @@
         <div class="sidebar-item"><a href="{{ url('world/currencies') }}" class="{{ set_active('world/currencies*') }}">Currencies</a></div>
         <div class="sidebar-item"><a href="{{ url('world/'.__('volumes.library')) }}" class="{{ set_active('world/'.__('volumes.library')) }}">{{ ucfirst(__('volumes.library')) }}</a></div>
         <div class="sidebar-item"><a href="{{ url('world/'.__('volumes.library').'/'.__('volumes.volumes')) }}" class="{{ set_active('world/'.__('volumes.library').'/'.__('volumes.volumes')) }}">All {{ ucfirst(__('volumes.volumes')) }}</a></div>
+        <div class="sidebar-item"><a href="{{ url('world/collections') }}" class="{{ set_active('world/collections*') }}">Collections</a></div>
+        <div class="sidebar-item"><a href="{{ url('world/collection-categories') }}" class="{{ set_active('world/collection-categories*') }}">Collection Categories</a></div>
     </li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">Awards</div>
