@@ -16,11 +16,7 @@ class CharacterImage extends Model {
      * @var array
      */
     protected $fillable = [
-<<<<<<< HEAD
         'character_id', 'user_id', 'species_id', 'subtype_id', 'rarity_id', 'title_id', 'title_data', 'url',
-=======
-        'character_id', 'user_id', 'species_id', 'subtype_id', 'rarity_id', 'url', 'transformation_id',
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         'extension', 'use_cropper', 'hash', 'fullsize_hash', 'sort',
         'x0', 'x1', 'y0', 'y1',
         'description', 'parsed_description',
@@ -154,13 +150,7 @@ class CharacterImage extends Model {
         return $this->hasMany('App\Models\Character\CharacterImageCreator', 'character_image_id')->where('type', 'Artist')->where('character_type', 'Character');
     }
 
-    /**
-     * Get the transformation of the character image.
-     */
-    public function transformation() {
-        return $this->belongsTo('App\Models\Character\CharacterTransformation', 'transformation_id');
-    }
-
+ 
     /**********************************************************************************************
 
         SCOPES

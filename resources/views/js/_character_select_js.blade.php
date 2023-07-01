@@ -59,7 +59,6 @@
                     $cell.children('.character-items').addClass('show');
                     $cell.children('.character-items').removeClass('hide');
                     $cell.children('.character-items');
-<<<<<<< HEAD
                 }
                 else if(val == 'Award') {
                     $cell.children('.character-awards').addClass('show');
@@ -67,9 +66,6 @@
                     $cell.children('.character-awards');
                 }
                 else if (val == 'Currency'){
-=======
-                } else if (val == 'Currency') {
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                     $cell.children('.character-currencies').addClass('show');
                     $cell.children('.character-currencies').removeClass('hide');
                 } else if (val == 'LootTable') {

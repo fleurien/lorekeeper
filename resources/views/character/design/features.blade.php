@@ -48,10 +48,6 @@
                 </div>
             @endif
         </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         <div class="form-group">
             {!! Form::label('rarity_id', 'Character Rarity') !!}
             @if ($request->character->is_myo_slot && $request->character->image->rarity_id)

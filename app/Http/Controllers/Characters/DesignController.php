@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Characters;
 use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterDesignUpdate;
-<<<<<<< HEAD
 use App\Models\Character\CharacterTitle;
-=======
-use App\Models\Character\CharacterTransformation as Transformation;
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 use App\Models\Feature\Feature;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
@@ -164,24 +160,21 @@ class DesignController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getAddons($id) {
+    public function getAddons($id)
+    {
         $r = CharacterDesignUpdate::find($id);
-        if (!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
-            abort(404);
-        }
-        if ($r->status == 'Draft' && $r->user_id == Auth::user()->id) {
+        if(!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) abort(404);
+        if($r->status == 'Draft' && $r->user_id == Auth::user()->id) 
             $inventory = UserItem::with('item')->whereNull('deleted_at')->where('count', '>', '0')->where('user_id', $r->user_id)->get();
-        } else {
+        else 
             $inventory = isset($r->data['user']) ? parseAssetData($r->data['user']) : null;
-        }
-
         return view('character.design.addons', [
-            'request'     => $r,
-            'categories'  => ItemCategory::visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC')->get(),
-            'inventory'   => $inventory,
-            'items'       => Item::all()->keyBy('id'),
+            'request' => $r,
+            'categories' => ItemCategory::orderBy('sort', 'DESC')->get(),
+            'inventory' => $inventory,
+            'items' => Item::all()->keyBy('id'),
             'item_filter' => Item::orderBy('name')->get()->keyBy('id'),
-            'page'        => 'update',
+            'page' => 'update'
         ]);
     }
 
@@ -227,7 +220,6 @@ class DesignController extends Controller {
         }
 
         return view('character.design.features', [
-<<<<<<< HEAD
             'request'   => $r,
             'specieses' => ['0' => 'Select Species'] + Species::visible()->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes'  => ['0' => 'No Subtype'] + Subtype::visible()->where('species_id', '=', $r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -236,14 +228,6 @@ class DesignController extends Controller {
             'features'  => Feature::orderBy('name')->pluck('name', 'id')->toArray(),
             'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
 
-=======
-            'request'         => $r,
-            'specieses'       => ['0' => 'Select Species'] + Species::visible()->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes'        => ['0' => 'No Subtype'] + Subtype::visible()->where('species_id', '=', $r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'rarities'        => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'transformations' => ['0' => 'Select Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features'        => Feature::getDropdownItems(),
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         ]);
     }
 
@@ -396,19 +380,7 @@ class DesignController extends Controller {
         return redirect()->to('designs');
     }
 
-    /**
-     * Shows the edit image transformation portion of the modal.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function getFeaturesTransformation(Request $request) {
-        $id = $request->input('id');
 
-        return view('character.design._features_transformation', [
-            'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'transformation'  => $id,
-        ]);
-    }
 
 
 }

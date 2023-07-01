@@ -41,7 +41,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Route;
 use Settings;
-use App\Models\Character\CharacterImage;
 
 
 use App\Models\Skill\Skill;
@@ -997,24 +996,6 @@ class CharacterController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Shows a character's images.
-     *
-     * @param string $slug
-     * @param mixed  $id
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function getCharacterImage($slug, $id) {
-        $image = CharacterImage::where('character_id', $this->character->id)->where('id', $id)->first();
-
-        return view('character.image', [
-            'user'      => Auth::check() ? Auth::user() : null,
-            'character' => $this->character,
-            'image'     => $image,
-            'ajax'      => true,
-        ]);
-    }
 
     /**
      * Opens a new design update approval request for a character. but with a specific image lmao

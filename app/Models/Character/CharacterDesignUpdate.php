@@ -154,12 +154,6 @@ class CharacterDesignUpdate extends Model {
         return $this->hasMany('App\Models\Character\CharacterImageCreator', 'character_image_id')->where('type', 'Artist')->where('character_type', 'Update');
     }
 
-        /**
-     * Get the transformation of the design update.
-     */
-    public function transformation() {
-        return $this->belongsTo('App\Models\Character\CharacterTransformation', 'transformation_id');
-    }
 
     /**********************************************************************************************
 

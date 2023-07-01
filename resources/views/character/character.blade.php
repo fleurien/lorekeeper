@@ -20,11 +20,7 @@
 
     @include('character._header', ['character' => $character])
 
-<<<<<<< HEAD
 @if ($character->images()->where('is_valid', 1)->whereNotNull('transformation_id')->exists())
-=======
-    @if ($character->images()->where('is_valid', 1)->whereNotNull('transformation_id')->exists())
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         <div class="card-header mb-2">
             <ul class="nav nav-tabs card-header-tabs">
                 @foreach ($character->images()->where('is_valid', 1)->get() as $image)
@@ -35,7 +31,6 @@
                     </li>
                 @endforeach
                 <li>
-<<<<<<< HEAD
                     <h3>{!! add_help('Click on a '.__('transformations.transformation').' to view the image. If you don\'t see the '.__('transformations.transformation').' you\'re looking for, it may not have been uploaded yet.') !!}</h3>
                 </li>
             </ul>
@@ -49,22 +44,6 @@
             <div class="text-center" style="{{ implode('; ',$background) }}; background-size: cover; background-repeat:no-repeat;">
                 <a href="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($character->image->imageDirectory.'/'.$character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}" data-lightbox="entry" data-title="{{ $character->fullName }}">
                     <img src="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($character->image->imageDirectory.'/'.$character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}" class="image" alt="{{ $character->fullName }}" />
-=======
-                    <h3>{!! add_help('Click on a transformation to view the image. If you don\'t see the transformation you\'re looking for, it may not have been uploaded yet.') !!}</h3>
-                </li>
-            </ul>
-        </div>
-    @endif
-
-    {{-- Main Image --}}
-    <div class="row mb-3" id="main-tab">
-        <div class="col-md-7">
-            <div class="text-center">
-                <a href="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($character->image->imageDirectory . '/' . $character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}"
-                    data-lightbox="entry" data-title="{{ $character->fullName }}">
-                    <img src="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($character->image->imageDirectory . '/' . $character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}"
-                        class="image" alt="{{ $character->fullName }}" />
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
                 </a>
             </div>
 
@@ -106,25 +85,11 @@
                 </li>
             @endif
         </div>
-        @include('character._image_info', ['image' => $character->image])
     </div>
 
-    {{-- Info --}}
-    <div class="card character-bio">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" id="statsTab" data-toggle="tab" href="#stats" role="tab">Stats</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="notesTab" data-toggle="tab" href="#notes" role="tab">Description</a>
-                </li>
-                @if (Auth::check() && Auth::user()->hasPower('manage_characters'))
-                    <li class="nav-item">
-                        <a class="nav-link" id="settingsTab" data-toggle="tab" href="#settings-{{ $character->slug }}" role="tab"><i class="fas fa-cog"></i></a>
-                    </li>
-                @endif
-            </ul>
+</div>
+<div class="tab-pane fade" id="stats">
+            @include('character._tab_stats', ['character' => $character])
         </div>
         <div class="tab-pane fade" id="notes">
             @include('character._tab_notes', ['character' => $character])

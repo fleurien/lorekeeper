@@ -58,7 +58,6 @@
                         <div class="col-lg-8 col-md-6 col-8">{!! $image->subtype_id ? $image->subtype->displayName : 'None' !!}</div>
                     </div>
                 @endif
-<<<<<<< HEAD
                 @if($image->character->homeSetting)
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-4"><h5>Home</h5></div>
@@ -74,13 +73,6 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-4">
                             <h5>{{ ucfirst(__('transformations.form')) }} {!! add_help('The main image is always the active image') !!}</h5>
-=======
-
-                @if ($image->transformation_id)
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-4">
-                            <h5>Form {!! add_help('The main image is always the active image') !!}</h5>
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
                         </div>
                         <div class="col-lg-8 col-md-6 col-8">
                             <a href="{{ $image->transformation->url }}">
@@ -300,27 +292,24 @@
                 </div>
             @endif
 
-            @if (Auth::check() && Auth::user()->hasPower('manage_characters'))
+            @if(Auth::check() && Auth::user()->hasPower('manage_characters'))
                 <div class="tab-pane fade" id="settings-{{ $image->id }}">
-                    {!! Form::open(['url' => 'admin/character/image/' . $image->id . '/settings']) !!}
-                    <div class="form-group">
-                        {!! Form::checkbox('is_visible', 1, $image->is_visible, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
-                        {!! Form::label('is_visible', 'Is Viewable', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If this is turned off, the image will not be visible by anyone without the Manage Masterlist power.') !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::checkbox('is_valid', 1, $image->is_valid, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
-                        {!! Form::label('is_valid', 'Is Valid', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If this is turned off, the image will still be visible, but displayed with a note that the image is not a valid reference.') !!}
-                    </div>
-                    <div class="text-right">
-                        {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
-                    </div>
+                    {!! Form::open(['url' => 'admin/character/image/'.$image->id.'/settings']) !!}
+                        <div class="form-group">
+                            {!! Form::checkbox('is_visible', 1, $image->is_visible, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
+                            {!! Form::label('is_visible', 'Is Viewable', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If this is turned off, the image will not be visible by anyone without the Manage Masterlist power.') !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::checkbox('is_valid', 1, $image->is_valid, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
+                            {!! Form::label('is_valid', 'Is Valid', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If this is turned off, the image will still be visible, but displayed with a note that the image is not a valid reference.') !!}
+                        </div>
+                        <div class="text-right">
+                            {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
+                        </div>
                     {!! Form::close() !!}
                     <hr />
                     <div class="text-right">
-                        @if ($character->character_image_id != $image->id)
-                            <a href="#" class="btn btn-outline-info btn-sm active-image" data-id="{{ $image->id }}">Set Active</a>
-                        @endif <a href="#" class="btn btn-outline-info btn-sm reupload-image" data-id="{{ $image->id }}">Reupload Image</a> <a href="#" class="btn btn-outline-danger btn-sm delete-image"
-                            data-id="{{ $image->id }}">Delete</a>
+                    @if($character->character_image_id != $image->id) <a href="#" class="btn btn-outline-info btn-sm active-image" data-id="{{ $image->id }}">Set Active</a> @endif <a href="#" class="btn btn-outline-info btn-sm reupload-image" data-id="{{ $image->id }}">Reupload Image</a> <a href="#" class="btn btn-outline-danger btn-sm delete-image" data-id="{{ $image->id }}">Delete</a>
                     </div>
                 </div>
             @endif
@@ -328,4 +317,3 @@
     </div>
 
 </div>
-

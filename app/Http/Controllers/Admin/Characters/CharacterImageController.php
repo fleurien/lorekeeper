@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Admin\Characters;
 use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterImage;
-<<<<<<< HEAD
 use App\Models\Character\CharacterTitle;
-=======
-use App\Models\Character\CharacterTransformation as Transformation;
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 use App\Models\Feature\Feature;
 use App\Models\Rarity;
 use App\Models\Species\Species;
@@ -44,7 +40,6 @@ class CharacterImageController extends Controller {
         }
 
         return view('character.admin.upload_image', [
-<<<<<<< HEAD
             'character' => $this->character,
             'rarities'  => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'specieses' => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -53,16 +48,6 @@ class CharacterImageController extends Controller {
             'features'  => Feature::getDropdownItems(1),
             'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'isMyo'     => false,
-=======
-            'character'       => $this->character,
-            'rarities'        => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'specieses'       => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes'        => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $this->character->image->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'transformations' => ['0' => 'Select Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'users'           => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'features'        => Feature::getDropdownItems(1),
-            'isMyo'           => false,
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         ]);
     }
 
@@ -95,19 +80,6 @@ class CharacterImageController extends Controller {
         ]);
     }
 
-    /**
-     * Shows the edit image transformation portion of the modal.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function getNewImageTransformation(Request $request) {
-        $id = $request->input('id');
-
-        return view('character.admin._upload_image_transformation', [
-            'transformations' => ['0' => 'Select Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'transformation'  => $id,
-        ]);
-    }
 
     /**
      * Creates a new image for a character.
@@ -119,11 +91,7 @@ class CharacterImageController extends Controller {
      */
     public function postNewImage(Request $request, CharacterManager $service, $slug) {
         $request->validate(CharacterImage::$createRules);
-<<<<<<< HEAD
         $data = $request->only(['image', 'thumbnail', 'x0', 'x1', 'y0', 'y1', 'use_cropper', 'artist_url', 'artist_id', 'artist_type', 'designer_url', 'designer_id', 'designer_type', 'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data', 'is_valid', 'is_visible','transformation_id',]);
-=======
-        $data = $request->only(['image', 'thumbnail', 'x0', 'x1', 'y0', 'y1', 'use_cropper', 'artist_url', 'artist_id', 'designer_url', 'designer_id', 'species_id', 'subtype_id', 'transformation_id', 'rarity_id', 'feature_id', 'feature_data', 'is_valid', 'is_visible']);
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         $this->character = Character::where('slug', $slug)->first();
         if (!$this->character) {
             abort(404);
@@ -152,7 +120,6 @@ class CharacterImageController extends Controller {
         $image = CharacterImage::find($id);
 
         return view('character.admin._edit_features_modal', [
-<<<<<<< HEAD
             'image'     => $image,
             'rarities'  => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'titles'    => ['0' => 'Select Title', 'custom' => 'Custom Title'] + CharacterTitle::orderBy('sort', 'DESC')->pluck('title', 'id')->toArray(),
@@ -160,14 +127,6 @@ class CharacterImageController extends Controller {
             'subtypes'  => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $image->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'features'  => Feature::getDropdownItems(1),
             'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-=======
-            'image'           => $image,
-            'rarities'        => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'specieses'       => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes'        => ['0' => 'Select Subtype'] + Subtype::where('species_id', '=', $image->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'transformations' => ['0' => 'Select Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features'        => Feature::getDropdownItems(1),
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         ]);
     }
 
@@ -179,14 +138,9 @@ class CharacterImageController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-<<<<<<< HEAD
     public function postEditImageFeatures(Request $request, CharacterManager $service, $id)
     {
         $data = $request->only(['species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data', 'title_id', 'title_data', 'transformation_id']);
-=======
-    public function postEditImageFeatures(Request $request, CharacterManager $service, $id) {
-        $data = $request->only(['species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data', 'transformation_id']);
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         $image = CharacterImage::find($id);
         if (!$image) {
             abort(404);
@@ -473,17 +427,4 @@ class CharacterImageController extends Controller {
         return redirect()->back();
     }
 
-    /**
-     * Shows the edit image transformation portion of the modal.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function getEditImageTransformation(Request $request) {
-        $id = $request->input('id');
-
-        return view('character.admin._edit_features_transformation', [
-            'image'           => CharacterImage::find($id),
-            'transformations' => ['0' => 'Select '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-        ]);
-    }
 }
