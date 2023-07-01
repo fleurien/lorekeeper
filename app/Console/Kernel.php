@@ -25,6 +25,12 @@ class Kernel extends ConsoleKernel {
                 ->everyMinute();
         $schedule->command('reset-foraging')
                 ->daily();
+        $schedule->command('check-pet-drops')
+                ->everyMinute();
+        $schedule->command('restock-shops')
+                ->daily();
+        $schedule->command('update-timed-stock')
+                ->everyMinute();
     }
 
     /**

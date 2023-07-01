@@ -4,9 +4,10 @@ namespace App\Services;
 
 use App\Models\Character\Character;
 use App\Models\Character\CharacterDesignUpdate;
+use App\Services\TransformationService;
+use App\Models\Character\CharacterTransformation as Transformation;
 use App\Models\Character\CharacterFeature;
 use App\Models\Character\CharacterImage;
-use App\Models\Character\CharacterTransformation as Transformation;
 use App\Models\Currency\Currency;
 use App\Models\Feature\Feature;
 use App\Models\Rarity;
@@ -345,46 +346,32 @@ class DesignUpdateManager extends Service {
         return $this->rollbackReturn(false);
     }
 
-    /**
+        /**
      * Saves the character features (traits) section of a character design update request.
      *
-     * @param array                                       $data
-     * @param \App\Models\Character\CharacterDesignUpdate $request
-     *
-     * @return bool
+     * @param  array                                        $data
+     * @param  \App\Models\Character\CharacterDesignUpdate  $request
+     * @return  bool
      */
-    public function saveRequestFeatures($data, $request) {
+    public function saveRequestFeatures($data, $request)
+    {
         DB::beginTransaction();
 
         try {
-            if (!($request->character->is_myo_slot && $request->character->image->species_id) && !isset($data['species_id'])) {
-                throw new \Exception('Please select a species.');
-            }
-            if (!($request->character->is_myo_slot && $request->character->image->rarity_id) && !isset($data['rarity_id'])) {
-                throw new \Exception('Please select a rarity.');
-            }
+            if(!($request->character->is_myo_slot && $request->character->image->species_id) && !isset($data['species_id'])) throw new \Exception("Please select a species.");
+            if(!($request->character->is_myo_slot && $request->character->image->rarity_id) && !isset($data['rarity_id'])) throw new \Exception("Please select a rarity.");
 
             $rarity = ($request->character->is_myo_slot && $request->character->image->rarity_id) ? $request->character->image->rarity : Rarity::find($data['rarity_id']);
             $species = ($request->character->is_myo_slot && $request->character->image->species_id) ? $request->character->image->species : Species::find($data['species_id']);
-            if (isset($data['subtype_id']) && $data['subtype_id']) {
+            if(isset($data['subtype_id']) && $data['subtype_id'])
                 $subtype = ($request->character->is_myo_slot && $request->character->image->subtype_id) ? $request->character->image->subtype : Subtype::find($data['subtype_id']);
-            } else {
-                $subtype = null;
-            }
-            if (isset($data['transformation_id']) && $data['transformation_id']) {
+            else $subtype = null;
+            if(isset($data['transformation_id']) && $data['transformation_id'])
                 $transformation = ($request->character->is_myo_slot && $request->character->image->transformation_id) ? $request->character->image->transformation : Transformation::find($data['transformation_id']);
-            } else {
-                $transformation = null;
-            }
-            if (!$rarity) {
-                throw new \Exception('Invalid rarity selected.');
-            }
-            if (!$species) {
-                throw new \Exception('Invalid species selected.');
-            }
-            if ($subtype && $subtype->species_id != $species->id) {
-                throw new \Exception('Subtype does not match the species.');
-            }
+            else $transformation = null;
+            if(!$rarity) throw new \Exception("Invalid rarity selected.");
+            if(!$species) throw new \Exception("Invalid species selected.");
+            if($subtype && $subtype->species_id != $species->id) throw new \Exception("Subtype does not match the species.");
 
             // Clear old features
             $request->features()->delete();
@@ -394,19 +381,15 @@ class DesignUpdateManager extends Service {
 
             $features = Feature::whereIn('id', $data['feature_id'])->with('rarity')->get()->keyBy('id');
 
-            foreach ($data['feature_id'] as $key => $featureId) {
-                if (!$featureId) {
-                    continue;
-                }
+            foreach($data['feature_id'] as $key => $featureId) {
+                if(!$featureId) continue;
 
                 // Skip the feature if the rarity is too high.
                 // Comment out this check if rarities should have more berth for traits choice.
                 //if($features[$featureId]->rarity->sort > $rarity->sort) continue;
 
                 // Skip the feature if it's not the correct species.
-                if ($features[$featureId]->species_id && $features[$featureId]->species_id != $species->id) {
-                    continue;
-                }
+                if($features[$featureId]->species_id && $features[$featureId]->species_id != $species->id) continue;
 
                 $feature = CharacterFeature::create(['character_image_id' => $request->id, 'feature_id' => $featureId, 'data' => $data['feature_data'][$key], 'character_type' => 'Update']);
             }
@@ -415,15 +398,15 @@ class DesignUpdateManager extends Service {
             $request->species_id = $species->id;
             $request->rarity_id = $rarity->id;
             $request->subtype_id = $subtype ? $subtype->id : null;
+            $request->transformation_id = $transformation ? $transformation->id : null;
             $request->has_features = 1;
             $request->transformation_id = $transformation ? $transformation->id : null;
             $request->save();
 
             return $this->commitReturn(true);
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
-
         return $this->rollbackReturn(false);
     }
 

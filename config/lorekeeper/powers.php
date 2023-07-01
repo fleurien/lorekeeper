@@ -68,4 +68,17 @@ return [
         'description' => 'Allow rank to view affiliate request queue, manage them, or even create new affiliates.',
     ],
 
+    'edit_stats' => [
+        'name' => 'Edit Stats',
+        'description' => 'Allow rank to edit stats.'
+    ],
+    'edit_levels' => [
+        'name' => 'Edit Levels',
+        'description' => 'Allow rank to edit levels.'
+    ],
+    'edit_claymores' => [
+        'name' => 'Edit Claymores & Companions',
+        'description' => 'Allow rank to edit claymore & companions data.'
+    ]
+
 ];

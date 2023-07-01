@@ -4,8 +4,9 @@ namespace App\Services;
 
 use App\Models\Character\Character;
 use App\Models\Character\CharacterBookmark;
-use App\Models\Character\CharacterCategory;
+use App\Models\Character\CharacterClass;
 use App\Models\Character\CharacterCurrency;
+use App\Models\Character\CharacterCategory;
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterFeature;
 use App\Models\Character\CharacterImage;
@@ -37,7 +38,10 @@ use App\Models\Genetics\Loci;
 use App\Models\Genetics\LociAllele;
 use App\Models\Character\CharacterTransformation as Transformation;
 
-class CharacterManager extends Service {
+use App\Models\Stat\CharacterStat;
+
+class CharacterManager extends Service
+{
     /*
     |--------------------------------------------------------------------------
     | Character Manager
@@ -323,6 +327,23 @@ class CharacterManager extends Service {
                 if(!$genome) throw new \Exception("Error happened while trying to create genome.");
             }
 
+            // Create character stats
+            $character->level()->create([
+                'character_id' => $character->id
+            ]);
+            
+            if(isset($data['stats']))
+            {
+                foreach($data['stats'] as $key=>$stat)
+                {
+                    CharacterStat::create([
+                        'character_id' => $character->id,
+                        'stat_id' => $key,
+                        'count' => $stat,
+                    ]);
+                }
+            }
+            
             // Add a log for the character
             // This logs all the updates made to the character
             $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'character');
@@ -2381,6 +2402,10 @@ class CharacterManager extends Service {
                 throw new \Exception('Cannot transfer character to a banned member.');
             }
 
+            if($character->pets()->exists()) throw new \Exception("This character has pets attached to it.");
+            if($character->weapons()->exists()) throw new \Exception("This character has weapons attached to it.");
+            if($character->gear()->exists()) throw new \Exception("This character has gear attached to it.");
+
             // deletes any pending design drafts
             foreach ($character->designUpdate as $update) {
                 if ($update->status == 'Draft') {
@@ -2393,7 +2418,7 @@ class CharacterManager extends Service {
             $queueOpen = Settings::get('open_transfers_queue');
 
             CharacterTransfer::create([
-                'user_reason'  => $data['user_reason'],  // pulls from this characters user_reason collum
+                'user_reason' => $data['user_reason'],  # pulls from this characters user_reason column
                 'character_id' => $character->id,
                 'sender_id'    => $user->id,
                 'recipient_id' => $recipient->id,
@@ -2433,7 +2458,11 @@ class CharacterManager extends Service {
         DB::beginTransaction();
 
         try {
-            if (isset($data['recipient_id']) && $data['recipient_id']) {
+            if($character->pets()->exists()) throw new \Exception("This character has pets attached to it.");
+            if($character->weapons()->exists()) throw new \Exception("This character has weapons attached to it.");
+            if($character->gear()->exists()) throw new \Exception("This character has gear attached to it.");
+
+            if(isset($data['recipient_id']) && $data['recipient_id']) {
                 $recipient = User::find($data['recipient_id']);
                 if (!$recipient) {
                     throw new \Exception('Invalid user selected.');
@@ -3674,9 +3703,50 @@ class CharacterManager extends Service {
      */
     public function CreateDesignUpdateRequestSpecificImage($character, $user, $image)
     {
-        DB::beginTransaction();
+        
+            DB::beginTransaction();
+    
+            try {
+    if($character->user_id != $user->id) throw new \Exception("You do not own this character.");
+            if(CharacterDesignUpdate::where('character_id', $character->id)->active()->exists()) throw new \Exception("This ".($character->is_myo_slot ? 'MYO slot' : 'character')." already has an existing request. Please update that one, or delete it before creating a new one.");
+            if(!$character->isAvailable) throw new \Exception("This ".($character->is_myo_slot ? 'MYO slot' : 'character')." is currently in an open trade or transfer. Please cancel the trade or transfer before creating a design update.");
 
-        try {
+            $data = [
+                'user_id' => $user->id,
+                'character_id' => $character->id,
+                'status' => 'Draft',
+                'hash' => randomString(10),
+                'fullsize_hash' => randomString(15),
+                'update_type' => $character->is_myo_slot ? 'MYO' : 'Character',
+
+                // Set some data based on the character's existing stats
+                'rarity_id' => $image->rarity_id,
+                'species_id' => $image->species_id,
+                'subtype_id' => $image->subtype_id,
+                'transformation_id' => $image->transformation_id
+            ];
+
+            $request = CharacterDesignUpdate::create($data);
+
+            // If the character is not a MYO slot, make a copy of the previous image's traits
+            // as presumably, we will not want to make major modifications to them.
+            // This is skipped for MYO slots as it complicates things later on - we don't want
+            // users to edit compulsory traits, so we'll only add them when the design is approved.
+            if(!$character->is_myo_slot)
+            {
+                foreach($image->features as $feature)
+                {
+                    $request->features()->create([
+                        'character_image_id' => $request->id,
+                        'character_type' => 'Update',
+                        'feature_id' => $feature->feature_id,
+                        'data' => $feature->data
+                    ]);
+                }
+            }
+
+            return $this->commitReturn($request);
+    
             if($character->user_id != $user->id) throw new \Exception("You do not own this character.");
             if(CharacterDesignUpdate::where('character_id', $character->id)->active()->exists()) throw new \Exception("This ".($character->is_myo_slot ? 'MYO slot' : 'character')." already has an existing request. Please update that one, or delete it before creating a new one.");
             if(!$character->isAvailable) throw new \Exception("This ".($character->is_myo_slot ? 'MYO slot' : 'character')." is currently in an open trade or transfer. Please cancel the trade or transfer before creating a design update.");
@@ -3716,6 +3786,22 @@ class CharacterManager extends Service {
             }
 
             return $this->commitReturn($request);
+            if($data['class_id'] != 'none') {
+                $class = CharacterClass::find($data['class_id']);
+                if(!$class) throw new \Exception('Invalid class.');
+                $character->class_id = $class->id;
+                $character->save();
+
+                if(!$this->createLog($user->id, null, $character->user_id, ($character->user_id ? null : $character->owner_url), $character->id, 'Character Class Updated', '['.$class->displayName.']', 'character')) throw new \Exception('Failed to create log.');
+            }
+            else {
+                $character->class_id = null;
+                $character->save();
+
+                if(!$this->createLog($user->id, null, $character->user_id, ($character->user_id ? null : $character->owner_url), $character->id, 'Character Class Removed', '[None]', 'character')) throw new \Exception('Failed to create log.');
+            }
+
+            return $this->commitReturn(true);
         } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }

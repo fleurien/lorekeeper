@@ -1,11 +1,8 @@
 <?php
 
 return [
-<<<<<<< HEAD
-    
-    
-=======
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
+
+
 
     // FORMAT EXAMPLE.
     //
@@ -18,7 +15,6 @@ return [
     //     'version' => '1.0.0',
     // ],
 
-<<<<<<< HEAD
     'character_genetic_data' => [
         'key' => 'character_genetic_data',
         'wiki_key' => 'Character_Genetic_Data',
@@ -76,6 +72,34 @@ return [
         'key'      => 'affiliates',
         'wiki_key' => 'Affiliates',
         'creators' => json_encode([
+            'Uri' => 'https://github.com/preimpression/',
+        ]),
+        'version' => '1.1.0',
+    ],
+     'Levels_&_Stats' => [
+         'key' => 'Levels_&_Stats',
+         'wiki_key' => 'Levels_%26_Stats',
+         'creators' => json_encode([
+             'Newt' => 'https://github.com/ne-wt/',
+         ]),
+         'version' => '1.0.0',
+     ],
+
+     'Pets' => [
+        'key' => 'Pets',
+        'wiki_key' => 'Pets',
+        'creators' => json_encode([
+            'Newt' => 'https://github.com/ne-wt/',
+        ]),
+        'version' => '1.2.0',
+    ],
+
+    'Claymores and Companions' => [
+        'key' => 'Claymores and Companions',
+        'wiki_key' => 'Claymores_and_Companions',
+        'creators' => json_encode([
+            'Newt' => 'https://github.com/ne-wt/',
+            'Mercury' => 'https://github.com/itinerare/',
             'Uri' => 'https://github.com/preimpression/',
         ]),
         'version' => '1.1.0',
@@ -173,6 +197,24 @@ return [
             ]),
             'version' => '1.0.0',
         ],
-=======
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
+
+    'character_skills' => [
+        'key' => 'character_skills',
+        'wiki_key' => 'Character_Skills',
+            'creators' => json_encode([
+                'Newt' => 'https://github.com/ne-wt/',
+            ]),
+        'version' => '1.0.0',
+    ],
+
+    'shop_features' => [
+        'key' => 'shop_features',
+        'wiki_key' => 'Shop_Features',
+        'creators' => json_encode([
+            'Newt' => 'https://github.com/ne-wt/',
+        ]),
+        'version' => '1.0.4',
+    ],
+
+
 ];

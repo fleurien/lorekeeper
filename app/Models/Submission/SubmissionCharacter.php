@@ -11,7 +11,7 @@ class SubmissionCharacter extends Model {
      * @var array
      */
     protected $fillable = [
-        'submission_id', 'character_id', 'data',
+        'submission_id', 'character_id', 'data', 'is_focus'
     ];
 
     /**

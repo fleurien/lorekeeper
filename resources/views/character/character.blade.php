@@ -97,6 +97,9 @@
                     <a class="nav-link" id="lineageTab" data-toggle="tab" href="#lineage" role="tab">Lineage</a>
                 </li>
             @endif
+            <li class="nav-item">
+                <a class="nav-link" id="skillsTab" data-toggle="tab" href="#skills" role="tab">Skills</a>
+            </li>
             @if(Auth::check() && Auth::user()->hasPower('manage_characters'))
                 <li class="nav-item">
                     <a class="nav-link" id="settingsTab" data-toggle="tab" href="#settings-{{ $character->slug }}" role="tab"><i class="fas fa-cog"></i></a>
@@ -131,6 +134,9 @@
                 @include('character._tab_lineage', ['character' => $character])
             </div>
         @endif
+        <div class="tab-pane fade" id="skills">
+            @include('character._tab_skills', ['character' => $character, 'skills' => $skills])
+        </div>
         @if(Auth::check() && Auth::user()->hasPower('manage_characters'))
             <div class="tab-pane fade" id="settings-{{ $character->slug }}">
                 {!! Form::open(['url' => $character->is_myo_slot ? 'admin/myo/'.$character->id.'/settings' : 'admin/character/'.$character->slug.'/settings']) !!}

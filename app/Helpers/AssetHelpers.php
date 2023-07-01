@@ -15,11 +15,11 @@
  * based on form input. Corresponds to the GroupCurrencyForm configured in
  * app/Forms.
  *
- * @param array $data
- *
+ * @param  array  $data
  * @return int
  */
-function calculateGroupCurrency($data) {
+function calculateGroupCurrency($data)
+{
     // Sets a starting point for the total so that numbers can be added to it.
     // Don't change this!
     $total = 0;
@@ -32,20 +32,16 @@ function calculateGroupCurrency($data) {
 
     // For instance, if the user selected that the submission has a visual art component,
     // these actions will be performed:
-    if ($pieceType->has('art')) {
+    if($pieceType->has('art')) {
         // This adds values to the total!
         $total += ($data['art_finish'] + $data['art_type']);
         // This multiplies each option selected in the "bonus" form field by
         // the result from the "art type" field, and adds it to the total.
-        if (isset($data['art_bonus'])) {
-            foreach ((array) $data['art_bonus'] as $bonus) {
-                $total += (round($bonus) * $data['art_type']);
-            }
-        }
+        if(isset($data['art_bonus'])) foreach((array)$data['art_bonus'] as $bonus) $total += (round($bonus) * $data['art_type']);
     }
 
     // Likewise for if the user selected that the submission has a written component:
-    if ($pieceType->has('lit')) {
+    if($pieceType->has('lit')) {
         // This divides the word count by 100, rounds the result, and then multiplies it by one--
         // so, effectively, for every 100 words, 1 of the currency is awarded.
         // You can adjust these numbers as you see fit.
@@ -53,7 +49,7 @@ function calculateGroupCurrency($data) {
     }
 
     // And if it has a crafted or other physical object component:
-    if ($pieceType->has('craft')) {
+    if($pieceType->has('craft')) {
         // This just adds 4! You can adjust this as you desire.
         $total += 4;
     }
@@ -66,141 +62,107 @@ function calculateGroupCurrency($data) {
  * Gets the asset keys for an array depending on whether the
  * assets being managed are owned by a user or character.
  *
- * @param bool $isCharacter
- *
+ * @param  bool  $isCharacter
  * @return array
  */
-function getAssetKeys($isCharacter = false) {
-    if (!$isCharacter) {
-        return ['items', 'awards', 'currencies', 'raffle_tickets', 'loot_tables', 'user_items', 'user_awards', 'characters'];
-    } else {
-        return ['currencies', 'items', 'character_items', 'loot_tables', 'awards'];
-    }
+function getAssetKeys($isCharacter = false)
+{
+    if(!$isCharacter) return ['items', 'currencies', 'pets', 'weapons', 'gears', 'raffle_tickets', 'loot_tables', 'user_items', 'characters'];
+    else return ['currencies', 'items', 'character_items', 'loot_tables'];
 }
 
 /**
  * Gets the model name for an asset type.
  * The asset type has to correspond to one of the asset keys above.
  *
- * @param string $type
- * @param bool   $namespaced
- *
+ * @param  string  $type
+ * @param  bool    $namespaced
  * @return string
  */
-function getAssetModelString($type, $namespaced = true) {
-    switch ($type) {
-        case 'items':
-            if ($namespaced) {
-                return '\App\Models\Item\Item';
-            } else {
-                return 'Item';
-            }
-            break;
-
-        case 'awards':
-            if ($namespaced) {
-                return '\App\Models\Award\Award';
-            } else {
-                return 'Award';
-            }
+function getAssetModelString($type, $namespaced = true)
+{
+    switch($type)
+    {
+        case 'items': case 'item':
+            if($namespaced) return '\App\Models\Item\Item';
+            else return 'Item';
             break;
 
         case 'currencies':
-            if ($namespaced) {
-                return '\App\Models\Currency\Currency';
-            } else {
-                return 'Currency';
-            }
+            if($namespaced) return '\App\Models\Currency\Currency';
+            else return 'Currency';
+            break;
+
+        case 'pets': case 'pet':
+            if($namespaced) return '\App\Models\Pet\Pet';
+            else return 'Pet';
+            break;
+
+        case 'weapons': case 'weapon': 
+            if($namespaced) return '\App\Models\Claymore\Weapon';
+            else return 'Weapon';
+            break;
+
+        case 'gears': case 'gear':
+            if($namespaced) return '\App\Models\Claymore\Gear';
+            else return 'Gear';
             break;
 
         case 'raffle_tickets':
-            if ($namespaced) {
-                return '\App\Models\Raffle\Raffle';
-            } else {
-                return 'Raffle';
-            }
+            if($namespaced) return '\App\Models\Raffle\Raffle';
+            else return 'Raffle';
             break;
 
         case 'loot_tables':
-            if ($namespaced) {
-                return '\App\Models\Loot\LootTable';
-            } else {
-                return 'LootTable';
-            }
+            if($namespaced) return '\App\Models\Loot\LootTable';
+            else return 'LootTable';
             break;
 
         case 'user_items':
-            if ($namespaced) {
-                return '\App\Models\User\UserItem';
-            } else {
-                return 'UserItem';
-            }
-            break;
-
-        case 'user_awards':
-            if ($namespaced) {
-                return '\App\Models\User\UserAward';
-            } else {
-                return 'UserAward';
-            }
+            if($namespaced) return '\App\Models\User\UserItem';
+            else return 'UserItem';
             break;
 
         case 'characters':
-            if ($namespaced) {
-                return '\App\Models\Character\Character';
-            } else {
-                return 'Character';
-            }
+            if($namespaced) return '\App\Models\Character\Character';
+            else return 'Character';
             break;
 
         case 'character_items':
-            if ($namespaced) {
-                return '\App\Models\Character\CharacterItem';
-            } else {
-                return 'CharacterItem';
-            }
+            if($namespaced) return '\App\Models\Character\CharacterItem';
+            else return 'CharacterItem';
             break;
     }
-
     return null;
 }
 
 /**
  * Initialises a new blank assets array, keyed by the asset type.
  *
- * @param bool $isCharacter
- *
+ * @param  bool  $isCharacter
  * @return array
  */
-function createAssetsArray($isCharacter = false) {
+function createAssetsArray($isCharacter = false)
+{
     $keys = getAssetKeys($isCharacter);
     $assets = [];
-    foreach ($keys as $key) {
-        $assets[$key] = [];
-    }
-
+    foreach($keys as $key) $assets[$key] = [];
     return $assets;
 }
 
 /**
  * Merges 2 asset arrays.
  *
- * @param array $first
- * @param array $second
- *
+ * @param  array  $first
+ * @param  array  $second
  * @return array
  */
-function mergeAssetsArrays($first, $second) {
+function mergeAssetsArrays($first, $second)
+{
     $keys = getAssetKeys();
-    foreach ($keys as $key) {
-        foreach ($second[$key] as $item) {
+    foreach($keys as $key)
+        foreach($second[$key] as $item)
             addAsset($first, $item['asset'], $item['quantity']);
-        }
-    }
-    foreach ($second[$key] as $award) {
-        addAsset($first, $award['asset'], $award['quantity']);
-    }
-
     return $first;
 }
 
@@ -208,19 +170,15 @@ function mergeAssetsArrays($first, $second) {
  * Adds an asset to the given array.
  * If the asset already exists, it adds to the quantity.
  *
- * @param array $array
- * @param mixed $asset
- * @param int   $quantity
+ * @param  array  $array
+ * @param  mixed  $asset
+ * @param  int    $quantity
  */
-function addAsset(&$array, $asset, $quantity = 1) {
-    if (!$asset) {
-        return;
-    }
-    if (isset($array[$asset->assetType][$asset->id])) {
-        $array[$asset->assetType][$asset->id]['quantity'] += $quantity;
-    } else {
-        $array[$asset->assetType][$asset->id] = ['asset' => $asset, 'quantity' => $quantity];
-    }
+function addAsset(&$array, $asset, $quantity = 1)
+{
+    if(!$asset) return;
+    if(isset($array[$asset->assetType][$asset->id])) $array[$asset->assetType][$asset->id]['quantity'] += $quantity;
+    else $array[$asset->assetType][$asset->id] = ['asset' => $asset, 'quantity' => $quantity];
 }
 
 /**
@@ -228,22 +186,21 @@ function addAsset(&$array, $asset, $quantity = 1) {
  * where each asset is listed in [id => quantity] format.
  * json_encode this and store in the data attribute.
  *
- * @param array $array
- * @param bool  $isCharacter
- *
+ * @param  array  $array
+ * @param  bool   $isCharacter
  * @return array
  */
-function getDataReadyAssets($array, $isCharacter = false) {
+function getDataReadyAssets($array, $isCharacter = false)
+{
     $result = [];
-    foreach ($array as $key => $type) {
-        if ($type && !isset($result[$key])) {
-            $result[$key] = [];
-        }
-        foreach ($type as $assetId => $assetData) {
+    foreach($array as $key => $type)
+    {
+        if($type && !isset($result[$key])) $result[$key] = [];
+        foreach($type as $assetId => $assetData)
+        {
             $result[$key][$assetId] = $assetData['quantity'];
         }
     }
-
     return $result;
 }
 
@@ -252,24 +209,27 @@ function getDataReadyAssets($array, $isCharacter = false) {
  * basically reversing the above function.
  * Use the data attribute after json_decode()ing it.
  *
- * @param array $array
- *
+ * @param  array  $array
  * @return array
  */
-function parseAssetData($array) {
+function parseAssetData($array)
+{
     $assets = createAssetsArray();
-    foreach ($array as $key => $contents) {
+    foreach($array as $key => $contents)
+    {
         $model = getAssetModelString($key);
-        if ($model) {
-            foreach ($contents as $id => $quantity) {
+        if($model)
+        {
+            foreach($contents as $id => $quantity)
+            {
                 $assets[$key][$id] = [
-                    'asset'    => $model::find($id),
-                    'quantity' => $quantity,
+                    'asset' => $model::find($id),
+                    'quantity' => $quantity
                 ];
             }
+
         }
     }
-
     return $assets;
 }
 
@@ -277,76 +237,76 @@ function parseAssetData($array) {
  * Distributes the assets in an assets array to the given recipient (user).
  * Loot tables will be rolled before distribution.
  *
- * @param array                 $assets
- * @param \App\Models\User\User $sender
- * @param \App\Models\User\User $recipient
- * @param string                $logType
- * @param string                $data
- *
+ * @param  array                  $assets
+ * @param  \App\Models\User\User  $sender
+ * @param  \App\Models\User\User  $recipient
+ * @param  string                 $logType
+ * @param  string                 $data
  * @return array
  */
-function fillUserAssets($assets, $sender, $recipient, $logType, $data) {
+function fillUserAssets($assets, $sender, $recipient, $logType, $data)
+{
     // Roll on any loot tables
-    if (isset($assets['loot_tables'])) {
-        foreach ($assets['loot_tables'] as $table) {
+    if(isset($assets['loot_tables']))
+    {
+        foreach($assets['loot_tables'] as $table)
+        {
             $assets = mergeAssetsArrays($assets, $table['asset']->roll($table['quantity']));
         }
         unset($assets['loot_tables']);
     }
 
-    foreach ($assets as $key => $contents) {
-        if ($key == 'items' && count($contents)) {
+    foreach($assets as $key => $contents)
+    {
+        if($key == 'items' && count($contents))
+        {
             $service = new \App\Services\InventoryManager;
-            foreach ($contents as $asset) {
-                if (!$service->creditItem($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'awards' && count($contents)) {
-            $service = new \App\Services\AwardCaseManager;
-            foreach ($contents as $asset) {
-                if (!$service->creditAward($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'currencies' && count($contents)) {
+            foreach($contents as $asset)
+                if(!$service->creditItem($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'currencies' && count($contents))
+        {
             $service = new \App\Services\CurrencyManager;
-            foreach ($contents as $asset) {
-                if (!$service->creditCurrency($sender, $recipient, $logType, $data['data'], $asset['asset'], $asset['quantity'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'raffle_tickets' && count($contents)) {
+            foreach($contents as $asset)
+                if(!$service->creditCurrency($sender, $recipient, $logType, $data['data'], $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'pets' && count($contents))
+        {
+            $service = new \App\Services\PetManager;
+            foreach($contents as $asset)
+                if(!$service->creditPet($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'gears' && count($contents))
+        {
+            $service = new \App\Services\Claymore\GearManager;
+            foreach($contents as $asset)
+                if(!$service->creditGear($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'weapons' && count($contents))
+        {
+            $service = new \App\Services\Claymore\WeaponManager;
+            foreach($contents as $asset)
+                if(!$service->creditWeapon($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'raffle_tickets' && count($contents))
+        {
             $service = new \App\Services\RaffleManager;
-            foreach ($contents as $asset) {
-                if (!$service->addTicket($recipient, $asset['asset'], $asset['quantity'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'user_items' && count($contents)) {
+            foreach($contents as $asset)
+                if(!$service->addTicket($recipient, $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'user_items' && count($contents))
+        {
             $service = new \App\Services\InventoryManager;
-            foreach ($contents as $asset) {
-                if (!$service->moveStack($sender, $recipient, $logType, $data, $asset['asset'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'user_awards' && count($contents)) {
-            $service = new \App\Services\AwardCaseManager;
-            foreach ($contents as $asset) {
-                if (!$service->moveStack($sender, $recipient, $logType, $data, $asset['asset'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'characters' && count($contents)) {
+            foreach($contents as $asset)
+                if(!$service->moveStack($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'characters' && count($contents))
+        {
             $service = new \App\Services\CharacterManager;
-            foreach ($contents as $asset) {
-                if (!$service->moveCharacter($asset['asset'], $recipient, $data, $asset['quantity'], $logType)) {
-                    return false;
-                }
-            }
+            foreach($contents as $asset)
+                if(!$service->moveCharacter($asset['asset'], $recipient, $data, $asset['quantity'], $logType)) return false;
         }
     }
-
     return $assets;
 }
 
@@ -354,161 +314,43 @@ function fillUserAssets($assets, $sender, $recipient, $logType, $data) {
  * Distributes the assets in an assets array to the given recipient (character).
  * Loot tables will be rolled before distribution.
  *
- * @param array                           $assets
- * @param \App\Models\User\User           $sender
- * @param \App\Models\Character\Character $recipient
- * @param string                          $logType
- * @param string                          $data
- * @param mixed|null                      $submitter
- *
+ * @param  array                            $assets
+ * @param  \App\Models\User\User            $sender
+ * @param  \App\Models\Character\Character  $recipient
+ * @param  string                           $logType
+ * @param  string                           $data
  * @return array
  */
-function fillCharacterAssets($assets, $sender, $recipient, $logType, $data, $submitter = null) {
-    if (!Config::get('lorekeeper.extensions.character_reward_expansion.default_recipient') && $recipient->user) {
-        $item_recipient = $recipient->user;
-    } else {
-        $item_recipient = $submitter;
-    }
+function fillCharacterAssets($assets, $sender, $recipient, $logType, $data, $submitter = null)
+{
+    if(!Config::get('lorekeeper.extensions.character_reward_expansion.default_recipient') && $recipient->user) $item_recipient = $recipient->user;
+    else $item_recipient = $submitter;
+
 
     // Roll on any loot tables
-    if (isset($assets['loot_tables'])) {
-        foreach ($assets['loot_tables'] as $table) {
+    if(isset($assets['loot_tables']))
+    {
+        foreach($assets['loot_tables'] as $table)
+        {
             $assets = mergeAssetsArrays($assets, $table['asset']->roll($table['quantity']));
         }
         unset($assets['loot_tables']);
     }
 
-    foreach ($assets as $key => $contents) {
-        if ($key == 'currencies' && count($contents)) {
+    foreach($assets as $key => $contents)
+    {
+        if($key == 'currencies' && count($contents))
+        {
             $service = new \App\Services\CurrencyManager;
-            foreach ($contents as $asset) {
-                if (!$service->creditCurrency($sender, ($asset['asset']->is_character_owned ? $recipient : $item_recipient), $logType, $data['data'], $asset['asset'], $asset['quantity'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'items' && count($contents)) {
+            foreach($contents as $asset)
+                if(!$service->creditCurrency($sender, ( $asset['asset']->is_character_owned ? $recipient : $item_recipient), $logType, $data['data'], $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'items' && count($contents))
+        {
             $service = new \App\Services\InventoryManager;
-            foreach ($contents as $asset) {
-                if (!$service->creditItem($sender, (($asset['asset']->category && $asset['asset']->category->is_character_owned) ? $recipient : $item_recipient), $logType, $data, $asset['asset'], $asset['quantity'])) {
-                    return false;
-                }
-            }
-        } elseif ($key == 'awards' && count($contents)) {
-            $service = new \App\Services\AwardCaseManager;
-            foreach ($contents as $asset) {
-                if (!$service->creditAward($sender, ($asset['asset']->is_character_owned ? $recipient : $item_recipient), $logType, $data, $asset['asset'], $asset['quantity'])) {
-                    return false;
-                }
-            }
+            foreach($contents as $asset)
+                if(!$service->creditItem($sender, ( ($asset['asset']->category && $asset['asset']->category->is_character_owned) ? $recipient : $item_recipient), $logType, $data, $asset['asset'], $asset['quantity'])) return false;
         }
     }
-
     return $assets;
 }
-
-/**
- * Rolls on a loot-table esque rewards setup.
- */
-function rollRewards($loot, $quantity = 1)
-{
-    $rewards = createAssetsArray();
-
-    $totalWeight = 0;
-    foreach($loot as $l) $totalWeight += $l->weight;
-
-    for($i = 0; $i < $quantity; $i++)
-    {
-        $roll = mt_rand(0, $totalWeight - 1);
-        $result = null;
-        $prev = null;
-        $count = 0;
-        foreach($loot as $l)
-        {
-            $count += $l->weight;
-
-            if($roll < $count)
-            {
-                $result = $l;
-                break;
-            }
-            $prev = $l;
-        }
-        if(!$result) $result = $prev;
-
-        if($result) {
-            // If this is chained to another loot table, roll on that table
-            if($result->rewardable_type == 'LootTable') $rewards = mergeAssetsArrays($rewards, $result->reward->roll($result->quantity));
-            elseif($result->rewardable_type == 'ItemCategory' || $result->rewardable_type == 'ItemCategoryRarity') $rewards = mergeAssetsArrays($rewards, rollCategory($result->rewardable_id, $result->quantity, (isset($result->data['criteria']) ? $result->data['criteria'] : null), (isset($result->data['rarity']) ? $result->data['rarity'] : null)));
-            elseif($result->rewardable_type == 'ItemRarity') $rewards = mergeAssetsArrays($rewards, rollRarityItem($result->quantity, $result->data['criteria'], $result->data['rarity']));
-            else addAsset($rewards, $result->reward, $result->quantity);
-        }
-    }
-    return $rewards;
-}
-
-/**
- * Rolls on an item category.
- *
- * @param  int    $id
- * @param  int    $quantity
- * @param  string $condition
- * @param  string $rarity
- * @return \Illuminate\Support\Collection
- */
-function rollCategory($id, $quantity = 1, $criteria = null, $rarity = null)
-{
-    $rewards = createAssetsArray();
-
-    if(isset($criteria) && $criteria && isset($rarity) && $rarity) {
-        if(Config::get('lorekeeper.extensions.item_entry_expansion.loot_tables.alternate_filtering')) $loot = Item::where('item_category_id', $id)->released()->whereNotNull('data')->where('data->rarity', $criteria, $rarity)->get();
-        else $loot = Item::where('item_category_id', $id)->released()->whereNotNull('data')->whereRaw('JSON_EXTRACT(`data`, \'$.rarity\')'. $criteria . $rarity)->get();
-    }
-    else $loot = Item::where('item_category_id', $id)->released()->get();
-    if(!$loot->count()) throw new \Exception('There are no items to select from!');
-
-    $totalWeight = $loot->count();
-
-    for($i = 0; $i < $quantity; $i++)
-    {
-        $roll = mt_rand(0, $totalWeight - 1);
-        $result = $loot[$roll];
-
-        if($result) {
-            // If this is chained to another loot table, roll on that table
-            addAsset($rewards, $result, 1);
-        }
-    }
-    return $rewards;
-}
-
-/**
- * Rolls on an item rarity.
- *
- * @param  int    $quantity
- * @param  string $condition
- * @param  string $rarity
- * @return \Illuminate\Support\Collection
- */
-function rollRarityItem($quantity = 1, $criteria, $rarity)
-{
-    $rewards = createAssetsArray();
-
-    if(Config::get('lorekeeper.extensions.item_entry_expansion.loot_tables.alternate_filtering')) $loot = Item::released()->whereNotNull('data')->where('data->rarity', $criteria, $rarity)->get();
-    else $loot = Item::released()->whereNotNull('data')->whereRaw('JSON_EXTRACT(`data`, \'$.rarity\')'. $criteria . $rarity)->get();
-    if(!$loot->count()) throw new \Exception('There are no items to select from!');
-
-    $totalWeight = $loot->count();
-
-    for($i = 0; $i < $quantity; $i++)
-    {
-        $roll = mt_rand(0, $totalWeight - 1);
-        $result = $loot[$roll];
-
-        if($result) {
-            // If this is chained to another loot table, roll on that table
-            addAsset($rewards, $result, 1);
-        }
-    }
-    return $rewards;
-}
-

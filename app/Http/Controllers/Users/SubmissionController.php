@@ -19,8 +19,14 @@ use Auth;
 use Config;
 use Illuminate\Http\Request;
 use Settings;
+use App\Models\Submission\SubmissionCharacter;
+use App\Models\Pet\Pet;
+use App\Models\Claymore\Gear;
+use App\Models\Claymore\Weapon;
 
-class SubmissionController extends Controller {
+
+class SubmissionController extends Controller
+{
     /*
     |--------------------------------------------------------------------------
     | Submission Controller
@@ -102,6 +108,9 @@ class SubmissionController extends Controller {
             'items'               => Item::orderBy('name')->released()->pluck('name', 'id'),
             'character_items'     => Item::whereIn('item_category_id', ItemCategory::where('is_character_owned', 1)->pluck('id')->toArray())->orderBy('name')->released()->pluck('name', 'id'),
             'currencies'          => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
+            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
+            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
+            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
             'awards'              => Award::orderBy('name')->released()->where('is_user_owned', 1)->pluck('name', 'id'),
             'characterAwards'     => Award::orderBy('name')->released()->where('is_character_owned', 1)->pluck('name', 'id'),
             'inventory'           => $inventory,
@@ -153,7 +162,7 @@ class SubmissionController extends Controller {
      */
     public function postNewSubmission(Request $request, SubmissionManager $service) {
         $request->validate(Submission::$createRules);
-        if ($service->createSubmission($request->only(['url', 'prompt_id', 'comments', 'slug', 'character_rewardable_type', 'character_rewardable_id', 'character_rewardable_quantity', 'rewardable_type', 'rewardable_id', 'quantity', 'stack_id', 'stack_quantity', 'currency_id', 'currency_quantity']), Auth::user())) {
+        if($service->createSubmission($request->only(['url', 'prompt_id', 'comments', 'slug', 'character_rewardable_type', 'character_rewardable_id', 'character_rewardable_quantity',  'rewardable_type', 'rewardable_id', 'quantity', 'stack_id', 'stack_quantity', 'currency_id', 'currency_quantity', 'character_is_focus']), Auth::user())) {
             flash('Prompt submitted successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
@@ -237,6 +246,9 @@ class SubmissionController extends Controller {
             'items'               => Item::orderBy('name')->released()->pluck('name', 'id'),
             'currencies'          => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
             'awards'              => Award::orderBy('name')->released()->where('is_user_owned', 1)->pluck('name', 'id'),
+            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
+            'gears' => Gear::orderBy('name')->pluck('name', 'id'),
+            'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
             'characterAwards'     => Award::orderBy('name')->released()->where('is_character_owned', 1)->pluck('name', 'id'),
             'raffles'             => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
             'page'                => 'submission',
