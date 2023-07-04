@@ -115,18 +115,7 @@
             <div class="text-right"><a href="{{ $user->url.'/pets' }}">View all...</a></div>
         </div>
     </div>
-    <div class="card profile-inventory profile-assets-card">
-        <div class="card-body text-center">
-            <h5 class="card-title">Armoury</h5>
-            <div class="card-body">
-                @if(count($armours))
-                    <div class="row">
-                        @foreach($armours as $armour)
-                            <div class="col-md-3 col-6 profile-inventory-item">
-                                @if($armour->imageUrl)
-                                <img src="{{ $armour->imageUrl }}" data-toggle="tooltip" title="{{ $armour->name }}" alt="{{ $armour->name }}"/>
-                                @else
-                                    <p>{{ $armour->name }}</p>
+               
 <div class="card-deck mb-4 profile-assets" style="clear:both;">
     <div class="card profile-inventory profile-assets-card">
     <div class="card-body text-center">
@@ -144,9 +133,7 @@
                             </div>
                         @endforeach
                     </div>
-                @else
-                    <div>No weapons or gear owned.</div>
-                @endif
+                
             </div>
             <div class="text-right"><a href="{{ $user->url.'/armoury' }}">View all...</a></div>
         </div>
@@ -157,10 +144,7 @@
             </div>
             <div class="text-right"><a href="{{ $user->url.'/collection-logs' }}">View all...</a></div>
         </div>
-        </div>
-        </div>
-
-<h2>
+        <h2>
     <a href="{{ $user->url.'/characters' }}">Characters</a>
     @if(isset($sublists) && $sublists->count() > 0)
         @foreach($sublists as $sublist)
@@ -171,5 +155,9 @@
     @if (!$user->is_deactivated || (Auth::check() && Auth::user()->isStaff))
         @include('user._profile_content', ['user' => $user, 'deactivated' => $user->is_deactivated])
     @endif
+        </div>
+        </div>
+
+
 
 @endsection
