@@ -338,3 +338,11 @@ Route::group(['prefix' => 'collection', 'namespace' => 'Users'], function() {
     Route::get('complete/{id}', 'CollectionController@getCompleteCollection');
     Route::post('complete/{id}', 'CollectionController@postCompleteCollection');
 });
+
+/**************************************************************************************************
+    Fetch Quests
+**************************************************************************************************/
+Route::group(['prefix' => 'fetch'], function() {
+    Route::get('/', 'FetchQuestController@getIndex');
+    Route::post('/new', 'FetchQuestController@postFetchQuest');
+});

@@ -111,6 +111,16 @@ class AddSiteSettings extends Command {
         # Genetics
         $this->addSiteSetting('genome_default_visibility', 0, '0: Genomes are hidden by default. 1: Only the most dominant genes are visible by default. 2: Genomes are fully visible by default.');
 
+        $this->addSiteSetting('fetch_item', 1, 'ID of the currently requested fetch quest item.');
+
+        $this->addSiteSetting('fetch_currency_id', 1, 'ID for fetch currency');
+
+        $this->addSiteSetting('fetch_category_id', 1, 'ID for category to pull items from');
+
+        $this->addSiteSetting('fetch_reward', 10, 'MINIMUM Reward granted after fetch is completed');
+
+        $this->addSiteSetting('fetch_reward_max', 100, 'MAXIMUM Reward granted after fetch is completed');
+        
         $this->line("\nSite settings up to date!");
 
     /**

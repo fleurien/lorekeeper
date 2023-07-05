@@ -98,6 +98,9 @@
                         <a class="dropdown-item" href="{{ url('foraging') }}">
                             Foraging
                         </a>
+                        <a class="dropdown-item" href="{{ url('fetch') }}">
+                            Fetch Quests
+                        </a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
