@@ -530,3 +530,14 @@ function parseItemIDs($text, &$users) {
 
     return $text;
 }
+/** 
+* Puts down the HTML needed for a LiveClock.
+ *
+ * @return string
+ */
+function LiveClock() {
+    $LCcode = '<span class="LiveClock" onload="LiveClockJS()"></span>';
+    $LCtz = '<abbr data-toggle="tooltip" title="UTC'.Carbon\Carbon::now()->timezone->toOffsetName().'">'.strtoupper(Carbon\Carbon::now()->timezone->getAbbreviatedName(Carbon\Carbon::now()->isDST())).'</abbr>';
+
+    return $LCcode.' '.$LCtz;
+}
