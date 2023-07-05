@@ -66,9 +66,13 @@ return [
             ],
             [
                 'name' => 'Pages',
-                'url'  => 'admin/pages',
+                'url' => 'admin/pages'
             ],
-        ],
+            [
+                'name' => 'Emotes',
+                'url' => 'admin/emotes'
+            ]
+        ]
     ],
     'Users'      => [
         'power' => 'edit_user_info',

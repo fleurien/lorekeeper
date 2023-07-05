@@ -48,6 +48,7 @@ use App\Models\Collection\Collection;
 use App\Models\Collection\CollectionCategory;
 
 use App\Models\Recipe\Recipe;
+use App\Models\Emote;
 
 class WorldController extends Controller
 {
@@ -1276,6 +1277,23 @@ class WorldController extends Controller
             'imageUrl' => $recipe->imageUrl,
             'name' => $recipe->displayName,
             'description' => $recipe->parsed_description,
+        ]);
+    }
+
+    /**
+     * Shows the emotes page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getEmotes(Request $request)
+    {
+        $query = Emote::active();
+        $data = $request->only(['name']);
+        if(isset($data['name']))
+            $query->where('name', 'LIKE', '%'.$data['name'].'%');
+        return view('world.emotes', [
+            'emotes' => $query->orderBy('name', 'DESC')->paginate(20)->appends($request->query()),
         ]);
     }
 }

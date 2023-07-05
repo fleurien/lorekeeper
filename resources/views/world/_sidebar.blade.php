@@ -25,6 +25,7 @@
         <div class="sidebar-item"><a href="{{ url('world/'.__('volumes.library').'/'.__('volumes.volumes')) }}" class="{{ set_active('world/'.__('volumes.library').'/'.__('volumes.volumes')) }}">All {{ ucfirst(__('volumes.volumes')) }}</a></div>
         <div class="sidebar-item"><a href="{{ url('world/collections') }}" class="{{ set_active('world/collections*') }}">Collections</a></div>
         <div class="sidebar-item"><a href="{{ url('world/collection-categories') }}" class="{{ set_active('world/collection-categories*') }}">Collection Categories</a></div>
+        <div class="sidebar-item"><a href="{{ url('world/emotes') }}" class="{{ set_active('world/emotes*') }}">Emotes</a></div>
     </li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">Awards</div>

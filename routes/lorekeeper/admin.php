@@ -965,3 +965,14 @@ Route::group(['prefix' => 'character-classes', 'namespace' => 'Claymores', 'midd
     Route::post('delete/{id}', 'CharacterClassController@postDeleteCharacterClass');
     Route::post('sort', 'CharacterClassController@postSortCharacterClass');
 });
+
+    # Emotes
+    Route::group(['prefix' => 'emotes', 'middleware' => 'power:manage_data'], function() {
+        Route::get('/', 'EmoteController@getEmoteIndex');
+        Route::get('create', 'EmoteController@getCreateEmote');
+        Route::post('create', 'EmoteController@postCreateEditEmote');
+        Route::get('edit/{id}', 'EmoteController@getEditEmote');
+        Route::post('edit/{id}', 'EmoteController@postCreateEditEmote');
+        Route::get('delete/{id}', 'EmoteController@getDeleteEmote');
+        Route::post('delete/{id}', 'EmoteController@postDeleteEmote');
+    });
