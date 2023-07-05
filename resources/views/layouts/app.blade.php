@@ -96,11 +96,17 @@
     <div id="app">
 
         @if(Auth::check() && Auth::user()->theme)
-            <div class="site-header-image" id="header" style="background-image: url('{{ Auth::user()->theme->imageUrl }}');"></div>
+            <div class="site-header-image" id="header" style="background-image: url('{{ Auth::user()->theme->imageUrl }}'); position: relative;">
+            @include('layouts._clock')
+         </div>
         @elseif(isset($defaultTheme) && isset($defaultTheme->imageUrl))
-            <div class="site-header-image" id="header" style="background-image: url('{{ $defaultTheme->imageUrl }}');"></div>
+            <div class="site-header-image" id="header" style="background-image: url('{{ $defaultTheme->imageUrl }}'); position: relative;">
+            @include('layouts._clock')
+         </div>
         @else
-            <div class="site-header-image" id="header" style="background-image: url('{{ asset('images/header.png') }}');"></div>
+            <div class="site-header-image" id="header" style="background-image: url('{{ asset('images/header.png') }}'); position: relative;">
+            @include('layouts._clock')
+         </div>
         @endif
 
         @include('layouts._nav')

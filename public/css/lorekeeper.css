@@ -1178,6 +1178,7 @@ tr.accountbound {
     color: #fff;
     letter-spacing: .05em;
 }
+
 .collectionnotunlocked {               
     opacity: 0.4;
     filter: alpha(opacity=40);
