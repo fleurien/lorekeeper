@@ -14,7 +14,7 @@ use App\Services\PromptService;
 use Auth;
 use Illuminate\Http\Request;
 
-
+use App\Models\Recipe\Recipe;
 
 
 use App\Models\Skill\Skill;
@@ -205,6 +205,7 @@ class PromptController extends Controller
             'gears' => Gear::orderBy('name')->pluck('name', 'id'),
             'skills' => Skill::pluck('name', 'id')->toArray(),
             'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
+            'recipes'=> Recipe::orderBy('name')->pluck('name', 'id'),
             'raffles'    => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
         ]);
     }
@@ -233,6 +234,7 @@ class PromptController extends Controller
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
             'tables'     => LootTable::orderBy('name')->pluck('name', 'id'),
             'raffles'    => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'recipes'=> Recipe::orderBy('name')->pluck('name', 'id'),
             'skills' => Skill::pluck('name', 'id')->toArray()
         ]);
     }

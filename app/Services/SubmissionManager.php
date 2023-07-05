@@ -21,6 +21,7 @@ use App\Models\Pet\Pet;
 use App\Models\Skill\Skill;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\Weapon;
+use App\Models\Recipe\Recipe;
 
 use App\Services\Stat\ExperienceManager;
 use App\Services\Stat\StatManager;
@@ -577,6 +578,11 @@ class SubmissionManager extends Service {
                             if (!$isStaff) break;
                             $reward = Weapon::find($data['rewardable_id'][$key]);
                             break;
+                         case 'Recipe':
+                                if (!$isStaff) break;
+                                $reward = Recipe::find($data['rewardable_id'][$key]);
+                                if(!$reward->needs_unlocking) throw new \Exception("Invalid recipe selected.");
+                                break;
                     }
                     if (!$reward) {
                         continue;

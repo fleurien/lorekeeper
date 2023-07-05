@@ -68,4 +68,9 @@ return [
         'text_color' => '#ffffff',
         'background_color' => '#56639E'
     ],
+    'recipe' => [
+        'name' => 'Recipe',
+        'text_color' => '#ffffff',
+        'background_color' => '#6D18A7'
+    ],
 ];

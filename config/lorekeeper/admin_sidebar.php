@@ -148,6 +148,10 @@ return [
                 'name' => 'Weapon Grants',
                 'url' => 'admin/grants/weapons'
             ],
+            [
+                'name' => 'Recipe Grants',
+                'url' => 'admin/grants/recipes'
+            ],
         ]
     ],
     'Masterlist' => [
@@ -304,6 +308,10 @@ return [
             [
                 'name' => 'Collections',
                 'url' => 'admin/data/collections'
+            ],
+            [
+                'name' => 'Recipes',
+                'url' => 'admin/data/recipes'
             ],
         ]
     ],

@@ -10,6 +10,7 @@ use App\Models\Raffle\Raffle;
 use App\Services\InventoryManager;
 use App\Services\Service;
 use DB;
+use App\Models\Recipe\Recipe;
 
 
 use App\Models\Pet\Pet;
@@ -43,6 +44,7 @@ class BoxService extends Service
             'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
             'tables'              => LootTable::orderBy('name')->pluck('name', 'id'),
             'raffles'             => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'recipes'=> Recipe::orderBy('name')->pluck('name', 'id'),
         ];
     }
 
@@ -116,6 +118,9 @@ class BoxService extends Service
                         break;
                     case 'Raffle':
                         $type = 'App\Models\Raffle\Raffle';
+                        break;
+                    case 'Recipe':
+                        $type = 'App\Models\Recipe\Recipe';
                         break;
                 }
                 $asset = $type::find($data['rewardable_id'][$key]);

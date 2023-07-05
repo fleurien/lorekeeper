@@ -72,7 +72,7 @@
         {!! Form::open(['url' => url()->current(), 'id' => 'submissionForm']) !!}
 
         <h2>Rewards</h2>
-        @include('widgets._loot_select', ['loots' => $submission->rewards, 'showLootTables' => true, 'showRaffles' => true])
+        @include('widgets._loot_select', ['loots' => $submission->rewards, 'showLootTables' => true, 'showRaffles' => true, 'showRecipes' => true])
         @if ($submission->prompt_id)
             <div class="mb-3">
                 <h2>Skill Rewards</h2>
@@ -115,17 +115,10 @@
             </div>
         </div>
         <div id="characters" class="mb-3">
-<<<<<<< HEAD
             @foreach($submission->characters as $character)
-<<<<<<< HEAD
+
                 @include('widgets._character_select_entry', ['characterCurrencies' => $characterCurrencies, 'items' => $items, 'tables' => $tables, 'character' => $character, 'characterAwards' => $characterAwards,'expanded_rewards' => $expanded_rewards])
-=======
-            @foreach ($submission->characters as $character)
-                @include('widgets._character_select_entry', ['characterCurrencies' => $characterCurrencies, 'items' => $items, 'tables' => $tables, 'character' => $character, 'expanded_rewards' => $expanded_rewards])
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
-=======
-                @include('widgets._character_select_entry', ['characterCurrencies' => $characterCurrencies, 'items' => $items, 'tables' => $tables, 'character' => $character, 'expanded_rewards' => $expanded_rewards, 'submission' => true])
->>>>>>> a065cf0f0bd9f09fb40f23bd38fab2b604d1cd0c
+
             @endforeach
         </div>
         <div class="text-right mb-3">
@@ -192,45 +185,6 @@
 
         {!! Form::close() !!}
 
-<<<<<<< HEAD
-        <div id="characterComponents" class="hide">
-            <div class="submission-character mb-3 card">
-                <div class="card-body">
-                    <div class="text-right"><a href="#" class="remove-character text-muted"><i class="fas fa-times"></i></a></div>
-                    <div class="row">
-                        <div class="col-md-2 align-items-stretch d-flex">
-                            <div class="d-flex text-center align-items-center">
-                                <div class="character-image-blank">Enter character code.</div>
-                                <div class="character-image-loaded hide"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-10">
-                            <a href="#" class="float-right fas fa-close"></a>
-                            <div class="form-group">
-                                {!! Form::label('slug[]', 'Character Code') !!}
-                                {!! Form::text('slug[]', null, ['class' => 'form-control character-code']) !!}
-                            </div>
-                            <div class="character-rewards hide">
-                                <h4>Character Rewards</h4>
-                                <table class="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            @if ($expanded_rewards)
-                                                <th width="35%">Reward Type</th>
-                                                <th width="35%">Reward</th>
-                                            @else
-                                                <th width="70%">Reward</th>
-                                            @endif
-                                            <th width="30%">Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="character-rewards">
-                                    </tbody>
-                                </table>
-                                <div class="text-right">
-                                    <a href="#" class="btn btn-outline-primary btn-sm add-reward">Add Reward</a>
-                                </div>
-=======
     <div class="skill-row hide mb-2">
         {!! Form::select('skill_id[]', $skills, null, ['class' => 'form-control mr-2 skill-select', 'placeholder' => 'Select Skill']) !!}
         {!! Form::text('skill_quantity[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Amount of level']) !!}
@@ -277,7 +231,6 @@
                             </table>
                             <div class="text-right">
                                 <a href="#" class="btn btn-outline-primary btn-sm add-reward">Add Reward</a>
->>>>>>> a065cf0f0bd9f09fb40f23bd38fab2b604d1cd0c
                             </div>
                         </div>
                     </div>
@@ -286,7 +239,6 @@
             <table>
                 <tr class="character-reward-row">
 
-<<<<<<< HEAD
                     @if($expanded_rewards)
                     <td>
                         {!! Form::select('character_rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency', 'LootTable' => 'Loot Table', 'Award' => 'Award'], null, ['class' => 'form-control character-rewardable-type', 'placeholder' => 'Select Reward Type']) !!}
@@ -297,17 +249,6 @@
                         <div class="character-awards hide">{!! Form::select('character_rewardable_id[]', $characterAwards, 0, ['class' => 'form-control character-award-id', 'placeholder' => 'Select Award']) !!}</div>
                         <div class="character-tables hide">{!! Form::select('character_rewardable_id[]', $tables, 0, ['class' => 'form-control character-table-id', 'placeholder' => 'Select Loot Table']) !!}</div>
                     </td>
-=======
-                    @if ($expanded_rewards)
-                        <td>
-                            {!! Form::select('character_rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency', 'LootTable' => 'Loot Table'], null, ['class' => 'form-control character-rewardable-type', 'placeholder' => 'Select Reward Type']) !!}
-                        </td>
-                        <td class="lootDivs">
-                            <div class="character-currencies hide">{!! Form::select('character_rewardable_id[]', $characterCurrencies, 0, ['class' => 'form-control character-currency-id', 'placeholder' => 'Select Currency']) !!}</div>
-                            <div class="character-items hide">{!! Form::select('character_rewardable_id[]', $items, 0, ['class' => 'form-control character-item-id', 'placeholder' => 'Select Item']) !!}</div>
-                            <div class="character-tables hide">{!! Form::select('character_rewardable_id[]', $tables, 0, ['class' => 'form-control character-table-id', 'placeholder' => 'Select Loot Table']) !!}</div>
-                        </td>
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
                     @else
                         <td class="lootDivs">
                             {!! Form::hidden('character_rewardable_type[]', 'Currency', ['class' => 'character-rewardable-type']) !!}
@@ -315,7 +256,6 @@
                         </td>
                     @endif
 
-<<<<<<< HEAD
                 <td class="d-flex align-items-center">
                     {!! Form::text('character_quantity[]', 0, ['class' => 'form-control mr-2  character-rewardable-quantity']) !!}
                     <a href="#" class="remove-reward d-block"><i class="fas fa-times text-muted"></i></a>
@@ -323,21 +263,11 @@
             </tr>
         </table>
     </div>
-<<<<<<< HEAD
-    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'awards' => $awards, 'showLootTables' => true, 'showRaffles' => true])
-=======
-                    <td class="d-flex align-items-center">
-                        {!! Form::text('character_quantity[]', 0, ['class' => 'form-control mr-2  character-rewardable-quantity']) !!}
-                        <a href="#" class="remove-reward d-block"><i class="fas fa-times text-muted"></i></a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        @include('widgets._loot_select_row', ['showLootTables' => true, 'showRaffles' => true])
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
-=======
-    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'pets' => $pets, 'gears' => $gears, 'weapons' => $weapons, 'showLootTables' => true, 'showRaffles' => true])
->>>>>>> a065cf0f0bd9f09fb40f23bd38fab2b604d1cd0c
+
+
+    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'awards' => $awards, 'pets' => $pets, 'gears' => $gears, 'weapons' => $weapons, 'showLootTables' => true, 'showRaffles' => true, 'showRecipes' => true])
+
+
 
         <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -377,7 +307,7 @@
 @section('scripts')
     @parent
     @if ($submission->status == 'Pending')
-        @include('js._loot_js', ['showLootTables' => true, 'showRaffles' => true])
+        @include('js._loot_js', ['showLootTables' => true, 'showRaffles' => true, 'showRecipes' => true])
         @include('js._character_select_js')
 
         <script>
@@ -385,11 +315,10 @@
                 var $confirmationModal = $('#confirmationModal');
                 var $submissionForm = $('#submissionForm');
 
-<<<<<<< HEAD
                 var $approvalButton = $('#approvalButton');
                 var $approvalContent = $('#approvalContent');
                 var $approvalSubmit = $('#approvalSubmit');
-=======
+
         $('.original.skill-select').selectize();
 
         $('#add-skill').on('click', function(e) {
@@ -416,11 +345,6 @@
         function removeSkillRow($trigger) {
             $trigger.parent().remove();
         }
-
-        $(document).ready(function() {
-            var $confirmationModal = $('#confirmationModal');
-            var $submissionForm = $('#submissionForm');
->>>>>>> a065cf0f0bd9f09fb40f23bd38fab2b604d1cd0c
 
                 var $rejectionButton = $('#rejectionButton');
                 var $rejectionContent = $('#rejectionContent');
@@ -453,5 +377,6 @@
                 });
             });
         </script>
+        
     @endif
 @endsection

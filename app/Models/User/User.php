@@ -39,6 +39,8 @@ use App\Models\Trade;
 use App\Models\WorldExpansion\FactionRank;
 use App\Models\WorldExpansion\FactionRankMember;
 use App\Models\Report\Report;
+use App\Models\Recipe\Recipe;
+use App\Models\User\UserRecipeLog;
 
 use App\Models\Collection\Collection;
 use App\Models\User\UserCollection;
@@ -233,6 +235,14 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->hasOne('App\Models\User\UserForaging');
     }
     
+    /**
+     * Get the user's items.
+     */
+    public function recipes()
+    {
+        return $this->belongsToMany('App\Models\Recipe\Recipe', 'user_recipes')->withPivot('id');
+    }
+
     /**
      * Get all of the user's gallery submissions.
      */
@@ -811,6 +821,25 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /**
      * Get the user's stat logs.
+     * Get the user's recipe logs.
+     *
+     * @param  int  $limit
+     * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getRecipeLogs($limit = 10)
+    {
+        $user = $this;
+        $query = UserRecipeLog::with('recipe')->where(function($query) use ($user) {
+            $query->with('sender')->where('sender_id', $user->id)->whereNotIn('log_type', ['Staff Grant', 'Prompt Rewards', 'Claim Rewards']);
+        })->orWhere(function($query) use ($user) {
+            $query->with('recipient')->where('recipient_id', $user->id)->where('log_type', '!=', 'Staff Removal');
+        })->orderBy('id', 'DESC');
+        if($limit) return $query->take($limit)->get();
+        else return $query->paginate(30);
+    }
+
+    /**
+     * Get the user's shop purchase logs.
      *
      * @param  int  $limit
      * @return \Illuminate\Support\Collection|\Illuminate\Pagination\LengthAwarePaginator
@@ -1104,10 +1133,23 @@ class User extends Authenticatable implements MustVerifyEmail {
         $user_has = $this->volumes->contains($volume);
         return $user_has;
     }
+/**     
+* Checks if the user has the named recipe
+     *
+     * @return bool
+     */
+    public function hasRecipe($recipe_id)
+    {
+        $recipe = Recipe::find($recipe_id);
+        $user_has = $this->recipes->contains($recipe);
+        $default = !$recipe->needs_unlocking;
+        return $default ? true : $user_has;
+    }
 
 
     /**
      * Returned volume listed that are owned
+     * Returned recipes listed that are owned
      * Reversal simply
      *
      * @return object
@@ -1172,4 +1214,19 @@ public function ownedCollections($ids, $reverse = false)
         }
         return $collectionCollection;
     }
+    public function ownedRecipes($ids, $reverse = false)
+    {
+        $recipes = Recipe::find($ids); $recipeCollection = [];
+        foreach($recipes as $recipe)
+        {
+            if($reverse) {
+                if(!$this->recipes->contains($recipe)) $recipeCollection[] = $recipe;
+            }
+            else {
+                if($this->recipes->contains($recipe)) $recipeCollection[] = $recipe;
+            }
+        }
+        return $recipeCollection;
+    }
+
 }
