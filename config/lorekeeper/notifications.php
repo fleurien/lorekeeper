@@ -148,7 +148,7 @@ return [
     19  => [
         'name'    => 'Character Received',
         'message' => '{character_name} was transferred to you by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Character</a>)',
-        'url'     => 'character/{character_slug}',
+        'url' => '{character_type}/{character_slug}'
     ],
 
     // SUBMISSION_APPROVED

@@ -230,13 +230,12 @@ class ShopManager extends Service
             $stock->stock -= 1;
             $stock->save();
 
-            // Give the user the item
-            if (!(new InventoryManager)->creditItem(null, $user, 'Collected from Donation Shop', [
-                'data' => isset($stock->stack->data['data']) ? $stock->stack->data['data'] : null,
+            // Give the user the item            
+if(!(new InventoryManager)->creditItem(null, $user, 'Collected from Donation Shop',$stock->stack->data + [
+                'data' => 'Collected from Donation Shop by '.$user->displayName,
                 'notes' => isset($stock->stack->data['notes']) ? $stock->stack->data['notes'] : null,
-            ], $stock->item, 1)) {
-                throw new \Exception('Failed to collect item.');
-            }
+], $stock->item, 1)) throw new \Exception("Failed to collect item.");
+            
 
             return $this->commitReturn($stock);
         } catch (\Exception $e) {
