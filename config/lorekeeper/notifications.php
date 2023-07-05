@@ -604,4 +604,18 @@ return [
         'message' => 'You have received a staff grant of the crafting recipe {recipe_name} from <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Unlocked Recipes</a>)',
         'url' => 'crafting'
     ],
+
+    // CHARACTER_STATUS_GRANT
+    521 => [
+        'name' => 'Character Status Effect Grant',
+        'message' => '{character_name} has been given the status effect {status_name} (×{status_quantity}) by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Status Effects</a>)',
+        'url' => 'character/{character_slug}/status-effects'
+    ],
+
+    // CHARACTER_STATUS_REMOVAL
+    522 => [
+        'name' => 'Character Status Effect Removal',
+        'message' => '{status_name} (×{status_quantity})  was removed from {character_name} by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Status Effects</a>)',
+        'url' => 'character/{character_slug}/status-effects'
+    ],
 ];

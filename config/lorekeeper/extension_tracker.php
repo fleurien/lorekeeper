@@ -2,8 +2,6 @@
 
 return [
 
-
-
     // FORMAT EXAMPLE.
     //
     // 'extension_tracker' => [
@@ -244,4 +242,12 @@ return [
             ]),
             'version' => '1.1.0',
         ],
+    'status_effects' => [
+        'key' => 'status_effects',
+        'wiki_key' => 'Status_Effects',
+        'creators' => json_encode([
+            'Mercury' => 'https://github.com/itinerare/',
+        ]),
+        'version' => '1.0.2',
+    ],
 ];

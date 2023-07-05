@@ -101,8 +101,11 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function ()
     Route::get('{slug}/image/{id}', 'CharacterController@getCharacterImage');
 
     Route::get('{slug}/award-logs', 'CharacterController@getCharacterAwardLogs');
+    Route::get('{slug}/status-effects', 'CharacterController@getCharacterStatusEffects');
+
     Route::get('{slug}/currency-logs', 'CharacterController@getCharacterCurrencyLogs');
     Route::get('{slug}/item-logs', 'CharacterController@getCharacterItemLogs');
+    Route::get('{slug}/status-effect-logs', 'CharacterController@getCharacterStatusEffectLogs');
     Route::get('{slug}/ownership', 'CharacterController@getCharacterOwnershipLogs');
     Route::get('{slug}/change-log', 'CharacterController@getCharacterLogs');
     Route::get('{slug}/skill-logs', 'CharacterController@getCharacterSkillLogs');
@@ -144,6 +147,7 @@ Route::group(['prefix' => 'world'], function () {
     Route::get('transformations', 'WorldController@getTransformations');
     Route::get('species/{id}/traits', 'WorldController@getSpeciesFeatures');
     Route::get('species/{speciesId}/trait/{id}', 'WorldController@getSpeciesFeatureDetail')->where(['id' => '[0-9]+', 'speciesId' => '[0-9]+']);
+    Route::get('status-effects', 'WorldController@getStatusEffects');
     Route::get('item-categories', 'WorldController@getItemCategories');
     Route::get('items', 'WorldController@getItems');
     Route::get('award-categories', 'WorldController@getAwardCategories');

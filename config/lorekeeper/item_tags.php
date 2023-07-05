@@ -86,5 +86,16 @@ return [
         'name' => 'Giftwrapped',
         'text_color' => "#ffffff",
         'background_color' => '#c33d73'
-    ]
+    ],
+    'buff' => [
+        'name' => 'Buff',
+        'text_color' => '#ffffff',
+        'background_color' => '#a4b88d'
+    ],
+
+    'cure' => [
+        'name' => 'Cure',
+        'text_color' => '#ffffff',
+        'background_color' => '#b4676b'
+    ],
 ];

@@ -22,6 +22,7 @@ use App\Models\Skill\Skill;
 use App\Models\Claymore\Gear;
 use App\Models\Claymore\Weapon;
 use App\Models\Recipe\Recipe;
+use App\Models\Status\StatusEffect;
 
 use App\Services\Stat\ExperienceManager;
 use App\Services\Stat\StatManager;
@@ -405,6 +406,7 @@ class SubmissionManager extends Service {
                             case 'Currency':    $currencyIds[] = $id; break;
                             case 'Item':        $itemIds[] = $id; break;
                             case 'LootTable':   $tableIds[] = $id; break;
+                            case 'StatusEffect': $statusIds[] = $id; break;
                             case 'Award':       $awardIds[] = $id; break;
                         }
                     }
@@ -417,6 +419,7 @@ class SubmissionManager extends Service {
             $currencies = Currency::whereIn('id', $currencyIds)->where('is_character_owned', 1)->get()->keyBy('id');
             $items = Item::whereIn('id', $itemIds)->get()->keyBy('id');
             $tables = LootTable::whereIn('id', $tableIds)->get()->keyBy('id');
+            $statuses = StatusEffect::whereIn('id', $statusIds)->get()->keyBy('id');
             $awards = Award::whereIn('id', $awardIds)->get()->keyBy('id');
 
             // We're going to remove all characters from the submission and reattach them with the updated data
@@ -425,7 +428,7 @@ class SubmissionManager extends Service {
             // Distribute character rewards
             foreach ($characters as $c) {
                 // Users might not pass in clean arrays (may contain redundant data) so we need to clean that up
-                $assets = $this->processRewards($data + ['character_id' => $c->id, 'currencies' => $currencies, 'items' => $items, 'tables' => $tables, 'awards' => $awards], true);
+                $assets = $this->processRewards($data + ['character_id' => $c->id, 'currencies' => $currencies, 'items' => $items, 'tables' => $tables, 'awards' => $awards, 'statuses' => $statuses], true);
 
                 if (!$assets = fillCharacterAssets($assets, $user, $c, $promptLogType, $promptData, $submission->user)) {
                     throw new \Exception('Failed to distribute rewards to character.');
@@ -530,6 +533,8 @@ class SubmissionManager extends Service {
                         case 'LootTable': if ($data['character_rewardable_quantity'][$data['character_id']][$key]) {
                             addAsset($assets, $data['tables'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]);
                         } break;
+                        case 'StatusEffect': if($data['character_rewardable_quantity'][$data['character_id']][$key]) addAsset($assets, $data['statuses'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]); break;
+
                     }
                 }
             }

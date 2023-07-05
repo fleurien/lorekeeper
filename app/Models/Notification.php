@@ -182,4 +182,6 @@ class Notification extends Model {
     const BREEDING_PERMISSION_TRANSFER        = 519;
     const FORCED_BREEDING_PERMISSION_TRANSFER = 520;
     const RECIPE_GRANT                      = 600; // Draginraptor - Crafting
+    const CHARACTER_STATUS_GRANT            = 521;
+    const CHARACTER_STATUS_REMOVAL          = 522;
 }
