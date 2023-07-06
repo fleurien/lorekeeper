@@ -50,6 +50,8 @@ use App\Models\Collection\CollectionCategory;
 
 use App\Models\Recipe\Recipe;
 use App\Models\Emote;
+use App\Models\Prompt\Prompt;
+use App\Models\SitePageSection;
 
 class WorldController extends Controller
 {
@@ -86,6 +88,7 @@ class WorldController extends Controller
 
         return view('world.currencies', [
             'currencies' => $query->orderBy('name')->paginate(20)->appends($request->query()),
+            'sections' => SitePageSection::orderBy('sort', 'DESC')->get()
         ]);
     }
 
@@ -217,6 +220,7 @@ class WorldController extends Controller
 
         return view('world.award_categories', [
             'categories' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+            'sections' => SitePageSection::orderBy('sort', 'DESC')->get()
         ]);
     }
 
@@ -608,6 +612,7 @@ class WorldController extends Controller
 
         return view('world.character_categories', [
             'categories' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+            'sections' => SitePageSection::orderBy('sort', 'DESC')->get()
         ]);
     }
 
@@ -649,6 +654,7 @@ class WorldController extends Controller
 
         return view('world.prompt_categories', [
             'categories' => $query->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+            'sections' => SitePageSection::orderBy('sort', 'DESC')->get()
         ]);
     }
 

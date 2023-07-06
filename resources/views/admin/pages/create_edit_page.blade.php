@@ -34,6 +34,12 @@
                 {!! Form::text('key', $page->key, ['class' => 'form-control']) !!}
             </div>
         </div>
+        <div class="col-md-3">
+        <div class="form-group">
+            {!! Form::label('Page Category (Optional)') !!}
+            {!! Form::select('page_category_id', $categories, $page->page_category_id, ['class' => 'form-control']) !!}
+        </div>
+    </div>
     </div>
 
     <div class="form-group">
