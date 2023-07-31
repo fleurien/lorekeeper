@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterCategory;
 use App\Models\Character\CharacterImage;
-<<<<<<< HEAD
 use App\Models\Character\CharacterTitle;
-=======
-use App\Models\Character\CharacterTransformation as Transformation;
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
 use App\Models\Character\Sublist;
 use App\Models\Feature\Feature;
 use App\Models\Rank\Rank;
@@ -330,7 +326,6 @@ class BrowseController extends Controller {
         }
 
         return view('browse.masterlist', [
-<<<<<<< HEAD
             'isMyo'       => false,
             'characters'  => $query->paginate(24)->appends($request->query()),
             'categories'  => [0 => 'Any Category'] + CharacterCategory::whereNotIn('id', $subCategories)->visible(Auth::check() ? Auth::user() : null)->orderBy('character_categories.sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -342,18 +337,6 @@ class BrowseController extends Controller {
             'sublists'    => Sublist::orderBy('sort', 'DESC')->get(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
             'transformations' => [0 => 'Any '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-=======
-            'isMyo'           => false,
-            'characters'      => $query->paginate(24)->appends($request->query()),
-            'categories'      => [0 => 'Any Category'] + CharacterCategory::whereNotIn('id', $subCategories)->orderBy('character_categories.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'specieses'       => [0 => 'Any Species'] + Species::whereNotIn('id', $subSpecies)->visible(Auth::check() ? Auth::user() : null)->orderBy('specieses.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes'        => [0 => 'Any Subtype'] + Subtype::visible(Auth::check() ? Auth::user() : null)->orderBy('subtypes.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'transformations' => [0 => 'Any Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'rarities'        => [0 => 'Any Rarity'] + Rarity::orderBy('rarities.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features'        => Feature::getDropdownItems(),
-            'sublists'        => Sublist::orderBy('sort', 'DESC')->get(),
-            'userOptions'     => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         ]);
     }
 
@@ -683,7 +666,6 @@ class BrowseController extends Controller {
         }
 
         return view('browse.sub_masterlist', [
-<<<<<<< HEAD
             'isMyo'       => false,
             'characters'  => $query->paginate(24)->appends($request->query()),
             'categories'  => [0 => 'Any Category'] + $subCategory,
@@ -696,19 +678,6 @@ class BrowseController extends Controller {
             'sublists'    => Sublist::orderBy('sort', 'DESC')->get(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
             'transformations' => [0 => 'Any '.ucfirst(__('transformations.transformation'))] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-=======
-            'isMyo'           => false,
-            'characters'      => $query->paginate(24)->appends($request->query()),
-            'categories'      => [0 => 'Any Category'] + $subCategory,
-            'specieses'       => [0 => 'Any Species'] + $subSpecies,
-            'subtypes'        => [0 => 'Any Subtype'] + Subtype::visible(Auth::check() ? Auth::user() : null)->orderBy('subtypes.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'transformations' => [0 => 'Any Transformation'] + Transformation::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'rarities'        => [0 => 'Any Rarity'] + Rarity::orderBy('rarities.sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'features'        => Feature::getDropdownItems(),
-            'sublist'         => $sublist,
-            'sublists'        => Sublist::orderBy('sort', 'DESC')->get(),
-            'userOptions'     => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
         ]);
     }
 }

@@ -20,6 +20,48 @@
 
 **************************************************************************************************/
 
+.homepagechararosterbubble::before {
+	mask-image: url('/files/UI/planet1.png');
+	mask-size: 102%;
+	display: block;
+	width: 224px;
+	height: 225px;
+	content: '';
+	position: relative;
+	top: 186px;
+	left: 34px;
+	z-index: 0;
+	margin-top: -186px;
+}
+
+.homepagechararosterbubble:nth-child(even)::before {
+ mask-image: url('/files/UI/planet2.png');
+}
+
+.homepagechar::before {
+	content: '\f005';
+	left: 13%;
+	position: relative;
+	animation-name: fa-spin;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
+	display: inline-block;
+	animation-timing-function: linear;
+	color: #f89bd0;
+	font-size: 200px;
+	margin-top: -294px;
+	bottom: -252px;
+	z-index: 1;
+}
+
+.charspeechbubble {
+    height: 20%;
+    top: -7%;
+    margin-left: 25%;
+    position: relative;
+}
+
+
 .newnotif {
 	rotate: 30deg;
 	position: relative;
@@ -45,7 +87,7 @@
   }
   
   .messages {
-    margin-top: 30px;
+    margin-top: 113px;
     display: flex;
     flex-direction: column;
   }
@@ -65,9 +107,8 @@
   
   .yours .message {
     margin-right: 25%;
-    background-color: #eee;
+    background-color: #6067af;
     position: relative;
-    background: linear-gradient(to bottom, #9066bd 0%, #571d61 100%);
     background-attachment: fixed;
 
   }
@@ -80,7 +121,7 @@
     left: -7px;
     height: 20px;
     width: 20px;
-    background: linear-gradient(to bottom, #9066bd 0%, #571d61 100%);
+    background-color: #6067af;
     background-attachment: fixed;
     border-bottom-right-radius: 15px;
   }
