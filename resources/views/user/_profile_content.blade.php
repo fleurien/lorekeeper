@@ -1,57 +1,7 @@
 @if ($deactivated)
     <div style="filter:grayscale(1); opacity:0.75">
 @endif
-<h1>
-    <img src="{{ $user->avatarUrl }}" style="width:125px; height:125px; float:left; border-radius:50%; margin-right:25px;" alt="{{ $user->name }}'s Avatar">
-    {!! $user->displayName !!}
-    <a href="{{ url('reports/new?url=') . $user->url }}"><i class="fas fa-exclamation-triangle fa-xs" data-toggle="tooltip" title="Click here to report this user." style="opacity: 50%; font-size:0.5em;"></i></a>
 
-    @if ($user->settings->is_fto)
-        <span class="badge badge-success float-right" data-toggle="tooltip" title="This user has not owned any characters from this world before.">FTO</span>
-    @endif
-</h1>
-<div class="mb-4">
-    <div class="row">
-        <div class="row col-md-6">
-            <div class="col-md-2 col-4">
-                <h5>Alias</h5>
-            </div>
-            <div class="col-md-10 col-8">
-                {!! $user->displayAlias !!}
-                @if (count($aliases) > 1 && Config::get('lorekeeper.extensions.aliases_on_userpage'))
-                    <a class="small collapse-toggle collapsed" href="#otherUserAliases" data-toggle="collapse">&nbsp;</a>
-                    <p class="collapse mb-0" id="otherUserAliases">
-                        @foreach ($aliases as $alias)
-                            @if ($alias != $user->primaryAlias)
-                                <a href="{{ $alias->url }}"><i class="{{ $alias->config['icon'] }} fa-fw mr-1" data-toggle="tooltip" title="{{ $alias->alias . '@' . $alias->siteDisplayName }}"></i></a>
-                            @endif
-                        @endforeach
-                    </p>
-                @endif
-            </div>
-        </div>
-        <div class="row col-md-6">
-            <div class="col-md-2 col-4">
-                <h5>Joined</h5>
-            </div>
-            <div class="col-md-10 col-8">{!! format_date($user->created_at, false) !!} ({{ $user->created_at->diffForHumans() }})</div>
-        </div>
-        <div class="row col-md-6">
-            <div class="col-md-2 col-4">
-                <h5>Rank</h5>
-            </div>
-            <div class="col-md-10 col-8">{!! $user->rank->displayName !!} {!! add_help($user->rank->parsed_description) !!}</div>
-        </div>
-        @if ($user->birthdayDisplay && isset($user->birthday))
-            <div class="row col-md-6">
-                <div class="col-md-2 col-4">
-                    <h5>Birthday</h5>
-                </div>
-                <div class="col-md-10 col-8">{!! $user->birthdayDisplay !!}</div>
-            </div>
-        @endif
-    </div>
-</div>
 
 @if (isset($user->profile->parsed_text))
     <div class="card mb-3" style="clear:both;">
@@ -62,38 +12,55 @@
 @endif
 
 <div class="card-deck mb-4 profile-assets" style="clear:both;">
-    <div class="card profile-currencies profile-assets-card">
-        <div class="card-body text-center">
-            <h5 class="card-title">Bank</h5>
+    <div class="card profile-inventory profile-assets-card">
+    <div class="card-body text-center">
+            <h5 class="card-title">Completed Collections</h5>
             <div class="profile-assets-content">
-                @foreach ($user->getCurrencies(false) as $currency)
-                    <div>{!! $currency->display($currency->quantity) !!}</div>
-                @endforeach
+                @if(count($collections))
+                    <div class="row">
+                        @foreach($collections as $collection)
+                            <div class="col-md-3 col-6 profile-inventory-item">
+                                @if($collection->imageUrl)
+                                    <img src="{{ $collection->imageUrl }}" data-toggle="tooltip" title="{{ $collection->name }}" alt="{{ $collection->name }}"/>
+                                @else
+                                    <p>{{ $collection->name }}</p>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                
             </div>
-            <div class="text-right"><a href="{{ $user->url . '/bank' }}">View all...</a></div>
+            <div class="text-right"><a href="{{ $user->url.'/armoury' }}">View all...</a></div>
         </div>
     </div>
-    <div class="card profile-inventory profile-assets-card">
+</div>
+                    <div>No collections completed.</div>
+                @endif
+            </div>
+            <div class="text-right"><a href="{{ $user->url.'/collection-logs' }}">View all...</a></div>
+        </div>
+</div>
+<div class="card mb-3">
         <div class="card-body text-center">
-            <h5 class="card-title">Inventory</h5>
-            <div class="profile-assets-content">
-                @if (count($items))
+            <h5 class="card-title">Award case</h5>
+            <div class="card-body">
+                @if(count($awards))
                     <div class="row">
-                        @foreach ($items as $item)
+                        @foreach($awards as $award)
                             <div class="col-md-3 col-6 profile-inventory-item">
-                                @if ($item->imageUrl)
-                                    <img src="{{ $item->imageUrl }}" data-toggle="tooltip" title="{{ $item->name }}" alt="{{ $item->name }}" />
+                                @if($award->imageUrl)
+                                    <img src="{{ $award->imageUrl }}" data-toggle="tooltip" title="{{ $award->name }}" />
                                 @else
-                                    <p>{{ $item->name }}</p>
+                                    <p>{{ $award->name }}</p>
                                 @endif
                             </div>
                         @endforeach
                     </div>
                 @else
-                    <div>No items owned.</div>
+                    <div>No {{ __('awards.awards') }} earned.</div>
                 @endif
             </div>
-            <div class="text-right"><a href="{{ $user->url . '/inventory' }}">View all...</a></div>
+            <div class="text-right"><a href="{{ $user->url.'/awardcase' }}">View all...</a></div>
         </div>
     </div>
 </div>
@@ -126,8 +93,32 @@
     </div>
 @endforeach
 
+
+
+
+
 <div class="text-right"><a href="{{ $user->url . '/characters' }}">View all...</a></div>
-<hr class="mb-5" />
+<hr>
+
+<h2>
+        Gallery
+    </h2>
+
+    @if ($user->gallerySubmissions->count())
+
+        <div class="d-flex align-content-around flex-wrap mb-2">
+            @foreach ($user->gallerySubmissions as $submission)
+                @include('galleries._thumb', ['submission' => $submission, 'gallery' => false])
+            @endforeach
+        </div>
+
+        
+    @else
+        <p>No submissions found!</p>
+    @endif
+    <div class="text-right"><a href="{{ $user->url . '/gallery' }}">View all...</a></div>
+
+    <hr>
 
 <div class="row col-12">
     <div class="col-md-8">
@@ -175,7 +166,7 @@
             @endif
         </div>
     </div>
-</div>
+
 
 @if ($deactivated)
     </div>

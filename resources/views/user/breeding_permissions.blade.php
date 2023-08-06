@@ -1,12 +1,12 @@
 @extends('user.layout')
 
-@section('profile-title') {{ $user->name }}'s Breeding Permissions @endsection
+@section('profile-title') {{ $user->name }}'s gene passes @endsection
 
 @section('profile-content')
-{!! breadcrumbs(['Users' => 'users', $user->name => $user->url, 'Breeding Permissions' => $user->url . '/breeding-permissions']) !!}
+{!! breadcrumbs(['Users' => 'users', $user->name => $user->url, 'Gene passes' => $user->url . '/breeding-permissions']) !!}
 
 <h1>
-    {!! $user->displayName !!}'s Breeding Permissions
+    {!! $user->displayName !!}'s Gene passes
 </h1>
 
 <ul class="nav nav-tabs mb-3">
