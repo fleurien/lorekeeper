@@ -279,11 +279,15 @@ class CharacterController extends Controller
     public function getCharacterImage($slug, $id) {
         $image = CharacterImage::where('character_id', $this->character->id)->where('id', $id)->first();
 
+        $background = new \App\Services\Item\BackgroundService;
+        $bg = $background->checkBackground($this->character);
+
         return view('character.image', [
             'user'      => Auth::check() ? Auth::user() : null,
             'character' => $this->character,
             'image'     => $image,
             'ajax'      => true,
+            'background' => $bg,
         ]);
     }
 
