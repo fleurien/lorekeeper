@@ -1,5 +1,5 @@
 {{-- Image Data --}}
-<div class="col-md-5 d-flex">
+<div class="col-md-6 d-flex">
     <div class="card character-bio w-100">
         <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
@@ -121,9 +121,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="mb-3">
-                    @include('character._genomes', ['character' => $character])
-                </div>
+                
 
                 <div>
                     <strong>Uploaded:</strong> {!! pretty_date($image->created_at) !!}

@@ -40,12 +40,12 @@
 @endif
 
 {{-- Main Image --}}
-<div class="row mb-3" id="main-tab">
-    <div class="col-md-7">
+<div class="row mb-3" id="main-tab" style="clear:both;">
+         <div class="col-md-6">
     @if(isset($background) && Config::get('lorekeeper.extensions.character_backgrounds.enabled'))
-        <div class="text-center" style="{{ implode('; ',$background) }}; background-size: cover; background-repeat:no-repeat;">
+    <div class="text-center" style="{{ implode('; ',$background) }}; background-size: cover; background-repeat:no-repeat; width: 650px; height: 750px; background-position: center; border-radius: 20px;">
             <a href="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($character->image->imageDirectory.'/'.$character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}" data-lightbox="entry" data-title="{{ $character->fullName }}">
-                <img src="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($character->image->imageDirectory.'/'.$character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}" class="image" alt="{{ $character->fullName }}" />
+                <img src="{{ $character->image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists( public_path($character->image->imageDirectory.'/'.$character->image->fullsizeFileName)) ? $character->image->fullsizeUrl : $character->image->imageUrl }}" class="image" style="max-height: 720px; width: auto;" alt="{{ $character->fullName }}" />
             </a>
         </div>
         @else
@@ -67,11 +67,16 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link active" id="statsTab" data-toggle="tab" href="#stats" role="tab">Stats</a>
+                <a class="nav-link active" id="statsTab" data-toggle="tab" href="#stats" role="tab">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="notesTab" data-toggle="tab" href="#notes" role="tab">Description</a>
+                <a class="nav-link" id="logsTab" data-toggle="tab" href="#logs" role="tab">Ownership</a>
             </li>
+            @if($character->getLineageBlacklistLevel() < 2)
+                <li class="nav-item">
+                    <a class="nav-link" id="lineageTab" data-toggle="tab" href="#lineage" role="tab">Genetics</a>
+                </li>
+            @endif
             @if(Auth::check() && Auth::user()->hasPower('manage_characters'))
                 <li class="nav-item">
                     <a class="nav-link" id="settingsTab" data-toggle="tab" href="#settings-{{ $character->slug }}" role="tab"><i class="fas fa-cog"></i></a>
@@ -83,9 +88,14 @@
         <div class="tab-pane fade show active" id="stats">
             @include('character._tab_stats', ['character' => $character])
         </div>
-        <div class="tab-pane fade" id="notes">
-            @include('character._tab_notes', ['character' => $character])
+        <div class="tab-pane fade" id="logs">
+            @include('character._tab_logs', ['character' => $character])
         </div>
+        @if($character->getLineageBlacklistLevel() < 2)
+            <div class="tab-pane fade" id="lineage">
+                @include('character._tab_lineage', ['character' => $character])
+            </div>
+        @endif
         @if(Auth::check() && Auth::user()->hasPower('manage_characters'))
             <div class="tab-pane fade" id="settings-{{ $character->slug }}">
                 {!! Form::open(['url' => $character->is_myo_slot ? 'admin/myo/'.$character->id.'/settings' : 'admin/character/'.$character->slug.'/settings']) !!}

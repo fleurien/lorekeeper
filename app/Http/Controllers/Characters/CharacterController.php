@@ -169,7 +169,8 @@ class CharacterController extends Controller
         return view('character.profile', [
             'character' => $this->character,
             'extPrevAndNextBtnsUrl' => '/profile',
-            'background' => $bg
+            'background' => $bg,
+            'permissions' => $this->character->breedingPermissions()->orderBy('is_used')->paginate(20)->appends($request->query())
         ]);
     }
 

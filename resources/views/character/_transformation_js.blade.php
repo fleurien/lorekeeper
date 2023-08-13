@@ -47,6 +47,10 @@
                     e.preventDefault();
                     loadModal("{{ url('admin/character/image') }}/"+$(this).data('id')+"/traits", 'Edit Traits');
                 });
+                $('.edit-lineage').on('click', function(e) {
+                    e.preventDefault();
+                    loadModal("{{ url($character->is_myo_slot ? 'admin/myo/' : 'admin/character/') }}/"+$(this).data('{{ $character->is_myo_slot ? 'id' : 'slug' }}')+"/lineage", 'Edit Character Lineage');
+                 });
                 $('.edit-notes').on('click', function(e) {
                     e.preventDefault();
                     $( "div.imagenoteseditingparse" ).load("{{ url('admin/character/image') }}/"+$(this).data('id')+"/notes", function() {

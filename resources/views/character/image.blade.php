@@ -1,14 +1,13 @@
-<div class="col-md-7">
+<div class="col-md-6">
 @if(isset($background) && Config::get('lorekeeper.extensions.character_backgrounds.enabled'))
-    <div class="text-center" style="{{ implode('; ',$background) }}; background-size: cover; background-repeat:no-repeat;">
+    <div class="text-center" style="{{ implode('; ',$background) }}; background-size: cover; background-repeat:no-repeat; width: 650px; height: 750px; background-position: center; border-radius: 20px;">
         <a href="{{ $image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($image->imageDirectory . '/' . $image->fullsizeFileName)) ? $image->fullsizeUrl : $image->imageUrl }}" data-lightbox="entry"
             data-title="{{ $character->fullName }}">
-            <img src="{{ $image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($image->imageDirectory . '/' . $image->fullsizeFileName)) ? $image->fullsizeUrl : $image->imageUrl }}" class="image"
+            <img src="{{ $image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($image->imageDirectory . '/' . $image->fullsizeFileName)) ? $image->fullsizeUrl : $image->imageUrl }}" class="image" style="max-height: 720px; width: auto;"
                 alt="{{ $character->fullName }}" />
         </a>
     </div>
     @else
-    hooty hoo
     <div class="text-center">
         <a href="{{ $image->canViewFull(Auth::check() ? Auth::user() : null) && file_exists(public_path($image->imageDirectory . '/' . $image->fullsizeFileName)) ? $image->fullsizeUrl : $image->imageUrl }}" data-lightbox="entry"
             data-title="{{ $character->fullName }}">

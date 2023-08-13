@@ -1,3 +1,44 @@
+@if(Auth::check() && (Auth::user()->id == $character->user_id))
+    <div class="text-right mb-4">
+        <a href="#" class="btn btn-success create-breeding-permission">Create New Permission</a>
+    </div>
+@endif
+
+<p>
+    This character has {{ $character->availableBreedingPermissions }} out of {{ $character->maxBreedingPermissions }} maximum gene passes{{ $character->availableBreedingPermissions == 1 ? '' : 's' }} available to create.
+    @if(Auth::check() && (Auth::user()->id == $character->user_id))
+        As the character's owner, you may create and grant to other users up to this many gene passes. Other users may see how many of this character's gene passes have been created and/or used, and to whom they have been granted.
+    @else
+        Only the character's owner can create and distribute their gene passes.
+    @endif
+</p>
+
+@if($character->breedingPermissions->count())
+    {!! $character->breedingPermissions->render() !!}
+
+    @foreach($character->breedingPermissions as $permission)
+        @include('character._breeding_permission', ['isCharacter' => true])
+    @endforeach
+
+    {!! $permissions->render() !!}
+@else
+    <p>No permissions found.</p>
+@endif
+
+
+@section('scripts')
+    @parent
+    @include('character._breeding_permissions_js')
+@endsection
+
+
+
+<div><h5>Genes</h5></div>
+<div class="mb-3">
+                    @include('character._genomes', ['character' => $character])
+                </div>
+<hr>
+<div><h5>Genetic tree</h5></div>
 @if($character->lineage !== null)
     <?php $line = $character->lineage; ?>
     @include('character._tab_lineage_tree', [
