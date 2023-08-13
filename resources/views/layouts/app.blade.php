@@ -79,42 +79,59 @@
         <link href="{{ asset('css/custom.css') . '?v=' . filemtime(public_path('css/lorekeeper.css')) }}" rel="stylesheet">
     @endif
 
-    @include('feed::links')
-    @if(Auth::check() && Auth::user()->theme)
-        @php $theme = Auth::user()->theme->cssUrl @endphp
-        <link href="{{ Auth::user()->theme->cssUrl }}" rel="stylesheet">
-    @elseif(isset($defaultTheme))
-        @php $theme = $defaultTheme->CSSUrl @endphp
-        <link href="{{ $defaultTheme->CSSUrl }}" rel="stylesheet">
-    @else
-        @php $theme = null @endphp
+    @php $theme = Auth::user()->theme ?? $defaultTheme ?? null; @endphp
+    @if($theme?->prioritize_css) @include('layouts.editable_theme') @endif
+    @if($theme?->has_css)
+        <style type="text/css" media="screen">
+            @php include_once($theme?->cssUrl) @endphp
+            {{-- css in style tag to so that order matters --}}
+        </style>
     @endif
+    @if(!$theme?->prioritize_css) @include('layouts.editable_theme') @endif
+    
+    {{-- Conditional Themes are dependent on other site features --}}
+    @php 
+        $conditionalTheme = null;
+        if(class_exists('\App\Models\Weather\WeatherSeason')) {
+            $conditionalTheme = \App\Models\Theme::where('link_type', 'season')->where('link_id', Settings::get('site_season'))->first() ??
+                \App\Models\Theme::where('link_type', 'weather')->where('link_id', Settings::get('site_weather'))->first() ??
+                $theme;
+        }
+    @endphp
+    @if($conditionalTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $conditionalTheme]) @endif
+    @if($conditionalTheme?->has_css)
+        <style type="text/css" media="screen">
+            @php include_once($conditionalTheme?->cssUrl) @endphp
+            {{-- css in style tag to so that order matters --}}
+        </style>
+    @endif
+    @if(!$conditionalTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $conditionalTheme]) @endif
+    
+    @php $decoratorTheme = Auth::user()->decoratorTheme ?? null; @endphp
+    @if($decoratorTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $decoratorTheme]) @endif
+    @if($decoratorTheme?->has_css)
+        <style type="text/css" media="screen">
+            @php include_once($decoratorTheme?->cssUrl) @endphp
+            {{-- css in style tag to so that order matters --}}
+        </style>
+    @endif
+    @if(!$decoratorTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $decoratorTheme]) @endif
 
 </head>
 
 <body>
     <div id="app">
 
-        @if(Auth::check() && Auth::user()->theme)
-            <div class="site-header-image" id="header" style="background-image: url('{{ Auth::user()->theme->imageUrl }}'); position: relative;">
-            @include('layouts._clock')
-         </div>
-        @elseif(isset($defaultTheme) && isset($defaultTheme->imageUrl))
-            <div class="site-header-image" id="header" style="background-image: url('{{ $defaultTheme->imageUrl }}'); position: relative;">
-            @include('layouts._clock')
-         </div>
-        @else
-            <div class="site-header-image" id="header" style="background-image: url('{{ asset('images/header.png') }}'); position: relative;">
-            @include('layouts._clock')
-         </div>
-        @endif
+        <div class="site-header-image" id="header" style="background-image: url('{{ $decoratorTheme?->headerImageUrl ?? $conditionalTheme?->headerImageUrl ?? $theme?->headerImageUrl ?? asset('images/header.png') }}');">
+        @include('layouts._clock')
+    </div>
 
         @include('layouts._nav')
         @if (View::hasSection('sidebar'))
             <div class="site-mobile-header bg-secondary"><a href="#" class="btn btn-sm btn-outline-light" id="mobileMenuButton">Menu <i class="fas fa-caret-right ml-1"></i></a></div>
         @endif
 
-        <main class="container-fluid">
+        <main class="container-fluid" id="main">
             <div class="row">
 
                 <div class="sidebar col-lg-2" id="sidebar">
@@ -168,10 +185,44 @@
         @include('layouts._pagination_js')
         <script>
             $(function() {
-                $('[data-toggle="tooltip"]').tooltip({
-                    html: true
+                $('[data-toggle="tooltip"]').tooltip({html: true});
+                
+                class BlurValid extends $.colorpicker.Extension {
+                    constructor(colorpicker, options = {}) {
+                        super(colorpicker, options);
+
+                        if (this.colorpicker.inputHandler.hasInput()) {
+                            const onBlur = function (colorpicker, fallback) {
+                                return () => {
+                                    colorpicker.setValue(colorpicker.blurFallback._original.color);
+                                }
+                            };
+                            this.colorpicker.inputHandler.input[0].addEventListener('blur', onBlur(this.colorpicker));
+                        }
+                    }
+                    
+                    onInvalid(e) {
+                        const color = this.colorpicker.colorHandler.getFallbackColor();
+                        if(color._original.valid)
+                            this.colorpicker.blurFallback = color;
+                    }
+                }
+                
+                $.colorpicker.extensions.blurvalid = BlurValid;
+                console.log($['colorpicker'].extensions);
+                
+                
+                
+                $('.cp').colorpicker({
+                    'autoInputFallback': false,
+                    'autoHexInputFallback': false,
+                    'format': 'auto',
+                    'useAlpha': true,
+                    extensions: [{
+                        name: 'blurValid'
+                    }]
                 });
-                $('.cp').colorpicker();
+                
                 tinymce.init({
                     selector: '.wysiwyg',
                     height: 500,
@@ -187,7 +238,7 @@
                         '{{ asset('css/app.css') }}',
                         '{{ asset('css/lorekeeper.css') }}',
                         '{{ asset('css/custom.css') }}',
-                        '{{$theme}}'
+                        '{{ asset($theme?->cssUrl) }}'
                     ],
                     spoiler_caption: 'Toggle Spoiler',
                     target_list: false

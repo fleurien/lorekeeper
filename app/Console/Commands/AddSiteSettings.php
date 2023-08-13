@@ -121,6 +121,8 @@ class AddSiteSettings extends Command {
 
         $this->addSiteSetting('fetch_reward_max', 100, 'MAXIMUM Reward granted after fetch is completed');
         
+        $this->addSiteSetting('default_theme', 0, 'ID of the default theme users should see. 0: Disabled, shows default lorekeeper. This setting is overwritten by the users theme setting.');
+
         $this->line("\nSite settings up to date!");
 
     /**

@@ -127,6 +127,21 @@
             <label class="col-md-2 col-form-label">Toyhou.se <i class="fas fa-question-circle" data-toggle="tooltip" title=" Enter your username, please!  "></i></label>
             <div class="col-md-9">
                 {!! Form::text('house', Auth::user()->profile->house, ['class' => 'form-control']) !!}
+
+<div class="card p-3 mb-2">
+    <h3>Theme</h3>
+    <p>Change the way the site looks for you! </p>
+    {!! Form::open(['url' => 'account/theme']) !!}
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Base Theme</label>
+            <div class="col-md-9">
+                {!! Form::select('theme', $themeOptions, Auth::user()->theme_id ? Auth::user()->theme_id : ($defaultTheme ? $defaultTheme->id : 0) , ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Decorator Theme {!! add_help('A second complimentary theme that is layered over your base theme, and usually affects only a few pieces of the site.') !!}</label> 
+            <div class="col-md-9">
+                {!! Form::select('decorator_theme', $decoratorThemes, Auth::user()->decorator_theme_id ? Auth::user()->decorator_theme_id : null , ['class' => 'form-control']) !!}
             </div>
         </div>
         <div class="text-right">
@@ -157,13 +172,12 @@
         {!! Form::close() !!}
     </div>
 <div class="card p-3 mb-2">
-    <h3>Theme</h3>
-    <p>Change the way the site looks for you! </p>
-    {!! Form::open(['url' => 'account/theme']) !!}
+    <h3>Birthday Publicity</h3>
+    {!! Form::open(['url' => 'account/dob']) !!}
         <div class="form-group row">
-            <label class="col-md-2 col-form-label">Theme</label>
+            <label class="col-md-2 col-form-label">Setting</label>
             <div class="col-md-10">
-                {!! Form::select('theme', $themeOptions, Auth::user()->theme_id ? Auth::user()->theme_id : ($defaultTheme ? $defaultTheme->id : 0) , ['class' => 'form-control']) !!}
+                {!! Form::select('birthday_setting', ['0' => '0: No one can see your birthday.', '1' => '1: Members can see your day and month.', '2' => '2: Anyone can see your day and month.', '3' => '3: Full date public.'],Auth::user()->settings->birthday_setting, ['class' => 'form-control']) !!}
             </div>
         </div>
         <div class="text-right">

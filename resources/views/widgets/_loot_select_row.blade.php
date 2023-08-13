@@ -24,7 +24,7 @@
     <table class="table table-sm">
         <tbody id="lootRow">
             <tr class="loot-row">
-                <td>{!! Form::select('rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency', 'Award' => 'Award', 'Pet' => 'Pet', 'Gear' => 'Gear', 'Weapon' => 'Weapon', 'placeholder' => 'Select Reward Type'] + ($showLootTables ? ['LootTable' => 'Loot Table'] ) []) + ($showRaffles ? ['Raffle' => 'Raffle Ticket'] : []), + ($showRecipes ? ['Recipe' => 'Recipe'] ) !!}</td>
+                <td>{!! Form::select('rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency', 'Award' => 'Award', 'Pet' => 'Pet', 'Gear' => 'Gear', 'Weapon' => 'Weapon', 'placeholder' => 'Select Reward Type'] + ($showLootTables ? ['LootTable' => 'Loot Table'] ) []) + ($showRaffles ? ['Raffle' => 'Raffle Ticket'] : []), + (isset($showThemes) && $showThemes ? ['Theme' => 'Theme'] : []), + ($showRecipes ? ['Recipe' => 'Recipe'] ) !!}</td>
                 <td class="loot-row-select"></td>
                 <td>{!! Form::text('quantity[]', 1, ['class' => 'form-control']) !!}</td>
                 <td class="text-right"><a href="#" class="btn btn-danger remove-loot-button">Remove</a></td>
@@ -45,5 +45,8 @@
     @endif
     @if($showRecipes)
         {!! Form::select('rewardable_id[]', $recipes, null, ['class' => 'form-control recipe-select', 'placeholder' => 'Select Recipe']) !!}
+    @endif
+    @if(isset($showThemes) && $showThemes)
+        {!! Form::select('rewardable_id[]', $themes, null, ['class' => 'form-control theme-select', 'placeholder' => 'Select Theme']) !!}
     @endif
 </div>
