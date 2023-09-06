@@ -1,4 +1,4 @@
-<div class="clock-styling bg-dark" style="position: absolute; bottom: 0; right: 0; margin-right: 3em;">
+<div class="clock-styling bg-dark">
     
     <i class="far fa-clock"></i> <span class="text-right LiveClock" style="font-size:12px"></span>
 
