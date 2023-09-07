@@ -50,6 +50,7 @@
     <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui-timepicker-addon.js') }}"></script>
     <script src="{{ asset('js/croppie.min.js') }}"></script>
+    <script src="https://kit.fontawesome.com/0f4b998cf9.js" crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

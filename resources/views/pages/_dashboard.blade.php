@@ -63,13 +63,7 @@
   </ol>
   <div class="carousel-inner" style="border-radius:15px;">
     <div class="carousel-item active">
-      <img class="d-block w-100" src="http://localhost/files/slideplaceholdera.png" alt="First slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="http://localhost/files/slideplaceholderb.png" alt="Second slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="http://localhost/files/slideplaceholderc.png" alt="Third slide">
+      <img class="d-block w-100" src="/files/eventpromos/bughuntpromo%20crunched.png" alt="First slide">
     </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
