@@ -153,8 +153,8 @@ class CharacterController extends Controller
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
             'sale_value', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
-            'designer_alias', 'designer_url',
-            'artist_alias', 'artist_url',
+            'designer_alias', 'designer_url', 'designer_id',
+            'artist_alias', 'artist_url', 'artist_id',
 
             // hello darkness my old friend //
             'sire_id',           'sire_name',

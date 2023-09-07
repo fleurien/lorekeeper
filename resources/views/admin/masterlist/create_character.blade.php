@@ -177,29 +177,17 @@
             This section is for crediting the image creators. The first box is for the designer or artist's on-site username (if any). The second is for a link to the designer or artist if they don't have an account on the site.
         </p>
         <div class="form-group">
-            {!! Form::label('Designer(s)') !!}
-            <div id="designerList">
-                <div class="mb-2 d-flex">
-                    {!! Form::select('designer_id[]', $userOptions, null, ['class' => 'form-control mr-2 selectize', 'placeholder' => 'Select a Designer']) !!}
-                    {!! Form::text('designer_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Designer URL']) !!}
-                    <a href="#" class="add-designer btn btn-link" data-toggle="tooltip" title="Add another designer">+</a>
-                </div>
-            </div>
-            <div class="designer-row hide mb-2">
-                {!! Form::select('designer_id[]', $userOptions, null, ['class' => 'form-control mr-2 designer-select', 'placeholder' => 'Select a Designer']) !!}
+        {!! Form::label('Designer(s)') !!}
+        <div id="designerList">
+            <div class="mb-2 d-flex">
+                {!! Form::select('designer_id[]', $userOptions, null, ['class'=> 'form-control mr-2 selectize', 'placeholder' => 'Select a Designer']) !!}
                 {!! Form::text('designer_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Designer URL']) !!}
-                @if(Config::get('lorekeeper.extensions.extra_image_credits'))
-                    {!! Form::text('designer_type[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Designer Art Type']) !!}
-                @endif
                 <a href="#" class="add-designer btn btn-link" data-toggle="tooltip" title="Add another designer">+</a>
             </div>
         </div>
         <div class="designer-row hide mb-2">
             {!! Form::select('designer_id[]', $userOptions, null, ['class'=> 'form-control mr-2 designer-select', 'placeholder' => 'Select a Designer']) !!}
             {!! Form::text('designer_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Designer URL']) !!}
-            @if(Config::get('lorekeeper.extensions.extra_image_credits'))
-                {!! Form::text('designer_type[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Designer Art Type']) !!}
-            @endif
             <a href="#" class="add-designer btn btn-link" data-toggle="tooltip" title="Add another designer">+</a>
         </div>
     </div>
@@ -209,12 +197,15 @@
             <div class="mb-2 d-flex">
                 {!! Form::select('artist_id[]', $userOptions, null, ['class'=> 'form-control mr-2 selectize', 'placeholder' => 'Select an Artist']) !!}
                 {!! Form::text('artist_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Artist URL']) !!}
-                @if(Config::get('lorekeeper.extensions.extra_image_credits'))
-                    {!! Form::text('artist_type[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Art Type']) !!}
-                @endif
                 <a href="#" class="add-artist btn btn-link" data-toggle="tooltip" title="Add another artist">+</a>
             </div>
         </div>
+        <div class="artist-row hide mb-2">
+            {!! Form::select('artist_id[]', $userOptions, null, ['class'=> 'form-control mr-2 artist-select', 'placeholder' => 'Select an Artist']) !!}
+            {!! Form::text('artist_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Artist URL']) !!}
+            <a href="#" class="add-artist btn btn-link mb-2" data-toggle="tooltip" title="Add another artist">+</a>
+        </div>
+    </div>
         @if (!$isMyo)
             <div class="form-group">
                 {!! Form::label('Transformation (Optional)') !!} {!! add_help('This will make the image have the selected transformation id.') !!}
@@ -227,15 +218,6 @@
             </div>
         @endif
 
-        <h3>Traits</h3>
-
-        <div class="form-group">
-            {!! Form::label('Species') !!} @if ($isMyo)
-                {!! add_help('This will lock the slot into a particular species. Leave it blank if you would like to give the user a choice.') !!}
-            @endif
-            <a href="#" class="add-artist btn btn-link mb-2" data-toggle="tooltip" title="Add another artist">+</a>
-        </div>
-    </div>
 
 
     <h3>Lineage</h3>
