@@ -17,6 +17,7 @@
                         <a class="nav-link" href="{{ url('news') }}">News</a>
                     @endif
                 </li>
+                
                 <li class="nav-item">
                     @if(Auth::check() && Auth::user()->is_sales_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
                     <a id="salesDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
