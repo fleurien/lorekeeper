@@ -6,8 +6,8 @@
     <div>This character's genes are hidden!</div>
     <div>
     @php
-    $button = "";
     if (Auth::user() && Auth::user()->hasPower('manage_characters') && Auth::user()->hasPower('view_hidden_genetics')) {
+    $button = "";
         $button .= "<a href=\"#\" class=\"btn btn-link btn-sm ";
             $button .= "add-genome\"><i class=\"fas fa-plus\"";
 
