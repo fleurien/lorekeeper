@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark" id="headerNav">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">
-            <img src="http://localhost/files/logo.png" style="max-width: 200px;margin-top: -100px;rotate: -10deg;position: relative;top: 30px;">
+            <img src="/files/logo.png" style="max-width: 200px;margin-top: -100px;rotate: -10deg;position: relative;top: 30px;">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -12,7 +12,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     @if(Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
-                        <a class="nav-link d-flex" href="{{ url('news') }}"><strong>News</strong><img src="http://localhost/files/new.gif" class="newnotif"></a>
+                        <a class="nav-link d-flex" href="{{ url('news') }}"><strong>News</strong><img src="/files/new.gif" class="newnotif"></a>
                     @else
                         <a class="nav-link" href="{{ url('news') }}">News</a>
                     @endif
@@ -20,11 +20,11 @@
                 <li class="nav-item">
                     @if(Auth::check() && Auth::user()->is_sales_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
                     <a id="salesDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        Sales <img src="http://localhost/files/new.gif" class="newnotif">
+                        Sales <img src="/files/new.gif" class="newnotif">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="salesDropdown" style="left: 13%;">
                         <a class="dropdown-item" href="{{ url('sales') }}">
-                        <i class="fa-solid fa-money-check-dollar"></i> Sales<img src="http://localhost/files/new.gif" class="newnotif">
+                        <i class="fa-solid fa-money-check-dollar"></i> Sales<img src="/files/new.gif" class="newnotif">
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url('raffles') }}">
