@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCharacterLineageBlacklistTable extends Migration
+class AddCharacterLineageBlacklistTableAAAAAAAAAAAAAAAAAAAAAAAAAAAAA extends Migration
 {
     /**
      * Run the migrations.
