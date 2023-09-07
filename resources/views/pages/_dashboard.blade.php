@@ -114,15 +114,17 @@
 <div class="row justify-contents-center">
     <div class="col-3 text-center">
         <h2>My account</h2>
+        <img src="/files/SITEDECOR/normal%20myo.png">
         <div class="coolswagcontainer">
-        <p style="font-size:20px;">✦ Profile ✦</p>
-        <p style="font-size:20px;">✦ Inventory ✦</p>
-        <p style="font-size:20px;">✦ Notification center ✦</p>
-        <p style="font-size:20px;">✦ Settings ✦</p>
+        <p style="font-size:20px;"><a href="{{ Auth::user()->url }}">✦ Profile ✦</a></p>
+        <p style="font-size:20px;"><a href="/inventory">✦ Inventory ✦</a></p>
+        <p style="font-size:20px;"><a href="/notifications">✦ Notification center ✦</a></p>
+        <p style="font-size:20px;"><a href="/account/settings">✦ Settings ✦</a></p>
         </div>
     </div>
     <div class="col-3 text-center">
         <h2>Guidebook</h2>
+        <img src="/files/SITEDECOR/guidebook.png">
         <div class="coolswagcontainer">
         <p style="font-size:20px;">✦ Getting started ✦</p>
         <p style="font-size:20px;">✦ MYO guide ✦</p>
@@ -132,6 +134,7 @@
     </div>
     <div class="col-3 text-center">
         <h2>Create</h2>
+        <img src="/files/SITEDECOR/create.png">
         <div class="coolswagcontainer">
         <p style="font-size:20px;">✦ Earn steps ✦</p>
         <p style="font-size:20px;">✦ Submit to the gallery ✦</p>
@@ -140,6 +143,7 @@
     </div>
     <div class="col-3 text-center">
         <h2>Activities</h2>
+        <img src="/files/SITEDECOR/actvities.png">
         <div class="coolswagcontainer">
         <p style="font-size:20px;">✦ Current event ✦</p>
         <p style="font-size:20px;">✦ World map ✦</p>
@@ -165,13 +169,6 @@ quote[1] = "<h3>Did you hear the one about the two guys on the moon? With the ro
 quote[2] = "<h3>Kinda spacey today, huh?</h3>";
 quote[3] = "<h3>I love exploding things with my mind!</h3>";
 quote[4] = "<h3>You know, like nyah?</h3>";
-quote[5] = "<h3>there's more than one catgirl now!</h3>";
-quote[6] = "<h3>ignoring canon since 2014</h3>";
-quote[7] = "<h3>with a normal amount of touhou references!</h3>";
-quote[8] = "<h3>my bones hurt</h3>";
-quote[9] = "<h3>im rotating it in my mind</h3>";
-quote[10] = "<h3>lune callout post 342 words long</h3>";
-quote[11] = "<h3>mmmm sand yummy</h3>";
 
 
 function choosequote() {

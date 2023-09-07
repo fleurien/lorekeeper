@@ -39,7 +39,6 @@
             {!! Form::select('prompt_id', $prompts, Request::get('prompt_id'), ['class' => 'form-control']) !!}
         </div>
         <div class="form-group mr-3 mb-3">
-<<<<<<< HEAD
             {!! Form::select('location_id', $locations, Request::get('location_id'), ['class' => 'form-control']) !!}
         </div>
         <div class="form-group mr-3 mb-3">
@@ -51,21 +50,6 @@
                 'prompt'         => 'Sort by Prompt (Newest to Oldest)',
                 'prompt-reverse' => 'Sort by Prompt (Oldest to Newest)',
             ], Request::get('sort') ? : 'category', ['class' => 'form-control']) !!}
-=======
-            {!! Form::select(
-                'sort',
-                [
-                    'newest' => 'Newest First',
-                    'oldest' => 'Oldest First',
-                    'alpha' => 'Sort Alphabetically (A-Z)',
-                    'alpha-reverse' => 'Sort Alphabetically (Z-A)',
-                    'prompt' => 'Sort by Prompt (Newest to Oldest)',
-                    'prompt-reverse' => 'Sort by Prompt (Oldest to Newest)',
-                ],
-                Request::get('sort') ?: 'category',
-                ['class' => 'form-control'],
-            ) !!}
->>>>>>> 7338c1a73a47b7c9d106c5d5ec9f96a7d72e9c56
         </div>
         <div class="form-group mb-3">
             {!! Form::submit('Search', ['class' => 'btn btn-primary']) !!}

@@ -29,6 +29,10 @@ use App\Services\Stat\StatManager;
 use App\Services\SkillManager;
 
 class SubmissionManager extends Service {
+
+    private function innerNull($value){
+        return array_values(array_filter($value));
+    }
     /**
      * Creates a new submission.
      *
@@ -392,6 +396,7 @@ class SubmissionManager extends Service {
             $itemIds = [];
             $tableIds = [];
             $awardIds = [];
+            $statusIds = [];
             if (isset($data['character_currency_id'])) {
                 foreach ($data['character_currency_id'] as $c) {
                     foreach ($c as $currencyId) {

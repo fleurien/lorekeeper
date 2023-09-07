@@ -56,7 +56,7 @@
 
 .charspeechbubble {
     height: 20%;
-    top: -7%;
+    top: -2%;
     margin-left: 25%;
     position: relative;
 }
@@ -256,7 +256,8 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url('https://poffinsworld.com/files/UI/shootingstarbg.png');
+    background-size: cover !important;
+  background-attachment: fixed;
 }
 
 main {
@@ -281,6 +282,7 @@ main > .row {
     /*background-color: #eee;*/
     background-repeat: repeat;
     min-height: 275px;
+    background-size: cover;
     width: 67%;
     margin-left: auto;
     margin-right: auto;
@@ -1213,11 +1215,15 @@ tr.accountbound {
 }
 
 .clock-styling {
-    padding: 5px 15px;
-    border-radius: 15px 15px;
-    margin-bottom: .5em;
-    color: #fff;
-    letter-spacing: .05em;
+	padding: 5px 15px;
+	border-radius: 15px 15px;
+	margin-bottom: 5.5em;
+	color: #fff;
+	letter-spacing: .05em;
+	position: relative;
+	display: inline-block;
+	top: 242px;
+	left: 1057px;
 }
 
 .collectionnotunlocked {               

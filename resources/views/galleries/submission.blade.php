@@ -124,7 +124,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-lg-3">
+        <div>
             @if ($submission->collaborators->count())
                 <div class="card mb-4">
                     <div class="card-header">
@@ -210,8 +210,20 @@
                     </div>
                 </div>
             @endif
-            <div class="card mb-4">
-                <div class="card-header">
+            
+        </div>
+    </div>
+
+    <!-- Comments -->
+    @if ($submission->isVisible)
+    <div class="row">
+        <div class="col">
+        <div class="container">
+            @comments(['model' => $submission, 'perPage' => 5])
+        </div>
+                                    </div>
+        <div class="col">
+                                    <div class="card-header">
                     <h5>Mention This</h5>
                 </div>
                 <div class="card-body">
@@ -229,15 +241,8 @@
                         @endif
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Comments -->
-    @if ($submission->isVisible)
-        <div class="container">
-            @comments(['model' => $submission, 'perPage' => 5])
-        </div>
+                                    </div>
+                                    </div>
     @endif
 
 @endsection

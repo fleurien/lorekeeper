@@ -1,6 +1,6 @@
 @if(Auth::check() && (Auth::user()->id == $character->user_id))
-    <div class="text-right mb-4">
-        <a href="#" class="btn btn-success create-breeding-permission">Create New Permission</a>
+    <div class="text-center mb-4">
+        <a href="#" class="btn btn-success create-breeding-permission">Create New gene pass</a>
     </div>
 @endif
 

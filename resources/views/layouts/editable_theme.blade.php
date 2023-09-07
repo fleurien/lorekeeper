@@ -56,7 +56,7 @@
 
 /** Style main background */
 
-#main {
+#app {
     @if($backgroundImage) background-image: url('{{ $backgroundImage }}'); @endif
     @if($backgroundColor) background-color: {{ $backgroundColor }} !important; @endif
     @if($backgroundSize) background-size: 100% {{ $backgroundSize }}; @endif

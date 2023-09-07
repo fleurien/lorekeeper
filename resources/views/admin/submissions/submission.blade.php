@@ -74,23 +74,7 @@
         <h2>Rewards</h2>
         @include('widgets._loot_select', ['loots' => $submission->rewards, 'showLootTables' => true, 'showRaffles' => true, 'showRecipes' => true])
         @if ($submission->prompt_id)
-            <div class="mb-3">
-                <h2>Skill Rewards</h2>
-                <div class="form-group">
-                    <div id="skillList">
-                        @foreach($submission->prompt->skills as $skill)
-                            <div class="d-flex mb-2">
-                                {!! Form::select('skill_id[]', $skills, $skill->skill_id, ['class' => 'form-control mr-2 skill-select original', 'placeholder' => 'Select Skill']) !!}
-                                {!! Form::text('skill_quantity[]', $skill->quantity, ['class' => 'form-control mr-2', 'placeholder' => 'Amount of level']) !!}
-                                <a href="#" class="remove-skill btn btn-danger mb-2">×</a>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div><a href="#" class="btn btn-primary" id="add-skill">Add Skill Reward</a></div>
-                </div>
-
-                <hr />
-            </div>
+            
 
             <div class="mb-3">
                 @include('home._prompt', ['prompt' => $submission->prompt, 'staffView' => true])
@@ -185,11 +169,7 @@
 
         {!! Form::close() !!}
 
-    <div class="skill-row hide mb-2">
-        {!! Form::select('skill_id[]', $skills, null, ['class' => 'form-control mr-2 skill-select', 'placeholder' => 'Select Skill']) !!}
-        {!! Form::text('skill_quantity[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Amount of level']) !!}
-        <a href="#" class="remove-skill btn btn-danger mb-2">×</a>
-    </div>
+    
 
     <div id="characterComponents" class="hide">
         <div class="submission-character mb-3 card">
@@ -236,6 +216,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             <table>
                 <tr class="character-reward-row">
 
@@ -320,32 +301,7 @@
                 var $approvalContent = $('#approvalContent');
                 var $approvalSubmit = $('#approvalSubmit');
 
-        $('.original.skill-select').selectize();
 
-        $('#add-skill').on('click', function(e) {
-            e.preventDefault();
-            addSkillRow();
-        });
-        $('.remove-skill').on('click', function(e) {
-            e.preventDefault();
-            removeSkillRow($(this));
-        });
-
-        function addSkillRow() {
-            var $clone = $('.skill-row').clone();
-            $('#skillList').append($clone);
-            $clone.removeClass('hide skill-row');
-            $clone.addClass('d-flex');
-            $clone.find('.remove-skill').on('click', function(e) {
-                e.preventDefault();
-                removeSkillRow($(this));
-            })
-            $clone.find('.skill-select').selectize();
-        }
-
-        function removeSkillRow($trigger) {
-            $trigger.parent().remove();
-        }
 
                 var $rejectionButton = $('#rejectionButton');
                 var $rejectionContent = $('#rejectionContent');

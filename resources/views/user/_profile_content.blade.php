@@ -120,7 +120,7 @@
 
     <hr>
 
-<div class="row col-12">
+<div class="row">
     <div class="col-md-8">
 
         @comments(['model' => $user->profile, 'perPage' => 5])

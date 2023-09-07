@@ -68,10 +68,6 @@
                         <a class="dropdown-item" href="{{ url('gallery') }}">
                         <i class="fa-solid fa-images"></i> Gallery
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('forum') }}">
-                        <i class="fa-solid fa-comment-dots"></i> Forums
-                        </a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
