@@ -2,7 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use DB;
+use Settings;
+use Carbon\Carbon;
+
+use App\Models\User\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Arr;
+
 use App\Models\Invitation;
 use App\Models\User\UserAlias;
 use App\Services\UserService;
@@ -36,13 +46,12 @@ class RegisterController extends Controller {
 
     /**
      * Create a new controller instance.
+     *
+     * @return void
      */
     public function __construct() {
         $this->middleware('guest');
     }
-
-
-
 
     /**
      * Show the application registration form.
@@ -102,8 +111,7 @@ class RegisterController extends Controller {
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param mixed $socialite
-     *
+     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data, $socialite = false) {
@@ -121,7 +129,7 @@ class RegisterController extends Controller {
                             $fail('You must be 13 or older to access this site.');
                         }
                     }
-                },
+                }
             ],
             'code' => [
                 'string', function ($attribute, $value, $fail) {
@@ -139,6 +147,7 @@ class RegisterController extends Controller {
     /**
      * Create a new user instance after a valid registration.
      *
+     * @param  array  $data
      * @return \App\Models\User\User
      */
     protected function create(array $data) {
@@ -149,7 +158,6 @@ class RegisterController extends Controller {
             (new InvitationService)->useInvitation(Invitation::where('code', $data['code'])->first(), $user);
         }
         DB::commit();
-
         return $user;
     }
 }

@@ -7,7 +7,7 @@ $( document ).ready(function() {
     var $PetSelect = $('#lootRowData').find('.pet-select');
     var $WeaponSelect = $('#lootRowData').find('.weapon-select');
     var $GearSelect = $('#lootRowData').find('.gear-select');
-    var $AwardSelect = $('#lootRowData').find('.award-select');
+    var $awardSelect = $('#lootRowData').find('.award-select');
     var $currencySelect = $('#lootRowData').find('.currency-select');
     @if($showLootTables)
         var $tableSelect = $('#lootRowData').find('.table-select');
@@ -39,7 +39,7 @@ $( document ).ready(function() {
         else if (val == 'Currency') $clone = $currencySelect.clone();
         else if (val == 'Pet') $clone = $PetSelect.clone();
         else if (val == 'Weapon') $clone = $WeaponSelect.clone();
-        else if (val == 'Award') $clone = $AwardSelect.clone();
+        else if (val == 'Award') $clone = $awardSelect.clone();
         else if (val == 'Gear') $clone = $GearSelect.clone();
         @if($showLootTables)
             else if (val == 'LootTable') $clone = $tableSelect.clone();
@@ -65,7 +65,7 @@ $( document ).ready(function() {
             else if (val == 'Currency') $clone = $currencySelect.clone();
             else if (val == 'Pet') $clone = $PetSelect.clone();
             else if (val == 'Weapon') $clone = $WeaponSelect.clone();
-            else if (val == 'Award') $clone = $AwardSelect.clone();
+            else if (val == 'Award') $clone = $awardSelect.clone();
             else if (val == 'Gear') $clone = $GearSelect.clone();
             @if($showLootTables)
                 else if (val == 'LootTable') $clone = $tableSelect.clone();
