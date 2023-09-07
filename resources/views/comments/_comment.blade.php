@@ -13,7 +13,11 @@
 
             {{-- Main comment block --}}
             <div class="d-block" style="flex:1">
-
+            <div class="media-body row mw-100 mx-0" style="flex:1;flex-wrap:wrap;">
+        <div class="col-1 d-none d-md-block">
+            <img class="mr-3 mt-2" src="{{ $comment->commenter->avatarUrl }}" style="width:70px; height:70px; border-radius:50%;" alt="{{ $comment->commenter->name }}'s Avatar">
+        </div>
+        <div class="col-11">
                 {{-- Comment block header --}}
                 <div class="row mx-0 px-0 align-items-md-end">
                     <h5 class="mt-0 mb-1 col mx-0 px-0">
@@ -44,6 +48,8 @@
                 @include('comments._actions', ['comment' => $comment, 'compact' => isset($compact) ? $compact : false])
 
             </div>
+</div>
+</div>
 
             {{-- Recursion for children --}}
             <div class="mt-3 w-100 mw-100">

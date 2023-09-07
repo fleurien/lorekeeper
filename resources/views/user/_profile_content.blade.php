@@ -103,25 +103,23 @@
 <h2>
         Gallery
     </h2>
+<div class="row">
+    @foreach ($user->gallerySubmissions->take(4) as $submission)
+    <div class="col mb-4">
 
-    @if ($user->gallerySubmissions->count())
+        @include('galleries._thumb', ['submission' => $submission, 'gallery' => false])
 
-        <div class="d-flex align-content-around flex-wrap mb-2">
-            @foreach ($user->gallerySubmissions as $submission)
-                @include('galleries._thumb', ['submission' => $submission, 'gallery' => false])
-            @endforeach
-        </div>
-
-        
-    @else
-        <p>No submissions found!</p>
-    @endif
+    </div>
+@endforeach
+</div>
     <div class="text-right"><a href="{{ $user->url . '/gallery' }}">View all...</a></div>
 
     <hr>
 
 <div class="row">
     <div class="col-md-8">
+
+
 
         @comments(['model' => $user->profile, 'perPage' => 5])
 
