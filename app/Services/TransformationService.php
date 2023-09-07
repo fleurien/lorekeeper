@@ -102,11 +102,7 @@ class TransformationService extends Service {
         try {
             // Check first if characters with this transformation exists
             if (CharacterImage::where('transformation_id', $transformation->id)->exists()) {
-<<<<<<< HEAD
-                throw new \Exception('A character image with this '.ucfirst(__('transformations.transformation')).' exists. Please change or remove its '.ucfirst(__('transformations.transformation')).' first.');
-=======
                 throw new \Exception('A character image with this transformation exists. Please change or remove its transformation first.');
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
             }
 
             if ($transformation->has_image) {
@@ -171,8 +167,4 @@ class TransformationService extends Service {
 
         return $data;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
