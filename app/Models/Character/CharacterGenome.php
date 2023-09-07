@@ -136,6 +136,8 @@ class CharacterGenome extends Model
                 if ($loci->type == "gene")
                 {
                     array_push($genodata['gene_allele_id'], ($damGenes == null) ? $loci->getDefault()->id : $damGenes->random()->allele->id);
+                    array_push($genodata['gene_allele_id'], ($damGenes == null) ? $loci->getDefault()->id : $damGenes->random()->allele->id);
+                    array_push($genodata['gene_allele_id'], ($sireGenes == null) ? $loci->getDefault()->id : $sireGenes->random()->allele->id);
                     array_push($genodata['gene_allele_id'], ($sireGenes == null) ? $loci->getDefault()->id : $sireGenes->random()->allele->id);
                 }
                 else if ($loci->type == "gradient")
@@ -203,8 +205,12 @@ class CharacterGenome extends Model
             // Matrilineal gene
             if ($damGenes == null) $alleles.= $loci->getDefault()->display_name;
             else $alleles.= $damGenes->random()->allele->display_name;
+            if ($damGenes == null) $alleles.= $loci->getDefault()->display_name;
+            else $alleles.= $damGenes->random()->allele->display_name;
 
             // Patrilineal gene
+            if ($sireGenes == null) $alleles.= $loci->getDefault()->display_name;
+            else $alleles.= $sireGenes->random()->allele->display_name;
             if ($sireGenes == null) $alleles.= $loci->getDefault()->display_name;
             else $alleles.= $sireGenes->random()->allele->display_name;
 
