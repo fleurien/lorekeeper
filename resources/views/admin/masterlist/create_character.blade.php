@@ -215,13 +215,6 @@
                 <a href="#" class="add-artist btn btn-link" data-toggle="tooltip" title="Add another artist">+</a>
             </div>
         </div>
-<<<<<<< HEAD
-        <div class="artist-row hide mb-2">
-            {!! Form::select('artist_id[]', $userOptions, null, ['class'=> 'form-control mr-2 artist-select', 'placeholder' => 'Select an Artist']) !!}
-            {!! Form::text('artist_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Artist URL']) !!}
-            @if(Config::get('lorekeeper.extensions.extra_image_credits'))
-                {!! Form::text('artist_type[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Art Type']) !!}
-=======
         @if (!$isMyo)
             <div class="form-group">
                 {!! Form::label('Transformation (Optional)') !!} {!! add_help('This will make the image have the selected transformation id.') !!}
@@ -239,7 +232,6 @@
         <div class="form-group">
             {!! Form::label('Species') !!} @if ($isMyo)
                 {!! add_help('This will lock the slot into a particular species. Leave it blank if you would like to give the user a choice.') !!}
->>>>>>> f14981977a1fcff1c1fe35375b985aa9582ff317
             @endif
             <a href="#" class="add-artist btn btn-link mb-2" data-toggle="tooltip" title="Add another artist">+</a>
         </div>
