@@ -34,9 +34,7 @@ class ToyhouseProvider extends AbstractProvider implements ProviderInterface {
         return 'https://toyhou.se/~oauth/token';
     }
 
-    public function getRedirectUrl() {
-        return $this->redirectUrl;
-    }
+
 
     /**
      * Get the raw user for the given access token.
