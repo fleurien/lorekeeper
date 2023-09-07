@@ -4,6 +4,6 @@
     @endforeach
 @else
     <div>This character's genes are hidden!</div>
-    @include('character._genes', ['genome' => $genome])
+    
 @endif
 
