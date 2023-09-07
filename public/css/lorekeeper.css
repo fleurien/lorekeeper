@@ -40,7 +40,7 @@
 
 .homepagechar::before {
 	content: '\f005';
-	left: 13%;
+	left: -23%;
 	position: relative;
 	animation-name: fa-spin;
 	animation-duration: 5s;
@@ -52,6 +52,8 @@
 	margin-top: -294px;
 	bottom: -252px;
 	z-index: 1;
+	font-family: "Font Awesome 6 free";
+	font-weight: 400;
 }
 
 .charspeechbubble {
