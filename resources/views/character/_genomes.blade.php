@@ -4,6 +4,8 @@
     @endforeach
 @else
     <div>This character's genes are hidden!</div>
+    @if (Auth::user() && Auth::user()->hasPower('manage_characters') && Auth::user()->hasPower('view_hidden_genetics')) {
+
     <div>
     @php
     if (Auth::user() && Auth::user()->hasPower('manage_characters') && Auth::user()->hasPower('view_hidden_genetics')) {
@@ -17,7 +19,7 @@
 
 
     Unknown {!! $button !!}
-
+@endif
 </div>
 @endif
 
