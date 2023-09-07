@@ -16,7 +16,7 @@ class CreateCharacterBreedingLogsTable extends Migration
         Schema::create('character_breeding_logs', function (Blueprint $table) {
             $table->id();
             $table->string("name")->nullable();
-            $table->json("roller_settings");
+            $table->string("roller_settings");
             $table->timestamp("rolled_at");
         });
 
