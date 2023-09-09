@@ -8,7 +8,7 @@ use Config;
 use App\Models\Pet\PetCategory;
 use App\Models\Pet\PetVariant;
 use App\Models\Pet\Pet;
-use App\Models\User\UserPer;
+use App\Models\User\UserPet;
 
 class PetService extends Service
 {
