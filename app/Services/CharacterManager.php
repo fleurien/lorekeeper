@@ -3022,7 +3022,7 @@ class CharacterManager extends Service
         DB::beginTransaction();
 
         try {
-            if(!($request->character->is_myo_slot && $request->character->image->species_id) && !isset($data['species_id'])) throw new \Exception("Please select a species.");
+            if(!($request->character->is_myo_slot && $request->character->image->species_id) && !isset($data['species_id'])) throw new \Exception("Please select a ".__('lorekeeper.species').".");
             if(!($request->character->is_myo_slot && $request->character->image->rarity_id) && !isset($data['rarity_id'])) throw new \Exception("Please select a rarity.");
 
             $rarity = ($request->character->is_myo_slot && $request->character->image->rarity_id) ? $request->character->image->rarity : Rarity::find($data['rarity_id']);
@@ -3034,8 +3034,8 @@ class CharacterManager extends Service
                 $transformation = ($request->character->is_myo_slot && $request->character->image->transformation_id) ? $request->character->image->transformation : Transformation::find($data['transformation_id']);
             else $transformation = null;
             if(!$rarity) throw new \Exception("Invalid rarity selected.");
-            if(!$species) throw new \Exception("Invalid species selected.");
-            if($subtype && $subtype->species_id != $species->id) throw new \Exception("Subtype does not match the species.");
+            if(!$species) throw new \Exception("Invalid ".__('lorekeeper.species')." selected.");
+            if($subtype && $subtype->species_id != $species->id) throw new \Exception(ucfirst(__('lorekeeper.subtype'))." does not match the ".__('lorekeeper.species').".");
 
             // Clear old features
             $request->features()->delete();

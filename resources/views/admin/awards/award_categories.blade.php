@@ -1,18 +1,18 @@
 @extends('admin.layout')
 
-@section('admin-title') Award Categories @endsection
+@section('admin-title') {{ucfirst(__('awards.award'))}} Categories @endsection
 
 @section('admin-content')
-{!! breadcrumbs(['Admin Panel' => 'admin', 'Award Categories' => 'admin/data/award-categories']) !!}
+{!! breadcrumbs(['Admin Panel' => 'admin', ucfirst(__('awards.award')).' Categories' => 'admin/data/award-categories']) !!}
 
-<h1>Award Categories</h1>
+<h1>{{ucfirst(__('awards.award'))}} Categories</h1>
 
-<p>This is a list of award categories that will be used to sort awards in the awardcase. Creating award categories is entirely optional, but recommended if you have a lot of awards in the game.</p>
-<p>The sorting order reflects the order in which the award categories will be displayed in the awardcase, as well as on the world pages.</p>
+<p>This is a list of {{__('awards.award')}} categories that will be used to sort {{__('awards.awards')}} in the {{__('awards.awardcase')}}. Creating {{__('awards.award')}} categories is entirely optional, but recommended if you have a lot of {{__('awards.awards')}} in the game.</p>
+<p>The sorting order reflects the order in which the {{__('awards.award')}} categories will be displayed in the {{__('awards.awardcase')}}, as well as on the world pages.</p>
 
-<div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/award-categories/create') }}"><i class="fas fa-plus"></i> Create New Award Category</a></div>
+<div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/award-categories/create') }}"><i class="fas fa-plus"></i> Create New {{ucfirst(__('awards.award'))}} Category</a></div>
 @if(!count($categories))
-    <p>No award categories found.</p>
+    <p>No {{__('awards.award')}} categories found.</p>
 @else
     <table class="table table-sm category-table">
         <tbody id="sortable" class="sortable">

@@ -1,17 +1,17 @@
 @extends('admin.layout')
 
-@section('admin-title') Awards @endsection
+@section('admin-title') {{ucfirst(__('awards.awards'))}} @endsection
 
 @section('admin-content')
-{!! breadcrumbs(['Admin Panel' => 'admin', 'Awards' => 'admin/data/awards']) !!}
+{!! breadcrumbs(['Admin Panel' => 'admin', ucfirst(__('awards.awards')) => 'admin/data/awards']) !!}
 
-<h1>Awards</h1>
+<h1>{{ ucfirst(__('awards.awards')) }}</h1>
 
-<p>This is a list of awards in the game. Awards can be granted via prompts, claims, or admin grants. Awards can also be set to be held by characters, users, or both.</p>
+<p>This is a list of {{ __('awards.awards') }} in the game. {{ ucfirst(__('awards.awards')) }} can be granted via prompts, claims, or admin grants. {{ ucfirst(__('awards.awards')) }} can also be set to be held by characters, users, or both.</p>
 
 <div class="text-right mb-3">
-    <a class="btn btn-primary" href="{{ url('admin/data/award-categories') }}"><i class="fas fa-folder"></i> Award Categories</a>
-    <a class="btn btn-primary" href="{{ url('admin/data/awards/create') }}"><i class="fas fa-plus"></i> Create New Award</a>
+    <a class="btn btn-primary" href="{{ url('admin/data/award-categories') }}"><i class="fas fa-folder"></i> {{ ucfirst(__('awards.award')) }} Categories</a>
+    <a class="btn btn-primary" href="{{ url('admin/data/awards/create') }}"><i class="fas fa-plus"></i> Create New {{ ucfirst(__('awards.award')) }}</a>
 </div>
 
 <div>
@@ -29,7 +29,7 @@
 </div>
 
 @if(!count($awards))
-    <p>No awards found.</p>
+    <p>No {{ __('awards.awards') }} found.</p>
 @else
     {!! $awards->render() !!}
 

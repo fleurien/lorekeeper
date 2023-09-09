@@ -111,7 +111,7 @@ class AwardCategory extends Model
      */
     public function getUrlAttribute()
     {
-        return url('world/award-categories?name='.$this->name);
+        return url('world/'.__('awards.award').'-categories?name='.$this->name);
     }
 
     /**
@@ -121,6 +121,6 @@ class AwardCategory extends Model
      */
     public function getSearchUrlAttribute()
     {
-        return url('world/awards?award_category_id='.$this->id);
+        return url('world/'.__('awards.awards').'s?'.__('awards.award').'_category_id='.$this->id);
     }
 }

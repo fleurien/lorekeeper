@@ -10,13 +10,13 @@
 
     @if($award->is_featured)
         <div class="alert alert-success mt-2">
-            This award is featured!
+            This {{ __('awards.award') }} is featured!
         </div>
     @endif
 
     <h5>Owned Stacks</h5>
 
-    {!! Form::open(['url' => 'awardcase/edit']) !!}
+    {!! Form::open(['url' => __('awards.awardcase').'/edit']) !!}
     <div class="card" style="border: 0px">
         <table class="table table-sm">
             <thead class="thead">
@@ -66,7 +66,7 @@
                         @endif
                         <td class="col-1">
                             @if(!$awardRow->isTransferrable)
-                                <i class="fas fa-lock" data-toggle="tooltip" title="Account-bound awards cannot be transferred but can be deleted."></i>
+                                <i class="fas fa-lock" data-toggle="tooltip" title="Account-bound {{ __('awards.awards') }} cannot be transferred but can be deleted."></i>
                             @endif
                         </td>
                     </tr>
@@ -80,10 +80,10 @@
 
             @if($award->is_character_owned)
                 <h5 class="card-title">
-                    <a class="h5 collapse-toggle collapsed" href="#characterTransferForm" data-toggle="collapse">@if($stack->first()->user_id != $user->id) [ADMIN] @endif Transfer Award to Character</a></h3>
+                    <a class="h5 collapse-toggle collapsed" href="#characterTransferForm" data-toggle="collapse">@if($stack->first()->user_id != $user->id) [ADMIN] @endif Transfer {{ ucfirst(__('awards.award')) }} to Character</a></h3>
                 </h5>
                 <div id="characterTransferForm" class="collapse">
-                    <p>This will transfer this stack or stacks to this character's inventory.</p>
+                    <p>This will transfer this stack or stacks to this character's {{__('awards.awardcase')}}.</p>
                     <div class="form-group">
                         {!! Form::select('character_id', $characterOptions, null, ['class' => 'form-control mr-2 default character-select']) !!}
                     </div>
@@ -94,14 +94,14 @@
             @endif
             @if($award->allow_transfer || ($user && $user->hasPower('edit_inventories')))
                 <h5 class="card-title">
-                    <a class="h5 collapse-toggle collapsed" href="#transferForm" data-toggle="collapse">@if($stack->first()->user_id != $user->id) [ADMIN] @endif Transfer Award</a></h3>
+                    <a class="h5 collapse-toggle collapsed" href="#transferForm" data-toggle="collapse">@if($stack->first()->user_id != $user->id) [ADMIN] @endif Transfer {{ ucfirst(__('awards.award')) }}</a></h3>
                 </h5>
                 <div id="transferForm" class="collapse">
                     @if($user && $user->hasPower('edit_inventories'))
-                        <p class="alert alert-warning">Note: Your rank allows you to transfer account-bound awards to another user.</p>
+                        <p class="alert alert-warning">Note: Your rank allows you to transfer account-bound {{__('awards.awards')}} to another user.</p>
                     @endif
                     <div class="form-group">
-                        {!! Form::label('user_id', 'Recipient') !!} {!! add_help('You can only transfer awards to verified users.') !!}
+                        {!! Form::label('user_id', 'Recipient') !!} {!! add_help('You can only transfer '.__('awards.awards').' to verified users.') !!}
                         {!! Form::select('user_id', $userOptions, null, ['class'=>'form-control']) !!}
                     </div>
                     <div class="text-right">
@@ -111,10 +111,10 @@
             @endif
 
             <h5 class="card-title">
-                <a class="h5 collapse-toggle collapsed" href="#deleteForm" data-toggle="collapse">@if($stack->first()->user_id != $user->id) [ADMIN] @endif Delete Award</a></h3>
+                <a class="h5 collapse-toggle collapsed" href="#deleteForm" data-toggle="collapse">@if($stack->first()->user_id != $user->id) [ADMIN] @endif Delete {{ ucfirst(__('awards.award')) }}</a></h3>
             </h5>
             <div id="deleteForm" class="collapse">
-                <p>This action is not reversible. Are you sure you want to delete this award?</p>
+                <p>This action is not reversible. Are you sure you want to delete this {{__('awards.award')}}?</p>
                 <div class="text-right">
                     {!! Form::button('Delete', ['class' => 'btn btn-danger', 'name' => 'action', 'value' => 'delete', 'type' => 'submit']) !!}
                 </div>

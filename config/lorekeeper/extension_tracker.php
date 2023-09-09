@@ -118,10 +118,11 @@ return [
         'key'      => 'awards',
         'wiki_key' => 'Awards',
         'creators' => json_encode([
-            'Uri' => 'https://github.com/preimpression/',
-            'TGI' => 'https://github.com/tjgallaha/',
+            'Uri'  => 'https://github.com/preimpression/',
+            'TGI'  => 'https://github.com/tjgallaha/',
+            'Ne-wt' => 'https://github.com/ne-wt/',
         ]),
-        'version' => '1.3.0',
+        'version' => '2.0.0',
     ],
 
     'character_titles' => [

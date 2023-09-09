@@ -20,7 +20,7 @@ Route::get('pets/{id}', 'Users\PetController@getStack');
 Route::get('weapons/{id}', 'Users\WeaponController@getStack');
 Route::get('gears/{id}', 'Users\GearController@getStack');
 Route::get('items/character/{id}', 'Users\InventoryController@getCharacterStack');
-Route::get('awards/character/{id}', 'Users\AwardCaseController@getCharacterStack');
+Route::get(__('awards.awards').'/character/{id}', 'Users\AwardCaseController@getCharacterStack');
 
 /**************************************************************************************************
     News
@@ -93,7 +93,7 @@ Route::get('/sublist/{key}', 'BrowseController@getSublist');
 Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function () {
     Route::get('{slug}', 'CharacterController@getCharacter');
     Route::get('{slug}/profile', 'CharacterController@getCharacterProfile');
-    Route::get('{slug}/awards', 'CharacterController@getCharacterAwards');
+    Route::get('{slug}/'.__('awards.awardcase'), 'CharacterController@getCharacterAwards');
     Route::get('{slug}/bank', 'CharacterController@getCharacterBank');
     Route::get('{slug}/level', 'CharacterController@getCharacterLevel');
     Route::get('{slug}/inventory', 'CharacterController@getCharacterInventory');
@@ -150,9 +150,9 @@ Route::group(['prefix' => 'world'], function () {
     Route::get('status-effects', 'WorldController@getStatusEffects');
     Route::get('item-categories', 'WorldController@getItemCategories');
     Route::get('items', 'WorldController@getItems');
-    Route::get('award-categories', 'WorldController@getAwardCategories');
-    Route::get('awards', 'WorldController@getAwards');
-    Route::get('awards/{id}', 'WorldController@getAward');
+    Route::get(__('awards.award').'-categories', 'WorldController@getAwardCategories');
+    Route::get(__('awards.awards'), 'WorldController@getAwards');
+    Route::get(__('awards.awards').'/{id}', 'WorldController@getAward');
     Route::get('items/{id}', 'WorldController@getItem');
     Route::get('trait-categories', 'WorldController@getFeatureCategories');
     Route::get('traits', 'WorldController@getFeatures');

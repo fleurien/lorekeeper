@@ -10,13 +10,13 @@
 
     @if($award->is_featured)
         <div class="alert alert-success mt-2">
-            This award is featured!
+            This {{ __('awards.award') }} is featured!
         </div>
     @endif
 
     <h5>Owned Stacks</h5>
 
-    {!! Form::open(['url' => 'character/'.$character->slug.'/awardcase/edit']) !!}
+    {!! Form::open(['url' => 'character/'.$character->slug.'/'.__('awards.awardcase').'/edit']) !!}
     <div class="card" style="border: 0px">
         <table class="table table-sm">
             <thead class="thead">
@@ -64,7 +64,7 @@
                         @endif
                         <td class="col-1">
                             @if(!$awardRow->isTransferrable)
-                                <i class="fas fa-lock" data-toggle="tooltip" title="Character-bound awards cannot be transferred but can be deleted."></i>
+                                <i class="fas fa-lock" data-toggle="tooltip" title="{{ ucfirst(__('lorekeeper.character')) }}-bound {{ __('awards.awards') }} cannot be transferred but can be deleted."></i>
                             @endif
                         </td>
                     </tr>
@@ -77,20 +77,20 @@
         ($owner_id == $user->id || $has_power == TRUE))
         <div class="card mt-3"><div class="card-body">
             @if($owner_id != null && ($award->is_transferrable || $user->hasPower('edit_inventories')) && $award->is_user_owned)
-                <div><a class="card-title h5 btn btn-sm btn-outline-primary" data-toggle="collapse" href="#transferForm">@if($owner_id != $user->id) [ADMIN] @endif Transfer Award</a></div>
+                <div><a class="card-title h5 btn btn-sm btn-outline-primary" data-toggle="collapse" href="#transferForm">@if($owner_id != $user->id) [ADMIN] @endif Transfer {{ ucfirst(__('awards.award')) }}</a></div>
                 <div id="transferForm" class="collapse">
                     @if($user && $user->hasPower('edit_inventories'))
-                        <p class="alert alert-warning my-2">Note: Your rank allows you to transfer character-bound awards.</p>
+                        <p class="alert alert-warning my-2">Note: Your rank allows you to transfer {{ __('lorekeeper.character') }}-bound {{ __('awards.awards') }}.</p>
                     @endif
-                    <p>This will transfer this award back to @if($owner_id != $user->id) this user's @else your @endif awardcase.</p>
+                    <p>This will transfer this {{ __('awards.award') }} back to @if($owner_id != $user->id) this user's @else your @endif  {{ __('awards.awardcase') }} .</p>
                     <div class="text-right">
                         {!! Form::button('Transfer', ['class' => 'btn btn-primary', 'name' => 'action', 'value' => 'take', 'type' => 'submit']) !!}
                     </div>
                 </div>
             @endif
-            <div><a class="card-title h5 btn btn-sm btn-outline-primary" data-toggle="collapse" href="#deleteForm">@if($owner_id != $user->id) [ADMIN] @endif Delete Award</a></div>
+            <div><a class="card-title h5 btn btn-sm btn-outline-primary" data-toggle="collapse" href="#deleteForm">@if($owner_id != $user->id) [ADMIN] @endif Delete {{ ucfirst(__('awards.award')) }}</a></div>
             <div id="deleteForm" class="collapse">
-                <p>This action is not reversible. Are you sure you want to delete this award?</p>
+                <p>This action is not reversible. Are you sure you want to delete this {{ __('awards.award') }}?</p>
                 <div class="text-right">
                     {!! Form::button('Delete', ['class' => 'btn btn-danger', 'name' => 'action', 'value' => 'delete', 'type' => 'submit']) !!}
                 </div>

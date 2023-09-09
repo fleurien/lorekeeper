@@ -1,13 +1,13 @@
 @extends('admin.layout')
 
-@section('admin-title') Awards @endsection
+@section('admin-title') {{ucfirst(__('awards.awards'))}} @endsection
 
 @section('admin-content')
-{!! breadcrumbs(['Admin Panel' => 'admin', 'Awards' => 'admin/data/awards', ($award->id ? 'Edit' : 'Create').' Award' => $award->id ? 'admin/data/awards/edit/'.$award->id : 'admin/data/awards/create']) !!}
+{!! breadcrumbs(['Admin Panel' => 'admin', ucfirst(__('awards.awards')) => 'admin/data/awards', ($award->id ? ('Edit '.$award->name) : 'Create '.(ucfirst(__('awards.award')))) => $award->id ? 'admin/data/awards/edit/'.$award->id : 'admin/data/awards/create']) !!}
 
-<h1>{!! $award->id ? 'Edit '.$award->displayName : 'Create Award' !!}
+<h1>{!! $award->id ? 'Edit '.$award->displayName : 'Create '.ucfirst(__('awards.award')) !!}
     @if($award->id)
-        <a href="#" class="btn btn-outline-danger float-right delete-award-button">Delete Award</a>
+        <a href="#" class="btn btn-outline-danger float-right delete-award-button">Delete {{ucfirst(__('awards.award'))}}</a>
     @endif
 </h1>
 
@@ -56,21 +56,21 @@
             <div class="col-md-4 form-group pl-md-3">
                 {!! Form::checkbox('is_released', 1, $award->id ? $award->is_released : 1, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
                 {!! Form::label('is_released', 'Is Released', ['class' => 'form-check-label font-weight-bold ml-3']) !!}
-                {!! add_help('If this is off, users will not be able to view information for the award/it will be hidden from view. This is overridden by the award being owned at any point by anyone on the site.') !!}
+                {!! add_help('If this is off, users will not be able to view information for the '.__('awards.award').'/it will be hidden from view. This is overridden by the '.__('awards.award').' being owned at any point by anyone on the site.') !!}
             </div>
             <div class="col-md-4 form-group pl-md-3">
                 {!! Form::checkbox('is_featured', 1, $award->id ? $award->is_featured : 0, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
                 {!! Form::label('is_featured', 'Is Featured', ['class' => 'form-check-label font-weight-bold ml-3']) !!}
-                {!! add_help('This award is featured on the holder\'s profile. <br>Limited to the number set in extension configuration per character/user.') !!}
+                {!! add_help('This '.__('awards.award').' is featured on the holder\'s profile. <br>Limited to the number set in extension configuration per character/user.') !!}
             </div>
             <div class="col-md-4 form-group pl-md-3">
                 {!! Form::checkbox('allow_transfer', 1, $award->id ? $award->allow_transfer : 0, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
-                {!! Form::label('allow_transfer', 'Allow User → User Transfer', ['class' => 'form-check-label font-weight-bold ml-3']) !!} {!! add_help('If this is off, users will not be able to transfer this award to other users. Non-account-bound awards can be account-bound when granted to users directly.') !!}
+                {!! Form::label('allow_transfer', 'Allow User → User Transfer', ['class' => 'form-check-label font-weight-bold ml-3']) !!} {!! add_help('If this is off, users will not be able to transfer this '.__('awards.award').' to other users. Non-account-bound '.__('awards.awards').' can be account-bound when granted to users directly.') !!}
             </div>
             <div class="col-md-6 form-group pl-md-3">
                 {!! Form::checkbox('is_character_owned', 1, $award->id ? $award->is_character_owned : 0, ['class' => 'form-check-input hold-toggle', 'data-toggle' => 'toggle']) !!}
                 {!! Form::label('is_character_owned', 'Character Held', ['class' => 'form-check-label font-weight-bold ml-3']) !!}
-                {!! add_help('If this is enabled, characters will be able to hold this award. The limit is how many can be held at a time. 0 means no limit, if set to 1 then quantity will be treated as a boolean.') !!}
+                {!! add_help('If this is enabled, characters will be able to hold this '.__('awards.award').'. The limit is how many can be held at a time. 0 means no limit, if set to 1 then quantity will be treated as a boolean.') !!}
                 <div class="limit d-inline-flex align-items-center ml-3 {{ $award->is_character_owned ? '' : 'hide' }}">
                     {!! Form::label('character_limit', 'Limit', ['class' => 'font-weight-bold mr-3 mb-0']) !!}
                     {!! Form::number('character_limit', $award->id ? $award->character_limit : 0, ['class' => 'form-control']) !!}
@@ -79,7 +79,7 @@
             <div class="col-md-6 form-group pl-md-3">
                 {!! Form::checkbox('is_user_owned', 1, $award->id ? $award->is_user_owned : 1, ['class' => 'form-check-input hold-toggle', 'data-toggle' => 'toggle']) !!}
                 {!! Form::label('is_user_owned', 'User Held', ['class' => 'form-check-label font-weight-bold ml-3']) !!}
-                {!! add_help('If this is enabled, users will be able to hold this award. The limit is how many can be held at a time. 0 means no limit, if set to 1 then quantity will be treated as a boolean.') !!}
+                {!! add_help('If this is enabled, users will be able to hold this'.__('awards.award').'. The limit is how many can be held at a time. 0 means no limit, if set to 1 then quantity will be treated as a boolean.') !!}
                 <div class="limit d-inline-flex align-items-center ml-3 {{ !$award->id || $award->is_user_owned ? '' : 'hide' }}">
                     {!! Form::label('user_limit', 'Limit', ['class' => 'font-weight-bold mr-3 mb-0']) !!}
                     {!! Form::number('user_limit', $award->id ? $award->user_limit : 0, ['class' => 'form-control']) !!}
@@ -99,23 +99,17 @@
     <div class="card-header"><h3 class="mb-0">Availability Information</h3></div>
     <div class="card-body">
         <div class="row mb-0">
-            <div class="col">
-                <div class="form-group d-md-flex align-items-center">
-                    {!! Form::label('prompts[]', 'Prompts (Optional)', ['class' => 'mr-2 mb-0 font-weight-bold']) !!} {!! add_help('You can select up to 10 prompts at once.') !!}
-                    {!! Form::select('prompts[]', $prompts, $award && isset($award->data['prompts']) ? $award->data['prompts'] : '', ['id' => 'promptsList', 'class' => 'ml-md-2 form-control', 'multiple']) !!}
-                </div>
-            </div>
+
 
             <div class="col form-group d-md-flex align-items-center">
-                {!! Form::label('release', 'Source (Optional)', ['class' => 'mr-2 mb-0 font-weight-bold']) !!} {!! add_help('Where or how this award was earned.') !!}
+                {!! Form::label('release', 'Source (Optional)', ['class' => 'mr-2 mb-0 font-weight-bold']) !!} {!! add_help('Where or how this '.__('awards.award').' was earned.') !!}
                 {!! Form::text('release', $award && $award->source ? $award->source : '', ['class' => 'ml-md-2 form-control']) !!}
             </div>
         </div>
     </div>
 </div>
 
-
-<div class="card">
+<div class="card mb-3">
     <div class="card-header">
         <h3 class="mb-0">
             <a href="#" class="btn btn-primary mr-2 float-right btn-sm" id="add-credit-button">Add Credit</a> Credits
@@ -123,7 +117,7 @@
     </div>
     <div class="card-body">
         <div class="row no-gutters form-group" id="creditList" style="clear:both;">
-            @if($award->id && isset($award->credits))@foreach($award->credits as $id => $credit)
+            @if($award->id && isset($award->credits)) @foreach($award->credits as $id => $credit)
                 <div class="col-md-3 align-items-center mb-2">
                     <a href="#" class="remove-credit-button btn btn-danger btn-sm mr-2"><i class="fas fa-trash"></i></a>
                     <a href="{{ isset($credit['url']) ? $credit['url'] :  (isset($credit['id']) ? url('/user').'/'.$userOptions[$credit['id']] : 'unknown') }}" target="_blank">
@@ -139,11 +133,55 @@
     </div>
 </div>
 
+@if($award->id)
+    <div class="card mb-3">
+        <div class="card-header"><h3 class="mb-0">Automatic Unlock Progression</h3></div>
+        <div class="card-body">
+            <p>
+                If you want this {{ __('awards.award') }} to be automatically unlocked by acquiring certain items, currencies, etc. add them here.
+                <br />
+                When a user has owned (at one point) all of these items, the {{ __('awards.award') }} will be distributed to them on their next visit to the {{ __('awards.awards') }} page
+                <hr />
+                If the progressions are changed after a user has claimed the {{ __('awards.award') }}, they will see the requirements they fulfilled alongside the current ones.
+            </p>
+            <hr />
+            @include('widgets._loot_select', ['loots' => $award->progressions, 'showLootTables' => false, 'showRaffles' => false, 'progression' => true])
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header"><h3 class="mb-0">Unlock Reward</h3></div>
+        <div class="card-body">
+            <p>
+                If you want this {{ __('awards.award') }} to grant a reward when claimed, add it here.
+                <br />
+                When a user receives an {{ __('awards.award') }} through obtaining all of the above items, they will also receive this reward.
+            </p>
+            <p>
+                <b>The user will only receive this reward through the automatic unlock process. When they claim the {{ __('awards.award') }}, if the {{ __('awards.award') }} has any rewards all the items required for unlock will be debitted from their inventory.</b>
+            </p>
+
+            @include('widgets._reward_select', ['loots' => $award->rewards, 'showLootTables' => false, 'showRaffles' => false])
+
+            <p>
+                {!! Form::checkbox('allow_reclaim', 1, $award->id ? $award->allow_reclaim : 0, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
+                {!! Form::label('allow_reclaim', 'Allow Reclaim?', ['class' => 'form-check-label font-weight-bold ml-3']) !!}
+                {!! add_help('Do you want the user to be able to claim the reward from this badge multiple times? They will only receive the badge once.') !!}
+            </p>
+        </div>
+    </div>
+@endif
+
 <div class="text-right mt-2">
     {!! Form::submit($award->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary px-5']) !!}
 </div>
 
 {!! Form::close() !!}
+
+@if($award->id)
+    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'awards' => $awards, 'showLootTables' => false, 'showRaffles' => false, 'progression' => true])
+    @include('widgets._reward_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'awards' => $awards, 'showLootTables' => false, 'showRaffles' => false, 'progression' => true])
+@endif
 
 <div class="row hide credit-row col-12 mb-1">
     <div class="col-md-2">
@@ -186,12 +224,12 @@
 
 @section('scripts')
 @parent
+@include('js._loot_js', ['showLootTables' => false, 'showRaffles' => false])
+@include('js._reward_js', ['showLootTables' => false, 'showRaffles' => false])
 <script>
 $( document ).ready(function() {
     var $credits = $('#creditsTable');
     var $value = 1000;
-
-    $('.selectize').selectize();
 
     $('#promptsList').selectize({
         maxAwards: 10
@@ -199,7 +237,7 @@ $( document ).ready(function() {
 
     $('.delete-award-button').on('click', function(e) {
         e.preventDefault();
-        loadModal("{{ url('admin/data/awards/delete') }}/{{ $award->id }}", 'Delete Award');
+        loadModal("{{ url('admin/data/awards/delete') }}/{{ $award->id }}", 'Delete '+"{{ucfirst(__('awards.award'))}}" );
     });
 
     $('#add-credit-button').on('click', function(e) {

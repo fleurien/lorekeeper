@@ -222,12 +222,12 @@
 
                     @if($expanded_rewards)
                     <td>
-                        {!! Form::select('character_rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency', 'LootTable' => 'Loot Table', 'Award' => 'Award', 'StatusEffect' => 'Status Effect'], null, ['class' => 'form-control character-rewardable-type', 'placeholder' => 'Select Reward Type']) !!}
+                        {!! Form::select('character_rewardable_type[]', ['Item' => 'Item', 'Currency' => 'Currency', 'LootTable' => 'Loot Table', 'Award' => ucfirst(__('awards.award')), 'StatusEffect' => 'Status Effect'], null, ['class' => 'form-control character-rewardable-type', 'placeholder' => 'Select Reward Type']) !!}
                     </td>
                     <td class="lootDivs">
                         <div class="character-currencies hide">{!! Form::select('character_rewardable_id[]', $characterCurrencies, 0, ['class' => 'form-control character-currency-id', 'placeholder' => 'Select Currency']) !!}</div>
                         <div class="character-items hide">{!! Form::select('character_rewardable_id[]', $items, 0, ['class' => 'form-control character-item-id', 'placeholder' => 'Select Item']) !!}</div>
-                        <div class="character-awards hide">{!! Form::select('character_rewardable_id[]', $characterAwards, 0, ['class' => 'form-control character-award-id', 'placeholder' => 'Select Award']) !!}</div>
+                        <div class="character-awards hide">{!! Form::select('character_rewardable_id[]', $characterAwards, 0, ['class' => 'form-control character-award-id', 'placeholder' => 'Select '.ucfirst(__('awards.award'))]) !!}</div>
                         <div class="character-tables hide">{!! Form::select('character_rewardable_id[]', $tables, 0, ['class' => 'form-control character-table-id', 'placeholder' => 'Select Loot Table']) !!}</div>
                         <div class="character-statuses hide">{!! Form::select('character_rewardable_id[]', $statuses, 0, ['class' => 'form-control character-status-id', 'placeholder' => 'Select Status Effect']) !!}</div>
                     </td>

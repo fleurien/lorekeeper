@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\Award\Award;
-use App\Models\Award\AwardCategory;
 use DB;
+use Config;
+
+use App\Models\Award\AwardCategory;
+use App\Models\Award\AwardProgression;
+use App\Models\Award\AwardReward;
+use App\Models\Award\Award;
 
 class AwardService extends Service
 {
@@ -204,6 +208,17 @@ class AwardService extends Service
 
             $award = Award::create($data);
 
+            // Make the image directory if it doesn't exist
+            if(!file_exists($award->imagePath))
+            {
+                // Create the directory.
+                if (!mkdir($award->imagePath, 0755, true)) {
+                    $this->setError('error', 'Failed to create image directory.');
+                    return false;
+                }
+                chmod($award->imagePath, 0755);
+            }
+
             $award->update([
                 'data' => json_encode([
                     'rarity'  => isset($data['rarity']) && $data['rarity'] ? $data['rarity'] : null,
@@ -212,6 +227,7 @@ class AwardService extends Service
                     'credits' => isset($data['credits']) && $data['credits'] ? $data['credits'] : null,
                     ]), // rarity, availability info (original source, drop locations), credits
             ]);
+
 
             if ($image) {
                 $award->extension = $image->getClientOriginalExtension();
@@ -258,7 +274,7 @@ class AwardService extends Service
             $image = null;
 
             if (isset($data['image']) && $data['image']) {
-                if (isset($award->extension)) {
+                if (isset($award->extension) && $award->extension && $award->has_image) {
                     $old = $award->imageFileName;
                 } else {
                     $old = null;
@@ -266,10 +282,24 @@ class AwardService extends Service
                 $image = $data['image'];
                 unset($data['image']);
             }
+
+            // Make the image directory if it doesn't exist
+            if(!file_exists($award->imagePath))
+            {
+                // Create the directory.
+                if (!mkdir($award->imagePath, 0755, true)) {
+                    $this->setError('error', 'Failed to create image directory.');
+                    return false;
+                }
+                chmod($award->imagePath, 0755);
+            }
+
             if ($image) {
                 $award->extension = $image->getClientOriginalExtension();
+                $award->has_image = 1;
                 $award->update();
                 $this->handleImage($image, $award->imagePath, $award->imageFileName, $old);
+                $award->update();
             }
 
             $award->update($data);
@@ -282,6 +312,9 @@ class AwardService extends Service
                     'credits' => isset($data['credits']) && $data['credits'] ? $data['credits'] : null,
                     ]), // rarity, availability info (original source, drop locations)
             ]);
+
+            $this->populateProgression($data, $award);
+            $this->populateRewards($data, $award);
 
             return $this->commitReturn($award);
         } catch (\Exception $e) {
@@ -380,6 +413,7 @@ class AwardService extends Service
         $data['is_featured'] = ((isset($data['is_featured']) && $data['is_featured']) ? 1 : 0);
         $data['is_character_owned'] = ((isset($data['is_character_owned']) && $data['is_character_owned']) ? 1 : 0);
         $data['is_user_owned'] = ((isset($data['is_user_owned']) && $data['is_user_owned']) ? 1 : 0);
+        $data['allow_reclaim'] = ((isset($data['allow_reclaim']) && $data['allow_reclaim']) ? 1 : 0);
 
         $data['credits'] = [];
         if (isset($data['credit-name'])) {
@@ -409,4 +443,49 @@ class AwardService extends Service
 
         return $data;
     }
+
+    /**
+     * Populates the progressions of an award.
+     */
+    private function populateProgression($data, $award)
+    {
+        // Clear the old shit...
+        $award->progressions()->delete();
+
+        if(isset($data['rewardable_type'])) {
+            foreach($data['rewardable_type'] as $key => $type)
+            {
+                AwardProgression::create([
+                    'award_id' => $award->id,
+                    'type'     => $type,
+                    'type_id'       => $data['rewardable_id'][$key],
+                    'quantity' => $data['quantity'][$key],
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Populates the rewards of an award.
+     */
+    private function populateRewards($data, $award)
+    {
+        // Clear the old shit...
+        $award->rewards()->delete();
+
+        if(isset($data['award_type'])) {
+            foreach($data['award_type'] as $key => $type)
+            {
+                AwardReward::create([
+                    'award_id' => $award->id,
+                    'type'     => $type,
+                    'type_id'       => $data['award_id'][$key],
+                    'quantity' => $data['award_quantity'][$key],
+                ]);
+            }
+        }
+    }
+
+    
+
 }

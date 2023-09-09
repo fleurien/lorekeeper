@@ -10,7 +10,7 @@
         </h3>
 
         @if($category->is_character_owned == 1)
-        <div><strong>Characters can own {{ $category->character_limit != 0 ? $category->character_limit : '' }} awards in this category!</strong></div>
+        <div><strong>Characters can own {{ $category->character_limit != 0 ? $category->character_limit : '' }} {{__('awards.awards')}} in this category!</strong></div>
         @endif
         <div class="world-entry-text">
             {!! $description !!}

@@ -23,7 +23,7 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('Species') !!}
+    {!! Form::label(ucfirst(__('lorekeeper.species'))) !!}
     {!! Form::select('species_id', $specieses, $subtype->species_id, ['class' => 'form-control']) !!}
 </div>
 

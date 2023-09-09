@@ -21,13 +21,13 @@
 @endphp
 
 <div class="text-right mb-3">
-    <a href="#" class="btn btn-outline-info" id="addLoot">Add Reward</a>
+    <a href="#" class="btn btn-outline-info" id="addLoot">Add {{ isset($progression) && $progression ? 'Progression' : 'Reward'  }}</a>
 </div>
 <table class="table table-sm" id="lootTable">
     <thead>
         <tr>
-            <th width="35%">Reward Type</th>
-            <th width="35%">Reward</th>
+            <th width="35%">{{ isset($progression) && $progression ? 'Progression' : 'Reward'  }} Type</th>
+            <th width="35%">{{ isset($progression) && $progression ? 'Progression' : 'Reward'  }}</th>
             <th width="20%">Quantity</th>
             <th width="10%"></th>
         </tr>
@@ -42,8 +42,6 @@
                             {!! Form::select('rewardable_id[]', $items, $loot->rewardable_id, ['class' => 'form-control item-select selectize', 'placeholder' => 'Select Item']) !!}
                         @elseif($loot->rewardable_type == 'Currency')
                             {!! Form::select('rewardable_id[]', $currencies, $loot->rewardable_id, ['class' => 'form-control currency-select selectize', 'placeholder' => 'Select Currency']) !!}
-                            @elseif($loot->rewardable_type == 'Award')
-                                {!! Form::select('rewardable_id[]', $awards, $loot->rewardable_id, ['class' => 'form-control award-select selectize', 'placeholder' => 'Select award']) !!}
                         @elseif($loot->rewardable_type == 'Pet')
                             {!! Form::select('rewardable_id[]', $pets, $loot->rewardable_id, ['class' => 'form-control pet-select selectize', 'placeholder' => 'Select Pet']) !!}
                         @elseif($loot->rewardable_type == 'Weapon')
@@ -52,6 +50,8 @@
                             {!! Form::select('rewardable_id[]', $gears, $loot->rewardable_id, ['class' => 'form-control gear-select selectize', 'placeholder' => 'Select Gear']) !!}
                         @elseif($showLootTables && $loot->rewardable_type == 'LootTable')
                             {!! Form::select('rewardable_id[]', $tables, $loot->rewardable_id, ['class' => 'form-control table-select selectize', 'placeholder' => 'Select Loot Table']) !!}
+                        @elseif($loot->rewardable_type == 'Award')
+                            {!! Form::select('rewardable_id[]', $awards, $loot->rewardable_id, ['class' => 'form-control award-select selectize', 'placeholder' => 'Select '.ucfirst(__('awards.award'))]) !!}
                         @elseif($showRaffles && $loot->rewardable_type == 'Raffle')
                             {!! Form::select('rewardable_id[]', $raffles, $loot->rewardable_id, ['class' => 'form-control raffle-select selectize', 'placeholder' => 'Select Raffle']) !!}
                         @elseif($showRecipes && $loot->rewardable_type == 'Recipe')

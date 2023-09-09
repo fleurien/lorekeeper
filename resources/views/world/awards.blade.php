@@ -1,10 +1,10 @@
 @extends('world.layout')
 
-@section('title') Awards @endsection
+@section('title') {{__('awards.awards')}} @endsection
 
 @section('content')
-{!! breadcrumbs(['World' => 'world', 'Awards' => 'world/awards']) !!}
-<h1>Awards</h1>
+{!! breadcrumbs(['World' => 'world', __('awards.awards') => 'world/'.__('awards.awards')]) !!}
+<h1>{{__('awards.awards')}}</h1>
 
 <div>
     {!! Form::open(['method' => 'GET', 'class' => '']) !!}
@@ -28,8 +28,8 @@
                 {!! Form::select('ownership', [
                     'default'       => 'Any Attachment',
                     'all'           => 'Attaches to All',
-                    'character'    => 'Only Attaches to Characters',
-                    'user'         => 'Only Attaches to Users',
+                    'character'     => 'Only Attaches to Characters',
+                    'user'          => 'Only Attaches to Users',
                 ], Request::get('ownership') ? : 'default', ['class' => 'form-control']) !!}
             </div>
             <div class="form-group ml-3 mb-3">
@@ -53,8 +53,8 @@
             <div class="card-body text-center">
                 <h5 class="mt-3">{!! $award->displayName !!}</h5>
                 <div>
-                    @if($award->is_character_owned)<i class="fas fa-paw mx-2" data-toggle="tooltip" title="This award can be held by characters."></i>@endif
-                    @if($award->is_user_owned)<i class="fas fa-user mx-2" data-toggle="tooltip" title="This award can be held by users."></i>@endif
+                    @if($award->is_character_owned)<i class="fas fa-paw mx-2" data-toggle="tooltip" title="This {{ __('awards.award') }} can be held by {{ __('lorekeeper.characters') }}."></i>@endif
+                    @if($award->is_user_owned)<i class="fas fa-user mx-2" data-toggle="tooltip" title="This {{ __('awards.award') }} can be held by users."></i>@endif
                 </div>
                 @if(isset($award->category) && $award->category)
                     {!! $award->category->displayName !!}
@@ -69,6 +69,6 @@
 </div>
 {!! $awards->render() !!}
 
-<div class="text-center mt-4 small text-muted">{{ $awards->total() }} result{{ $awards->total() == 1 ? '' : 's' }} found.</div>
+<div class="text-center mt-4 small text-muted">{{ $awards->total() }} {{ trans_choice('awards.awards_',$awards->total())}} found.</div>
 
 @endsection

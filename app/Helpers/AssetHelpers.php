@@ -67,8 +67,8 @@ function calculateGroupCurrency($data)
  */
 function getAssetKeys($isCharacter = false)
 {
-    if(!$isCharacter) return ['items', 'currencies', 'pets', 'weapons', 'gears', 'raffle_tickets', 'loot_tables', 'user_items', 'characters', 'recipes', 'themes'];
-    else return ['currencies', 'items', 'character_items', 'loot_tables', 'statuses'];
+    if(!$isCharacter) return ['items', 'currencies', 'pets', 'weapons', 'awards', 'gears', 'raffle_tickets', 'loot_tables', 'user_items', 'characters', 'recipes', 'themes'];
+    else return ['currencies', 'items', 'awards', 'character_items', 'loot_tables', 'statuses'];
 }
 
 /**
@@ -92,7 +92,10 @@ function getAssetModelString($type, $namespaced = true)
             if($namespaced) return '\App\Models\Currency\Currency';
             else return 'Currency';
             break;
-
+        case 'awards':
+                if($namespaced) return '\App\Models\Award\Award';
+                else return 'Award';
+                break;
         case 'pets': case 'pet':
             if($namespaced) return '\App\Models\Pet\Pet';
             else return 'Pet';
@@ -303,6 +306,12 @@ function fillUserAssets($assets, $sender, $recipient, $logType, $data)
             $service = new \App\Services\Claymore\WeaponManager;
             foreach($contents as $asset)
                 if(!$service->creditWeapon($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) return false;
+        }
+        elseif($key == 'awards' && count($contents))
+        {
+            $service = new \App\Services\AwardCaseManager;
+            foreach($contents as $asset)
+                if(!$service->creditAward($sender, $recipient, $logType, $data, $asset['asset'], $asset['quantity'])) return false;
         }
         elseif($key == 'raffle_tickets' && count($contents))
         {

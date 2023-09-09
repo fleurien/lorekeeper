@@ -37,9 +37,9 @@
         <div class="sidebar-item"><a href="{{ url('world/emotes') }}" class="{{ set_active('world/emotes*') }}">Emotes</a></div>
     </li>
     <li class="sidebar-section">
-        <div class="sidebar-section-header">Awards</div>
-        <div class="sidebar-item"><a href="{{ url('world/award-categories') }}" class="{{ set_active('world/award-categories*') }}">Award Categories</a></div>
-        <div class="sidebar-item"><a href="{{ url('world/awards') }}" class="{{ set_active('world/awards*') }}">All Awards</a></div>
+        <div class="sidebar-section-header">{{ ucfirst(__('awards.awards')) }}</div>
+        <div class="sidebar-item"><a href="{{ url('world/'. __('awards.award') .'-categories') }}" class="{{ set_active('world/'. __('awards.award') .'-categories*') }}">{{ ucfirst(__('awards.award')) }} Categories</a></div>
+        <div class="sidebar-item"><a href="{{ url('world/'. __('awards.awards')) }}" class="{{ set_active('world/'. __('awards.awards') .'*') }}">All {{ ucfirst(__('awards.awards')) }} </a></div>
     </li>
 </ul>
         <div class="sidebar-section-header">Levels</div>

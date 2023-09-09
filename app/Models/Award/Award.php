@@ -18,7 +18,7 @@ class Award extends Model
     protected $fillable = [
         'award_category_id', 'name', 'has_image', 'description', 'parsed_description',
         'data', 'is_released', 'is_featured', 'is_user_owned', 'is_character_owned',
-        'user_limit', 'character_limit', 'allow_transfer', 'extension',
+        'user_limit', 'character_limit', 'allow_transfer', 'extension', 'allow_reclaim'
     ];
 
     /**
@@ -78,6 +78,22 @@ class Award extends Model
     public function category()
     {
         return $this->belongsTo('App\Models\Award\AwardCategory', 'award_category_id');
+    }
+
+    /**
+     * Gets the awards progressions.
+     */
+    public function progressions()
+    {
+        return $this->hasMany('App\Models\Award\AwardProgression', 'award_id');
+    }
+
+    /**
+     * Gets the awards rewards.
+     */
+    public function rewards()
+    {
+        return $this->hasMany('App\Models\Award\AwardReward', 'award_id');
     }
 
     /**********************************************************************************************
@@ -222,7 +238,7 @@ class Award extends Model
      */
     public function getUrlAttribute()
     {
-        return url('world/awards?name='.$this->name);
+        return url('world/'.__('awards.awards').'?name='.$this->name);
     }
 
     /**
@@ -232,7 +248,7 @@ class Award extends Model
      */
     public function getIdUrlAttribute()
     {
-        return url('world/awards/'.$this->id);
+        return url('world/'.__('awards.awards').'/'.$this->id);
     }
 
     /**
@@ -327,4 +343,26 @@ class Award extends Model
         OTHER FUNCTIONS
 
     **********************************************************************************************/
+
+    /**
+     * Check if user can claim this award
+     */
+    public function canClaim($user)
+    {
+        if($user->awards()->where('award_id', $this->id)->count() && !$this->allow_reclaim) return false;
+        return true;
+    }
+
+    /**
+     * Gets how many progressions are completed by a user
+     */
+    public function progressionProgress($user = null)
+    {
+        if(!$user) return 0;
+        $progressionSum = 0;
+        foreach($this->progressions as $progression) {
+            if($progression->isUnlocked($user)) $progressionSum += 1;
+        }
+        return $progressionSum;
+    }
 }

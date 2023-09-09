@@ -4,7 +4,7 @@
     {!! $log->sender ? $log->sender->displayName : '' !!}
   </div>
   <div class="col-6 col-md-2">{!! $log->recipient ? $log->recipient->displayName : '' !!}</div>
-  <div class="col-6 col-md-2">{!! $log->award ? $log->award->displayName : '(Deleted Award)' !!} (×{!! $log->quantity !!})</div>
+  <div class="col-6 col-md-2">{!! $log->award ? $log->award->displayName : '(Deleted '.ucfirst(__('awards.award')).')' !!} (×{!! $log->quantity !!})</div>
   <div class="col-6 col-md-4">{!! $log->log !!}</div>
   <div class="col-6 col-md-2">{!! pretty_date($log->created_at) !!}</div>
 </div>
