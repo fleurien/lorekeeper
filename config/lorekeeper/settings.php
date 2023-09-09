@@ -48,7 +48,7 @@ return [
     | It is not, however, displayed on the site itself. This should be kept short and snappy!
     |
     */
-    'site_desc' => 'A PoffinsWorld ARPG',
+    'site_desc' => 'A humanoid species-based exploration and genetics ARPG!',
 
     /*
     |--------------------------------------------------------------------------
