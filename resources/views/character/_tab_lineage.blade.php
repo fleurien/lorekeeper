@@ -82,3 +82,26 @@
         <a href="#" class="btn btn-outline-info btn-sm edit-lineage" data-{{ $character->is_myo_slot ? 'id' : 'slug' }}="{{ $character->is_myo_slot ? $character->id : $character->slug }}"><i class="fas fa-cog"></i> Edit</a>
     </div>
 @endif
+<hr>
+<div><h5>Genetic descendants</h5></div>
+@php
+
+use App\Models\Character\CharacterLineage;
+        $children = CharacterLineage::getChildrenStatic($character->id, false);
+@endphp
+@if (!$children || $children->count() == 0)
+        <p>No descendants found!</p>
+    @else
+        <div class="row">
+            @foreach($children as $child)
+                <div class="col-md-3 col-6 text-center mb-2">
+                    <div>
+                        <a href="{{ $child->url }}"><img src="{{ $child->image->thumbnailUrl }}" class="img-thumbnail" /></a>
+                    </div>
+                    <div class="mt-1 h5">
+                        {!! $child->displayName !!}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
