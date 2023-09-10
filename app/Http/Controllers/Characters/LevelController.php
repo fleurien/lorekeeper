@@ -15,6 +15,7 @@ use App\Models\Level\CharacterLevel;
 use App\Models\Level\Level;
 use App\Models\Stat\CharacterStat;
 use App\Models\Stat\Stat;
+use App\Models\Award\Award;
 
 use App\Services\Stat\ExperienceManager;
 use App\Services\Stat\LevelManager;

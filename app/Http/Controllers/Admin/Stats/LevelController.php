@@ -16,6 +16,7 @@ use App\Services\CharacterManager;
 use App\Http\Controllers\Controller;
 
 use App\Models\Item\Item;
+use App\Models\Award\Award;
 use App\Models\Item\ItemCategory;
 use App\Models\Currency\Currency;
 use App\Models\Loot\LootTable;
@@ -51,6 +52,7 @@ class LevelController extends Controller
             'pets' => Pet::orderBy('name')->pluck('name', 'id'),
             'gears' => Gear::orderBy('name')->pluck('name', 'id'),
             'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
+            'awards' => Award::orderBy('name')->pluck('name', 'id'),
         ]);
     }
     
@@ -70,6 +72,7 @@ class LevelController extends Controller
             'pets' => Pet::orderBy('name')->pluck('name', 'id'),
             'gears' => Gear::orderBy('name')->pluck('name', 'id'),
             'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
+            'awards' => Award::orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
@@ -157,6 +160,7 @@ class LevelController extends Controller
             'pets' => Pet::orderBy('name')->pluck('name', 'id'),
             'gears' => Gear::orderBy('name')->pluck('name', 'id'),
             'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
+            'awards' => Award::orderBy('name')->pluck('name', 'id'),
         ]);
     }
     
@@ -180,6 +184,7 @@ class LevelController extends Controller
             'pets' => Pet::orderBy('name')->pluck('name', 'id'),
             'gears' => Gear::orderBy('name')->pluck('name', 'id'),
             'weapons' => Weapon::orderBy('name')->pluck('name', 'id'),
+            'awards' => Award::orderBy('name')->pluck('name', 'id'),
         ]);
     }
 

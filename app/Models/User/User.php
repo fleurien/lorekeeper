@@ -23,7 +23,7 @@ use App\Models\Currency\CurrencyLog;
 use App\Models\Item\ItemLog;
 use App\Models\Stat\ExpLog;
 use App\Models\Stat\StatTransferLog;
-use App\Models\Stat\LevelLog;
+use App\Models\Level\LevelLog;
 use App\Models\Pet\PetLog;
 use App\Models\Claymore\GearLog;
 use App\Models\Claymore\WeaponLog;

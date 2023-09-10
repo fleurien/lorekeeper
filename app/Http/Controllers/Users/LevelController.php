@@ -11,6 +11,7 @@ use App\Models\User\UserCurrency;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Services\CurrencyManager;
+use App\Models\Award\Award;
 
 use App\Models\Level\Level;
 use App\Models\Character\Character;
