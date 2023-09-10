@@ -4,13 +4,13 @@
         <div class="sidebar-section-header">Inventory</div>
         <div class="sidebar-item"><a href="{{ url('characters') }}" class="{{ set_active('characters') }}">My Characters</a></div>
         <div class="sidebar-item"><a href="{{ url('characters/myos') }}" class="{{ set_active('characters/myos') }}">My MYO Slots</a></div>
-        <div class="sidebar-item"><a href="{{ url('breeding-permissions') }}" class="{{ set_active('breeding-permissions') }}">Breeding Permissions</a></div>
         <div class="sidebar-item"><a href="{{ url('inventory') }}" class="{{ set_active('inventory*') }}">Inventory</a></div>
         <div class="sidebar-item"><a href="{{ url(__('awards.awardcase')) }}" class="{{ set_active(__('awards.awardcase').'*') }}">{{__('awards.awardcase')}}</a></div>
         <div class="sidebar-item"><a href="{{ url('bank') }}" class="{{ set_active('bank*') }}">Bank</a></div>
         <div class="sidebar-item"><a href="{{ url('level') }}" class="{{ set_active('level*') }}">Level Area</a></div>
         <div class="sidebar-item"><a href="{{ url('gears') }}" class="{{ set_active('gears*') }}">Gear</a></div>
         <div class="sidebar-item"><a href="{{ url('weapons') }}" class="{{ set_active('weapons*') }}">Weapons</a></div>
+        <div class="sidebar-item"><a href="{{ url('pets') }}" class="{{ set_active('pets*') }}">Pets</a></div>
         @if(Auth::check())<div class="sidebar-item"><a href="{{ url(Auth::user()->url . '/level') }}" class="{{ set_active(Auth::user()->url . '/level') }}">Level Logs</a></div>@endif
     </li>
     <li class="sidebar-section">
