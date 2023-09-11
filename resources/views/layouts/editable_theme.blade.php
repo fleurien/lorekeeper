@@ -97,7 +97,7 @@ option:hover, .form-control, .selectize-input, .selectize-dropdown .active,
 }
 
 a:not(.btn, .navbar-brand, .card-link, .dropdown-item):not(.sidebar-item > a), a strong, .text-muted {
-    @if($linkColor) color: {{ $linkColor }} !important; @endif
+    @if($linkColor) color: {{ $linkColor }}; @endif
 }
 
 </style>

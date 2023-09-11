@@ -8,7 +8,7 @@
         <div class="sidebar-item"><a href="{{ $character->url . '/gallery' }}" class="{{ set_active('character/'.$character->slug.'/gallery') }}">Gallery</a></div>
         <div class="sidebar-item"><a href="{{ $character->url . '/inventory' }}" class="{{ set_active('character/'.$character->slug.'/inventory') }}">Inventory</a></div>
         <div class="sidebar-item"><a href="{{ $character->url . '/bank' }}" class="{{ set_active('character/'.$character->slug.'/bank') }}">Bank</a></div>
-        <div class="sidebar-item"><a href="{{ $character->url . '/awards' }}" class="{{ set_active('character/'.$character->slug.'/awards') }}">Awards</a></div>
+        <div class="sidebar-item"><a href="{{ $character->url . '/awards' }}" class="{{ set_active('character/'.$character->slug.'/awardcase') }}">Awards</a></div>
         @if($character->getLineageBlacklistLevel() < 1)
             <div class="sidebar-item"><a href="{{ $character->url . '/lineage' }}" class="{{ set_active('character/'.$character->slug.'/lineage') }}">Lineage</a></div>
         @endif
