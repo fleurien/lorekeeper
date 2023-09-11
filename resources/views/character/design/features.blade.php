@@ -127,17 +127,29 @@
         </div>
     </div>
     <h5>Traits</h5>
-    <div>
-        @if($request->character && $request->character->is_myo_slot && $request->character->image->features)
-            @foreach($request->character->image->features as $feature)
-                <div>@if($feature->feature->feature_category_id) <strong>{!! $feature->feature->category->displayName !!}:</strong> @endif {!! $feature->feature->displayName !!} @if($feature->data) ({{ $feature->data }}) @endif <span class="text-danger">*Required</span></div>
+        <div>
+            @if ($request->character && $request->character->is_myo_slot && $request->character->image->features)
+                @foreach ($request->character->image->features as $feature)
+                    <div>
+                        @if ($feature->feature->feature_category_id)
+                            <strong>{!! $feature->feature->category->displayName !!}:</strong>
+                            @endif {!! $feature->feature->displayName !!} @if ($feature->data)
+                                ({{ $feature->data }})
+                            @endif <span class="text-danger">*Required</span>
+                    </div>
+                @endforeach
+            @endif
+            @foreach ($request->features as $feature)
+                <div>
+                    @if ($feature->feature->feature_category_id)
+                        <strong>{!! $feature->feature->category->displayName !!}:</strong>
+                        @endif {!! $feature->feature->displayName !!} @if ($feature->data)
+                            ({{ $feature->data }})
+                        @endif
+                </div>
             @endforeach
-        @endif
-        @foreach($request->features as $feature)
-            <div>@if($feature->feature->feature_category_id) <strong>{!! $feature->feature->category->displayName !!}:</strong> @endif {!! $feature->feature->displayName !!} @if($feature->data) ({{ $feature->data }}) @endif</div>
-        @endforeach
-    </div>
-@endif
+        </div>
+    @endif
 
 @endsection
 
