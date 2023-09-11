@@ -120,7 +120,7 @@
         <h2>Guidebook</h2>
         <img src="/files/SITEDECOR/guidebook.png">
         <div class="coolswagcontainer">
-        <p style="font-size:20px;">✦ Getting started ✦</p>
+        <p style="font-size:20px;"><a href="/info/getstarted">✦ Getting started ✦</a></p>
         <p style="font-size:20px;">✦ MYO guide ✦</p>
         <p style="font-size:20px;">✦ Exploration guide ✦</p>
         <p style="font-size:20px;">✦ Lore ✦</p>
@@ -130,18 +130,18 @@
         <h2>Create</h2>
         <img src="/files/SITEDECOR/create.png">
         <div class="coolswagcontainer">
-        <p style="font-size:20px;">✦ Earn steps ✦</p>
-        <p style="font-size:20px;">✦ Submit to the gallery ✦</p>
-        <p style="font-size:20px;">✦ Monthly prompt ✦</p>
+        <p style="font-size:20px;"><a href="/gallery">✦ Submit to the gallery ✦</a></p>
+        <p style="font-size:20px;"><a href="/prompts/prompts?prompt_category_id=3">✦ Weekly challenges ✦</a></p>
+        <p style="font-size:20px;"><a href="/prompts/prompts?prompt_category_id=1">✦ Monthly prompt ✦</a></p>
         </div>
     </div>
     <div class="col-3 text-center">
         <h2>Activities</h2>
         <img src="/files/SITEDECOR/actvities.png">
         <div class="coolswagcontainer">
-        <p style="font-size:20px;">✦ Current event ✦</p>
+        <p style="font-size:20px;"><a href="/info/eventstage">✦ Current event ✦</a></p>
         <p style="font-size:20px;">✦ World map ✦</p>
-        <p style="font-size:20px;">✦ Shops ✦</p>
+        <p style="font-size:20px;"><a href="/shops">✦ Shops ✦</a></p>
         <p style="font-size:20px;">✦ Checklist ✦</p>
         </div>
     </div>

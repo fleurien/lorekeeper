@@ -106,7 +106,7 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="guidesDropdown">
-                        <a class="dropdown-item" href="templink">
+                        <a class="dropdown-item" href="/info/getstarted">
                         <i class="fa-solid fa-star fa-spin"></i> Getting started
                         </a>
                         <div class="dropdown-divider"></div>
@@ -114,7 +114,7 @@
                         <i class="fa-solid fa-paintbrush"></i></i> MYO Guide
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url('shops') }}">
+                        <a class="dropdown-item" href="templink">
                         <i class="fa-solid fa-binoculars"></i> Explore guide
                         </a>
                         <div class="dropdown-divider"></div>
@@ -129,7 +129,7 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="eventDropdown">
-                        <a class="dropdown-item" href="templink">
+                        <a class="dropdown-item" href="/info/eventstage">
                         <i class="fa-solid fa-gifts"></i> Event stage
                         </a>
                     </div>
