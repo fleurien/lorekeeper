@@ -392,6 +392,12 @@ function fillCharacterAssets($assets, $sender, $recipient, $logType, $data, $sub
             foreach($contents as $asset)
                 if(!$service->creditStatusEffect($sender, $recipient, $logType, $data['data'], $asset['asset'], $asset['quantity'])) return false;
         }
+        elseif($key == 'awards' && count($contents))
+        {
+            $service = new \App\Services\AwardCaseManager;
+            foreach($contents as $asset)
+                if(!$service->creditAward($sender, ( $asset['asset']->is_character_owned ? $recipient : $item_recipient), $logType, $data, $asset['asset'], $asset['quantity'])) return false;
+        }
     }
     return $assets;
 }
