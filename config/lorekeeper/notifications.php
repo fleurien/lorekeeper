@@ -618,4 +618,11 @@ return [
         'message' => '{status_name} (×{status_quantity})  was removed from {character_name} by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Status Effects</a>)',
         'url' => 'character/{character_slug}/status-effects'
     ],
+
+    // GALLERY_SUBMISSION_VALUED_MULT
+    516 => [
+        'name' => 'Gallery Submission Valued',
+        'message' => 'You have been awarded {currency_quantity} {currency_name} and {currency_quantity_alt} {currency_name_alt} for the gallery submission <strong>{submission_title}</strong> (#{submission_id}). (<a href="{url}">View Submission</a>)',
+        'url' => 'gallery/queue/{submission_id}'
+    ],
 ];

@@ -51,13 +51,13 @@ return [
         'name'    => 'Level of Finish',
         'label'   => 'Level of Finish (For Digital/Traditional Artwork)',
         'type'    => 'choice',
-        'choices' => ['0.5' => 'Sketch', '1' => 'Clean Lines/Lineless', '3' => 'Painted'],
+        'choices' => ['0' => 'Sketch', '12.5' => 'Clean Lines/Lineless', '25' => 'Painted'],
     ],
     'art_type'    => [
         'name'    => 'Art Type',
         'label'   => 'Art Type (For Digital/Traditional Artwork)',
         'type'    => 'choice',
-        'choices' => ['0' => 'Headshot', '1' => 'Bust', '2' => 'Full Body Chibi', '3' => 'Full Body'],
+        'choices' => ['0' => 'Headshot', '5' => 'Bust', '12.5' => 'Full Body Chibi', '25' => 'Full Body'],
     ],
     'art_bonus'   => [
         'name'     => 'Art Bonuses',
@@ -65,7 +65,7 @@ return [
         'label'    => 'Bonus Options (Select as many as apply)',
         // If you wish to have options with all the same value, in this case 1, give them a .1 difference,
         // which can easily be rounded out, but allows for the computer to distinguish between them.
-        'choices'  => ['1' => 'Colored', '1.1' => 'Shading', '1.2' => 'Background'],
+        'choices'  => ['10' => 'Colored', '7.5' => 'Shading', '10' => 'Background'],
         'multiple' => true,
     ],
     'base'        => [

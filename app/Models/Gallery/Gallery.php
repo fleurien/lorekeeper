@@ -16,6 +16,7 @@ class Gallery extends Model {
         'id', 'parent_id', 'name', 'sort', 'description',
         'currency_enabled', 'votes_required', 'submissions_open',
         'start_at', 'end_at', 'hide_before_start', 'prompt_selection', 'location_selection',
+        'use_alternate_currency'
     ];
 
     /**
@@ -192,5 +193,16 @@ class Gallery extends Model {
         } else {
             return false;
         }
+    }
+
+    /*** Gets the id of the currency the gallery should award.
+     *
+     * @return int
+     */
+    public function getCurrencyIdAttribute()
+    {
+        if($this->use_alternate_currency == 1) return Settings::get('group_currency_alt');
+        if($this->use_alternate_currency == 2) return [Settings::get('group_currency'), Settings::get('group_currency_alt')];
+        return Settings::get('group_currency');
     }
 }

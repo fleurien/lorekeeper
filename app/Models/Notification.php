@@ -184,4 +184,5 @@ class Notification extends Model {
     const RECIPE_GRANT                      = 600; // Draginraptor - Crafting
     const CHARACTER_STATUS_GRANT            = 521;
     const CHARACTER_STATUS_REMOVAL          = 522;
+    const GALLERY_SUBMISSION_VALUED_MULT    = 516;
 }

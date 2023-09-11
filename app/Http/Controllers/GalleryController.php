@@ -244,8 +244,8 @@ class GalleryController extends Controller {
         }
 
         return view('galleries.submission_log', [
-            'submission'  => $submission,
-            'currency'    => Currency::find(Settings::get('group_currency')),
+            'submission' => $submission,
+            'currencies' => Currency::whereIn('id', ($submission->gallery->use_alternate_currency == 2 ? $submission->gallery->currencyId : [$submission->gallery->currencyId]))->get(),
             'galleryPage' => true,
             'sideGallery' => $submission->gallery,
         ]);
@@ -291,12 +291,12 @@ class GalleryController extends Controller {
         return view('galleries.create_edit_submission', [
             'closed' => $closed,
         ] + ($closed ? [] : [
-            'gallery'     => $gallery,
-            'submission'  => new GallerySubmission,
-            'prompts'     => Prompt::active()->sortAlphabetical()->pluck('name', 'id')->toArray(),
+            'gallery' => $gallery,
+            'submission' => new GallerySubmission,
+            'prompts' => Prompt::active()->sortAlphabetical()->pluck('name', 'id')->toArray(),
             'locations'   => Location::visible()->sortAlphabetical()->get()->sortBy('parent_id')->pluck('styleParent', 'id')->toArray(),
-            'users'       => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'currency'    => Currency::find(Settings::get('group_currency')),
+            'users' => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
+            'currency' => $gallery->use_alternate_currency < 2 ? Currency::find($gallery->currencyId) : Currency::whereIn('id', $gallery->currencyId)->get(),
             'galleryPage' => true,
             'sideGallery' => $gallery,
         ]));
@@ -330,13 +330,13 @@ class GalleryController extends Controller {
             'closed'         => false,
             'gallery'        => $submission->gallery,
             'galleryOptions' => Gallery::orderBy('name')->pluck('name', 'id')->toArray(),
-            'prompts'        => $prompts->sortAlphabetical()->pluck('name', 'id')->toArray(),
+            'prompts' => $prompts->sortAlphabetical()->pluck('name', 'id')->toArray(),
+            'submission' => $submission,
+            'users' => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
+            'currency' => $submission->gallery->use_alternate_currency < 2 ? Currency::find($submission->gallery->currencyId) : Currency::whereIn('id', $submission->gallery->currencyId)->get(),
+            'galleryPage' => true,
             'locations'      => Location::visible()->sortAlphabetical()->get()->sortBy('parent_id')->pluck('styleParent', 'id')->toArray(),
-            'submission'     => $submission,
-            'users'          => User::visible()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'currency'       => Currency::find(Settings::get('group_currency')),
-            'galleryPage'    => true,
-            'sideGallery'    => $submission->gallery,
+            'sideGallery' => $submission->gallery
         ]);
     }
 

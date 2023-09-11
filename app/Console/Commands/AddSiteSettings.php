@@ -122,6 +122,18 @@ class AddSiteSettings extends Command {
         $this->addSiteSetting('fetch_reward_max', 100, 'MAXIMUM Reward granted after fetch is completed');
         
         $this->addSiteSetting('default_theme', 0, 'ID of the default theme users should see. 0: Disabled, shows default lorekeeper. This setting is overwritten by the users theme setting.');
+        if(!DB::table('site_settings')->where('key', 'group_currency_alt')->exists()) {
+            DB::table('site_settings')->insert([
+                [
+                    'key' => 'group_currency_alt',
+                    'value' => 1,
+                    'description' => 'ID of the alternate group currency to award from gallery submissions (if enabled).'
+                ]
+
+            ]);
+            $this->info("Added:   group_currency_alt / Default: 1");
+        }
+        else $this->line("Skipped: group_currency_alt");
 
         $this->line("\nSite settings up to date!");
 

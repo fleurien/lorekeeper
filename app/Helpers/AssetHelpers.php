@@ -45,7 +45,7 @@ function calculateGroupCurrency($data)
         // This divides the word count by 100, rounds the result, and then multiplies it by one--
         // so, effectively, for every 100 words, 1 of the currency is awarded.
         // You can adjust these numbers as you see fit.
-        $total += (round($data['word_count'] / 100) * 1);
+        $total += (round($data['word_count'] / 100) * 25);
     }
 
     // And if it has a crafted or other physical object component:
