@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterTransfer;
 use App\Models\User\User;
+use App\Models\Feature\Feature;
 use App\Services\CharacterManager;
 use App\Services\DesignUpdateManager;
 use Auth;
