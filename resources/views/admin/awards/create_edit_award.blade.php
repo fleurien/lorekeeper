@@ -179,8 +179,8 @@
 {!! Form::close() !!}
 
 @if($award->id)
-    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'awards' => $awards, 'showLootTables' => false, 'showRaffles' => false, 'progression' => true])
-    @include('widgets._reward_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'awards' => $awards, 'showLootTables' => false, 'showRaffles' => false, 'progression' => true])
+    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'pets' => pets, 'awards' => $awards, 'showLootTables' => false, 'showRaffles' => false, 'progression' => true])
+    @include('widgets._reward_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'pets' => pets, 'awards' => $awards, 'showLootTables' => false, 'showRaffles' => false, 'progression' => true])
 @endif
 
 <div class="row hide credit-row col-12 mb-1">
