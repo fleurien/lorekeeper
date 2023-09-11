@@ -346,6 +346,46 @@ function fillUserAssets($assets, $sender, $recipient, $logType, $data)
 }
 
 /**
+ * Rolls on a loot-table esque rewards setup.
+ */
+function rollRewards($loot, $quantity = 1)
+{
+    $rewards = createAssetsArray();
+
+    $totalWeight = 0;
+    foreach($loot as $l) $totalWeight += $l->weight;
+
+    for($i = 0; $i < $quantity; $i++)
+    {
+        $roll = mt_rand(0, $totalWeight - 1);
+        $result = null;
+        $prev = null;
+        $count = 0;
+        foreach($loot as $l)
+        {
+            $count += $l->weight;
+
+            if($roll < $count)
+            {
+                $result = $l;
+                break;
+            }
+            $prev = $l;
+        }
+        if(!$result) $result = $prev;
+
+        if($result) {
+            // If this is chained to another loot table, roll on that table
+            if($result->rewardable_type == 'LootTable') $rewards = mergeAssetsArrays($rewards, $result->reward->roll($result->quantity));
+            elseif($result->rewardable_type == 'ItemCategory' || $result->rewardable_type == 'ItemCategoryRarity') $rewards = mergeAssetsArrays($rewards, rollCategory($result->rewardable_id, $result->quantity, (isset($result->data['criteria']) ? $result->data['criteria'] : null), (isset($result->data['rarity']) ? $result->data['rarity'] : null)));
+            elseif($result->rewardable_type == 'ItemRarity') $rewards = mergeAssetsArrays($rewards, rollRarityItem($result->quantity, $result->data['criteria'], $result->data['rarity']));
+            else addAsset($rewards, $result->reward, $result->quantity);
+        }
+    }
+    return $rewards;
+}
+
+/**
  * Distributes the assets in an assets array to the given recipient (character).
  * Loot tables will be rolled before distribution.
  *
