@@ -15,7 +15,7 @@ return [
     'npcs' => [
         'enabled'            => true,
         'category_or_rarity' => 'category',
-        'code' => 'NPC',
+        'code' => '6',
         // if this is set to true, the ids array will be used instead of the category or rarity
         'use_ids' => false,
         // array of character ids that can be used as NPCs if your site does not define NPCs as a category or rarity
