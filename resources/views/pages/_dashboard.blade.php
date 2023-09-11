@@ -63,7 +63,9 @@
   </ol>
   <div class="carousel-inner" style="border-radius:15px;">
     <div class="carousel-item active">
+        <a href="/news/9.september-newsletter-bughunt">
       <img class="d-block w-100" src="/files/eventpromos/bughuntpromo%20crunched.png" alt="First slide">
+</a>
     </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
