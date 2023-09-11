@@ -10,17 +10,21 @@
 </h1>
 
 <p>Welcome to foraging! Here you can choose an area to check for goodies.</p>
-<p>Goods will be claimable after you return from scavenging! Usually, about an hour is the amount of time it takes to check out an area.</p>
-<div class="row">
-    <div class="col-md-6">
-        @if($user->foraging->foraged_at)
+<p>Findings will be claimable after you return from scavenging! Usually, about 45 minutes to an hour is the amount of time it takes to check out an area.</p>
+@if($user->foraging->foraged_at)
+<div class="row">    
+<div class="col-md-6">
+        
             <p>
                 Last Foraged: {!! pretty_date($user->foraging->foraged_at) !!}
             <br>
                 Foraging Stamina Left: {{ $user->foraging->stamina }}
             </p> 
-        @endif
+        
     </div>
+</div>
+    @endif
+<div class="row justify-content-center">
     @if(Config::get('lorekeeper.foraging.use_characters') && !$user->foraging->distribute_at)
         <div class="col-md-6 justify-content-center text-center">
             <h3>Current Character</h3>
