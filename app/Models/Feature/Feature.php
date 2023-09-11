@@ -297,7 +297,7 @@ class Feature extends Model {
 
     **********************************************************************************************/
 
-    public static function getDropdownItems($withHidden = 0) {
+    public static function getDropdownItems($withHidden = 1) {
         if (Config::get('lorekeeper.extensions.organised_traits_dropdown')) {
             $visibleOnly = 1;
             if ($withHidden) {
