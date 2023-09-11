@@ -3,7 +3,7 @@
 return [
 
     // minutes to wait for forage to complete
-    'forage_time' => 1,
+    'forage_time' => 45,
 
     // future stuff...
     // characters are mostly just visual for the moment.
@@ -15,7 +15,7 @@ return [
     'npcs' => [
         'enabled'            => true,
         'category_or_rarity' => 'category',
-        'code' => 'npc',
+        'code' => 'NPC',
         // if this is set to true, the ids array will be used instead of the category or rarity
         'use_ids' => false,
         // array of character ids that can be used as NPCs if your site does not define NPCs as a category or rarity
