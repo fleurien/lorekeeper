@@ -20,6 +20,7 @@ use App\Models\Foraging\Forage;
 use App\Services\ForageService;
 use App\Services\UserService;
 use App\Models\Character\Character;
+use App\Models\Character\CharacterCategory;
 use Config;
 
 use App\Http\Controllers\Controller;
@@ -49,7 +50,7 @@ class ForagingController extends Controller
                     $characters = Character::where(Config::get('lorekeeper.foraging.npcs.category_or_rarity'), Config::get('lorekeeper.foraging.npcs.code'))->pluck('slug', 'id');
                 }
                 // if after all that there's still no characters
-                if (!count($characters)) {
+                if ($characters == null) {
                     flash('You must have at least one character to forage.')->error();
 
                     return redirect()->back();

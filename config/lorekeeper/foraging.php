@@ -14,7 +14,7 @@ return [
     // allows FTO / Non Owner users to use NPCs, and set the NPC character category
     'npcs' => [
         'enabled'            => true,
-        'category_or_rarity' => 'category',
+        'category_or_rarity' => 'character_category_id',
         'code' => '6',
         // if this is set to true, the ids array will be used instead of the category or rarity
         'use_ids' => false,
