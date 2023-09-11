@@ -19,6 +19,7 @@ use App\Models\Foraging\Forage;
 
 use App\Services\ForageService;
 use App\Services\UserService;
+use App\Models\Character\Character;
 use Config;
 
 use App\Http\Controllers\Controller;
