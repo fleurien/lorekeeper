@@ -3,7 +3,7 @@
 return [
 
     // minutes to wait for forage to complete
-    'forage_time' => 45,
+    'forage_time' => 1,
 
     // future stuff...
     // characters are mostly just visual for the moment.
@@ -13,7 +13,7 @@ return [
 
     // allows FTO / Non Owner users to use NPCs, and set the NPC character category
     'npcs' => [
-        'enabled'            => false,
+        'enabled'            => true,
         'category_or_rarity' => 'category',
         'code' => 'npc',
         // if this is set to true, the ids array will be used instead of the category or rarity
