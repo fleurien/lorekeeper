@@ -282,7 +282,7 @@
             <h1 style="text-align: center;">
             <span class="badge badge-dark text-white mx-1" data-toggle="tooltip" title="Current Character level.">Current Lvl: {{ $character->level->current_level }}</span></h1>
             @foreach($character->stats as $stat)
-            <p><strong>{{$stat->stat->name}}:</strong></p>
+            <p><strong>{{$stat->stat->name}}:</strong></p
                 @php $add = 0; @endphp
                 @foreach($character->gear as $gear)
                     @php 
@@ -300,7 +300,7 @@
                     }
                     @endphp
                 @endforeach
-                <p>@php echo($stat->count + $add); echo(' (+ '.$add.')'); @endphp</p>
+                <p>@php echo($stat->stat_level->count + $add); echo(' (+ '.$add.')'); @endphp</p>
 
                 @if($stat->current_count != $stat->count && $stat->current_count != NULL)
                 <p><strong>Current {{$stat->stat->name}} Count:</strong></p>
