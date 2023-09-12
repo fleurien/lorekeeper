@@ -35,6 +35,7 @@ class LevelController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->middleware(function ($request, $next) {
             $slug = Route::current()->parameter('slug');
             $query = Character::myo(0)->where('slug', $slug);
