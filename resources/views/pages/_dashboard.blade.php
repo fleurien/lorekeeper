@@ -2,10 +2,10 @@
 
 <!--character speechbubble-->
 <div class="row charspeechbubble">
-    <div class="col-4">
+    <div class="col-md-4 col-12">
         @include('widgets._selected_character_homepage', ['character' => Auth::user()->settings->selectedCharacter, 'user' => Auth::user(), 'fullImage' => false])
     </div>
-    <div class="col-8">
+    <div class="col-md-8 col-12">
     <div class="yours messages">
     <div id="randomquote" class="message animated animatedFadeInUp fadeInUp">
  </div>
@@ -17,11 +17,11 @@
 
 
 <!--character roster-->
-<div>
+<div class="dashboardcharroster">
 @foreach(Auth::user()->characters()->take(4)->get()->chunk(4) as $chunk)
     <div class="row">
         @foreach($chunk as $charactera)
-            <div class="col-md-3 col-6 text-center homepagechararosterbubble" style="position: relative; z-index: 1; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">
+            <div class="col-md-3 col-12 text-center homepagechararosterbubble" style="position: relative; z-index: 1; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">
                 <div style="position:relative;z-index:3">
                     <a href="{{ $charactera->url }}"><img src="{{ $charactera->image->thumbnailUrl }}" class="img-thumbnail" alt="{{ $charactera->fullName }}" style="max-width:150px; height:auto; border-radius: 75px;" /></a>
                 </div>
@@ -40,7 +40,7 @@
 
 <div class="row justify-contents-center">
     <!-- NEWS -->
-    <div class="col-3">
+    <div class="col-md-3 col-12 order-2 order-md-1">
         @foreach($newses = App\Models\News::orderBy("id", "desc")->get()->take(1) as $news)
             <h3 class="card-title text-center mb-0 newstitle">{!! $news->displayName !!}</h2>
             <p align="center"> {!! $news->updated_at !!} </p>
@@ -54,7 +54,7 @@
     <!-- END NEWS -->
 
     <!-- HIGHLIGHTS-->
-    <div class="col-6">
+    <div class="col-md-6 col-12 order-1 order-md-2">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -81,7 +81,7 @@
     <!-- END HIGHLIGHTS-->
 
     <!-- FEATURED CHAR-->
-    <div class="col-3">
+    <div class="col-md-3 col-12 order-3">
 <div class="text-center"><h2 class="featuredchartitle">Featured Character</h2></div>
     <div>
         
@@ -108,7 +108,7 @@
 <hr>
 
 <div class="row justify-contents-center">
-    <div class="col-3 text-center">
+    <div class="col-md-3 col-6 text-center">
         <h2>My account</h2>
         <img src="/files/SITEDECOR/normal%20myo.png">
         <div class="coolswagcontainer">
@@ -118,7 +118,7 @@
         <p style="font-size:20px;"><a href="/account/settings">✦ Settings ✦</a></p>
         </div>
     </div>
-    <div class="col-3 text-center">
+    <div class="col-md-3 col-6 text-center">
         <h2>Guidebook</h2>
         <img src="/files/SITEDECOR/guidebook.png">
         <div class="coolswagcontainer">
@@ -128,7 +128,7 @@
         <p style="font-size:20px;">✦ Lore ✦</p>
         </div>
     </div>
-    <div class="col-3 text-center">
+    <div class="col-md-3 col-6 text-center">
         <h2>Create</h2>
         <img src="/files/SITEDECOR/create.png">
         <div class="coolswagcontainer">
@@ -137,7 +137,7 @@
         <p style="font-size:20px;"><a href="/prompts/prompts?prompt_category_id=1">✦ Monthly prompt ✦</a></p>
         </div>
     </div>
-    <div class="col-3 text-center">
+    <div class="col-md-3 col-6 text-center">
         <h2>Activities</h2>
         <img src="/files/SITEDECOR/actvities.png">
         <div class="coolswagcontainer">
