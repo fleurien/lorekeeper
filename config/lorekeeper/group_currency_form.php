@@ -65,7 +65,7 @@ return [
         'label'    => 'Bonus Options (Select as many as apply)',
         // If you wish to have options with all the same value, in this case 1, give them a .1 difference,
         // which can easily be rounded out, but allows for the computer to distinguish between them.
-        'choices'  => ['10' => 'Colored', '7.5' => 'Shading', '10' => 'Background'],
+        'choices'  => ['10' => 'Colored', '7.5' => 'Shading', '15' => 'Background'],
         'multiple' => true,
     ],
     'base'        => [
