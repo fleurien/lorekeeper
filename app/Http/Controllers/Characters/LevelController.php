@@ -244,11 +244,11 @@ class LevelController extends Controller
 
     public function postLevel(LevelManager $service)
     {
-        if(!Auth::check() || (Auth::user()->id != $character->user_id && !Auth::user()->hasPower('manage_characters'))) abort(404);
         $character = $this->character;
+        if(!Auth::check() || (Auth::user()->id != $character->user_id && !Auth::user()->hasPower('manage_characters'))) abort(404);
         if(!$character) abort(404);
 
-        if($service->characterLevel($character))
+        if($service->characterLevel($character)) 
         {
             flash('Successfully levelled up!')->success();
         }
