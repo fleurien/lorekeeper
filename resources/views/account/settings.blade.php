@@ -128,6 +128,7 @@
             <div class="col-md-9">
                 {!! Form::text('house', Auth::user()->profile->house, ['class' => 'form-control']) !!}
 </div>
+{!! Form::close() !!}
 </div>
 
 <div class="card p-3 mb-2">
@@ -149,8 +150,7 @@
         <div class="text-right">
             {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
         </div>
-
-{!! Form::close() !!}
+    {!! Form::close() !!}
 </div>
 
 
