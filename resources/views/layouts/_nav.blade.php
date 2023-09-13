@@ -55,7 +55,7 @@
                     </div>
                     @endif
                 </li>
-                <li style="border-left:2px solid #ffffff8c;height:25px;margin-top: 5px;"></li>
+                <li class="md-show hide" style="border-left:2px solid #ffffff8c;height:25px;margin-top: 5px;"></li>
                 <li class="nav-item dropdown">
                     <a id="browseDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Browse

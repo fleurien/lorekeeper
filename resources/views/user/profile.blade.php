@@ -49,7 +49,7 @@
         @endif
     </div>
 </div>
-@include('widgets._awardcase_feature', ['target' => $user, 'count' => Config::get('lorekeeper.extensions.awards.user_featured'), 'float' => false])
+@include('widgets._awardcase_feature', ['target' => $user, 'count' => Config::get('lorekeeper.extensions.awards.user_featured'), 'float' => true])
 
 
     @if ($user->is_deactivated)
