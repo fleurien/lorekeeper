@@ -158,7 +158,7 @@
 <h2>Characters</h2>
 @foreach ($submission->characters as $character)
     <div class="submission-character-row mb-2">
-        <div class="submission-character-thumbnail"><a href="{{ $character->character->url }}"><img src="{{ $character->character->image->thumbnailUrl }}" class="img-thumbnail" alt="Thumbnail for {{ $character->character->fullName }}" /></a>
+        <div class="submission-character-thumbnail"><a href="{{ $character->character->url }}"><img src="{{ $character->character->image->thumbnailUrl }}" style="max-width:200px" class="img-thumbnail" alt="Thumbnail for {{ $character->character->fullName }}" /></a>
         </div>
         <div class="submission-character-info card ml-2">
             <div class="card-body">
