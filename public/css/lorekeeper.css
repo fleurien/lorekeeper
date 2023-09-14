@@ -23,6 +23,8 @@
 .homepagechararosterbubble::before {
 	mask-image: url('/files/UI/planet1.png');
 	mask-size: 102%;
+    -webkit-mask-image: url('/files/UI/planet1.png');
+	-webkit-mask-size: 102%;
 	display: block;
 	width: 224px;
 	height: 225px;
@@ -36,6 +38,8 @@
 
 .homepagechararosterbubble:nth-child(even)::before {
  mask-image: url('/files/UI/planet2.png');
+ -webkit-mask-image: url('/files/UI/planet2.png');
+
 }
 
 .homepagechar::before {
