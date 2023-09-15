@@ -8,21 +8,23 @@
     This character has {{ $character->availableBreedingPermissions }} out of {{ $character->maxBreedingPermissions }} maximum gene passes{{ $character->availableBreedingPermissions == 1 ? '' : 's' }} available to create.
     @if(Auth::check() && (Auth::user()->id == $character->user_id))
         As the character's owner, you may create and grant to other users up to this many gene passes. Other users may see how many of this character's gene passes have been created and/or used, and to whom they have been granted.
+        <br>
+        Gene passes are a pass that allows for other users to mix genetics with this Poffin.
     @else
         Only the character's owner can create and distribute their gene passes.
     @endif
 </p>
 
 @if($character->breedingPermissions->count())
-    {!! $character->breedingPermissions->render() !!}
-
+    
+<div class="row">
     @foreach($character->breedingPermissions as $permission)
         @include('character._breeding_permission', ['isCharacter' => true])
     @endforeach
-
-    {!! $permissions->render() !!}
+</div>
+    
 @else
-    <p>No permissions found.</p>
+    <p>No gene passes found.</p>
 @endif
 
 

@@ -182,6 +182,31 @@
     -webkit-animation-name: fadeInUp;
 }
 
+
+/**************************************************************************************************
+
+    TALKSPRITES
+
+**************************************************************************************************/
+
+/* bobby sprites */
+
+.bobbynormaltalksprite {
+    width:300px;
+    height:300px;
+    animation-name: bobbynormalswap;
+    animation-duration: 2.5s;
+    animation-iteration-count: 1;
+   animation-fill-mode: forwards;
+  }
+  
+  @keyframes bobbynormalswap{
+     0%,99%  {background-image: url("https://cdn.discordapp.com/attachments/266987989383643136/1152007844284076184/neutral.gif");background-size: contain;}
+   100% {background-image: url("https://cdn.discordapp.com/attachments/266987989383643136/1152007845143904316/neutralStandard.png");background-size: contain;}
+  }
+  
+  /* end bobby sprites */
+
 /**************************************************************************************************
 
     Base styles

@@ -6,9 +6,9 @@
         {!! Form::select('recipient_id', $userOptions, $breedingPermission->recipient_id, ['class' => 'form-control', 'placeholder' => 'Select a Recipient', 'id' => 'recipientField']) !!}
     </div>
 
-    <div class="form-group">
+    <div class="form-group hide">
         {!! Form::label('type', 'Type') !!}
-        {!! Form::select('type', ['Full' => 'Full', 'Split' => 'Split'], $breedingPermission->type, ['class' => 'form-control', 'placeholder' => 'Select a Type']) !!}
+        {!! Form::select('type', ['Full' => 'Full'], $breedingPermission->type) !!}
     </div>
 
     <div class="form-group">

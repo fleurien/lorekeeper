@@ -1,4 +1,4 @@
-<div class="card mb-4">
+<div class="col-md-6 col-12 card mb-4">
     <div class="card-body">
         <div class="row">
             @if(!isset($isCharacter) || !$isCharacter)
@@ -30,7 +30,6 @@
                         @if(!isset($isCharacter) || $isCharacter)
                             Granted to: {!! $permission->recipient->displayName !!} ・
                         @endif
-                        Type: {{ $permission->type }}
                     </small>
                 </h5>
 
