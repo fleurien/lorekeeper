@@ -12,6 +12,15 @@ return [
     //     ]),
     //     'version' => '1.0.0',
     // ],
+    
+    'dev_logs' => [
+        'key' => 'dev_logs',
+        'wiki_key' => 'Dev_Logs',
+            'creators' => json_encode([
+            'AnimatedCritter' => 'https://github.com/animatedcritter/',
+        ]),
+        'version' => '1.0.0',
+    ],
 
     'crafting_system' => [
         'key' => 'crafting_system',

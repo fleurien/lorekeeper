@@ -251,7 +251,18 @@ class UserService extends Service {
     }
 
     /**
-     * Updates the user's theme.
+     * Updates user's dev log notification setting
+     */
+    public function updateLogNotif($data, $user)
+    {
+        $user->settings->dev_log_notif = $data;
+        $user->settings->save();
+
+        return true;
+    }
+
+    /**
+     * Updates the user's avatar. 
      *
      * @param  array                  $data
      * @param  \App\Models\User\User  $user

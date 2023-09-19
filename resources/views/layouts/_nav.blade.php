@@ -10,12 +10,34 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+            <li class="nav-item dropdown">
+            @if(Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
+                    <a id="newsDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        News <img src="/files/new.gif" class="newnotif">
+                    </a>
+            @elseif(Auth::check() && Auth::user()->is_dev_logs_unread && Auth::user()->settings->dev_log_notif && Config::get('lorekeeper.extensions.navbar_news_notif'))
+            <a id="newsDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        News <img src="/files/new.gif" class="newnotif">
+                    </a>
+            @else  
+            <a id="newsDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        News
+                        
+                    </a>
+                    @endif   
+            <div class="dropdown-menu" aria-labelledby="newsDropdown">
                     @if(Auth::check() && Auth::user()->is_news_unread && Config::get('lorekeeper.extensions.navbar_news_notif'))
-                        <a class="nav-link d-flex" href="{{ url('news') }}"><strong>News</strong><img src="/files/new.gif" class="newnotif"></a>
+                     <a class="dropdown-item" href="{{ url('news') }}"><strong><i class="fa-solid fa-newspaper"></i> News</strong><img src="/files/new.gif" class="newnotif"></a>
                     @else
-                        <a class="nav-link" href="{{ url('news') }}">News</a>
+                     <a class="dropdown-item" href="{{ url('news') }}"><i class="fa-solid fa-newspaper"></i> News</a>
                     @endif
+                        <div class="dropdown-divider"></div>
+                        @if(Auth::check() && Auth::user()->is_dev_logs_unread && Auth::user()->settings->dev_log_notif && Config::get('lorekeeper.extensions.navbar_news_notif'))
+                         <a class="dropdown-item" href="{{ url('logs') }}"><strong><i class="fa-solid fa-file-pen"></i> Devlog</strong><img src="/files/new.gif" class="newnotif"></a>
+                    @else
+                     <a class="dropdown-item" href="{{ url('logs') }}"><i class="fa-solid fa-file-pen"></i> Devlog</a>
+                @endif
+                    </div>
                 </li>
                 
                 <li class="nav-item">
@@ -55,7 +77,7 @@
                     </div>
                     @endif
                 </li>
-                <li class="md-show hide" style="border-left:2px solid #ffffff8c;height:25px;margin-top: 5px;"></li>
+                <li class="sm-hide show" style="border-left:2px solid #ffffff8c;height:25px;margin-top: 5px;"></li>
                 <li class="nav-item dropdown">
                     <a id="browseDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         Browse
@@ -84,6 +106,9 @@
                         <a class="dropdown-item" href="templink">
                         <i class="fa-solid fa-signs-post"></i> Go exploring
                         </a>
+                        <a class="dropdown-item" href="{{ url('foraging') }}">
+                        <i class="fa-solid fa-tree"></i> Foraging
+                        </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url('shops') }}">
                         <i class="fa-solid fa-shop"></i> Shops
@@ -92,12 +117,10 @@
                         <a class="dropdown-item" href="templink">
                         <i class="fa-solid fa-book-atlas"></i> Lore
                         </a>
-                        <a class="dropdown-item" href="{{ url('foraging') }}">
-                            Foraging
-                        </a>
-                        <a class="dropdown-item" href="{{ url('fetch') }}">
+                        
+                        <!-- <a class="dropdown-item" href="{{ url('fetch') }}">
                             Fetch Quests
-                        </a>
+                        </a> -->
                     </div>
                 </li>
                 <li class="nav-item dropdown">

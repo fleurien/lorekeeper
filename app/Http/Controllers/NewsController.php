@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use Auth;
 use Illuminate\Support\Facades\View;
+use App\Models\DevLogs;
 
 class NewsController extends Controller {
     /*
@@ -29,12 +30,13 @@ class NewsController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex() {
-        if (Auth::check() && Auth::user()->is_news_unread) {
-            Auth::user()->update(['is_news_unread' => 0]);
-        }
-
-        return view('news.index', ['newses' => News::visible()->orderBy('updated_at', 'DESC')->paginate(10)]);
+    public function getIndex()
+    {
+        if(Auth::check() && Auth::user()->is_news_unread) Auth::user()->update(['is_news_unread' => 0]);
+        return view('news.index', [
+            'newses' => News::visible()->orderBy('updated_at', 'DESC')->paginate(10),
+            'devLogses' => DevLogs::visible()->orderBy('updated_at', 'DESC')->paginate(10)
+        ]);
     }
 
     /**
