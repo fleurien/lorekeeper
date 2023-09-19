@@ -141,6 +141,10 @@
                         <i class="fa-solid fa-binoculars"></i> Explore guide
                         </a>
                         <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/info/DLC">
+                        <i class="fa-solid fa-box-open"></i></i> Bases & Resources
+                        </a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url('reports') }}">
                         <i class="fa-solid fa-suitcase-medical"></i></i> Helpdesk & Bug reports
                         </a>
