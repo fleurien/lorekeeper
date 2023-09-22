@@ -322,6 +322,7 @@ main > .row {
     min-height: 275px;
     background-size: cover;
     width: 67%;
+    background-position: center center;
     margin-left: auto;
     margin-right: auto;
     border-start-end-radius: 150px;

@@ -143,4 +143,3 @@
         $($rowId).find('.quantity-select').prop('name', $checkbox.checked ? 'quantities[]' : '')
     }
 </script>
-
