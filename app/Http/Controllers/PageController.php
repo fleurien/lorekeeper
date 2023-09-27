@@ -8,6 +8,7 @@ use App\Models\SitePageCategory;
 use App\Models\SitePageSection;
 
 class PageController extends Controller {
+    
     /*
     |--------------------------------------------------------------------------
     | Page Controller

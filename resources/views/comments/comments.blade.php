@@ -1,4 +1,5 @@
 @php
+
     if (isset($approved) and $approved == true) {
         if (isset($type) && $type != null) {
             $comments = $model->approvedComments->where('type', $type);
@@ -7,9 +8,9 @@
         }
     } else {
         if (isset($type) && $type != null) {
-            $comments = $model->commentz->where('type', $type);
+            $comments = $model->comments->where('type', $type);
         } else {
-            $comments = $model->commentz->where('type', 'User-User');
+            $comments = $model->comments->where('type', 'User-User');
         }
     }
 @endphp

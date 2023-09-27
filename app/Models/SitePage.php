@@ -8,6 +8,7 @@ use DB;
 use App\Models\Model;
 
 class SitePage extends Model {
+    use Commentable;
 
 
     /**
