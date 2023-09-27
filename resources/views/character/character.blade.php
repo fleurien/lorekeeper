@@ -6,7 +6,7 @@
 
 @section('profile-content')
 
-@include('widgets._awardcase_feature', ['target' => $character, 'count' => Config::get('lorekeeper.extensions.awards.character_featured'), 'float' => true])
+@include('widgets._awardcase_feature_character', ['target' => $character, 'count' => Config::get('lorekeeper.extensions.awards.character_featured'), 'float' => true])
 
 @if($character->is_myo_slot)
 {!! breadcrumbs(['MYO Slot Masterlist' => 'myos', $character->fullName => $character->url]) !!}
