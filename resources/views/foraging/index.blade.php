@@ -81,10 +81,7 @@
 
             var hours = now.getUTCHours();
 
-            if((seconds == '00' && minutes == '00' && hours >= date.getUTCHours()) || hours > date.getUTCHours()) {
-                // reload page
-                location.reload();
-            }
+            
 
             var text = "Foraging complete in " + minutes + ":" + seconds + "!";
             $("#time").text(text);

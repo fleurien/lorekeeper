@@ -23,7 +23,7 @@
     </div>
         @if($character->level->current_exp >= $next->exp_required && Auth::check() && Auth::user()->id == $character->user_id)
         <div class="text-center m-1">
-            <b><p>You have enough EXP to advance to the nex level!</p></b>
+            <b><p>You have enough EXP to advance to the next level!</p></b>
         </div>
         {!! Form::open(['url' => $character->url.'/level-area/up']) !!}
 
