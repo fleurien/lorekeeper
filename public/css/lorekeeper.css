@@ -20,6 +20,9 @@
 
 **************************************************************************************************/
 
+
+
+
 .homepagechararosterbubble::before {
 	mask-image: url('/files/UI/planet1.png');
 	mask-size: 102%;
@@ -518,6 +521,7 @@ border-start-start-radius: 150px;
 }
 .site-footer .navbar .navbar-nav {
     flex-direction: row;
+    flex-wrap: wrap;
 }
 .site-footer .navbar .navbar-nav .nav-link {
     padding-right: .5rem;
