@@ -25,6 +25,7 @@ class HomeController extends Controller {
     |
     */
 
+    
     /**
      * Shows the homepage.
      *
@@ -32,6 +33,7 @@ class HomeController extends Controller {
      */
     public function getIndex()
     {
+        
         if (Settings::get('featured_character')) {
             $character = Character::where('slug', Settings::get('featured_character'))->first();
         } else {

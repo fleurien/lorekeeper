@@ -315,7 +315,7 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Route::post('/{comment}', 'CommentController@reply')->name('comments.reply');
     Route::post('/{id}/feature', 'CommentController@feature')->name('comments.feature');
     Route::post('/{id}/like/{action}', 'CommentController@like')->name('comments.like');
-    Route::get('/liked', 'CommentController@getLikedComments');
+    Route::get('/liked-comments', 'CommentController@getLikedComments');
 });
 
 /**************************************************************************************************
