@@ -8,9 +8,9 @@
         }
     } else {
         if (isset($type) && $type != null) {
-            $comments = $model->comments->where('type', $type);
+            $comments = $model->commentz->where('type', $type);
         } else {
-            $comments = $model->comments->where('type', 'User-User');
+            $comments = $model->commentz->where('type', 'User-User');
         }
     }
 @endphp

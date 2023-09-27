@@ -13,7 +13,7 @@ trait Commentable {
     /**
      * Returns all comments for this model.
      */
-    public function comments() {
+    public function commentz() {
         return $this->morphMany('App\Models\Comment', 'commentable')->withTrashed();
     }
 
