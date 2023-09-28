@@ -48,7 +48,7 @@
                 $('.inventory-item').on('click', function(e) {
                     e.preventDefault();
 
-                    loadModal("{{ url('world/universaltraits') }}/" + $(this).data('id'), 'Trait Detail');
+                    loadModal("{{ url('world/species/1/trait') }}/" + $(this).data('id'), 'Trait Detail');
                 });
             })
         </script>
