@@ -165,6 +165,10 @@ quote[1] = "<h3>Did you hear the one about the two guys on the moon? With the ro
 quote[2] = "<h3>Kinda spacey today, huh?</h3>";
 quote[3] = "<h3>I love exploding things with my mind!</h3>";
 quote[4] = "<h3>You know, like nyah?</h3>";
+quote[5] = "<h3>⬆⬆⬇⬇⬅→⬅→🅱🅰</h3>";
+quote[6] = "<h3>[hands you a bug] [hands you a bug] [hands you a bug]</h3>";
+quote[7] = "<h5>Have you heard of the critically acclaimed ARPG Poffins World which has an expanded free site that you can play through the entirety of prompts and events endlessly for free with no restrictions on participation? Now available on Lorekeeper and Discord! Sign up and enjoy the galaxy today!</h5>";
+
 
 
 function choosequote() {
