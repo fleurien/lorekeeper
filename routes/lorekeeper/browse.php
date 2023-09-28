@@ -158,6 +158,7 @@ Route::group(['prefix' => 'world'], function () {
     Route::get('species/{id}/traits', 'WorldController@getSpeciesFeatures');
     Route::get('species/{speciesId}/trait/{id}', 'WorldController@getSpeciesFeatureDetail')->where(['id' => '[0-9]+', 'speciesId' => '[0-9]+']);
     Route::get('status-effects', 'WorldController@getStatusEffects');
+    Route::get('universaltraits', 'WorldController@getUniversalFeatures');
     Route::get('item-categories', 'WorldController@getItemCategories');
     Route::get('items', 'WorldController@getItems');
     Route::get(__('awards.award').'-categories', 'WorldController@getAwardCategories');
