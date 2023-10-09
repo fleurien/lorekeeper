@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Data\PromptController;
 use App\Models\Currency\Currency;
 use App\Models\Loot\LootTable;
 use App\Models\Award\Award;
+use App\Models\Pet\Pet;
 use App\Models\Raffle\Raffle;
 
 use App\Models\Shop\Shop;
@@ -202,9 +203,10 @@ class AwardController extends Controller
     public function getCreateAward()
     {
         return view('admin.awards.create_edit_award', [
-            'award'       => new Award,
-            'categories'  => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
+            'award' => new Award,
+            'categories' => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'prompts' => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
+            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray()
         ]);
     }
 
@@ -227,6 +229,7 @@ class AwardController extends Controller
             'categories' => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
             'items' => Item::orderBy('name')->pluck('name', 'id'),
+            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
             'awards' => Award::orderBy('name')->pluck('name', 'id'),
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
             'tables' => LootTable::orderBy('name')->pluck('name', 'id'),

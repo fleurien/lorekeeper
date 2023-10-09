@@ -20,7 +20,7 @@
                     @foreach($chunk as $pet)
                         <div class="col-sm-3 col-6 text-center inventory-item" data-id="{{ $pet->pivot->id }}" data-name="{{ $user->name }}'s {{ $pet->name }}">
                             <div class="mb-1">
-                                <a href="#" class="inventory-stack"><img src="{{ $pet->VariantImage($pet->pivot->variant_id) }}" class="img-fluid"/></a>
+                                <a href="#" class="inventory-stack"><img src="{{ $pet->VariantImage($pet->pivot->variant_id) }}" class="img-fluid" style="max-height:200px;"/></a>
                             </div>
                             <div>
                                 <a href="#" class="inventory-stack inventory-stack-name">{{ $pet->VariantName($pet->pivot->variant_id) }} {{ $pet->name }}</a>

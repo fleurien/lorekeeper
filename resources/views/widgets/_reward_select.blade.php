@@ -14,7 +14,7 @@
         @if($loots)
             @foreach($loots as $loot)
                 <tr class="reward-row">
-                    <td>{!! Form::select('award_type[]', ['Item' => 'Item', 'Currency' => 'Currency'] + ($showLootTables ? ['LootTable' => 'Loot Table'] : []) + ($showRaffles ? ['Raffle' => 'Raffle Ticket'] : []), $loot->type, ['class' => 'form-control award-type', 'placeholder' => 'Select Reward Type']) !!}</td>
+                    <td>{!! Form::select('award_type[]', ['Item' => 'Item', 'Pet' => 'Pet', 'Currency' => 'Currency'] + ($showLootTables ? ['LootTable' => 'Loot Table'] : []) + ($showRaffles ? ['Raffle' => 'Raffle Ticket'] : []), $loot->type, ['class' => 'form-control award-type', 'placeholder' => 'Select Reward Type']) !!}</td>
                     <td class="reward-row-select">
                         @if($loot->type == 'Item')
                             {!! Form::select('award_id[]', $items, $loot->type_id, ['class' => 'form-control item-select selectize', 'placeholder' => 'Select Item']) !!}
@@ -22,6 +22,8 @@
                             {!! Form::select('award_id[]', $currencies, $loot->type_id, ['class' => 'form-control currency-select selectize', 'placeholder' => 'Select Currency']) !!}
                         @elseif($loot->type == 'Award')
                             {!! Form::select('award_id[]', $awards, $loot->type_id, ['class' => 'form-control award-select selectize', 'placeholder' => 'Select '.ucfirst(__('awards.award')) ]) !!}
+                        @elseif($loot->type == 'Pet')
+                            {!! Form::select('award_id[]', $pets, $loot->type_id, ['class' => 'form-control pet-select selectize', 'placeholder' => 'Select Pet']) !!}
                         @elseif($showLootTables && $loot->type == 'LootTable')
                             {!! Form::select('award_id[]', $tables, $loot->type_id, ['class' => 'form-control table-select selectize', 'placeholder' => 'Select Loot Table']) !!}
                         @elseif($showRaffles && $loot->type == 'Raffle')

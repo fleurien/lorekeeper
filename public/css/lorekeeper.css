@@ -21,7 +21,24 @@
 **************************************************************************************************/
 
 
+.awardcasecharacter{
+    display: block;
+  max-width: 200px;
+  position: relative;
+  left: -1%;
+  margin-bottom: -30%;
+  bottom: -9%;
+}
 
+.awardcaseuser {
+
+        display: block;
+        max-width: 200px;
+        position: relative;
+        left: -15%;
+        margin-bottom: -30%;
+        bottom: 5%;
+}
 
 .homepagechararosterbubble::before {
 	mask-image: url('/files/UI/planet1.png');
@@ -1327,6 +1344,23 @@ tr.accountbound {
         top: 51px !important;
       }
 
+      .awardcasecharacter {
+        display: block;
+        max-width: 200px;
+        position: relative;
+        left: 65%;
+        margin-bottom: -30%;
+        bottom: -9%;
+      }
+
+      .awardcaseuser {
+        display: block;
+        max-width: 200px;
+        position: relative;
+        left: -15%;
+        margin-bottom: -30%;
+        bottom: 2%;
+    }
      
   
       }      

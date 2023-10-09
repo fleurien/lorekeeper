@@ -22,6 +22,8 @@
                             {!! Form::select('rewardable_id[]', $currencies, $reward->rewardable_id, ['class' => 'form-control currency-select selectize', 'placeholder' => 'Select Currency']) !!}
                         @elseif($reward->rewardable_type == 'LootTable')
                             {!! Form::select('rewardable_id[]', $tables, $reward->rewardable_id, ['class' => 'form-control table-select selectize', 'placeholder' => 'Select Loot Table']) !!}
+                        @elseif($reward->rewardable_type == 'Pet')
+                            {!! Form::select('rewardable_id[]', $pet, $reward->rewardable_id, ['class' => 'form-control pet-select selectize', 'placeholder' => 'Select Pet']) !!}
                         @elseif($reward->rewardable_type == 'Raffle')
                             {!! Form::select('rewardable_id[]', $raffles, $reward->rewardable_id, ['class' => 'form-control raffle-select selectize', 'placeholder' => 'Select Raffle']) !!}
                         @endif

@@ -8,6 +8,7 @@ use App\Models\Model;
 
 use App\Models\Item\Item;
 use App\Models\Currency\Currency;
+use App\Models\Pet\Pet;
 use App\Models\Award\Award;
 
 class AwardProgression extends Model
@@ -80,6 +81,9 @@ class AwardProgression extends Model
             case 'Award':
                 return $this->belongsTo('App\Models\Award\Award', 'type_id');
                 break;
+             case 'Pet':
+                return $this->belongsTo('App\Models\Pet\Pet', 'type_id');
+                break;   
         }
         return null;
     }
@@ -105,6 +109,9 @@ class AwardProgression extends Model
                 break;
             case 'Award':
                 return boolval($user->awards()->where('award_id', $this->type_id)->sum('count') >= $this->quantity);
+                break;
+            case 'Pet':
+                return boolval($user->pets()->where('pet_id', $this->type_id)->sum('count') >= $this->quantity);
                 break;
         }
         return false;

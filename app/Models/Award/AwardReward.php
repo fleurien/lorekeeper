@@ -8,6 +8,7 @@ use App\Models\Model;
 
 use App\Models\Item\Item;
 use App\Models\Currency\Currency;
+use App\Models\Pet\Pet;
 use App\Models\Award\Award;
 
 class AwardReward extends Model
@@ -54,6 +55,9 @@ class AwardReward extends Model
                 break;
             case 'Currency':
                 return $this->belongsTo('App\Models\Currency\Currency', 'type_id');
+                break;
+            case 'Pet':
+                return $this->belongsTo('App\Models\Pet\Pet', 'type_id');
                 break;
             case 'Award':
                 return $this->belongsTo('App\Models\Award\Award', 'type_id');

@@ -446,6 +446,92 @@ class SubmissionManager extends Service {
                 ]);
             }
 
+
+            // stats & exp ---- currently prompt only
+            if($submission->prompt_id && $submission->prompt->expreward)
+            {
+                $levelLog = new ExperienceManager;
+                $statLog = new StatManager;
+                $levelData = 'Received rewards for '.($submission->prompt_id ? 'submission' : 'claim').' (<a href="'.$submission->viewUrl.'">#'.$submission->id.'</a>)';
+                
+                // to be encoded
+                $user_exp = null;
+                $user_points = null;
+                $character_exp = null;
+                $character_points = null;
+                // user
+                $level = $submission->user->level;
+                $levelUser = $submission->user;
+                if(!$level) throw new \Exception('This user does not have a level log.');
+
+                // exp
+                if($submission->prompt->expreward->user_exp || $data['bonus_user_exp'])
+                {
+                    $quantity = $submission->prompt->expreward->user_exp;
+                        if($data['bonus_user_exp'])
+                        {
+                            $quantity += $data['bonus_user_exp'];
+                        }
+                        $user_exp += $quantity;
+                    if(!$levelLog->creditExp(null, $levelUser, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant user exp');
+                }
+                //points
+                if($submission->prompt->expreward->user_points || $data['bonus_user_points'])
+                {
+                    $quantity = $submission->prompt->expreward->user_points;
+                        if($data['bonus_user_points'])
+                        {
+                            $quantity += $data['bonus_user_points'];
+                        }
+                        $user_points += $quantity;
+                    if(!$statLog->creditStat(null, $levelUser, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant user points');
+                }
+
+                // character
+                if($submission->focus_chara_id)
+                {
+                    $level = $submission->focus->level;
+                    $levelCharacter = $submission->focus;
+                    if(!$level) throw new \Exception('This character does not have a level log.');
+                    // exp
+                    if($submission->prompt->expreward->chara_exp || $data['bonus_exp'])
+                    {
+                        $quantity = $submission->prompt->expreward->chara_exp;
+                        if($data['bonus_exp'])
+                        {
+                            $quantity += $data['bonus_exp'];
+                        }
+                        $character_exp += $quantity;
+                        if(!$levelLog->creditExp(null, $levelCharacter, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant character exp');
+                    }
+                    // points
+                    if($submission->prompt->expreward->chara_points || $data['bonus_points'])
+                    {
+                        $quantity = $submission->prompt->expreward->chara_points;
+                        if($data['bonus_points'])
+                        {
+                            $quantity += $data['bonus_points'];
+                        }
+                        $character_points += $quantity;
+                        if(!$statLog->creditStat(null, $levelCharacter, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant character points');
+                    }
+                }
+
+                $json[] = [
+                    'User_Bonus' => [
+                        'exp' => $user_exp,
+                        'points' => $user_points
+                    ],
+                    'Character_Bonus' => [
+                        'exp' => $character_exp,
+                        'points' => $character_points
+                    ],
+                ];
+
+                $bonus = json_encode($json);
+            }
+            else $bonus = NULL;
+
             // Increment user submission count if it's a prompt
             if ($submission->prompt_id) {
                 $user->settings->submission_count++;
