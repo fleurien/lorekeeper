@@ -29,5 +29,18 @@
     @endforeach
     {!! $specieses->render() !!}
 
-    <div class="text-center mt-4 small text-muted">{{ $specieses->total() }} result{{ $specieses->total() == 1 ? '' : 's' }} found.</div>
+
+
+
+
+    {!! $subtypes->render() !!}
+    <div class="row text-center">
+    @foreach ($species->subtypes as $subtype)
+        <div class="col">
+                @include('world._subtype_entry', ['subtype' => $subtype])
+        </div>
+    @endforeach
+</div>
+    {!! $subtypes->render() !!}
+
 @endsection

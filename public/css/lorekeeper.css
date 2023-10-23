@@ -20,6 +20,21 @@
 
 **************************************************************************************************/
 
+.worldstarbitbullet {
+    width:32px;
+    height:32px;
+}
+
+.worldstarbitbulletline::after {
+    content: ' ';
+    background: rgb(255,104,104);
+    background: linear-gradient(90deg, rgba(255,104,104,1) 0%, rgba(255,195,122,0.9) 14%, rgba(252,255,131,0.8) 27%, rgba(131,255,141,0.7) 38%, rgba(131,255,249,0.5) 49%, rgba(131,138,255,0.3) 59%, rgba(233,131,255,0.2) 71%, rgba(255,131,236,0.1) 86%, rgba(255,131,236,0) 100%); 
+    width: 220px;
+    height: 2px;
+    position: relative;
+    display: block;
+    border-radius: 50px;
+}
 
 .awardcasecharacter{
     display: block;

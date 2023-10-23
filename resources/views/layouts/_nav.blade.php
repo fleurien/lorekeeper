@@ -114,7 +114,7 @@
                         <i class="fa-solid fa-shop"></i> Shops
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="templink">
+                        <a class="dropdown-item" href="/world">
                         <i class="fa-solid fa-book-atlas"></i> Lore
                         </a>
                         
@@ -136,7 +136,7 @@
                         <a class="dropdown-item" href="templink">
                         <i class="fa-solid fa-paintbrush"></i></i> MYO Guide
                         </a>
-                        <a class="dropdown-item" href="templink" style="padding-left: 20%;">
+                        <a class="dropdown-item" href="/world/universaltraits" style="padding-left: 20%;">
                         <i class="fa-solid fa-diagram-project"></i></i></i> Trait sheet
                         </a>
                         <div class="dropdown-divider"></div>

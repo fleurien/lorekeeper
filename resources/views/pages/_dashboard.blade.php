@@ -125,7 +125,7 @@
         <p style="font-size:20px;"><a href="/info/getstarted">✦ Getting started ✦</a></p>
         <p style="font-size:20px;">✦ MYO guide ✦</p>
         <p style="font-size:20px;">✦ Exploration guide ✦</p>
-        <p style="font-size:20px;">✦ Lore ✦</p>
+        <p style="font-size:20px;"><a href="/world">✦ Lore ✦</a></p>
         </div>
     </div>
     <div class="col-md-3 col-6 text-center">

@@ -142,6 +142,7 @@ class WorldController extends Controller
      */
     public function getSpecieses(Request $request) {
         $query = Species::query();
+        $query2 = Subtype::query();
         $name = $request->get('name');
         if ($name) {
             $query->where('name', 'LIKE', '%'.$name.'%');
@@ -151,6 +152,7 @@ class WorldController extends Controller
             'specieses' => $query->with(['subtypes' => function ($query) {
                 $query->visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC');
             }])->visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
+            'subtypes' => $query2->with('species')->visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC')->paginate(20)->appends($request->query()),
         ]);
     }
 

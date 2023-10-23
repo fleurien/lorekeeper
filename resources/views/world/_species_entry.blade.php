@@ -22,14 +22,7 @@
                 <strong>Visual Trait Index</strong>
             </a>
         @endif
-        @if (count($species->subtypes))
-            <div>
-                <strong>Subtypes: </strong>
-                @foreach ($species->subtypes as $count => $subtype)
-                    {!! $subtype->displayName !!}{{ $count < $species->subtypes->count() - 1 ? ', ' : '' }}
-                @endforeach
-            </div>
-        @endif
+        
         <div class="world-entry-text">
             {!! $species->parsed_description !!}
         </div>
