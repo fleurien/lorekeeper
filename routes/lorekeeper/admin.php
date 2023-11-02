@@ -479,6 +479,16 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('encounters/areas/delete/{id}', 'EncounterController@postDeleteEncounterArea');
     Route::get('encounters/areas/roll/{id}', 'EncounterController@getRollArea');
     Route::post('encounters/areas/restrictions/{id}', 'EncounterController@postRestrictArea');
+    
+    # DAILIES
+    Route::get('dailies', 'DailyController@getIndex');
+    Route::get('dailies/create', 'DailyController@getCreateDaily');
+    Route::get('dailies/edit/{id}', 'DailyController@getEditDaily');
+    Route::get('dailies/delete/{id}', 'DailyController@getDeleteDaily');
+    Route::post('dailies/create', 'DailyController@postCreateEditDaily');
+    Route::post('dailies/edit/{id?}', 'DailyController@postCreateEditDaily');
+    Route::post('dailies/delete/{id}', 'DailyController@postDeleteDaily');
+    Route::post('dailies/sort', 'DailyController@postSortDaily'); 
 });
 
 // PAGES

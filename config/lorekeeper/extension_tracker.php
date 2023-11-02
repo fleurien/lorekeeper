@@ -18,7 +18,16 @@ return [
             'creators' => json_encode([
             'AnimatedCritter' => 'https://github.com/animatedcritter/',
         ]),
+    
         'version' => '1.0.0',
+    ],
+    'dailies' => [
+        'key' => 'dailies',
+        'wiki_key' => 'Dailies',
+        'creators' => json_encode([
+            'Cylunny' => 'https://toyhou.se/cylunny',
+        ]),
+        'version' => '1.1.0', 
     ],
 
     'crafting_system' => [

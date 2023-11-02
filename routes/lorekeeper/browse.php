@@ -225,6 +225,13 @@ Route::get('event-tracking', 'PromptsController@getEventTracking');
 **************************************************************************************************/
 Route::get('pets/pet/{id}', 'Users\PetController@getPetDrops');
 
+
+Route::group(['prefix' => __('dailies.dailies')], function() {
+    Route::get('/', 'DailyController@getIndex');
+    Route::get('{id}', 'DailyController@getDaily')->where(['id' => '[0-9]+']);
+});
+
+
 /**************************************************************************************************
     Site Pages
 **************************************************************************************************/

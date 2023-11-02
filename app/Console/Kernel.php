@@ -37,6 +37,8 @@ class Kernel extends ConsoleKernel {
                 ->daily();
         $schedule->command('update-timed-areas')
                 ->everyMinute();
+        $schedule->command('update-timed-daily')
+                ->everyMinute();          
 
     }
 

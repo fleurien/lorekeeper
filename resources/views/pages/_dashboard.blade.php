@@ -144,7 +144,7 @@
         <p style="font-size:20px;"><a href="/info/eventstage">✦ Current event ✦</a></p>
         <p style="font-size:20px;">✦ World map ✦</p>
         <p style="font-size:20px;"><a href="/shops">✦ Shops ✦</a></p>
-        <p style="font-size:20px;">✦ Checklist ✦</p>
+        <p style="font-size:20px;"><a href="/dailies/1">✦ Checklist ✦</a></p>
         </div>
     </div>
 </div>
