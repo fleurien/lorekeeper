@@ -47,7 +47,7 @@ class CleanOekaki extends Command {
             $filetime = Carbon::createFromTimestamp(filemtime($file));
             $diff = $now->diffInMinutes($filetime);
             if ($diff > 5) {
-                $this->line("Removing ".$file);
+                $this->line('Removing '.$file);
                 unlink($file);
             }
         }

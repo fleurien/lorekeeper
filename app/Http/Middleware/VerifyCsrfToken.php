@@ -19,6 +19,6 @@ class VerifyCsrfToken extends Middleware {
      */
     protected $except = [
         //
-        'oekaki/*'
+        'oekaki/*',
     ];
 }
