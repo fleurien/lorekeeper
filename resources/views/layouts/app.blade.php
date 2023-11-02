@@ -80,6 +80,8 @@
     @endif
 
     @include('feed::links')
+    @stack('styles')
+    @stack('head')
 </head>
 
 <body>
