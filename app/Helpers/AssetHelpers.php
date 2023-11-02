@@ -40,6 +40,14 @@ function calculateGroupCurrency($data)
         if(isset($data['art_bonus'])) foreach((array)$data['art_bonus'] as $bonus) $total += (round($bonus) * $data['art_type']);
     }
 
+    if($pieceType->has('3d')) {
+        // This adds values to the total!
+        $total += ($data['art_finish3d'] + $data['model_type']);
+        // This multiplies each option selected in the "bonus" form field by
+        // the result from the "art type" field, and adds it to the total.
+        if(isset($data['art_bonus3d'])) foreach((array)$data['art_bonus3d'] as $bonus) $total += (round($bonus) * $data['model_type']);
+    }
+
     // Likewise for if the user selected that the submission has a written component:
     if($pieceType->has('lit')) {
         // This divides the word count by 100, rounds the result, and then multiplies it by one--
