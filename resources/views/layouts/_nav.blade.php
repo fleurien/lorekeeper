@@ -102,9 +102,9 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="exploreDropdown">
-                    <a class="dropdown-item" href="{{ url(__('dailies.dailies')) }}">
+                    <a class="dropdown-item" href="/dailies/1">
                     <i class="fa-solid fa-calendar-check"></i>
-                    /dailies/1
+                    Daily checklist
                         </a>
                         <a class="dropdown-item" href="templink">
                         <i class="fa-solid fa-map-location-dot"></i> Hub map
