@@ -208,4 +208,8 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Route::get('/liked', 'CommentController@getLikedComments');
 });
 
-Route::get('oekaki', 'OekakiController@getIndex');
+Route::group(['prefix' => 'oekaki'], function () {
+    Route::get('/', 'OekakiController@getIndex');
+    Route::post('publish', 'OekakiController@postPublish');
+    Route::post('save', 'OekakiController@postSave');
+});

@@ -31,4 +31,9 @@
             <div class="sidebar-item"><a href="{{ url('gallery/' . $gallery->id) }}" class="{{ set_active('gallery/' . $gallery->id) }}">{{ $gallery->name }}</a></div>
         @endforeach
     </li>
+
+    <li class="sidebar-section">
+        <div class="sidebar-section-header">Oekaki</div>
+        <div class="sidebar-item"><a href="{{ url('oekaki') }}" class="{{ set_active('oekaki') }}">Draw</a></div>
+    </li>
 </ul>

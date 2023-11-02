@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	// The require scope
 /******/ 	var __webpack_require__ = {};
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
@@ -14,7 +14,7 @@
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 /*!****************************************************************!*\
@@ -329,7 +329,7 @@ function createDrawingTools() {
  *
  * @property {string} resourcesRoot - URL to the directory that contains the gfx/css etc directories (relative to the
  *                                    page that ChickenPaint is loaded on)
- *                                    
+ *
  * @property {string} [language] - Provide an explicit ISO language code here (e.g. "ja_JP") to override the guessed browser language
  *                               Unsupported languages will fall back to English.
  *                               Currently only "en" and "ja" are available.
@@ -1112,7 +1112,7 @@ function ChickenPaint(options) {
   };
   /**
       * Change the interpolation mode used by Free Transform operations
-      * 
+      *
       * @param {string} interpolation - Either "sharp" or "smooth"
       */
 
@@ -1575,22 +1575,22 @@ exports.createImageData = createImageData;
 
 /*
 	ChickenPaint
-	
+
 	ChickenPaint is a translation of ChibiPaint from Java to JavaScript
 	by Nicholas Sherlock / Chicken Smoothie.
-	
+
 	ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
-	
+
 	ChickenPaint is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	ChickenPaint is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with ChickenPaint. If not, see <http://www.gnu.org/licenses/>.
 */
@@ -1934,7 +1934,7 @@ function CPArtwork(_width, _height) {
   };
   /**
    * Gets the current selection rect or a rectangle covering the whole canvas if there are no selections
-   * 
+   *
    * @returns {CPRect}
    */
 
@@ -2261,7 +2261,7 @@ function CPArtwork(_width, _height) {
   };
   /**
    * Remove the currently selected layer.
-   * 
+   *
    * @return {boolean} True if the layer was removed, or false when removal failed because there would be no image
    * layers left in the document after deletion.
    */
@@ -2312,7 +2312,7 @@ function CPArtwork(_width, _height) {
   };
   /**
    * Move a layer in the stack from one index to another.
-   * 
+   *
    * @param {(CPImageLayer|CPLayerGroup)} layer
    * @param {CPLayerGroup} toGroup
    * @param {int} toIndex
@@ -2540,7 +2540,7 @@ function CPArtwork(_width, _height) {
   };
   /**
    * Merge together the visible layers and return the resulting image for display to the screen.
-   * 
+   *
    * The image is cached, so repeat calls are cheap.
    *
    * @returns {CPColorBmp}
@@ -3223,9 +3223,9 @@ function CPArtwork(_width, _height) {
   /**
       * Begins transforming the current selection/layer, and returns the initial source rectangle and initial transform.
       * You can update the transform by calling transformAffineAmend().
-      * 
+      *
       * You must call transformAffineFinish() or transformAffineAbort() to finish the transformation.
-      * 
+      *
       * Returns null if the current selection/layer doesn't contain any non-transparent pixels, and doesn't start
       * transforming.
       */
@@ -3461,10 +3461,10 @@ function CPArtwork(_width, _height) {
   };
   /**
    * Get the artwork as a single flat PNG image.
-   * 
+   *
    * Rotation is [0..3] and selects a multiple of 90 degrees of clockwise rotation to be applied to the drawing before
    * saving.
-   * 
+   *
    * @return {string} A binary string of the PNG file data.
    */
 
@@ -3488,7 +3488,7 @@ function CPArtwork(_width, _height) {
     return fusion.getAsPNGBuffer(rotation);
   };
   /**
-   * Returns true if this artwork can be exactly represented as a simple transparent PNG (i.e. doesn't have multiple 
+   * Returns true if this artwork can be exactly represented as a simple transparent PNG (i.e. doesn't have multiple
    * layers, and base layer's opacity is set to 100%).
    */
 
@@ -3686,7 +3686,7 @@ function CPArtwork(_width, _height) {
   CPActionAddLayer.prototype.constructor = CPActionAddLayer;
   /**
       * Make a copy of the currently selected layer and add the new layer on top of the current layer.
-      * 
+      *
       * @param {CPLayer} sourceLayer
       * @constructor
       */
@@ -4856,7 +4856,7 @@ function CPArtwork(_width, _height) {
   }(CPActionTransformSelection);
   /**
    * Cut the selected rectangle from the layer
-   * 
+   *
    * @param {CPImageLayer} layer - Layer to cut from
    * @param {boolean} cutFromMask - True to cut from the mask of the layer, false to cut from the image
    * @param {CPRect} selection - The cut rectangle co-ordinates
@@ -4899,7 +4899,7 @@ function CPArtwork(_width, _height) {
   CPActionCut.prototype.constructor = CPActionCut;
   /**
    * Paste the given clipboard onto the given layer.
-   * 
+   *
    * @param {CPClip} clip
    */
 
@@ -4992,10 +4992,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -5013,7 +5013,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 */
 
 /**
- * 
+ *
  * @param width
  * @param height
  * @constructor
@@ -5061,19 +5061,19 @@ var BYTES_PER_PIXEL = 4,
     softLightLUTSquareRoot = new Array(256);
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 CPBlend.multiplyOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerAlpha, srcRect) {
@@ -5100,19 +5100,19 @@ CPBlend.multiplyOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layer
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5140,19 +5140,19 @@ CPBlend.multiplyOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5191,19 +5191,19 @@ CPBlend.multiplyOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5242,22 +5242,22 @@ CPBlend.multiplyOntoTransparentFusionWithTransparentLayer = function (fusion, la
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5287,22 +5287,22 @@ CPBlend.multiplyOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5332,22 +5332,22 @@ CPBlend.multiplyOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5388,22 +5388,22 @@ CPBlend.multiplyOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5444,19 +5444,19 @@ CPBlend.multiplyOntoTransparentFusionWithTransparentLayerMasked = function (fusi
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5484,19 +5484,19 @@ CPBlend.multiply2OntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, laye
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5524,19 +5524,19 @@ CPBlend.multiply2OntoOpaqueFusionWithTransparentLayer = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5575,19 +5575,19 @@ CPBlend.multiply2OntoTransparentFusionWithOpaqueLayer = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5626,22 +5626,22 @@ CPBlend.multiply2OntoTransparentFusionWithTransparentLayer = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5671,22 +5671,22 @@ CPBlend.multiply2OntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5716,22 +5716,22 @@ CPBlend.multiply2OntoOpaqueFusionWithTransparentLayerMasked = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5772,22 +5772,22 @@ CPBlend.multiply2OntoTransparentFusionWithOpaqueLayerMasked = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the multiply blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -5828,19 +5828,19 @@ CPBlend.multiply2OntoTransparentFusionWithTransparentLayerMasked = function (fus
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5875,19 +5875,19 @@ CPBlend.normalOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerAl
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5918,19 +5918,19 @@ CPBlend.normalOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -5960,19 +5960,19 @@ CPBlend.normalOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6002,22 +6002,22 @@ CPBlend.normalOntoTransparentFusionWithTransparentLayer = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6054,22 +6054,22 @@ CPBlend.normalOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6102,22 +6102,22 @@ CPBlend.normalOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6149,22 +6149,22 @@ CPBlend.normalOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6196,19 +6196,19 @@ CPBlend.normalOntoTransparentFusionWithTransparentLayerMasked = function (fusion
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6232,19 +6232,19 @@ CPBlend.addOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerAlpha
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6268,19 +6268,19 @@ CPBlend.addOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, layer
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6309,19 +6309,19 @@ CPBlend.addOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, layer
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6350,22 +6350,22 @@ CPBlend.addOntoTransparentFusionWithTransparentLayer = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6391,22 +6391,22 @@ CPBlend.addOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, laye
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6432,22 +6432,22 @@ CPBlend.addOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6478,22 +6478,22 @@ CPBlend.addOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the add blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6524,19 +6524,19 @@ CPBlend.addOntoTransparentFusionWithTransparentLayerMasked = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6560,19 +6560,19 @@ CPBlend.subtractOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layer
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6596,19 +6596,19 @@ CPBlend.subtractOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6638,19 +6638,19 @@ CPBlend.subtractOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6680,22 +6680,22 @@ CPBlend.subtractOntoTransparentFusionWithTransparentLayer = function (fusion, la
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6721,22 +6721,22 @@ CPBlend.subtractOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6762,22 +6762,22 @@ CPBlend.subtractOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6809,22 +6809,22 @@ CPBlend.subtractOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the subtract blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -6856,19 +6856,19 @@ CPBlend.subtractOntoTransparentFusionWithTransparentLayerMasked = function (fusi
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6897,19 +6897,19 @@ CPBlend.screenOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerAl
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6938,19 +6938,19 @@ CPBlend.screenOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -6989,19 +6989,19 @@ CPBlend.screenOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7040,22 +7040,22 @@ CPBlend.screenOntoTransparentFusionWithTransparentLayer = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7086,22 +7086,22 @@ CPBlend.screenOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7132,22 +7132,22 @@ CPBlend.screenOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7188,22 +7188,22 @@ CPBlend.screenOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the screen blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7244,19 +7244,19 @@ CPBlend.screenOntoTransparentFusionWithTransparentLayerMasked = function (fusion
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7289,19 +7289,19 @@ CPBlend.lightenOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerA
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7334,19 +7334,19 @@ CPBlend.lightenOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7388,19 +7388,19 @@ CPBlend.lightenOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7442,22 +7442,22 @@ CPBlend.lightenOntoTransparentFusionWithTransparentLayer = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7492,22 +7492,22 @@ CPBlend.lightenOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7542,22 +7542,22 @@ CPBlend.lightenOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, la
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7601,22 +7601,22 @@ CPBlend.lightenOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, la
 };
 /**
  * Blend the given layer onto the fusion using the lighten blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7660,19 +7660,19 @@ CPBlend.lightenOntoTransparentFusionWithTransparentLayerMasked = function (fusio
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7705,19 +7705,19 @@ CPBlend.darkenOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerAl
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7750,19 +7750,19 @@ CPBlend.darkenOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7804,19 +7804,19 @@ CPBlend.darkenOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -7858,22 +7858,22 @@ CPBlend.darkenOntoTransparentFusionWithTransparentLayer = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7908,22 +7908,22 @@ CPBlend.darkenOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -7958,22 +7958,22 @@ CPBlend.darkenOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8017,22 +8017,22 @@ CPBlend.darkenOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the darken blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8076,19 +8076,19 @@ CPBlend.darkenOntoTransparentFusionWithTransparentLayerMasked = function (fusion
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8121,19 +8121,19 @@ CPBlend.dodgeOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerAlp
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8166,19 +8166,19 @@ CPBlend.dodgeOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, lay
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8217,19 +8217,19 @@ CPBlend.dodgeOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, lay
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8268,22 +8268,22 @@ CPBlend.dodgeOntoTransparentFusionWithTransparentLayer = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8318,22 +8318,22 @@ CPBlend.dodgeOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8368,22 +8368,22 @@ CPBlend.dodgeOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8424,22 +8424,22 @@ CPBlend.dodgeOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the dodge blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8480,19 +8480,19 @@ CPBlend.dodgeOntoTransparentFusionWithTransparentLayerMasked = function (fusion,
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8525,19 +8525,19 @@ CPBlend.burnOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerAlph
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8570,19 +8570,19 @@ CPBlend.burnOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, laye
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8621,19 +8621,19 @@ CPBlend.burnOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, laye
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8672,22 +8672,22 @@ CPBlend.burnOntoTransparentFusionWithTransparentLayer = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8722,22 +8722,22 @@ CPBlend.burnOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, lay
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8772,22 +8772,22 @@ CPBlend.burnOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8828,22 +8828,22 @@ CPBlend.burnOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the burn blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -8884,19 +8884,19 @@ CPBlend.burnOntoTransparentFusionWithTransparentLayerMasked = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8929,19 +8929,19 @@ CPBlend.overlayOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layerA
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -8974,19 +8974,19 @@ CPBlend.overlayOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9025,19 +9025,19 @@ CPBlend.overlayOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9076,22 +9076,22 @@ CPBlend.overlayOntoTransparentFusionWithTransparentLayer = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9126,22 +9126,22 @@ CPBlend.overlayOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9176,22 +9176,22 @@ CPBlend.overlayOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, la
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9232,22 +9232,22 @@ CPBlend.overlayOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, la
 };
 /**
  * Blend the given layer onto the fusion using the overlay blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9288,19 +9288,19 @@ CPBlend.overlayOntoTransparentFusionWithTransparentLayerMasked = function (fusio
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9333,19 +9333,19 @@ CPBlend.hardLightOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, laye
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9378,19 +9378,19 @@ CPBlend.hardLightOntoOpaqueFusionWithTransparentLayer = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9429,19 +9429,19 @@ CPBlend.hardLightOntoTransparentFusionWithOpaqueLayer = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9480,22 +9480,22 @@ CPBlend.hardLightOntoTransparentFusionWithTransparentLayer = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9530,22 +9530,22 @@ CPBlend.hardLightOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9580,22 +9580,22 @@ CPBlend.hardLightOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9636,22 +9636,22 @@ CPBlend.hardLightOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the hard light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9692,19 +9692,19 @@ CPBlend.hardLightOntoTransparentFusionWithTransparentLayerMasked = function (fus
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9737,19 +9737,19 @@ CPBlend.softLightOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, laye
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9782,19 +9782,19 @@ CPBlend.softLightOntoOpaqueFusionWithTransparentLayer = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9833,19 +9833,19 @@ CPBlend.softLightOntoTransparentFusionWithOpaqueLayer = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -9884,22 +9884,22 @@ CPBlend.softLightOntoTransparentFusionWithTransparentLayer = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9934,22 +9934,22 @@ CPBlend.softLightOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -9984,22 +9984,22 @@ CPBlend.softLightOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10040,22 +10040,22 @@ CPBlend.softLightOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the soft light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10096,19 +10096,19 @@ CPBlend.softLightOntoTransparentFusionWithTransparentLayerMasked = function (fus
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10141,19 +10141,19 @@ CPBlend.vividLightOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, lay
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10186,19 +10186,19 @@ CPBlend.vividLightOntoOpaqueFusionWithTransparentLayer = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10237,19 +10237,19 @@ CPBlend.vividLightOntoTransparentFusionWithOpaqueLayer = function (fusion, layer
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10288,22 +10288,22 @@ CPBlend.vividLightOntoTransparentFusionWithTransparentLayer = function (fusion, 
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10338,22 +10338,22 @@ CPBlend.vividLightOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10388,22 +10388,22 @@ CPBlend.vividLightOntoOpaqueFusionWithTransparentLayerMasked = function (fusion,
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10444,22 +10444,22 @@ CPBlend.vividLightOntoTransparentFusionWithOpaqueLayerMasked = function (fusion,
 };
 /**
  * Blend the given layer onto the fusion using the vivid light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10500,19 +10500,19 @@ CPBlend.vividLightOntoTransparentFusionWithTransparentLayerMasked = function (fu
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10541,19 +10541,19 @@ CPBlend.linearLightOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10582,19 +10582,19 @@ CPBlend.linearLightOntoOpaqueFusionWithTransparentLayer = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10633,19 +10633,19 @@ CPBlend.linearLightOntoTransparentFusionWithOpaqueLayer = function (fusion, laye
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10684,22 +10684,22 @@ CPBlend.linearLightOntoTransparentFusionWithTransparentLayer = function (fusion,
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10730,22 +10730,22 @@ CPBlend.linearLightOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10776,22 +10776,22 @@ CPBlend.linearLightOntoOpaqueFusionWithTransparentLayerMasked = function (fusion
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10832,22 +10832,22 @@ CPBlend.linearLightOntoTransparentFusionWithOpaqueLayerMasked = function (fusion
 };
 /**
  * Blend the given layer onto the fusion using the linear light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -10888,19 +10888,19 @@ CPBlend.linearLightOntoTransparentFusionWithTransparentLayerMasked = function (f
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10933,19 +10933,19 @@ CPBlend.pinLightOntoOpaqueFusionWithOpaqueLayer = function (fusion, layer, layer
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -10978,19 +10978,19 @@ CPBlend.pinLightOntoOpaqueFusionWithTransparentLayer = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11029,19 +11029,19 @@ CPBlend.pinLightOntoTransparentFusionWithOpaqueLayer = function (fusion, layer, 
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11080,22 +11080,22 @@ CPBlend.pinLightOntoTransparentFusionWithTransparentLayer = function (fusion, la
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11130,22 +11130,22 @@ CPBlend.pinLightOntoOpaqueFusionWithOpaqueLayerMasked = function (fusion, layer,
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11180,22 +11180,22 @@ CPBlend.pinLightOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11236,22 +11236,22 @@ CPBlend.pinLightOntoTransparentFusionWithOpaqueLayerMasked = function (fusion, l
 };
 /**
  * Blend the given layer onto the fusion using the pin light blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11289,23 +11289,23 @@ CPBlend.pinLightOntoTransparentFusionWithTransparentLayerMasked = function (fusi
       }
     }
   }
-}; // Blending operations with non-standard variants 
+}; // Blending operations with non-standard variants
 
 /**
  * Blend the given layer onto the fusion using the passthrough blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11334,19 +11334,19 @@ CPBlend.passthroughOntoOpaqueFusionWithTransparentLayer = function (fusion, laye
 CPBlend.passthroughOntoOpaqueFusionWithOpaqueLayer = CPBlend.passthroughOntoOpaqueFusionWithTransparentLayer;
 /**
  * Blend the given layer onto the fusion using the passthrough blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 CPBlend.passthroughOntoTransparentFusionWithTransparentLayer = function (fusion, layer, layerAlpha, srcRect) {
@@ -11374,22 +11374,22 @@ CPBlend.passthroughOntoTransparentFusionWithTransparentLayer = function (fusion,
 CPBlend.passthroughOntoTransparentFusionWithOpaqueLayer = CPBlend.passthroughOntoTransparentFusionWithTransparentLayer;
 /**
  * Blend the given layer onto the fusion using the passthrough blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 CPBlend.passthroughOntoOpaqueFusionWithTransparentLayerMasked = function (fusion, layer, layerAlpha, srcRect, mask) {
@@ -11419,22 +11419,22 @@ CPBlend.passthroughOntoOpaqueFusionWithTransparentLayerMasked = function (fusion
 CPBlend.passthroughOntoOpaqueFusionWithOpaqueLayerMasked = CPBlend.passthroughOntoOpaqueFusionWithTransparentLayerMasked;
 /**
  * Blend the given layer onto the fusion using the passthrough blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 CPBlend.passthroughOntoTransparentFusionWithTransparentLayerMasked = function (fusion, layer, layerAlpha, srcRect, mask) {
@@ -11465,17 +11465,17 @@ CPBlend.passthroughOntoTransparentFusionWithOpaqueLayerMasked = CPBlend.passthro
 
 /**
  * Blend the given layer onto the fusion using the replace blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 CPBlend.replaceOntoFusionWithTransparentLayer = function (fusion, layer, layerAlpha, srcRect) {
@@ -11496,17 +11496,17 @@ CPBlend.replaceOntoFusionWithTransparentLayer = function (fusion, layer, layerAl
 };
 /**
  * Blend the given layer onto the fusion using the replace blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11528,20 +11528,20 @@ CPBlend.replaceOntoFusionWithOpaqueLayer = function (fusion, layer, layerAlpha, 
 };
 /**
  * Blend the given layer onto the fusion using the replace blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11565,20 +11565,20 @@ CPBlend.replaceOntoFusionWithTransparentLayerMasked = function (fusion, layer, l
 };
 /**
  * Blend the given layer onto the fusion using the replace blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11602,17 +11602,17 @@ CPBlend.replaceOntoFusionWithOpaqueLayerMasked = function (fusion, layer, layerA
 };
 /**
  * Blend the given layer onto the fusion using the replaceAlpha blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11631,20 +11631,20 @@ CPBlend.replaceAlphaOntoFusionWithTransparentLayer = function (fusion, layer, la
 };
 /**
  * Blend the given layer onto the fusion using the replaceAlpha blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11665,17 +11665,17 @@ CPBlend.replaceAlphaOntoFusionWithTransparentLayerMasked = function (fusion, lay
 };
 /**
  * Blend the given layer onto the fusion using the replaceAlpha blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11694,20 +11694,20 @@ CPBlend.replaceAlphaOntoFusionWithOpaqueLayer = function (fusion, layer, layerAl
 };
 /**
  * Blend the given layer onto the fusion using the replaceAlpha blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * The given alpha mask will be multiplied with the layer alpha before blending.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {CPGreyBmp} mask
- * 
+ *
  */
 
 
@@ -11728,19 +11728,19 @@ CPBlend.replaceAlphaOntoFusionWithOpaqueLayerMasked = function (fusion, layer, l
 };
 /**
  * Modify the given layer using the multiplyUpgrade blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11774,19 +11774,19 @@ CPBlend.upgradeMultiplyOfOpaqueLayer = function (fusion, layer, layerAlpha, srcR
 };
 /**
  * Modify the given layer using the multiplyUpgrade blending operator.
- * 
+ *
  * The layer alpha must be less than 100
- * 
+ *
  * Fusion pixels must be opaque.
- * 
+ *
  * The destination co-ordinates will be the same as the source ones, so both fusion and layer
  * must be the same dimensions.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
- * 
+ *
  */
 
 
@@ -11820,21 +11820,21 @@ CPBlend.upgradeMultiplyOfTransparentLayer = function (fusion, layer, layerAlpha,
 };
 /**
  * Blend the given layer onto the fusion using the normal blending operator.
- * 
+ *
  * The layer must have its layer alpha set to 100
- * 
+ *
  * Fusion can contain transparent pixels.
- * 
+ *
  * The destination's top left will be at destX, destY. The fusion can be a different size to
  * the layer.
- * 
+ *
  * @param {CPColorBmp} fusion
  * @param {CPColorBmp} layer
  * @param {int} layerAlpha
  * @param {CPRect} srcRect
  * @param {int} destX
  * @param {int} destY
- * 
+ *
  */
 
 
@@ -12520,7 +12520,7 @@ function CPBlendTree(drawingRootGroup, width, height, requireSimpleFusion) {
   }
   /**
    * Blend the given tree node and return the tree node that contains the resulting blend, or null if the tree is empty.
-   * 
+   *
    * @param {?CPBlendNode} treeNode
    */
 
@@ -12613,7 +12613,7 @@ function CPBlendTree(drawingRootGroup, width, height, requireSimpleFusion) {
   }
   /**
    * Blend the layers in the tree and return the resulting image.
-   * 
+   *
    * @returns An object with blendMode, alpha and image (CPColorBmp) properties.
    */
 
@@ -12639,10 +12639,10 @@ exports.default = CPBrushInfo;
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -12668,7 +12668,7 @@ exports.default = CPBrushInfo;
  *
  * @property {int} spacing
  * @property {int} minSpacing
- * 
+ *
  * @property {int} size - The user-chosen size of this brush
  * @property {int} curSize - The current size of the brush after pen pressure has been applied
  *
@@ -12794,10 +12794,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -16069,10 +16069,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -16209,7 +16209,7 @@ CPColorBmp.prototype.setRectXOR = function (buffer, rect) {
     bmp1Index += bmp1YSkip;
   }
 };
-/** 
+/**
  * Copy the rectangle at srcRect from bmp onto this image at (dstX, dstY).
  *
  * @param {CPColorBmp} bmp
@@ -16457,9 +16457,9 @@ CPColorBmp.prototype.floodFill = function (x, y, color) {
     y: y + 1,
     dy: 1
   });
-  /* 
+  /*
    * If we are filling 100% transparent areas then we need to ignore the residual color information
-   * (it would also be possible to clear it when erasing, but then the performance impact would be on the eraser 
+   * (it would also be possible to clear it when erasing, but then the performance impact would be on the eraser
    * rather than on this low importance flood fill)
    */
 
@@ -16643,7 +16643,7 @@ CPColorBmp.prototype.floodFill = function (x, y, color) {
 };
 /**
  * Premultiply the RGB channels in the given R,G,B,A channel buffer with the alpha channel.
- * 
+ *
  * @param {Uint8Array} buffer - buffer R,G,B,A channel array
  * @param {int} len - Number of pixels in buffer to modify
  */
@@ -16744,7 +16744,7 @@ function boxBlurLine(src, dst, len, radius) {
 }
 /**
  * Copy a column of pixels in the bitmap to the given R,G,B,A buffer.
- * 
+ *
  * @param {int} x X-coordinate of column
  * @param {int} y Y-coordinate of top of column to copy
  * @param {int} len Number of pixels to copy
@@ -16767,7 +16767,7 @@ CPColorBmp.prototype.copyPixelColumnToArray = function (x, y, len, buffer) {
 };
 /**
  * Copy the pixels from the given R,G,B,A buffer to a column of pixels in the bitmap.
- * 
+ *
  * @param {int} x X-coordinate of column
  * @param {int} y Y-coordinate of top of column to copy
  * @param {int} len Number of pixels to copy
@@ -17527,7 +17527,7 @@ CPColorBmp.prototype.hasAlphaInRect = function (rect) {
 };
 /**
  * Returns true if there are any transparent pixels in this image.
- * 
+ *
  * @returns {boolean}
  */
 
@@ -17593,10 +17593,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -18877,10 +18877,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -18945,7 +18945,7 @@ function CPLayer(name) {
   this.blendMode = _CPBlend.default.LM_NORMAL;
   /**
       * The layer mask (if present)
-      * 
+      *
       * @type {?CPGreyBmp}
       */
 
@@ -19029,7 +19029,7 @@ CPLayer.prototype.getAlpha = function () {
 };
 /**
  * Get the alpha of this layer, or zero if this layer is hidden.
- * 
+ *
  * @returns {number}
  */
 
@@ -19316,7 +19316,7 @@ CPLayerGroup.prototype.getExpanded = function () {
 };
 /**
  * Get the index of the given layer in this group, or -1 if the layer is not in the group.
- * 
+ *
  * @param {CPLayer} layer
  * @returns {int}
  */
@@ -19386,10 +19386,10 @@ exports.default = CPLookUpTable;
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -19853,7 +19853,7 @@ function CPResourceSaver(options) {
     xhr.addEventListener("load", function (evt) {
       reportProgress(1.0);
 
-      if (this.status == 200 && /^CHIBIOK/.test(this.response)) {
+      if (this.status == 200) {
         that.emitEvent("savingComplete");
       } else {
         reportFatal(this.response);
@@ -19870,10 +19870,10 @@ function CPResourceSaver(options) {
   /**
    * Begin saving the data provided in the constructor. Returns immediately, and fires these events to report the
    * saving progress:
-   * 
-   * savingProgress(progress) - Progress is [0.0 ... 1.0] and reports how much has uploaded so far, or null if the 
+   *
+   * savingProgress(progress) - Progress is [0.0 ... 1.0] and reports how much has uploaded so far, or null if the
    *                            total progress could not be determined.
-   * savingFailure(error)     - When saving fails, along with a string error message to display to the user. 
+   * savingFailure(error)     - When saving fails, along with a string error message to display to the user.
    * savingComplete()         - When saving completes succesfully
    */
 
@@ -19978,10 +19978,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -20067,10 +20067,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -20122,10 +20122,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -20208,10 +20208,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -20709,10 +20709,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -20935,8 +20935,8 @@ function CPCanvas(controller) {
       sawTouchWithPressure = false,
 
   /* The area of the document that should have its layers fused and repainted to the screen
-   * (i.e. an area modified by drawing tools). 
-   * 
+   * (i.e. an area modified by drawing tools).
+   *
    * Initially set to the size of the artwork so we can repaint the whole thing.
    */
   artworkUpdateRegion = artwork.getBounds(),
@@ -22582,7 +22582,7 @@ function CPCanvas(controller) {
   };
   /**
    * Get canvas rotation in radians.
-   * 
+   *
    * @return {number}
    */
 
@@ -22665,9 +22665,9 @@ function CPCanvas(controller) {
   };
   /**
    * Get the current pen pressure, given a pointer event.
-   * 
+   *
    * @param {PointerEvent} e
-   * 
+   *
    * @return {Number}
    */
 
@@ -22686,7 +22686,7 @@ function CPCanvas(controller) {
     if (e.pointerType === "touch") {
       /* Some devices like iOS set pressure = 0 for all touch events, so detect that absence of pressure
        * and override to use a pressure of 1.0.
-       * 
+       *
        * Android provides useful pressure based on the finger's contact area with the screen (Pixel 4A).
        */
       if (e.pressure !== 0) {
@@ -22699,7 +22699,7 @@ function CPCanvas(controller) {
 
       return 1.0;
     }
-    /* In the Pointer Events API, mice have a default pressure of 0.5, but we want 1.0. Since we can't 
+    /* In the Pointer Events API, mice have a default pressure of 0.5, but we want 1.0. Since we can't
      * reliably distinguish between mice and pens, we don't have any better options:
      */
 
@@ -22886,7 +22886,7 @@ function CPCanvas(controller) {
   };
   /**
    * Schedule a repaint for an area of the screen for later.
-   * 
+   *
    * @param rect CPRect Region that should be repainted using display coordinates
    */
 
@@ -23155,7 +23155,7 @@ function CPCanvas(controller) {
   canvas.addEventListener("wheel", handleMouseWheel);
   document.addEventListener("keydown", handleKeyDown);
   document.addEventListener("keyup", handleKeyUp);
-  /* Workaround for Chrome Mac bug that causes canvas to be disposed and never recreated when tab is switched into the 
+  /* Workaround for Chrome Mac bug that causes canvas to be disposed and never recreated when tab is switched into the
    * background https://bugs.chromium.org/p/chromium/issues/detail?id=588434
    */
 
@@ -23222,10 +23222,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -23312,10 +23312,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -24051,7 +24051,7 @@ exports.setContrastingDrawStyle = setContrastingDrawStyle;
 
 /**
  * Create a checkerboard HTML5 CanvasPattern (which can be used for fillStyle) using the given canvas context.
- * 
+ *
  * @param canvasContext
  * @returns {CanvasPattern}
  */
@@ -24129,10 +24129,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -24205,10 +24205,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -25117,7 +25117,7 @@ function CPLayersPalette(controller) {
     };
     /**
      * Call when the selected layer changes.
-     * 
+     *
      * @param {CPLayer} newLayer
      * @param {boolean} maskSelected
      */
@@ -25710,10 +25710,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -25845,10 +25845,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -26188,7 +26188,7 @@ var MENU_ENTRIES = [{
   }]
 }];
 /**
- * 
+ *
  * @param {ChickenPaint} controller
  * @param {CPMainGui} mainGUI
  * @constructor
@@ -26410,10 +26410,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -26520,10 +26520,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -26546,7 +26546,7 @@ function distanceGreaterThan(a, b, threshold) {
   return dist > threshold * threshold;
 }
 /**
- * 
+ *
  * @param {ChickenPaint} cpController
  * @param {String} className
  * @param {String} title
@@ -26554,7 +26554,7 @@ function distanceGreaterThan(a, b, threshold) {
  * @param {boolean} options.resizeVert
  * @param {boolean} options.resizeHorz
  * @param {boolean} options.collapseDownwards
- * 
+ *
  * @constructor
  */
 
@@ -26873,10 +26873,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -27101,10 +27101,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -27142,7 +27142,7 @@ function CPScrollbar(vertical) {
 
   function updateBar() {
     var longDimension = vertical ? (0, _jquery.default)(bar).height() : (0, _jquery.default)(bar).width();
-    /* As the size of the document approaches the size of the container, handle size grows to fill the 
+    /* As the size of the document approaches the size of the container, handle size grows to fill the
      * whole track:
      */
 
@@ -27267,10 +27267,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -27376,10 +27376,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -27433,10 +27433,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -27853,10 +27853,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -27961,10 +27961,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -28279,10 +28279,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -28368,10 +28368,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -28482,7 +28482,7 @@ function CPTexturePalette(controller) {
   }
   /**
    * Generate and return an array of procedurally-generated textures
-   * 
+   *
    * @returns CPGreyBmp[]
    */
 
@@ -28510,7 +28510,7 @@ function CPTexturePalette(controller) {
   }
   /**
    * @param size int
-   * 
+   *
    * @returns CPGreyBmp
    */
 
@@ -28526,9 +28526,9 @@ function CPTexturePalette(controller) {
   }
   /**
    * Make a checkerboard texture of the given dimensions.
-   * 
+   *
    * @param size int
-   * 
+   *
    * @returns CPGreyBmp
    */
 
@@ -28547,10 +28547,10 @@ function CPTexturePalette(controller) {
   }
   /**
    * Make a texture consisting of a series of evenly-spaced vertical lines
-   * 
+   *
    * @param lineSize int
    * @param size int
-   * 
+   *
    * @returns CPGreyBmp
    */
 
@@ -28571,7 +28571,7 @@ function CPTexturePalette(controller) {
    *
    * @param lineSize int
    * @param size int
-   * 
+   *
    * @returns CPGreyBmp
    */
 
@@ -28806,10 +28806,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -29179,7 +29179,7 @@ module.exports={
   "Dodge (tool)": "Dodge",
   "Burn (tool)": "Burn",
   "Color (picker)": "Color",
-  
+
   "Color swatches (shorter)": "Swatches"
 }
 },{}],53:[function(require,module,exports){
@@ -29199,7 +29199,7 @@ module.exports={
     "Select all": "すべて選択",
     "Deselect": "選択解除",
     "Transform": "変形",
-  
+
   "Layers": "レイヤー",
     "Duplicate": "複製",
     "Merge down": "下のレイヤーと結合",
@@ -29213,7 +29213,7 @@ module.exports={
     "Disable mask": "レイヤーマスク無効化",
     "Enable mask": "レイヤーマスク有効化",
     "Clip to the layer below": "下のレイヤーでクリッピング",
-    "Unclip from the layer below" : "クリッピング解除",    
+    "Unclip from the layer below" : "クリッピング解除",
 
   "Effects": "効果",
     "Clear": "消去",
@@ -29235,12 +29235,12 @@ module.exports={
     "Smooth-out zoomed canvas":  "ズームをなめらかに表示する",
     "Show grid": "グリッドを表示",
     "Grid options...": "グリッドの設定",
-  
+
   "Palettes": "パレット",
     "Rearrange":  "初期化",
     "Toggle palettes":  "表示非表示切り替え",
     "Use old icons": "古いアイコン",
-  
+
     "Show tool options": "ツールオプション",
     "Show color": "カラー",
     "Show layers":  "レイヤー",
@@ -29249,14 +29249,14 @@ module.exports={
     "Show swatches": "カラーセット",
     "Show textures": "テクスチャ",
     "Show tools": "ツール",
-  
+
   "Help": "ヘルプ",
     "Tablet support":  "タブレットサポート",
     "Shortcuts": "ショートカット",
     "About": "ChickenPaintについて",
-  
+
   "Misc": "操作",
-  
+
   "Round Pixelated": "円ピクセル",
   "Round Hard Edge": "円ハードエッジ",
   "Round Soft": "円ソフト",
@@ -29264,16 +29264,16 @@ module.exports={
   "Square Hard Edge": "角ハードエッジ",
 
   "Color (picker)": "カラー",
-  
+
   "Tool options": "ツールオプション",
     "Brush size": "ブラシサイズ",
     "Opacity": "不透明度",
-    "Color": "色補充", 
+    "Color": "色補充",
     "Blend": "混色",
     "Spacing": "間隔",
     "Scattering": "散乱",
     "Smoothing": "手ぶれ補正",
-  
+
   "Color swatches": "カラーセット",
   "Color swatches (shorter)": "カラーセット",
     "Remove": "削除",
@@ -29284,7 +29284,7 @@ module.exports={
 
   "Sample all layers": "全レイヤー参照",
   "Lock transparency": "透明部分を保護",
-  
+
   "Textures": "テクスチャ",
     "Customize": "カスタマイズ",
     "Inverse": "ネガポジ反転",
@@ -29292,7 +29292,7 @@ module.exports={
     "Brightness": "輝度",
     "Contrast": "コントラスト",
     "Reset": "リセット",
-  
+
   "Blending mode": "合成モード",
     "Normal": "通常",
     "Multiply": "乗算",
@@ -29310,12 +29310,12 @@ module.exports={
     "Linear Light": "リニアライト",
     "Pin Light": "ピンライト",
     "Passthrough": "通過",
-    
+
   "Stroke": "ストローク",
     "Free-hand": "フリーハンド",
     "Straight line": "直線",
     "Bezier curve": "Bz（ベジェ）曲線",
-  
+
   "Tools": "ツール",
     "Marquee": "選択範囲",
     "Move tool": "移動",
@@ -29338,18 +29338,18 @@ module.exports={
 
   "Grid options": "グリッドの設定",
     "Grid size": "グリッドサイズ",
-  
+
   "Rename...": "名前を変更",
   "Add layer": "新規レイヤー",
   "Delete layer": "レイヤー削除",
   "Add group": "新規グループ",
   "Delete group": "グループ削除",
   "Add mask": "レイヤーマスク追加",
-  
+
   "Gradient": "グラデーション作成",
 
   "Please enter a color in hex format": "16進形式で色を入力してください（#xxxxxxの形）",
-  
+
   "Cancel": "キャンセル",
   "Ok": "OK",
   "Okay": "OK",
@@ -29357,9 +29357,9 @@ module.exports={
 
   "Are you sure you want to send your drawing to the server and finish drawing now?": "お絵かきをサーバーに送信します。終了してもよろしいですか？",
   "Your drawing has unsaved changes! Are you sure to want to navigate away?": "お絵かきに未保存の変更があります。終了してもよろしいですか？",
-          
+
   "Save Oekaki": "保存",
-  
+
   "Saving drawing...": "お絵かきを保存中…",
   "Preparing your drawing to be saved, please wait...": "お絵かきを保存する準備をしています。しばらくお待ちください…",
   "Drawing saved!": "お絵かきを保存しました！",
@@ -29490,9 +29490,9 @@ var _ArrayDataStream = _interopRequireDefault(require("./ArrayDataStream.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* 
+/*
  * By Nicholas Sherlock <n.sherlock@gmail.com>
- * 
+ *
  * Released under the WTFPLv2 https://en.wikipedia.org/wiki/WTFPL
  */
 var ACO_COLORSPACE_RGB = 0,
@@ -29504,9 +29504,9 @@ var ACO_COLORSPACE_RGB = 0,
 function AdobeColorTable() {}
 /**
  * Read an .aco (Adobe COlor) swatches file and return an array of RGB colors.
- * 
+ *
  * Supports version 1 palettes, only RGB format.
- * 
+ *
  * @param {Uint8Array} input - The .aco file contents
  * @return {?Object[]} An array of colours, or null if the file was not supported.
  */
@@ -29585,7 +29585,7 @@ exports.default = ArrayDataStream;
 
 /**
  * A tool for presenting a Uint8Array as a stream for reading and writing some simple data types.
- * 
+ *
  * By Nicholas Sherlock <n.sherlock@gmail.com> 2016, released under the WTFPL license.
  */
 var EOF = -1;
@@ -29601,7 +29601,7 @@ function signExtend8Bit(byte) {
 }
 /**
  * Create a stream on existing array of unsigned byte data (i.e. hopefully Uint8Array).
- * 
+ *
  * @param {Uint8Array} data - Array to stream data from
  * @param {int=} start - The index of the byte in the array that will be read first, or leave undefined to begin at the
  *              beginning of the array
@@ -29621,7 +29621,7 @@ function ArrayDataStream(data, start, end) {
 ;
 /**
  * Read a single byte from the stream and turn it into a JavaScript string (assuming ASCII).
- * 
+ *
  * @returns {String|number} String containing one character, or EOF if the end of file was reached (eof flag
  * is set).
  */
@@ -29636,7 +29636,7 @@ ArrayDataStream.prototype.readChar = function () {
 };
 /**
  * Read one unsigned byte from the stream
- * 
+ *
  * @returns {number} Unsigned byte, or EOF if the end of file was reached (eof flag is set).
  */
 
@@ -29803,9 +29803,9 @@ ArrayDataStream.prototype.writeString = function (s) {
 /**
  * Write the given unsigned 32-bit integer to the stream in big-endian order using the given byte width.
  * No error checking is performed to ensure that the supplied width is correct for the integer.
- * 
+ *
  * Omit the width parameter to have it determined automatically for you.
- * 
+ *
  * @param u Unsigned integer to be written
  * @param width Number of bytes to write to the stream
  */
@@ -29870,7 +29870,7 @@ ArrayDataStream.prototype.getAsDataArray = function () {
   } else if (this.pos == this.data.byteLength) {
     return this.data;
   } else {
-    throw "ArrayDataStream's pos lies beyond end of buffer"; // Chance is pretty good that you overflowed the end of the buffer during writing and your file is trash 
+    throw "ArrayDataStream's pos lies beyond end of buffer"; // Chance is pretty good that you overflowed the end of the buffer during writing and your file is trash
   }
 };
 
@@ -29887,10 +29887,10 @@ exports.default = CPBezier;
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -29946,7 +29946,7 @@ function CPBezier() {
   };
   /**
    * Fill the given x,y arrays with a series of points on the curve.
-   * 
+   *
    * @param {Number[]} x
    * @param {Number[]} y
    *
@@ -29984,10 +29984,10 @@ exports.default = CPColor;
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -30233,10 +30233,10 @@ exports.default = CPColorFloat;
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -30492,10 +30492,10 @@ exports.default = CPRandom;
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -30556,10 +30556,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -30580,7 +30580,7 @@ function CPRect(left, top, right, bottom) {
   if (left === undefined || top === undefined || right === undefined || bottom === undefined) {
       throw "Bad rect";
   }
-  
+
   if (~~left !== left || ~~top !== top || ~~right !== right || ~~bottom !== bottom) {
       throw "Bad rect";
   }
@@ -30627,7 +30627,7 @@ CPRect.prototype.getIntersection = function (that) {
 };
 /**
  * Clip this rectangle to fit within `that`.
- * 
+ *
  * @returns {CPRect} A reference to this rectangle for chaining
  */
 
@@ -30766,7 +30766,7 @@ CPRect.prototype.equals = function (that) {
 };
 /**
  * Add h pixels to both the left and right sides of the rectangle, and v pixels to both the top and bottom sides.
- *  
+ *
  * @param h
  * @param v
  */
@@ -31000,12 +31000,12 @@ CPRect.union = function (rects) {
     return rect && !rect.isEmpty();
   });
 };
-/* 
+/*
  * Chrome is initially eager to optimize CPRect and users assuming that all the fields are SMIs, then later on decides
  * that they should be tagged numbers after all. This causes all the blending operation functions to be reoptimized
- * a couple of times. 
- * 
- * Avoid that mess by starting things off with floats in the members.  
+ * a couple of times.
+ *
+ * Avoid that mess by starting things off with floats in the members.
  */
 
 
@@ -31459,10 +31459,10 @@ exports.default = CPWacomTablet;
 
 /*
     ChickenPaint
-    
+
     ChickenPaint is a translation of ChibiPaint from Java to JavaScript
     by Nicholas Sherlock / Chicken Smoothie.
-    
+
     ChibiPaint is Copyright (c) 2006-2008 Marc Schefer
 
     ChickenPaint is free software: you can redistribute it and/or modify
@@ -31582,7 +31582,7 @@ exports.throttle = throttle;
 /*!
  * jQuery throttle / debounce - v1.1 - 3/7/2010
  * http://benalman.com/projects/jquery-throttle-debounce-plugin/
- * 
+ *
  * Copyright (c) 2010 "Cowboy" Ben Alman
  * Dual licensed under the MIT and GPL licenses.
  * http://benalman.com/about/license/
@@ -31590,38 +31590,38 @@ exports.throttle = throttle;
 // Script: jQuery throttle / debounce: Sometimes, less is more!
 //
 // *Version: 1.1, Last updated: 3/7/2010*
-// 
+//
 // Project Home - http://benalman.com/projects/jquery-throttle-debounce-plugin/
 // GitHub       - http://github.com/cowboy/jquery-throttle-debounce/
 // Source       - http://github.com/cowboy/jquery-throttle-debounce/raw/master/jquery.ba-throttle-debounce.js
 // (Minified)   - http://github.com/cowboy/jquery-throttle-debounce/raw/master/jquery.ba-throttle-debounce.min.js (0.7kb)
-// 
+//
 // About: License
-// 
+//
 // Copyright (c) 2010 "Cowboy" Ben Alman,
 // Dual licensed under the MIT and GPL licenses.
 // http://benalman.com/about/license/
-// 
+//
 // About: Examples
-// 
+//
 // These working examples, complete with fully commented code, illustrate a few
 // ways in which this plugin can be used.
-// 
+//
 // Throttle - http://benalman.com/code/projects/jquery-throttle-debounce/examples/throttle/
 // Debounce - http://benalman.com/code/projects/jquery-throttle-debounce/examples/debounce/
-// 
+//
 // About: Support and Testing
-// 
+//
 // Information about what version or versions of jQuery this plugin has been
 // tested with, what browsers it has been tested in, and where the unit tests
 // reside (so you can test it yourself).
-// 
+//
 // jQuery Versions - none, 1.3.2, 1.4.2
 // Browsers Tested - Internet Explorer 6-8, Firefox 2-3.6, Safari 3-4, Chrome 4-5, Opera 9.6-10.1.
 // Unit Tests      - http://benalman.com/code/projects/jquery-throttle-debounce/unit/
-// 
+//
 // About: Release History
-// 
+//
 // 1.1 - (3/7/2010) Fixed a bug in <jQuery.throttle> where trailing callbacks
 //       executed later than they should. Reworked a fair amount of internal
 //       logic as well.

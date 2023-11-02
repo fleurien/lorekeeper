@@ -83,6 +83,10 @@ class AddSiteSettings extends Command {
 
         $this->addSiteSetting('comment_dislikes_enabled', 0, '0: Dislikes disabled, 1: Dislikes enabled.');
 
+        $this->addSiteSetting('oekaki_gallery_id', 0, 'ID of the gallery to use for oekaki submissions. Enter "0" to disable oekaki submissions. Note that ONLY oekaki submissions can be submitted to the designated gallery.');
+
+        $this->addSiteSetting('oekaki_gallery_auto_approve', 0, '0: Oekaki submissions must be approved, 1: Oekaki submissions are automatically approved.');
+
         $this->line("\nSite settings up to date!");
     }
 

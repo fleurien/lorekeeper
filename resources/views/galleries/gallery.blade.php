@@ -25,6 +25,12 @@
             @endif
         </p>
     @endif
+    @if (Settings::get('oekaki_gallery_id') == $gallery->id)
+        <div class="alert alert-info">
+            This gallery is the Oekaki gallery! It can only accept submissions from the Oekaki page.
+        </div>
+        <p><a href="{{ url('oekaki') }}" class="btn btn-primary"><i class="fas fa-paint-brush mr-1"></i> Draw</a></p>
+    @endif
     <p>{!! $gallery->description !!}</p>
     @if (!$gallery->submissions->count() && $gallery->children->count() && $childSubmissions->count())
         <p>This gallery has no submissions; instead, displayed is a selection of the most recent submissions from its sub-galleries. Please navigate to one of the sub-galleries to view more.</p>
