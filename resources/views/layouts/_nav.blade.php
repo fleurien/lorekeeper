@@ -91,6 +91,9 @@
                         <a class="dropdown-item" href="{{ url('gallery') }}">
                         <i class="fa-solid fa-images"></i> Gallery
                         </a>
+                        <a class="dropdown-item" href="/oekaki" style="padding-left: 20%;">
+                        <i class="fa-solid fa-palette"></i></i></i> Oekaki
+                        </a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

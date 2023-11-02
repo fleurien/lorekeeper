@@ -112,6 +112,11 @@ class AddSiteSettings extends Command {
         $this->addSiteSetting('genome_default_visibility', 0, '0: Genomes are hidden by default. 1: Only the most dominant genes are visible by default. 2: Genomes are fully visible by default.');
 
         $this->addSiteSetting('fetch_item', 1, 'ID of the currently requested fetch quest item.');
+        $this->addSiteSetting('oekaki_gallery_id', 0, 'ID of the gallery to use for oekaki submissions. Enter "0" to disable oekaki submissions. Note that ONLY oekaki submissions can be submitted to the designated gallery.');
+
+        $this->addSiteSetting('oekaki_gallery_auto_approve', 0, '0: Oekaki submissions must be approved, 1: Oekaki submissions are automatically approved.');
+
+
 
         $this->addSiteSetting('fetch_currency_id', 1, 'ID for fetch currency');
 

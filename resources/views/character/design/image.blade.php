@@ -204,6 +204,18 @@
         {!! Form::close() !!}
     @endif
 
+
+    <div class="designer-row hide mb-2">
+        {!! Form::select('designer_id[]', $users, null, ['class' => 'form-control mr-2 designer-select', 'placeholder' => 'Select a Designer']) !!}
+        {!! Form::text('designer_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Designer URL']) !!}
+        <a href="#" class="add-designer btn btn-link" data-toggle="tooltip" title="Add another designer">+</a>
+    </div>
+    <div class="artist-row hide mb-2">
+        {!! Form::select('artist_id[]', $users, null, ['class' => 'form-control mr-2 artist-select', 'placeholder' => 'Select an Artist']) !!}
+        {!! Form::text('artist_url[]', null, ['class' => 'form-control mr-2', 'placeholder' => 'Artist URL']) !!}
+        <a href="#" class="add-artist btn btn-link mb-2" data-toggle="tooltip" title="Add another artist">+</a>
+    </div>
+
 @endsection
 
 @section('scripts')

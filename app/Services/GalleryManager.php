@@ -14,6 +14,7 @@ use App\Models\User\User;
 use Config;
 use DB;
 use Image;
+use Log;
 use Notifications;
 use Settings;
 
@@ -54,6 +55,9 @@ class GalleryManager extends Service {
             }
             if ((isset($gallery->start_at) && $gallery->start_at->isFuture()) || (isset($gallery->end_at) && $gallery->end_at->isPast())) {
                 throw new \Exception('This gallery\'s submissions aren\'t open.');
+            }
+            if ($gallery->id == Settings::get('oekaki_gallery_id')) {
+                throw new \Exception('This gallery only accepts oekaki submissions.');
             }
 
             // Check that associated collaborators exist
@@ -771,6 +775,111 @@ class GalleryManager extends Service {
             ]);
 
             return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**********************************************************************************************
+
+        OEKAKI MANAGEMENT
+
+    **********************************************************************************************/
+
+    /**
+     * Saves a temporary oekaki image.
+     *
+     * @param mixed $data
+     * @param mixed $user
+     */
+    public function saveOekakiImage($data, $user) {
+        DB::beginTransaction();
+
+        try {
+            $extension = $data['file']->getClientOriginalExtension();
+            if (!in_array($extension, ['png', 'chi'])) {
+                throw new \Exception('Invalid file type.');
+            }
+            $this->handleImage($data['file'], public_path('images/oekaki'), $user->id.'.'.$extension);
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Creates a new oekaki submission.
+     *
+     * @param array $data
+     * @param mixed $user
+     */
+    public function createOekakiSubmission($data, $user) {
+        DB::beginTransaction();
+
+        try {
+            //  Check that submissions are open
+            if (!Settings::get('gallery_submissions_open')) {
+                throw new \Exception('Gallery submissions are currently closed.');
+            }
+            // first find oekaki board
+            if (Settings::get('oekaki_gallery_id')) {
+                $gallery = Gallery::find(Settings::get('oekaki_gallery_id'));
+            }
+
+            // gallery validation
+            if (!$gallery) {
+                throw new \Exception('No oekaki gallery found. Try again later.');
+            }
+            if (!$gallery->submissions_open && !$user->hasPower('manage_submissions')) {
+                throw new \Exception('You cannot submit to this gallery.');
+            }
+            if ((isset($gallery->start_at) && $gallery->start_at->isFuture()) || (isset($gallery->end_at) && $gallery->end_at->isPast())) {
+                throw new \Exception('This gallery\'s submissions aren\'t open.');
+            }
+
+            $submission = GallerySubmission::create([
+                'user_id'    => $user->id,
+                'gallery_id' => $gallery->id,
+                'status'     => 'Pending',
+                'title'      => 'Oekaki Submission',
+                'is_visible' => 1,
+            ]);
+
+            // Check that there is text and/or an image
+            if (isset($data['picture']) && $data['picture']) {
+                // mercury if you're seeing this im so sorry
+                $submission->hash = randomString(10);
+                $submission->extension = '.png';
+                $submission->save();
+                // save image
+                $this->handleImage($_FILES['picture']['tmp_name'], $submission->imageDirectory, $submission->imageFileName);
+
+                // Process thumbnail
+                $thumbnail = Image::make($submission->imagePath.'/'.$submission->imageFileName);
+                // Resize
+                $thumbnail->resize(null, Config::get('lorekeeper.settings.masterlist_thumbnails.height'), function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                // Save thumbnail
+                $thumbnail->save($submission->thumbnailPath.'/'.$submission->thumbnailFileName);
+            } else {
+                throw new \Exception('Image could not be processed.');
+            }
+
+            // we do NOT automatically approve this, since we want to allow the user to attach characters etc.
+            // well, thats what i'd do. butttttt...
+            if (Settings::get('oekaki_gallery_auto_approve')) {
+                $submission->update(['status' => 'Accepted']);
+            }
+
+            return $this->commitReturn($submission);
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }

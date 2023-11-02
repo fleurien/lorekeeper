@@ -13,3 +13,7 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css');
+
+// do not uncomment this unless you know how to resolve the CHIBIOK response check error
+// mix.js('node_modules/chickenpaint/resources/js/chickenpaint.js', 'public/chickenpaint')
+//    .sass('node_modules/chickenpaint/resources/css/chickenpaint.scss', 'public/chickenpaint');

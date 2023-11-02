@@ -58,6 +58,7 @@ Route::group(['prefix' => 'inventory', 'namespace' => 'Users'], function () {
     Route::get('/', 'InventoryController@getIndex');
     Route::post('edit', 'InventoryController@postEdit');
     Route::get('account-search', 'InventoryController@getAccountSearch');
+    Route::get('full-inventory', 'InventoryController@getFullInventory');
     Route::get('consolidate-inventory', 'InventoryController@getConsolidateInventory');
     Route::post('consolidate', 'InventoryController@postConsolidateInventory');
 
@@ -376,4 +377,10 @@ Route::group(['prefix' => 'fetch'], function() {
 **************************************************************************************************/
 Route::group(['prefix' => 'encounters'], function() {
     Route::get('/', 'EncounterController@getIndex');
+});
+
+Route::group(['prefix' => 'oekaki'], function () {
+    Route::get('/', 'OekakiController@getIndex');
+    Route::post('publish', 'OekakiController@postPublish');
+    Route::post('save', 'OekakiController@postSave');
 });

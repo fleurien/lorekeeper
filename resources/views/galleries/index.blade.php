@@ -16,7 +16,21 @@
         @endif
         Gallery
     </h1>
-
+    <div class="row" ">
+    
+    <div class="col-sm-12 col-md-4">
+        <img src="https://poffinsworld.com/files/SITEDECOR/gallerypic.png" class="img-fluid">
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <center>
+        <h2 class><b>Let's get creative!</b></h2>
+       <p> Welcome to the gallery! Here, you can submit art of poffins you've drawn for both Star Tears and steps for exploring!</p>
+        <p>Don't feel like booting up an art program, or just don't have one handy? You can use <b><a href="/oekaki">the oekaki board!</a></b></p>
+        <p>Take a looksee, and see what kind of things the community has created!</p>
+        </center>
+    </div>
+    
+</div>
     @if ($galleries->count())
         {!! $galleries->render() !!}
 

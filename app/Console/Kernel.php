@@ -39,7 +39,8 @@ class Kernel extends ConsoleKernel {
                 ->everyMinute();
         $schedule->command('update-timed-daily')
                 ->everyMinute();          
-
+        $schedule->command('clean-oekaki')
+            ->everyFiveMinutes();
     }
 
     /**
