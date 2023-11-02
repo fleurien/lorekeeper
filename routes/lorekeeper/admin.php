@@ -455,6 +455,30 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('collections/collection-categories/edit/{id?}', 'CollectionController@postCreateEditCollectionCategory');
     Route::post('collections/collection-categories/delete/{id}', 'CollectionController@postDeleteCollectionCategory');
     Route::post('collections/collection-categories/sort', 'CollectionController@postSortCollectionCategory');
+    # ENCOUNTERS
+    Route::get('encounters', 'EncounterController@getEncounterIndex');
+    Route::get('encounters/create', 'EncounterController@getCreateEncounter');
+    Route::get('encounters/edit/{id}', 'EncounterController@getEditEncounter');
+    Route::get('encounters/delete/{id}', 'EncounterController@getDeleteEncounter');
+    Route::post('encounters/create', 'EncounterController@postCreateEditEncounter');
+    Route::post('encounters/edit/{id?}', 'EncounterController@postCreateEditEncounter');
+    Route::post('encounters/delete/{id}', 'EncounterController@postDeleteEncounter');
+
+    Route::get('encounters/edit/{encounter_id}/prompts/create', 'EncounterController@getCreateEditPrompt');
+    Route::get('encounters/edit/{encounter_id}/prompts/edit/{id}', 'EncounterController@getCreateEditPrompt');
+    Route::post('encounters/edit/{encounter_id}/prompts/create', 'EncounterController@postCreateEditPrompt');
+    Route::post('encounters/edit/{encounter_id}/prompts/edit/{id}', 'EncounterController@postCreateEditPrompt');
+
+    # AREAS
+    Route::get('encounters/areas', 'EncounterController@getEncounterAreaIndex');
+    Route::get('encounters/areas/create', 'EncounterController@getCreateEncounterArea');
+    Route::get('encounters/areas/edit/{id}', 'EncounterController@getEditEncounterArea');
+    Route::get('encounters/areas/delete/{id}', 'EncounterController@getDeleteEncounterArea');
+    Route::post('encounters/areas/create', 'EncounterController@postCreateEditEncounterArea');
+    Route::post('encounters/areas/edit/{id?}', 'EncounterController@postCreateEditEncounterArea');
+    Route::post('encounters/areas/delete/{id}', 'EncounterController@postDeleteEncounterArea');
+    Route::get('encounters/areas/roll/{id}', 'EncounterController@getRollArea');
+    Route::post('encounters/areas/restrictions/{id}', 'EncounterController@postRestrictArea');
 });
 
 // PAGES

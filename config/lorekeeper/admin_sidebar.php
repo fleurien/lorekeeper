@@ -333,6 +333,14 @@ return [
                 'name' => 'Recipes',
                 'url' => 'admin/data/recipes'
             ],
+            [
+                'name' => 'Encounters',
+                'url' => 'admin/data/encounters'
+            ],
+            [
+                'name' => 'Encounter Areas',
+                'url' => 'admin/data/encounters/areas'
+            ],
         ]
     ],
     'Claymores' => [

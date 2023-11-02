@@ -296,6 +296,17 @@ Route::group(['prefix' => 'designs', 'namespace' => 'Characters'], function () {
 });
 
 /**************************************************************************************************
+    Encounters
+**************************************************************************************************/
+
+Route::group(['prefix' => 'encounter-areas'], function() {
+    Route::get('/', 'EncounterController@getEncounterAreas');
+
+    Route::get('{id}', 'EncounterController@exploreArea')->where('id', '[0-9]+');
+    Route::post('{id}/act', 'EncounterController@postAct')->where('id', '[0-9]+');
+});
+
+/**************************************************************************************************
     Shops
 **************************************************************************************************/
 
@@ -348,4 +359,11 @@ Route::group(['prefix' => 'collection', 'namespace' => 'Users'], function() {
 Route::group(['prefix' => 'fetch'], function() {
     Route::get('/', 'FetchQuestController@getIndex');
     Route::post('/new', 'FetchQuestController@postFetchQuest');
+});
+/**************************************************************************************************
+
+    Encounters
+**************************************************************************************************/
+Route::group(['prefix' => 'encounters'], function() {
+    Route::get('/', 'EncounterController@getIndex');
 });

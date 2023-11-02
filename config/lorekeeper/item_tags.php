@@ -102,5 +102,11 @@ return [
         'name' => 'Theme',
         'text_color' => "#ffffff",
         'background_color' => '#573f7e'
-    ]
+    ],
+    
+    'encounterpotion' => [
+        'name' => 'Encounter Potion',
+        'text_color' => '#ffffff',
+        'background_color' => '#1fd1a7'
+    ],
 ];

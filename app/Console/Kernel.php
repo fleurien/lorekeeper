@@ -33,6 +33,11 @@ class Kernel extends ConsoleKernel {
                 ->everyMinute();
         $schedule->command('change-fetch-item')
                 ->hourly();
+        $schedule->command('refresh-encounter-energy')
+                ->daily();
+        $schedule->command('update-timed-areas')
+                ->everyMinute();
+
     }
 
     /**

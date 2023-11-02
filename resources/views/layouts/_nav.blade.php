@@ -103,7 +103,7 @@
                         <i class="fa-solid fa-map-location-dot"></i> Hub map
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="templink">
+                        <a class="dropdown-item" href="{{ url('encounter-areas') }}">
                         <i class="fa-solid fa-signs-post"></i> Go exploring
                         </a>
                         <a class="dropdown-item" href="{{ url('foraging') }}">

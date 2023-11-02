@@ -134,6 +134,7 @@ class AddSiteSettings extends Command {
             $this->info("Added:   group_currency_alt / Default: 1");
         }
         else $this->line("Skipped: group_currency_alt");
+        $this->addSiteSetting('encounter_energy', 5, 'Amount of energy for encounters a user should get each day. Resets daily.');
 
         $this->line("\nSite settings up to date!");
 
