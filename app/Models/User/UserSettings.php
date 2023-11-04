@@ -12,7 +12,7 @@ class UserSettings extends Model {
      */
     protected $fillable = [
         'is_fto', 'submission_count', 'banned_at', 'ban_reason', 'birthday_setting',
-        'deactivate_reason', 'deactivated_at', 'selected_character_id', 'theme_id', 'dev_log_notif','encounter_energy'
+        'deactivate_reason', 'deactivated_at', 'selected_character_id', 'theme_id', 'dev_log_notif','encounter_energy','encounter_character_id'
     ];
 
     /**
@@ -56,5 +56,12 @@ class UserSettings extends Model {
     public function selectedCharacter()
     {
         return $this->belongsTo('App\Models\Character\Character', 'selected_character_id')->visible();
+    }
+/**     
+* Get the character the user selected for encounters
+     */
+    public function encounterCharacter()
+    {
+        return $this->belongsTo('App\Models\Character\Character');
     }
 }

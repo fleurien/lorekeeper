@@ -305,6 +305,7 @@ Route::group(['prefix' => 'encounter-areas'], function() {
 
     Route::get('{id}', 'EncounterController@exploreArea')->where('id', '[0-9]+');
     Route::post('{id}/act', 'EncounterController@postAct')->where('id', '[0-9]+');
+    Route::post('select-character', 'EncounterController@postSelectCharacter');
 });
 
 /**************************************************************************************************
