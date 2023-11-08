@@ -1,21 +1,21 @@
 @extends('encounters.layout')
 
 @section('title')
-    Encounter Areas
+    Explore
 @endsection
 
 @section('content')
     {!! breadcrumbs(['Encounter Areas' => 'encounter-areas']) !!}
 
     <div class="d-flex flex-wrap">
-        <div class="col-md-5 col-6">
-            <h1>Encounter Areas</h1>
+        <div class="col-md-8 col-6">
+            <h1>Explore</h1>
             <p>Here is a list of areas that you can venture into. You will recieve a randomized encounter and options of
                 what to do
                 in it.</p>
             <p>You have limited energy to explore each day, so spend it wisely.</p>
         </div>
-        <div class="col-md-6 col-6">
+        <div class="col-md-4 col-6">
             @if ($use_characters)
                 <div class="col-md-6 justify-content-center text-center">
                     <h3>Current Character</h3>

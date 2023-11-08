@@ -24,6 +24,6 @@ return [
 
     //turn off if you want to turn off energy gen automatically
     //either that or remove the kernel command
-    'refresh_energy' => 0,
+    'refresh_energy' => 1,
 
 ];
