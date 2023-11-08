@@ -27,9 +27,18 @@
                             if ($use_energy) {
                                 $energy = $character->encounter_energy;
                             } else {
+
+                                if (is_null(\App\Models\Character\CharacterCurrency::where('character_id', $character->id)
+                                    ->where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))
+                                    ->first()))
+                                    {
+                                    $energy = 0;
+                                    } else {
+                                
                                 $energy = \App\Models\Character\CharacterCurrency::where('character_id', $character->id)
                                     ->where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))
                                     ->first()->quantity;
+                                    }
                             }
                         @endphp
 
@@ -42,7 +51,7 @@
                             <a href="{{ $character->url }}" class="h5 mb-0">
                                 {{ $character->fullName }}
                             </a>
-                            <p>{{ $character->fullName }} has <strong>{{ $energy }}</strong> energy.</p>
+                            <p>{{ $character->fullName }} has <strong>{{ $energy }}</strong> explore steps left.</p>
                         </div>
                     @endif
                     {!! Form::open(['url' => 'encounter-areas/select-character']) !!}
