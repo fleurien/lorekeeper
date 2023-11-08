@@ -7,6 +7,7 @@ use App\Models\Award\Award;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Pet\Pet;
+use App\Models\Stat\Stat;
 use App\Models\Item\ItemCategory;
 use App\Models\Loot\LootTable;
 use App\Services\LootService;
@@ -52,6 +53,7 @@ class LootTableController extends Controller {
             'currencies' => Currency::orderBy('name')->pluck('name', 'id'),
             'tables'     => LootTable::orderBy('name')->pluck('name', 'id'),
             'statuses' => StatusEffect::orderBy('name')->pluck('name', 'id'),
+            'stats' => Stat::orderBy('name')->pluck('name', 'id'),
             'rarities'   => array_filter($rarities),
         ]);
     }
@@ -81,6 +83,7 @@ class LootTableController extends Controller {
             'currencies' => Currency::orderBy('name')->pluck('name', 'id'),
             'tables'     => LootTable::orderBy('name')->pluck('name', 'id'),
             'statuses' => StatusEffect::orderBy('name')->pluck('name', 'id'),
+            'stats' => Stat::orderBy('name')->pluck('name', 'id'),
             'rarities'   => array_filter($rarities),
         ]);
     }

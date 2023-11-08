@@ -99,8 +99,8 @@
         @foreach($table->data as $key=>$sublist)
             <div>
                 <div class="input-group mb-3">
-                    {!! Form::select('sublist_status_id[]', $statuses, $sublist['status_id'], ['class' => 'form-control', 'placeholder' => 'Select Status Effect', 'aria-label' => 'Status Effect']) !!}
-                    {!! Form::select('sublist_criteria[]', ['=' => '=', '<' => '<', '>' => '>', '<=' => '<=', '>=' => '>='], $sublist['criteria'], ['class' => 'form-control', 'placeholder' => 'Select Condition', 'aria-label' => 'Criteria']) !!}
+                    {!! Form::select('sublist_status_id[]', [$statuses, $items, $stats], $sublist['status_id'], ['class' => 'form-control', 'placeholder' => 'Select Status Effect', 'aria-label' => 'Status Effect']) !!}
+                    {!! Form::select('sublist_criteria[]', ['=' => 'Equals', '<' => 'Less than', '>' => 'Greater than', '<=' => 'Less or euqal', '>=' => 'Greater or equal'], $sublist['criteria'], ['class' => 'form-control', 'placeholder' => 'Select Condition', 'aria-label' => 'Criteria']) !!}
                     {!! Form::number('sublist_quantity[]', $sublist['quantity'], ['class' => 'form-control', 'placeholder' => 'Enter Status Effect Quantity', 'aria-label' => 'Status Effect Quantity']) !!}
                     <div class="input-group-append">
                         <button class="btn btn-outline-danger remove-sublist" type="button" id="button-addon2">x</button>
@@ -147,7 +147,7 @@
     <table class="table table-sm">
         <tbody id="lootRow">
             <tr class="loot-row">
-                <td>{!! Form::select('rewardable_type[]', Config::get('lorekeeper.extensions.item_entry_expansion.loot_tables.enable') ? ['Item' => 'Item', 'ItemRarity' => 'Item Rarity', 'Currency' => 'Currency', 'LootTable' => 'Loot Table', 'ItemCategory' => 'Item Category', 'ItemCategoryRarity' => 'Item Category (Conditional)', 'Pet' => 'Pet', 'None' => 'None'] : ['Item' => 'Item', 'Currency' => 'Currency', 'Pet' => 'Pet', 'LootTable' => 'Loot Table', 'ItemCategory' => 'Item Category', 'Status' => 'Status Effect (*Character Only)', 'None' => 'None'], null, ['class' => 'form-control reward-type', 'placeholder' => 'Select Reward Type']) !!}</td>
+                <td>{!! Form::select('rewardable_type[]', Config::get('lorekeeper.extensions.item_entry_expansion.loot_tables.enable') ? ['Item' => 'Item', 'ItemRarity' => 'Item Rarity', 'Currency' => 'Currency', 'LootTable' => 'Loot Table', 'ItemCategory' => 'Item Category', 'ItemCategoryRarity' => 'Item Category (Conditional)', 'None' => 'None'] : ['Item' => 'Item', 'Currency' => 'Currency', 'LootTable' => 'Loot Table', 'ItemCategory' => 'Item Category', 'Status' => 'Status Effect (*Character Only)', 'None' => 'None'], null, ['class' => 'form-control reward-type', 'placeholder' => 'Select Reward Type']) !!}</td>
                 <td class="loot-row-select"></td>
                 <td>{!! Form::text('quantity[]', 1, ['class' => 'form-control']) !!}</td>
                 <td class="loot-row-weight">{!! Form::text('weight[]', 1, ['class' => 'form-control loot-weight']) !!}</td>
@@ -163,7 +163,6 @@
         {!! Form::select('rarity[]', $rarities, null, ['class' => 'form-control criteria-select', 'placeholder' => 'Rarity']) !!}
     </div>
     {!! Form::select('rewardable_id[]', $currencies, null, ['class' => 'form-control currency-select', 'placeholder' => 'Select Currency']) !!}
-    {!! Form::select('rewardable_id[]', $pets, null, ['class' => 'form-control pet-select', 'placeholder' => 'Select Pet']) !!}
     {!! Form::select('rewardable_id[]', $tables, null, ['class' => 'form-control table-select', 'placeholder' => 'Select Loot Table']) !!}
     {!! Form::select('rewardable_id[]', $categories, null, ['class' => 'form-control category-select', 'placeholder' => 'Select Item Category']) !!}
     <div class="category-rarity-select d-flex">
@@ -177,7 +176,7 @@
 
 <div id="sublist-row" class="hide">
     <div class="input-group mb-3">
-        {!! Form::select('sublist_status_id[]', $statuses, null, ['class' => 'form-control', 'placeholder' => 'Select Status Effect', 'aria-label' => 'Status Effect']) !!}
+        {!! Form::select('sublist_status_id[]', [$statuses, $items, $stats], null, ['class' => 'form-control', 'placeholder' => 'Select Status Effect', 'aria-label' => 'Status Effect']) !!}
         {!! Form::select('sublist_criteria[]', ['=' => '=', '<' => '<', '>' => '>', '<=' => '<=', '>=' => '>='], null, ['class' => 'form-control', 'placeholder' => 'Select Condition', 'aria-label' => 'Criteria']) !!}
         {!! Form::number('sublist_quantity[]', null, ['class' => 'form-control', 'placeholder' => 'Enter Status Effect Quantity', 'aria-label' => 'Status Effect Quantity']) !!}
         <div class="input-group-append">
@@ -211,7 +210,6 @@ $( document ).ready(function() {
     var $itemSelect = $('#lootRowData').find('.item-select');
     var $itemRaritySelect = $('#lootRowData').find('.item-rarity-select');
     var $currencySelect = $('#lootRowData').find('.currency-select');
-    var $petSelect = $('#lootRowData').find('.pet-select');
     var $tableSelect = $('#lootRowData').find('.table-select');
     var $categorySelect = $('#lootRowData').find('.category-select');
     var $categoryRaritySelect = $('#lootRowData').find('.category-rarity-select');
@@ -251,7 +249,6 @@ $( document ).ready(function() {
         if(val == 'Item') $clone = $itemSelect.clone();
         else if (val == 'ItemRarity') $clone = $itemRaritySelect.clone();
         else if (val == 'Currency') $clone = $currencySelect.clone();
-        else if (val == 'Pet') $clone = $petSelect.clone();
         else if (val == 'ItemCategory') $clone = $categorySelect.clone();
         else if (val == 'ItemCategoryRarity') $clone = $categoryRaritySelect.clone();
         else if (val == 'LootTable') $clone = $tableSelect.clone();
@@ -274,7 +271,6 @@ $( document ).ready(function() {
             else if (val == 'ItemCategory') $clone = $categorySelect.clone();
             else if (val == 'ItemCategoryRarity') $clone = $categoryRaritySelect.clone();
             else if (val == 'Currency') $clone = $currencySelect.clone();
-            else if (val == 'Pet') $clone = $petSelect.clone();
             else if (val == 'LootTable') $clone = $tableSelect.clone();
             else if (val == 'Status') $clone = $statusSelect.clone();
             else if (val == 'None') $clone = $noneSelect.clone();

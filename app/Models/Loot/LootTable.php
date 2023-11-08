@@ -130,11 +130,23 @@ class LootTable extends Model {
 
         $loot = $this->loot()->where('subtable_id', null)->orWhere(function($query) use($isCharacter, $character) {
             // Collect any status-specific rows
+            dd($isCharacter, $character);
             if($isCharacter && $character) {
                 // Check for subtables
+                
                 if(isset($this->data) && count($this->data)) {
                     // Gather the character's status effects
-                    $statuses = $character->getStatusEffects();
+
+                    if($subtable['sublist_status_id'] == $items) {
+                        $statuses = $character->items();
+                    }
+                    if($subtable['sublist_status_id'] == $stats) {
+                        $statuses = $character->stats();
+                    }
+                    if($subtable['sublist_status_id'] == $statuses) {
+                        $statuses = $character->getStatusEffects();
+                    }
+                    
 
                     if($statuses->count()) {
                         // Cycle through subtables checking for matching criteria
@@ -153,6 +165,8 @@ class LootTable extends Model {
             }
             return $query;
         })->get();
+
+
 
         $totalWeight = 0;
         foreach ($loot as $l) {
