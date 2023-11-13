@@ -130,7 +130,6 @@ class LootTable extends Model {
 
         $loot = $this->loot()->where('subtable_id', null)->orWhere(function($query) use($isCharacter, $character) {
             // Collect any status-specific rows
-            dd($isCharacter, $character);
             if($isCharacter && $character) {
                 // Check for subtables
                 

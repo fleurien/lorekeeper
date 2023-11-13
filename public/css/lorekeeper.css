@@ -20,6 +20,42 @@
 
 **************************************************************************************************/
 
+.minihead {
+    height: 150px;
+    width: 150px;
+    background-size: contain;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+}
+
+.miniheadaedion {
+    background-image: url('https://poffinsworld.com/files/SITEDECOR/aedionworld1.png');
+}
+
+.miniheadaedion:hover {
+    background-image: url('https://poffinsworld.com/files/SITEDECOR/aedionworld2.png');
+}
+
+.miniheadandromeda {
+    background-image: url('https://poffinsworld.com/files/SITEDECOR/andromedaworld1.png');
+}
+
+.miniheadandromeda:hover {
+    background-image: url('https://poffinsworld.com/files/SITEDECOR/andromedaworld2.png');
+}
+
+.miniheadsunshine{
+    background-image: url('https://poffinsworld.com/files/SITEDECOR/sunshineworld1.png');
+}
+
+.miniheadsunshine:hover {
+    background-image: url('https://poffinsworld.com/files/SITEDECOR/sunshineworld2.png');
+}
+
+
+
+
 .worldstarbitbullet {
     width:32px;
     height:32px;

@@ -29,17 +29,17 @@ As well, you can find documentation for the different aspects of the game, like 
 
 <div class="row p-2 text-center">
     <div class="col">
-    <img src="https://placehold.co/150x150.png">
+    <div class="minihead miniheadaedion"></div>
         <h3><a href="/world/species">Poffins</a></h3>
         <p>All about the oddly adaptable butterfly cats themselves - as well as their subtypes.</p>
 </div>
 <div class="col">
-<img src="https://placehold.co/150x150.png">
+<div class="minihead miniheadandromeda"></div>
         <h3><a href="/world/universaltraits">Traits</a></h3>
         <p>The trait sheet! If you need help when designing your Poffin, check it out!</p>
 </div>
 <div class="col">
-<img src="https://placehold.co/150x150.png">
+<div class="minihead miniheadsunshine"></div>
         <h3><a href="/world/genetics">Genetics</a></h3>
         <p>An explanation to the chaotic and malleable genetic makeup of Poffins, presented by Dr. Sunshine.</p>
 </div>
