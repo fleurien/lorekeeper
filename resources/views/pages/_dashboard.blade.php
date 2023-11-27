@@ -123,7 +123,7 @@
         <img src="/files/SITEDECOR/guidebook.png">
         <div class="coolswagcontainer">
         <p style="font-size:20px;"><a href="/info/getstarted">✦ Getting started ✦</a></p>
-        <p style="font-size:20px;">✦ MYO guide ✦</p>
+        <p style="font-size:20px;"><a href="/info/design">✦ Design guide ✦</a></p>
         <p style="font-size:20px;">✦ Exploration guide ✦</p>
         <p style="font-size:20px;"><a href="/world">✦ Lore ✦</a></p>
         </div>

@@ -12,7 +12,7 @@
     <h2>Comments</h2>
 
     @if ($request->status == 'Draft' && $request->user_id == Auth::user()->id)
-        <p>Enter an optional comment about your submission (e.g. calculations) that staff will consider when reviewing your request. If you don't have a comment, click the Save button once to mark this section complete regardless.</p>
+        <p>Enter an optional comment about your submission (e.g. calculations or permission proof) that staff will consider when reviewing your request. If you don't have a comment, you may simply leave the form blank and click <i>Save</i> to mark this section as completed.</p>
         {!! Form::open(['url' => 'designs/' . $request->id . '/comments']) !!}
         <div class="form-group">
             {!! Form::label('Comments (Optional)') !!}

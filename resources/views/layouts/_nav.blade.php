@@ -140,8 +140,8 @@
                         <i class="fa-solid fa-star fa-spin"></i> Getting started
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="templink">
-                        <i class="fa-solid fa-paintbrush"></i></i> MYO Guide
+                        <a class="dropdown-item" href="/info/design">
+                        <i class="fa-solid fa-paintbrush"></i></i> Design Guide
                         </a>
                         <a class="dropdown-item" href="/world/universaltraits" style="padding-left: 20%;">
                         <i class="fa-solid fa-diagram-project"></i></i></i> Trait sheet

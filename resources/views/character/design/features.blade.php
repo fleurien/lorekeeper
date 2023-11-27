@@ -10,10 +10,10 @@
 <h2>Traits</h2>
 
 @if($request->status == 'Draft' && $request->user_id == Auth::user()->id)
-    <p>Select the traits for the {{ $request->character->is_myo_slot ? 'created' : 'updated' }} character. @if($request->character->is_myo_slot) Some traits may have been restricted for you - you cannot change them. @endif Staff will not be able to modify these traits for you during approval, so if in doubt, please communicate with them beforehand to make sure that your design is acceptable.</p>
+    <p>Select the traits for the {{ $request->character->is_myo_slot ? 'created' : 'updated' }} character. @if($request->character->is_myo_slot) Some traits may have been restricted for you - you cannot change them. @endif <b>Staff will not be able to modify these traits for you during approval,</b> so if in doubt, please reach out if you need a clarification of what traits to use.</p>
     {!! Form::open(['url' => 'designs/'.$request->id.'/traits']) !!}
         <div class="form-group">
-            {!! Form::label('species_id',  ucfirst(__('lorekeeper.species'))) !!}
+           <h4> {!! Form::label('species_id',  ucfirst(__('lorekeeper.species'))) !!} </h4>
             @if($request->character->is_myo_slot && $request->character->image->species_id)
                 <div class="alert alert-secondary">{!! $request->character->image->species->displayName !!}</div>
             @else
@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('subtype_id', 'Species '.ucfirst(__('lorekeeper.subtype'))) !!}
+           <h4> {!! Form::label('subtype_id', 'Species '.ucfirst(__('lorekeeper.subtype'))) !!} </h4>
             @if($request->character->is_myo_slot && $request->character->image->subtype_id)
                 <div class="alert alert-secondary">{!! $request->character->image->subtype->displayName !!}</div>
             @else
@@ -34,7 +34,12 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('transformation_id', 'Transformation') !!}
+           <h4> {!! Form::label('transformation_id', 'Image type') !!} </h4>
+            <p><b><a href="/info/design">See the design guide for an explanation of image types and their requirements.</a></b>
+        <br>
+    If choosing an image type your Poffin already has, the previous image will be overridden.
+<br>
+<b>If you want to replace your Poffin's main image, leave this blank.</b></p>
             @if ($request->character->is_myo_slot && $request->character->image->transformation_id)
                 <div class="alert alert-secondary">{!! $request->character->image->transformation->displayName !!}</div>
             @else
@@ -45,7 +50,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('rarity_id', 'Character Rarity') !!}
+           <h4> {!! Form::label('rarity_id', 'Character Rarity') !!} </h4>
             @if($request->character->is_myo_slot && $request->character->image->rarity_id)
                 <div class="alert alert-secondary">{!! $request->character->image->rarity->displayName !!}</div>
             @else
@@ -54,7 +59,12 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('Traits') !!}
+          <h4>  {!! Form::label('Traits') !!} </h4>
+            <p><b>For special traits:</b>
+        <br>
+    Please list the applicable features one by one in the 'extra info' box, seperated by a comma.
+<br>
+<i>For example:</i> A Poffin with extra eyes and a halo would have the <i>Eldritch</i> trait, and the extra info would say <i>'Extra eyes, halo'</i>.</p>
             <div id="featureList">
                 {{-- Add in the compulsory traits for MYO slots --}}
                 @if($request->character->is_myo_slot && $request->character->image->features)

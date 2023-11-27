@@ -64,6 +64,12 @@
         @if ($request->status == 'Draft' && $request->user_id == Auth::user()->id)
             <p>Select the image you would like to use on the masterlist and an optional thumbnail. Please only upload images that you are allowed to use AND are able to credit to the artist! Note that while staff members cannot edit your uploaded image,
                 they may choose to recrop or upload a different thumbnail.</p>
+                <p>You are uploading an image for the image type selected in the Traits tab. If that is left blank, you will be uploading your Poffin's main image.
+                    <br>
+                    <b>If this is an MYO submission, please ensure you are uploading the main image.</b>
+                <br>
+            <a href="/info/design">Please refer to the design guide for the requirements of each image type!</a></p>
+            <p><b>Images may be no more than 1500x1500 pixels big!</b></p>
         @else
             <p>As a staff member, you may modify the thumbnail of the uploaded image and/or the credits, but not the image itself. If you have recropped the thumbnail, you may need to hard refresh to see the new one.</p>
         @endif
