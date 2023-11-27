@@ -42,6 +42,19 @@
             @endif
         </p>
         @if (Auth::user()->hasPower('manage_characters'))
+        <div class="card mb-3">
+                <div class="card-body">
+                    <strong class="text-secondary">NOTE FROM ZIN ON IMAGE TYPES AND AVOIDING WEIRDNESS:</strong>
+                    <br>
+                    <b>For NEW MYOS:</b> make it the active image, remove myo placeholder
+                    <br>
+<b>For DESIGN UPDATES OF MAIN IMAGE:</b> check 'is active image', uncheck invalidate old image'. mark the old image as invalid manually
+<br>
+<b>For alternate form/outfit/ref submissions:</b> uncheck is active image, uncheck invalidate old image. remove old version of form manually if applicable
+<br><br>
+thanx ily /p
+                </div>
+            </div>
             <div class="card mb-3">
                 <div class="card-body">
                     <a href="#" class="btn btn-outline-secondary process-button btn-sm float-right" data-action="cancel">Cancel</a>
