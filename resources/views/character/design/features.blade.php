@@ -58,8 +58,9 @@
             @endif
         </div>
 
+        
         <div class="form-group">
-          <h4>  {!! Form::label('Traits') !!} </h4>
+            <h4>{!! Form::label('Traits') !!}</h4>
             <p><b>For special traits:</b>
         <br>
     Please list the applicable features one by one in the 'extra info' box, seperated by a comma.
@@ -67,8 +68,8 @@
 <i>For example:</i> A Poffin with extra eyes and a halo would have the <i>Eldritch</i> trait, and the extra info would say <i>'Extra eyes, halo'</i>.</p>
             <div id="featureList">
                 {{-- Add in the compulsory traits for MYO slots --}}
-                @if($request->character->is_myo_slot && $request->character->image->features)
-                    @foreach($request->character->image->features as $feature)
+                @if ($request->character->is_myo_slot && $request->character->image->features)
+                    @foreach ($request->character->image->features as $feature)
                         <div class="mb-2 d-flex align-items-center">
                             {!! Form::text('', $feature->name, ['class' => 'form-control mr-2', 'disabled']) !!}
                             {!! Form::text('', $feature->data, ['class' => 'form-control mr-2', 'disabled']) !!}
@@ -78,10 +79,10 @@
                 @endif
 
                 {{-- Add in the ones that currently exist --}}
-                @if($request->features)
-                    @foreach($request->features as $feature)
+                @if ($request->features)
+                    @foreach ($request->features as $feature)
                         <div class="mb-2 d-flex">
-                            {!! Form::select('feature_id[]', $features, $feature->feature_id, ['class' => 'form-control mr-2 feature-select', 'placeholder' => 'Select Trait']) !!}
+                            {!! Form::select('feature_id[]', $features, $feature->feature_id, ['class' => 'form-control mr-2 initial feature-select', 'placeholder' => 'Select Trait']) !!}
                             {!! Form::text('feature_data[]', $feature->data, ['class' => 'form-control mr-2', 'placeholder' => 'Extra Info (Optional)']) !!}
                             <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
                         </div>
@@ -95,6 +96,8 @@
                 <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
             </div>
         </div>
+
+
         <div class="text-right">
             {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
         </div>

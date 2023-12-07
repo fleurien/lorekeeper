@@ -50,36 +50,6 @@
 
 {!! Form::close() !!}
 
-@if($rarity->id)
-    <h3>Preview</h3>
-    <div class="card mb-3">
-        <div class="card-body">
-            @include('world._entry', ['imageUrl' => $rarity->rarityImageUrl, 'name' => $rarity->displayName, 'description' => $rarity->parsed_description])
-        </div>
-    </div>
-
-    <div class="form-group">
-        {!! Form::label('World Page Image (Optional)') !!} {!! add_help('This image is used only on the world information pages.') !!}
-        <div>{!! Form::file('image') !!}</div>
-        <div class="text-muted">Recommended size: 200px x 200px</div>
-        @if ($rarity->has_image)
-            <div class="form-check">
-                {!! Form::checkbox('remove_image', 1, false, ['class' => 'form-check-input']) !!}
-                {!! Form::label('remove_image', 'Remove current image', ['class' => 'form-check-label']) !!}
-            </div>
-        @endif
-    </div>
-
-    <div class="form-group">
-        {!! Form::label('Description (Optional)') !!}
-        {!! Form::textarea('description', $rarity->description, ['class' => 'form-control wysiwyg']) !!}
-    </div>
-
-    <div class="text-right">
-        {!! Form::submit($rarity->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}
-    </div>
-
-    {!! Form::close() !!}
 
     @if ($rarity->id)
         <h3>Preview</h3>
