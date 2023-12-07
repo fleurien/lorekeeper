@@ -169,6 +169,9 @@
                         <a class="dropdown-item" href="/info/eventstage">
                         <i class="fa-solid fa-gifts"></i> Event stage
                         </a>
+                        <a class="dropdown-item" href="/info/yearsend23">
+                        <i class="fa-solid fa-snowflake"></i> Year's end celebrations
+                        </a>
                     </div>
                 </li>
             </ul>

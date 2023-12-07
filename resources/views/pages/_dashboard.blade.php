@@ -67,6 +67,11 @@
       <img class="d-block w-100" src="/files/eventpromos/bughuntpromo%20crunched.png" alt="First slide">
 </a>
     </div>
+    <div class="carousel-item">
+        <a href="/info/yearsend23">
+      <img class="d-block w-100" src="https://poffinsworld.com/files/eventpromos/yearsendpromo%20crunched.png" alt="Second slide">
+</a>
+    </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
