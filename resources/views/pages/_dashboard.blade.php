@@ -40,17 +40,7 @@
 
 <div class="row justify-contents-center">
     <!-- NEWS -->
-    <div class="col-md-3 col-12 order-2 order-md-1">
-        @foreach($newses = App\Models\News::orderBy("id", "desc")->get()->take(1) as $news)
-            <h3 class="card-title text-center mb-0 newstitle">{!! $news->displayName !!}</h2>
-            <p align="center"> {!! $news->updated_at !!} </p>
-                    <div class="parsed-text text-center coolswagcontainer">
-                        {!! substr(str_replace('"','&#39;',$news->parsed_text ),0,250) !!}...
-                        <br><br>
-                        <a href="/news/{!! $news->id !!}"><b>[ Read more ]</b></a>
-                    </div>
-        @endforeach
-    </div>
+    @include('widgets._news', ['textPreview' => true])
     <!-- END NEWS -->
 
     <!-- HIGHLIGHTS-->
