@@ -40,7 +40,10 @@
 
 <div class="row justify-contents-center">
     <!-- NEWS -->
+    <div class="col-md-3 col-12 order-2 order-md-1">
     @include('widgets._news', ['textPreview' => true])
+
+    </div>
     <!-- END NEWS -->
 
     <!-- HIGHLIGHTS-->

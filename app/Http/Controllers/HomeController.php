@@ -47,7 +47,7 @@ class HomeController extends Controller {
             'affiliates'          => Affiliate::where('status', 'Accepted')->featured(0)->inRandomOrder()->limit(10)->get(),
             'featured_affiliates' => Affiliate::where('status', 'Accepted')->featured(1)->get(),
             'featured'            => $character,
-            'newses'   => News::visible()->orderBy('updated_at', 'DESC')->take(2)->get(),
+            'newses'   => News::visible()->orderBy('updated_at', 'DESC')->take(1)->get(),
         ]);
     }
 
