@@ -4,8 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EventFaction extends Model
-{
+class EventFaction extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -33,16 +32,14 @@ class EventFaction extends Model
     /**
      * Get the event attached to this.
      */
-    public function event()
-    {
+    public function event() {
         return $this->belongsTo('App\Models\WorldExpansion\Event', 'event_id');
     }
 
     /**
      * Get the location attached to this.
      */
-    public function location()
-    {
+    public function location() {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'faction_id');
     }
 }

@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCharactersToAwardTables extends Migration
-{
+class AddCharactersToAwardTables extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         // This simply moves all existing award credits to the data column. Why bother with a command when you can do it in the migration!
         foreach (App\Models\Award\Award::all() as $award) {
             $data = $award->data;
@@ -59,8 +57,7 @@ class AddCharactersToAwardTables extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('awards', function (Blueprint $table) {
             $table->dropColumn('is_featured');
             $table->dropColumn('is_user_owned');

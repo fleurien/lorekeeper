@@ -5,8 +5,7 @@ namespace App\Models\WorldExpansion;
 use App\Models\Item\Item;
 use Illuminate\Database\Eloquent\Model;
 
-class FaunaItem extends Model
-{
+class FaunaItem extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -34,16 +33,14 @@ class FaunaItem extends Model
     /**
      * Get the fauna attached to this.
      */
-    public function fauna()
-    {
+    public function fauna() {
         return $this->belongsTo('App\Models\WorldExpansion\Fauna', 'fauna_id');
     }
 
     /**
      * Get the item attached to this.
      */
-    public function item()
-    {
+    public function item() {
         return $this->belongsTo('App\Models\Item\Item', 'item_id');
     }
 }

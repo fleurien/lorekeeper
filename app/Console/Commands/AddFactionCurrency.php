@@ -9,8 +9,7 @@ use DB;
 use Illuminate\Console\Command;
 use Settings;
 
-class AddFactionCurrency extends Command
-{
+class AddFactionCurrency extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -28,8 +27,7 @@ class AddFactionCurrency extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -38,8 +36,7 @@ class AddFactionCurrency extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $this->info('*********************************');
         $this->info('* ADD FACTION STANDING CURRENCY *');
         $this->info('*********************************'."\n");

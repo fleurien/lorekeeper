@@ -8,8 +8,7 @@ use App\Models\User\User;
 use Carbon\Carbon;
 use DB;
 
-class AdventManager extends Service
-{
+class AdventManager extends Service {
     /*
     |--------------------------------------------------------------------------
     | Advent Calendar Manager
@@ -22,13 +21,12 @@ class AdventManager extends Service
     /**
      * Claims an advent calendar prize.
      *
-     * @param \App\Models\User\User $user
-     * @param mixed                 $advent
+     * @param User  $user
+     * @param mixed $advent
      *
      * @return App\Models\Advent\AdventParticipant|bool
      */
-    public function claimPrize($advent, $user)
-    {
+    public function claimPrize($advent, $user) {
         DB::beginTransaction();
 
         try {
@@ -55,7 +53,7 @@ class AdventManager extends Service
 
             // Give the user the item(s)
             if (!(new InventoryManager)->creditItem(null, $user, 'Advent Calendar Prize', [
-                'data' => $participant->itemData,
+                'data'  => $participant->itemData,
                 'notes' => 'Claimed '.format_date($participant->claimed_at),
             ], $advent->item($advent->day), $advent->itemQuantity($advent->day))) {
                 throw new \Exception('Failed to claim item.');
@@ -77,9 +75,9 @@ class AdventManager extends Service
                 // If all days
                 if (isset($allDays) && $allDays) {
                     if (!(new InventoryManager)->creditItem(null, $user, 'Advent Calendar Bonus Prize', [
-                    'data' => $participant->itemData,
-                    'notes' => 'Advent Calendar Bonus Prize',
-                ], $advent->item('bonus'), $advent->itemQuantity('bonus'))) {
+                        'data'  => $participant->itemData,
+                        'notes' => 'Advent Calendar Bonus Prize',
+                    ], $advent->item('bonus'), $advent->itemQuantity('bonus'))) {
                         throw new \Exception('Failed to claim item.');
                     }
                 }

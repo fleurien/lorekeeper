@@ -22,23 +22,23 @@ class Kernel extends ConsoleKernel {
         $schedule->command('check-news')
             ->everyMinute();
         $schedule->command('check-sales')
-                ->everyMinute();
+            ->everyMinute();
         $schedule->command('reset-foraging')
-                ->daily();
+            ->daily();
         $schedule->command('check-pet-drops')
-                ->everyMinute();
+            ->everyMinute();
         $schedule->command('restock-shops')
-                ->daily();
+            ->daily();
         $schedule->command('update-timed-stock')
-                ->everyMinute();
+            ->everyMinute();
         $schedule->command('change-fetch-item')
-                ->hourly();
+            ->hourly();
         $schedule->command('refresh-encounter-energy')
-                ->daily();
+            ->daily();
         $schedule->command('update-timed-areas')
-                ->everyMinute();
+            ->everyMinute();
         $schedule->command('update-timed-daily')
-                ->everyMinute();          
+            ->everyMinute();
         $schedule->command('clean-oekaki')
             ->everyFiveMinutes();
     }

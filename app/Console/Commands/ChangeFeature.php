@@ -7,8 +7,7 @@ use DB;
 use Illuminate\Console\Command;
 use Settings;
 
-class ChangeFeature extends Command
-{
+class ChangeFeature extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -26,8 +25,7 @@ class ChangeFeature extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -36,16 +34,15 @@ class ChangeFeature extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
-        $characterCount = Character::myo(0) -> count();
+    public function handle() {
+        $characterCount = Character::myo(0)->count();
         $setting = Settings::get('featured_character');
         //
-        if($characterCount && $setting) {
+        if ($characterCount && $setting) {
             $id = Character::myo()->random()->id;
             $setting = Settings::get('featured_character');
-            if($id && $setting) {
-                if($id == $setting) {
+            if ($id && $setting) {
+                if ($id == $setting) {
                     $id = Character::myo()->random()->id;
                 }
 

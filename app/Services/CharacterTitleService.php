@@ -7,8 +7,7 @@ use App\Models\Character\CharacterImage;
 use App\Models\Character\CharacterTitle;
 use DB;
 
-class CharacterTitleService extends Service
-{
+class CharacterTitleService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Title Service
@@ -26,8 +25,7 @@ class CharacterTitleService extends Service
      *
      * @return \App\Models\Title|bool
      */
-    public function createTitle($data, $user)
-    {
+    public function createTitle($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -65,8 +63,7 @@ class CharacterTitleService extends Service
      *
      * @return \App\Models\Title|bool
      */
-    public function updateTitle($title, $data, $user)
-    {
+    public function updateTitle($title, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -108,8 +105,7 @@ class CharacterTitleService extends Service
      *
      * @return bool
      */
-    public function deleteTitle($title)
-    {
+    public function deleteTitle($title) {
         DB::beginTransaction();
 
         try {
@@ -138,8 +134,7 @@ class CharacterTitleService extends Service
      *
      * @return bool
      */
-    public function sortTitle($data)
-    {
+    public function sortTitle($data) {
         DB::beginTransaction();
 
         try {
@@ -166,8 +161,7 @@ class CharacterTitleService extends Service
      *
      * @return array
      */
-    private function populateData($data, $title = null)
-    {
+    private function populateData($data, $title = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         } else {

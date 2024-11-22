@@ -5,8 +5,7 @@ namespace App\Models\WorldExpansion;
 use App\Models\Item\Item;
 use Illuminate\Database\Eloquent\Model;
 
-class ConceptItem extends Model
-{
+class ConceptItem extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -34,16 +33,14 @@ class ConceptItem extends Model
     /**
      * Get the fauna attached to this.
      */
-    public function concept()
-    {
+    public function concept() {
         return $this->belongsTo('App\Models\WorldExpansion\Concept', 'concept_id');
     }
 
     /**
      * Get the item attached to this.
      */
-    public function item()
-    {
+    public function item() {
         return $this->belongsTo('App\Models\Item\Item', 'item_id');
     }
 }

@@ -5,8 +5,7 @@ namespace App\Models\Character;
 use App\Models\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CharacterAward extends Model
-{
+class CharacterAward extends Model {
     use SoftDeletes;
 
     /**
@@ -41,16 +40,14 @@ class CharacterAward extends Model
     /**
      * Get the character who owns the stack.
      */
-    public function character()
-    {
+    public function character() {
         return $this->belongsTo('App\Models\Character\Character');
     }
 
     /**
      * Get the item associated with this item stack.
      */
-    public function award()
-    {
+    public function award() {
         return $this->belongsTo('App\Models\Award\Award');
     }
 
@@ -65,8 +62,7 @@ class CharacterAward extends Model
      *
      * @return array
      */
-    public function getDataAttribute()
-    {
+    public function getDataAttribute() {
         return json_decode($this->attributes['data'], true);
     }
 
@@ -75,8 +71,7 @@ class CharacterAward extends Model
      *
      * @return array
      */
-    public function getIsTransferrableAttribute()
-    {
+    public function getIsTransferrableAttribute() {
         if (!isset($this->data['disallow_transfer']) && $this->award->allow_transfer) {
             return true;
         }
@@ -89,8 +84,7 @@ class CharacterAward extends Model
      *
      * @return int
      */
-    public function getAvailableQuantityAttribute()
-    {
+    public function getAvailableQuantityAttribute() {
         return $this->count;
     }
 
@@ -99,8 +93,7 @@ class CharacterAward extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'character_awards';
     }
 }

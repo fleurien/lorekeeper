@@ -15,8 +15,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
-class FactionController extends Controller
-{
+class FactionController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Faction Controller
@@ -31,8 +30,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('world.index');
     }
 
@@ -41,8 +39,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFactionTypes(Request $request)
-    {
+    public function getFactionTypes(Request $request) {
         $query = FactionType::query();
         $name = $request->get('name');
         if ($name) {
@@ -62,8 +59,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFactionType($id)
-    {
+    public function getFactionType($id) {
         $type = FactionType::find($id);
         if (!$type) {
             abort(404);
@@ -79,8 +75,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFactions(Request $request)
-    {
+    public function getFactions(Request $request) {
         $query = Faction::with('type');
         $data = $request->only(['type_id', 'name', 'sort']);
         if (isset($data['type_id']) && $data['type_id'] != 'none') {
@@ -132,8 +127,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFaction($id)
-    {
+    public function getFaction($id) {
         $faction = Faction::where('is_active', 1)->find($id);
         if (!$faction->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);
@@ -160,8 +154,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFactionMembers(Request $request, $id)
-    {
+    public function getFactionMembers(Request $request, $id) {
         $faction = Faction::find($id);
         if (!$faction || !$faction->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);

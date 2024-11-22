@@ -4,8 +4,7 @@ namespace App\Models\Award;
 
 use App\Models\Model;
 
-class AwardLog extends Model
-{
+class AwardLog extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -41,8 +40,7 @@ class AwardLog extends Model
     /**
      * Get the user who initiated the logged action.
      */
-    public function sender()
-    {
+    public function sender() {
         if ($this->sender_type == 'User') {
             return $this->belongsTo('App\Models\User\User', 'sender_id');
         }
@@ -53,8 +51,7 @@ class AwardLog extends Model
     /**
      * Get the user who received the logged action.
      */
-    public function recipient()
-    {
+    public function recipient() {
         if ($this->recipient_type == 'User') {
             return $this->belongsTo('App\Models\User\User', 'recipient_id');
         }
@@ -65,8 +62,7 @@ class AwardLog extends Model
     /**
      * Get the award that is the target of the action.
      */
-    public function award()
-    {
+    public function award() {
         return $this->belongsTo('App\Models\Award\Award');
     }
 }

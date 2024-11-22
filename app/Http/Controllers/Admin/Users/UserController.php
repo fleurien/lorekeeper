@@ -76,8 +76,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getUser($name)
-    {
+    public function getUser($name) {
         $interval = [
             0 => 'whenever',
             1 => 'yearly',
@@ -136,8 +135,7 @@ class UserController extends Controller {
         return redirect()->to($user->adminUrl);
     }
 
-    public function postUserLocation(Request $request, $name)
-    {
+    public function postUserLocation(Request $request, $name) {
         $user = User::where('name', $name)->first();
         $service = new UserService;
 
@@ -156,8 +154,7 @@ class UserController extends Controller {
         return redirect()->back();
     }
 
-    public function postUserFaction(Request $request, $name)
-    {
+    public function postUserFaction(Request $request, $name) {
         $user = User::where('name', $name)->first();
         $service = new UserService;
 
@@ -176,8 +173,7 @@ class UserController extends Controller {
         return redirect()->back();
     }
 
-    public function postUserAlias(Request $request, $name, $id)
-    {
+    public function postUserAlias(Request $request, $name, $id) {
         $user = User::where('name', $name)->first();
         $alias = UserAlias::find($id);
 

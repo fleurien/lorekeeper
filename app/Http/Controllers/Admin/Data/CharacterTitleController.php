@@ -9,8 +9,7 @@ use App\Services\CharacterTitleService;
 use Auth;
 use Illuminate\Http\Request;
 
-class CharacterTitleController extends Controller
-{
+class CharacterTitleController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Admin / Character Title Controller
@@ -25,8 +24,7 @@ class CharacterTitleController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('admin.character_titles.titles', [
             'titles' => CharacterTitle::orderBy('sort', 'DESC')->get(),
         ]);
@@ -37,8 +35,7 @@ class CharacterTitleController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateTitle()
-    {
+    public function getCreateTitle() {
         return view('admin.character_titles.create_edit_title', [
             'title'    => new CharacterTitle,
             'rarities' => Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -52,8 +49,7 @@ class CharacterTitleController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditTitle($id)
-    {
+    public function getEditTitle($id) {
         $title = CharacterTitle::find($id);
         if (!$title) {
             abort(404);
@@ -73,8 +69,7 @@ class CharacterTitleController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditTitle(Request $request, CharacterTitleService $service, $id = null)
-    {
+    public function postCreateEditTitle(Request $request, CharacterTitleService $service, $id = null) {
         $id ? $request->validate(CharacterTitle::$updateRules) : $request->validate(CharacterTitle::$createRules);
         $data = $request->only([
             'title', 'short_title', 'rarity_id', 'description', 'image', 'remove_image',
@@ -101,8 +96,7 @@ class CharacterTitleController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteTitle($id)
-    {
+    public function getDeleteTitle($id) {
         $title = CharacterTitle::find($id);
 
         return view('admin.character_titles._delete_title', [
@@ -118,8 +112,7 @@ class CharacterTitleController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteTitle(Request $request, CharacterTitleService $service, $id)
-    {
+    public function postDeleteTitle(Request $request, CharacterTitleService $service, $id) {
         if ($id && $service->deleteTitle(CharacterTitle::find($id))) {
             flash('Title deleted successfully.')->success();
         } else {
@@ -138,8 +131,7 @@ class CharacterTitleController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortTitle(Request $request, CharacterTitleService $service)
-    {
+    public function postSortTitle(Request $request, CharacterTitleService $service) {
         if ($service->sortTitle($request->get('sort'))) {
             flash('Title order updated successfully.')->success();
         } else {

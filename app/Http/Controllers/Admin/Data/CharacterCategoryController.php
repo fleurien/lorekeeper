@@ -39,8 +39,8 @@ class CharacterCategoryController extends Controller {
     public function getCreateCharacterCategory() {
         return view('admin.characters.create_edit_character_category', [
             'lineageBlacklist' => null,
-            'category' => new CharacterCategory,
-            'sublists' => [0 => 'No Sublist'] + Sublist::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
+            'category'         => new CharacterCategory,
+            'sublists'         => [0 => 'No Sublist'] + Sublist::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -53,13 +53,15 @@ class CharacterCategoryController extends Controller {
      */
     public function getEditCharacterCategory($id) {
         $category = CharacterCategory::find($id);
-        if(!$category) abort(404);
+        if (!$category) {
+            abort(404);
+        }
         $lineageBlacklist = CharacterLineageBlacklist::where('type', 'category')->where('type_id', $category->id)->get()->first();
 
         return view('admin.characters.create_edit_character_category', [
             'lineageBlacklist' => $lineageBlacklist,
-            'category' => $category,
-            'sublists' => [0 => 'No Sublist'] + Sublist::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
+            'category'         => $category,
+            'sublists'         => [0 => 'No Sublist'] + Sublist::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -74,8 +76,8 @@ class CharacterCategoryController extends Controller {
     public function postCreateEditCharacterCategory(Request $request, CharacterCategoryService $service, $id = null) {
         $id ? $request->validate(CharacterCategory::$updateRules) : $request->validate(CharacterCategory::$createRules);
         $data = $request->only([
-        'lineage-blacklist',            
-        'code', 'name', 'description', 'image', 'remove_image', 'masterlist_sub_id', 'is_visible',
+            'lineage-blacklist',
+            'code', 'name', 'description', 'image', 'remove_image', 'masterlist_sub_id', 'is_visible',
         ]);
         if ($id && $service->updateCharacterCategory(CharacterCategory::find($id), $data, Auth::user())) {
             flash('Category updated successfully.')->success();

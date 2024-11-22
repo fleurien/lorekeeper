@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserItemDonationTables extends Migration
-{
+class CreateUserItemDonationTables extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('user_item_donations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -29,8 +27,7 @@ class CreateUserItemDonationTables extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('user_item_donations');
 
         Schema::table('item_categories', function (Blueprint $table) {

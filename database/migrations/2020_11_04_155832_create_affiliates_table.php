@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAffiliatesTable extends Migration
-{
+class CreateAffiliatesTable extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('affiliates', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -41,8 +39,7 @@ class CreateAffiliatesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('affiliates');
     }
 }

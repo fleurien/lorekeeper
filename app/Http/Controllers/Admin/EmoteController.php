@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Emote;
+use App\Services\EmoteService;
+use Auth;
 use Illuminate\Http\Request;
 
-use Auth;
-use Log;
-use App\Models\Emote;
-
-use App\Services\EmoteService;
-use App\Http\Controllers\Controller;
-
-class EmoteController extends Controller
-{
+class EmoteController extends Controller {
     /**
-     * Get index
+     * Get index.
      */
-    public function getEmoteIndex()
-    {
+    public function getEmoteIndex() {
         return view('admin.emotes.emotes', [
-            'emotes' => Emote::all()
+            'emotes' => Emote::all(),
         ]);
     }
 
@@ -28,8 +23,7 @@ class EmoteController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateEmote()
-    {
+    public function getCreateEmote() {
         return view('admin.emotes.create_edit_emote', [
             'emote' => new Emote,
         ]);
@@ -38,10 +32,11 @@ class EmoteController extends Controller
     /**
      * Shows the edit emote page.
      *
+     * @param mixed $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditEmote($id)
-    {
+    public function getEditEmote($id) {
         return view('admin.emotes.create_edit_emote', [
             'emote' => Emote::findOrFail($id),
         ]);
@@ -50,36 +45,39 @@ class EmoteController extends Controller
     /**
      * Creates or edits an emote.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\EmoteService  $service
-     * @param  int|null                  $id
+     * @param App\Services\EmoteService $service
+     * @param int|null                  $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditEmote(Request $request, EmoteService $service, $id = null)
-    {
+    public function postCreateEditEmote(Request $request, EmoteService $service, $id = null) {
         $id ? $request->validate(Emote::$updateRules) : $request->validate(Emote::$createRules);
         $data = $request->only([
-            'name','image', 'is_active'
+            'name', 'image', 'is_active',
         ]);
-        if($id && $service->updateEmote(Emote::find($id), $data, Auth::user())) {
+        if ($id && $service->updateEmote(Emote::find($id), $data, Auth::user())) {
             flash('Emote updated successfully.')->success();
-        }
-        else if (!$id && $emote = $service->createEmote($data, Auth::user())) {
+        } elseif (!$id && $emote = $service->createEmote($data, Auth::user())) {
             flash('Emote created successfully.')->success();
+
             return redirect()->to('admin/emotes/edit/'.$emote->id);
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
     /**
      * Deletes a emote.
+     *
+     * @param mixed $id
      */
-    public function getDeleteEmote($id)
-    {
+    public function getDeleteEmote($id) {
         $emote = Emote::findOrFail($id);
+
         return view('admin.emotes._delete_emote', [
             'emote' => $emote,
         ]);
@@ -87,16 +85,18 @@ class EmoteController extends Controller
 
     /**
      * Deletes a emote.
+     *
+     * @param mixed $id
      */
-    public function postDeleteEmote(Request $request, EmoteService $service, $id)
-    {
-        if($service->deleteEmote(Emote::find($id))) {
+    public function postDeleteEmote(Request $request, EmoteService $service, $id) {
+        if ($service->deleteEmote(Emote::find($id))) {
             flash('Emote deleted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->to('admin/emotes');
     }
-
 }

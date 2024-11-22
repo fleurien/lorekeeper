@@ -4,9 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-class EventCategory extends Model
-{
+class EventCategory extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -60,8 +58,7 @@ class EventCategory extends Model
     /**
      * Get the location attached to this type.
      */
-    public function events()
-    {
+    public function events() {
         return $this->hasMany('App\Models\WorldExpansion\Event', 'category_id')->visible();
     }
 
@@ -76,8 +73,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-type">'.$this->name.'</a>';
     }
 
@@ -86,8 +82,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/event_categories';
     }
 
@@ -96,8 +91,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -106,8 +100,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -116,8 +109,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -126,8 +118,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -140,8 +131,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -154,8 +144,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/event-categories/'.$this->id);
     }
 
@@ -164,8 +153,7 @@ class EventCategory extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         return url('world/events?category_id='.$this->id.'&sort=category');
     }
 }

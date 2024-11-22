@@ -2,19 +2,14 @@
 
 namespace App\Models;
 
-use Config;
-use DB;
-use App\Models\Model;
-
-class Emote extends Model
-{
+class Emote extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'is_active'
+        'name', 'is_active',
     ];
 
     /**
@@ -30,7 +25,7 @@ class Emote extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:items|between:3,100',
+        'name'  => 'required|unique:items|between:3,100',
         'image' => 'required|mimes:png,jpg,jpeg,gif',
     ];
 
@@ -40,30 +35,28 @@ class Emote extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,100',
+        'name'  => 'required|between:3,100',
         'image' => 'mimes:png,jpg,jpeg,gif',
     ];
 
-
-
     /**********************************************************************************************
-    
+
         SCOPES
     **********************************************************************************************/
 
     /**
      * Scope a query to retrieve only active emotes.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
-    {
+    public function scopeActive($query) {
         return $query->where('is_active', 1);
     }
 
     /**********************************************************************************************
-    
+
         ACCESSORS
     **********************************************************************************************/
 
@@ -72,8 +65,7 @@ class Emote extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/emotes';
     }
 
@@ -82,9 +74,8 @@ class Emote extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
-        return $this->id . '-image.png';
+    public function getImageFileNameAttribute() {
+        return $this->id.'-image.png';
     }
 
     /**
@@ -92,8 +83,7 @@ class Emote extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -102,9 +92,7 @@ class Emote extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+    public function getImageUrlAttribute() {
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
-
 }

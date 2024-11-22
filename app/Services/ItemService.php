@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use Config;
-use DB;
-
-use App\Services\Service;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\Item\ItemTag;
+use Config;
+use DB;
 
 class ItemService extends Service {
     /*
@@ -32,7 +30,7 @@ class ItemService extends Service {
      * @param array                 $data
      * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Item\ItemCategory|bool
+     * @return bool|ItemCategory
      */
     public function createItemCategory($data, $user) {
         DB::beginTransaction();
@@ -70,11 +68,11 @@ class ItemService extends Service {
     /**
      * Update a category.
      *
-     * @param \App\Models\Item\ItemCategory $category
-     * @param array                         $data
-     * @param \App\Models\User\User         $user
+     * @param ItemCategory          $category
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Item\ItemCategory|bool
+     * @return bool|ItemCategory
      */
     public function updateItemCategory($category, $data, $user) {
         DB::beginTransaction();
@@ -115,8 +113,8 @@ class ItemService extends Service {
     /**
      * Delete a category.
      *
-     * @param \App\Models\Item\ItemCategory $category
-     * @param mixed                         $user
+     * @param ItemCategory $category
+     * @param mixed        $user
      *
      * @return bool
      */
@@ -183,7 +181,7 @@ class ItemService extends Service {
      * @param array                 $data
      * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Item\Item|bool
+     * @return bool|Item
      */
     public function createItem($data, $user) {
         DB::beginTransaction();
@@ -239,11 +237,11 @@ class ItemService extends Service {
     /**
      * Updates an item.
      *
-     * @param \App\Models\Item\Item $item
+     * @param Item                  $item
      * @param array                 $data
      * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Item\Item|bool
+     * @return bool|Item
      */
     public function updateItem($item, $data, $user) {
         DB::beginTransaction();
@@ -301,8 +299,8 @@ class ItemService extends Service {
     /**
      * Deletes an item.
      *
-     * @param \App\Models\Item\Item $item
-     * @param mixed                 $user
+     * @param Item  $item
+     * @param mixed $user
      *
      * @return bool
      */
@@ -372,9 +370,9 @@ class ItemService extends Service {
     /**
      * Adds an item tag to an item.
      *
-     * @param \App\Models\Item\Item $item
-     * @param string                $tag
-     * @param mixed                 $user
+     * @param Item   $item
+     * @param string $tag
+     * @param mixed  $user
      *
      * @return bool|string
      */
@@ -412,10 +410,10 @@ class ItemService extends Service {
     /**
      * Edits the data associated with an item tag on an item.
      *
-     * @param \App\Models\Item\Item $item
-     * @param string                $tag
-     * @param array                 $data
-     * @param mixed                 $user
+     * @param Item   $item
+     * @param string $tag
+     * @param array  $data
+     * @param mixed  $user
      *
      * @return bool|string
      */
@@ -457,9 +455,9 @@ class ItemService extends Service {
     /**
      * Removes an item tag from an item.
      *
-     * @param \App\Models\Item\Item $item
-     * @param string                $tag
-     * @param mixed                 $user
+     * @param Item   $item
+     * @param string $tag
+     * @param mixed  $user
      *
      * @return bool|string
      */
@@ -479,14 +477,15 @@ class ItemService extends Service {
             }
 
             $this_tag = $item->tags()->where('tag', $tag)->first();
-            if($this_tag && $this_tag->tag == 'background' && isset($this_tag->getData()['background-image']))
-            {
-                $full = explode('/', (explode('?',$this_tag->getData()['background-image'])[0]));
+            if ($this_tag && $this_tag->tag == 'background' && isset($this_tag->getData()['background-image'])) {
+                $full = explode('/', (explode('?', $this_tag->getData()['background-image'])[0]));
                 $filename = end($full);
-                $path = implode('/',array_slice($full, 0, -1));
+                $path = implode('/', array_slice($full, 0, -1));
 
                 // Delete the image at this location
-                if(is_file($path.'/'.$filename)) $this->deleteImage($path, $filename);
+                if (is_file($path.'/'.$filename)) {
+                    $this->deleteImage($path, $filename);
+                }
             }
 
             $item->tags()->where('tag', $tag)->delete();
@@ -502,8 +501,8 @@ class ItemService extends Service {
     /**
      * Handle category data.
      *
-     * @param array                              $data
-     * @param \App\Models\Item\ItemCategory|null $category
+     * @param array             $data
+     * @param ItemCategory|null $category
      *
      * @return array
      */
@@ -532,13 +531,11 @@ class ItemService extends Service {
         return $data;
     }
 
-    
-
     /**
      * Processes user input for creating/updating an item.
      *
-     * @param array                 $data
-     * @param \App\Models\Item\Item $item
+     * @param array $data
+     * @param Item  $item
      *
      * @return array
      */

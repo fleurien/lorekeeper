@@ -4,41 +4,34 @@ namespace App\Services;
 
 use App\Models\Award\Award;
 use App\Models\Character\Character;
+use App\Models\Claymore\Gear;
+use App\Models\Claymore\Weapon;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Loot\LootTable;
+use App\Models\Pet\Pet;
 use App\Models\Prompt\Prompt;
 use App\Models\Raffle\Raffle;
+use App\Models\Recipe\Recipe;
+use App\Models\Status\StatusEffect;
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
 use App\Models\User\User;
 use App\Models\User\UserItem;
+use App\Services\Stat\ExperienceManager;
+use App\Services\Stat\StatManager;
 use DB;
 use Illuminate\Support\Arr;
 use Notifications;
 use Settings;
-use App\Models\Pet\Pet;
-use App\Models\Skill\Skill;
-use App\Models\Claymore\Gear;
-use App\Models\Claymore\Weapon;
-use App\Models\Recipe\Recipe;
-use App\Models\Status\StatusEffect;
-
-use App\Services\Stat\ExperienceManager;
-use App\Services\Stat\StatManager;
-use App\Services\SkillManager;
 
 class SubmissionManager extends Service {
-
-    private function innerNull($value){
-        return array_values(array_filter($value));
-    }
     /**
      * Creates a new submission.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
-     * @param bool                  $isClaim
+     * @param array $data
+     * @param User  $user
+     * @param bool  $isClaim
      *
      * @return mixed
      */
@@ -206,8 +199,8 @@ class SubmissionManager extends Service {
     /**
      * Rejects a submission.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return mixed
      */
@@ -296,8 +289,8 @@ class SubmissionManager extends Service {
     /**
      * Approves a submission.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return mixed
      */
@@ -408,11 +401,16 @@ class SubmissionManager extends Service {
                 foreach ($data['character_rewardable_id'] as $ckey => $c) {
                     foreach ($c as $key                            => $id) {
                         switch ($data['character_rewardable_type'][$ckey][$key]) {
-                            case 'Currency':    $currencyIds[] = $id; break;
-                            case 'Item':        $itemIds[] = $id; break;
-                            case 'LootTable':   $tableIds[] = $id; break;
-                            case 'StatusEffect': $statusIds[] = $id; break;
-                            case 'Award':       $awardIds[] = $id; break;
+                            case 'Currency':    $currencyIds[] = $id;
+                                break;
+                            case 'Item':        $itemIds[] = $id;
+                                break;
+                            case 'LootTable':   $tableIds[] = $id;
+                                break;
+                            case 'StatusEffect': $statusIds[] = $id;
+                                break;
+                            case 'Award':       $awardIds[] = $id;
+                                break;
                         }
                     }
                 } // Expanded character rewards
@@ -446,14 +444,12 @@ class SubmissionManager extends Service {
                 ]);
             }
 
-
             // stats & exp ---- currently prompt only
-            if($submission->prompt_id && $submission->prompt->expreward)
-            {
+            if ($submission->prompt_id && $submission->prompt->expreward) {
                 $levelLog = new ExperienceManager;
                 $statLog = new StatManager;
                 $levelData = 'Received rewards for '.($submission->prompt_id ? 'submission' : 'claim').' (<a href="'.$submission->viewUrl.'">#'.$submission->id.'</a>)';
-                
+
                 // to be encoded
                 $user_exp = null;
                 $user_points = null;
@@ -462,75 +458,79 @@ class SubmissionManager extends Service {
                 // user
                 $level = $submission->user->level;
                 $levelUser = $submission->user;
-                if(!$level) throw new \Exception('This user does not have a level log.');
+                if (!$level) {
+                    throw new \Exception('This user does not have a level log.');
+                }
 
                 // exp
-                if($submission->prompt->expreward->user_exp || $data['bonus_user_exp'])
-                {
+                if ($submission->prompt->expreward->user_exp || $data['bonus_user_exp']) {
                     $quantity = $submission->prompt->expreward->user_exp;
-                        if($data['bonus_user_exp'])
-                        {
-                            $quantity += $data['bonus_user_exp'];
-                        }
-                        $user_exp += $quantity;
-                    if(!$levelLog->creditExp(null, $levelUser, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant user exp');
+                    if ($data['bonus_user_exp']) {
+                        $quantity += $data['bonus_user_exp'];
+                    }
+                    $user_exp += $quantity;
+                    if (!$levelLog->creditExp(null, $levelUser, $promptLogType, $levelData, $quantity)) {
+                        throw new \Exception('Could not grant user exp');
+                    }
                 }
                 //points
-                if($submission->prompt->expreward->user_points || $data['bonus_user_points'])
-                {
+                if ($submission->prompt->expreward->user_points || $data['bonus_user_points']) {
                     $quantity = $submission->prompt->expreward->user_points;
-                        if($data['bonus_user_points'])
-                        {
-                            $quantity += $data['bonus_user_points'];
-                        }
-                        $user_points += $quantity;
-                    if(!$statLog->creditStat(null, $levelUser, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant user points');
+                    if ($data['bonus_user_points']) {
+                        $quantity += $data['bonus_user_points'];
+                    }
+                    $user_points += $quantity;
+                    if (!$statLog->creditStat(null, $levelUser, $promptLogType, $levelData, $quantity)) {
+                        throw new \Exception('Could not grant user points');
+                    }
                 }
 
                 // character
-                if($submission->focus_chara_id)
-                {
+                if ($submission->focus_chara_id) {
                     $level = $submission->focus->level;
                     $levelCharacter = $submission->focus;
-                    if(!$level) throw new \Exception('This character does not have a level log.');
+                    if (!$level) {
+                        throw new \Exception('This character does not have a level log.');
+                    }
                     // exp
-                    if($submission->prompt->expreward->chara_exp || $data['bonus_exp'])
-                    {
+                    if ($submission->prompt->expreward->chara_exp || $data['bonus_exp']) {
                         $quantity = $submission->prompt->expreward->chara_exp;
-                        if($data['bonus_exp'])
-                        {
+                        if ($data['bonus_exp']) {
                             $quantity += $data['bonus_exp'];
                         }
                         $character_exp += $quantity;
-                        if(!$levelLog->creditExp(null, $levelCharacter, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant character exp');
+                        if (!$levelLog->creditExp(null, $levelCharacter, $promptLogType, $levelData, $quantity)) {
+                            throw new \Exception('Could not grant character exp');
+                        }
                     }
                     // points
-                    if($submission->prompt->expreward->chara_points || $data['bonus_points'])
-                    {
+                    if ($submission->prompt->expreward->chara_points || $data['bonus_points']) {
                         $quantity = $submission->prompt->expreward->chara_points;
-                        if($data['bonus_points'])
-                        {
+                        if ($data['bonus_points']) {
                             $quantity += $data['bonus_points'];
                         }
                         $character_points += $quantity;
-                        if(!$statLog->creditStat(null, $levelCharacter, $promptLogType, $levelData, $quantity)) throw new \Exception('Could not grant character points');
+                        if (!$statLog->creditStat(null, $levelCharacter, $promptLogType, $levelData, $quantity)) {
+                            throw new \Exception('Could not grant character points');
+                        }
                     }
                 }
 
                 $json[] = [
                     'User_Bonus' => [
-                        'exp' => $user_exp,
-                        'points' => $user_points
+                        'exp'    => $user_exp,
+                        'points' => $user_points,
                     ],
                     'Character_Bonus' => [
-                        'exp' => $character_exp,
-                        'points' => $character_points
+                        'exp'    => $character_exp,
+                        'points' => $character_points,
                     ],
                 ];
 
                 $bonus = json_encode($json);
+            } else {
+                $bonus = null;
             }
-            else $bonus = NULL;
 
             // Increment user submission count if it's a prompt
             if ($submission->prompt_id) {
@@ -577,6 +577,10 @@ class SubmissionManager extends Service {
 
         return $this->rollbackReturn(false);
     }
+
+    private function innerNull($value) {
+        return array_values(array_filter($value));
+    }
     /*
     |--------------------------------------------------------------------------
     | Submission Manager
@@ -586,14 +590,13 @@ class SubmissionManager extends Service {
     |
     */
 
-
-
     /**
      * Processes reward data into a format that can be used for distribution.
      *
      * @param array $data
      * @param bool  $isCharacter
      * @param bool  $isStaff
+     * @param mixed $isClaim
      *
      * @return array
      */
@@ -624,7 +627,6 @@ class SubmissionManager extends Service {
                         case 'LootTable': if ($data['character_rewardable_quantity'][$data['character_id']][$key]) {
                             addAsset($assets, $data['tables'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]);
                         } break;
-
                     }
                 }
             }
@@ -650,7 +652,9 @@ class SubmissionManager extends Service {
                             $reward = Award::find($data['rewardable_id'][$key]);
                             break;
                         case 'Pet':
-                            if (!$isStaff) break;
+                            if (!$isStaff) {
+                                break;
+                            }
                             $reward = Pet::find($data['rewardable_id'][$key]);
                             break;
                         case 'LootTable':
@@ -666,18 +670,26 @@ class SubmissionManager extends Service {
                             $reward = Raffle::find($data['rewardable_id'][$key]);
                             break;
                         case 'Gear':
-                            if (!$isStaff) break;
+                            if (!$isStaff) {
+                                break;
+                            }
                             $reward = Gear::find($data['rewardable_id'][$key]);
                             break;
                         case 'Weapon':
-                            if (!$isStaff) break;
+                            if (!$isStaff) {
+                                break;
+                            }
                             $reward = Weapon::find($data['rewardable_id'][$key]);
                             break;
-                         case 'Recipe':
-                                if (!$isStaff) break;
-                                $reward = Recipe::find($data['rewardable_id'][$key]);
-                                if(!$reward->needs_unlocking) throw new \Exception("Invalid recipe selected.");
+                        case 'Recipe':
+                            if (!$isStaff) {
                                 break;
+                            }
+                            $reward = Recipe::find($data['rewardable_id'][$key]);
+                            if (!$reward->needs_unlocking) {
+                                throw new \Exception('Invalid recipe selected.');
+                            }
+                            break;
                     }
                     if (!$reward) {
                         continue;
@@ -689,10 +701,4 @@ class SubmissionManager extends Service {
             return $assets;
         }
     }
-   
-
-    
-
-   
-
 }

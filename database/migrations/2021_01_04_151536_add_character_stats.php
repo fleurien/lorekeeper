@@ -1,18 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddCharacterStats extends Migration
-{
+class AddCharacterStats extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         // only characters have stats
         Schema::create('stats', function (Blueprint $table) {
             $table->increments('id');
@@ -39,7 +35,7 @@ class AddCharacterStats extends Migration
             $table->integer('character_id')->unsigned();
             $table->integer('stat_id')->unsigned();
             $table->integer('stat_level')->unsigned()->default(1);
-            // 
+            //
             $table->integer('count')->unsigned();
             // for stats like health
             $table->integer('current_count')->unsigned()->nullable();
@@ -55,17 +51,13 @@ class AddCharacterStats extends Migration
             $table->integer('current_level')->unsigned()->default(1);
             $table->integer('current_exp')->unsigned()->default(0);
             $table->integer('current_points')->unsigned()->default(0);
-
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::dropIfExists('character_stats');
         Schema::dropIfExists('character_levels');

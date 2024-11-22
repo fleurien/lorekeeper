@@ -1,23 +1,19 @@
-<?php namespace App\Services;
+<?php
 
-use App\Services\Service;
+namespace App\Services;
 
-use DB;
-use Config;
-
-use Illuminate\Support\Arr;
+use App\Models\Character\Character;
+use App\Models\Currency\Currency;
+use App\Models\Encounter\AreaEncounters;
+use App\Models\Encounter\AreaLimit;
 use App\Models\Encounter\Encounter;
 use App\Models\Encounter\EncounterArea;
-use App\Models\Encounter\EncounterReward;
-use App\Models\Encounter\AreaEncounters;
 use App\Models\Encounter\EncounterPrompt;
-use App\Models\Encounter\AreaLimit;
-use App\Models\Character\Character;
-use App\Services\CurrencyManager;
-use App\Models\Currency\Currency;
+use Config;
+use DB;
+use Illuminate\Support\Arr;
 
-class EncounterService extends Service
-{
+class EncounterService extends Service {
     /**********************************************************************************************
 
         ENCOUNTER AREAS
@@ -27,12 +23,12 @@ class EncounterService extends Service
     /**
      * Create a area.
      *
-     * @param  array                 $data
-     * @param  \App\Models\User\User $user
+     * @param array                 $data
+     * @param \App\Models\User\User $user
+     *
      * @return \App\Models\Prompt\EncounterArea|bool
      */
-    public function createEncounterArea($data, $user)
-    {
+    public function createEncounterArea($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -83,19 +79,20 @@ class EncounterService extends Service
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 
     /**
      * Update a area.
      *
-     * @param  \App\Models\Prompt\EncounterArea  $area
-     * @param  array                              $data
-     * @param  \App\Models\User\User              $user
+     * @param \App\Models\Prompt\EncounterArea $area
+     * @param array                            $data
+     * @param \App\Models\User\User            $user
+     *
      * @return \App\Models\Prompt\EncounterArea|bool
      */
-    public function updateEncounterArea($area, $data, $user)
-    {
+    public function updateEncounterArea($area, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -150,18 +147,498 @@ class EncounterService extends Service
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Delete a area.
+     *
+     * @param \App\Models\Prompt\EncounterArea $area
+     *
+     * @return bool
+     */
+    public function deleteEncounterArea($area) {
+        DB::beginTransaction();
+
+        try {
+            if ($area->has_image) {
+                $this->deleteImage($area->imagePath, $area->imageFileName);
+            }
+            $area->encounters()->delete();
+            $area->delete();
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Restrict an area behind items.
+     *
+     * @param array $data
+     * @param mixed $id
+     */
+    public function restrictArea($data, $id) {
+        DB::beginTransaction();
+
+        try {
+            $area = EncounterArea::find($id);
+
+            $area->limits()->delete();
+
+            if (isset($data['item_type'])) {
+                foreach ($data['item_type'] as $key => $type) {
+                    AreaLimit::create([
+                        'encounter_area_id' => $area->id,
+                        'item_type'         => $type,
+                        'item_id'           => $data['item_id'][$key],
+                    ]);
+                }
+            }
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**********************************************************************************************
+
+        ENCOUNTERS
+
+    **********************************************************************************************/
+
+    /**
+     * Creates a new encounter.
+     *
+     * @param array                 $data
+     * @param \App\Models\User\User $user
+     *
+     * @return bool|Encounter
+     */
+    public function createEncounter($data, $user) {
+        DB::beginTransaction();
+
+        try {
+            $data = $this->populateData($data);
+
+            $image = null;
+            if (isset($data['image']) && $data['image']) {
+                $data['has_image'] = 1;
+                $image = $data['image'];
+                unset($data['image']);
+            } else {
+                $data['has_image'] = 0;
+            }
+
+            $encounter = Encounter::create($data);
+            $encounter->update([
+                'extras' => json_encode([
+                    'position_right'  => isset($data['position_right']) && $data['position_right'] ? $data['position_right'] : null,
+                    'position_bottom' => isset($data['position_bottom']) && $data['position_bottom'] ? $data['position_bottom'] : null,
+                ]),
+            ]);
+
+            if ($image) {
+                $this->handleImage($image, $encounter->imagePath, $encounter->imageFileName);
+            }
+
+            return $this->commitReturn($encounter);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Updates a encounter.
+     *
+     * @param array                 $data
+     * @param \App\Models\User\User $user
+     * @param mixed                 $encounter
+     *
+     * @return bool|Encounter
+     */
+    public function updateEncounter($encounter, $data, $user) {
+        DB::beginTransaction();
+
+        try {
+            $data = $this->populateData($data, $encounter);
+
+            $image = null;
+            if (isset($data['image']) && $data['image']) {
+                $data['has_image'] = 1;
+                $image = $data['image'];
+                unset($data['image']);
+            }
+
+            $encounter->update($data);
+            $encounter->update([
+                'extras' => json_encode([
+                    'position_right'  => isset($data['position_right']) && $data['position_right'] ? $data['position_right'] : null,
+                    'position_bottom' => isset($data['position_bottom']) && $data['position_bottom'] ? $data['position_bottom'] : null,
+                ]),
+            ]);
+
+            if ($encounter) {
+                $this->handleImage($image, $encounter->imagePath, $encounter->imageFileName);
+            }
+
+            return $this->commitReturn($encounter);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Deletes a encounter.
+     *
+     * @param \App\Models\Prompt\Prompt $encounter
+     *
+     * @return bool
+     */
+    public function deleteEncounter($encounter) {
+        DB::beginTransaction();
+
+        try {
+            // Check first if the encounter is currently in use
+            if (AreaEncounters::where('encounter_id', $encounter->id)->exists()) {
+                throw new \Exception('An area has this encounter as an option. Please remove it from the list first.');
+            }
+
+            if ($encounter->has_image) {
+                $this->deleteImage($encounter->imagePath, $encounter->imageFileName);
+            }
+            $encounter->delete();
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**********************************************************************************************
+
+        ENCOUNTER EXPLORATION
+
+    **********************************************************************************************/
+    /**
+     * Creates a new prompt for a encounter.
+     *
+     * @param mixed $encounter
+     * @param mixed $data
+     */
+    public function createPrompt($encounter, $data) {
+        DB::beginTransaction();
+
+        try {
+            if ($data['result_type'] == null) {
+                throw new \Exception('Encounter prompts must have a result type.');
+            }
+
+            if (isset($data['rewardable_type'])) {
+                foreach ($data['rewardable_type'] as $key => $type) {
+                    if (!$type) {
+                        throw new \Exception('Please select a reward type.');
+                    }
+                    if (!$data['rewardable_id'][$key]) {
+                        throw new \Exception('Please select a reward');
+                    }
+                    if (!$data['quantity'][$key] || $data['quantity'][$key] < 1) {
+                        throw new \Exception('Quantity is required and must be an integer greater than 0.');
+                    }
+                }
+            }
+
+            $prompt = EncounterPrompt::create([
+                'encounter_id' => $encounter->id,
+                'name'         => $data['name'],
+                'result'       => parse($data['result']),
+            ]);
+
+            $prompt->update([
+                'extras' => json_encode([
+                    'math_type'    => isset($data['math_type']) && $data['math_type'] ? $data['math_type'] : null,
+                    'energy_value' => isset($data['energy_value']) && $data['energy_value'] ? $data['energy_value'] : null,
+                    'result_type'  => isset($data['result_type']) && $data['result_type'] ? $data['result_type'] : null,
+                ]),
+            ]);
+
+            $prompt->output = $this->populateRewards($data);
+            $prompt->save();
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Edits the prompts on a encounter.
+     *
+     * @param mixed $prompt
+     * @param mixed $data
+     */
+    public function editPrompt($prompt, $data) {
+        DB::beginTransaction();
+
+        try {
+            if ($data['result_type'] == null) {
+                throw new \Exception('Encounter prompts must have a result type.');
+            }
+
+            $prompt->update([
+                'name'   => $data['name'],
+                'result' => parse($data['result']),
+            ]);
+
+            if (isset($data['rewardable_type'])) {
+                foreach ($data['rewardable_type'] as $key => $type) {
+                    if (!$type) {
+                        throw new \Exception('Please select a reward type.');
+                    }
+                    if (!$data['rewardable_id'][$key]) {
+                        throw new \Exception('Please select a reward');
+                    }
+                    if (!$data['quantity'][$key] || $data['quantity'][$key] < 1) {
+                        throw new \Exception('Quantity is required and must be an integer greater than 0.');
+                    }
+                }
+            }
+
+            $prompt->update([
+                'extras' => json_encode([
+                    'math_type'    => isset($data['math_type']) && $data['math_type'] ? $data['math_type'] : null,
+                    'energy_value' => isset($data['energy_value']) && $data['energy_value'] ? $data['energy_value'] : null,
+                    'result_type'  => isset($data['result_type']) && $data['result_type'] ? $data['result_type'] : null,
+                ]),
+            ]);
+
+            $prompt->output = $this->populateRewards($data);
+            $prompt->save();
+
+            if (isset($data['delete']) && $data['delete']) {
+                $prompt->delete();
+                flash('Option deleted successfully.')->success();
+            } else {
+                flash('Option updated successfully.')->success();
+            }
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**********************************************************************************************
+
+        ENCOUNTER EXPLORATION
+
+    **********************************************************************************************/
+
+    /**
+     * Explore area.
+     *
+     * @param mixed $id
+     * @param mixed $data
+     * @param mixed $user
+     *
+     * @return bool
+     */
+    public function takeAction($id, $data, $user) {
+        DB::beginTransaction();
+
+        try {
+            $area = EncounterArea::active()->find($data['area_id']);
+            if (!$area) {
+                abort(404);
+            }
+            $action = EncounterPrompt::find($data['action']);
+            if (!$action) {
+                abort(404);
+            }
+
+            $encounter = $action->encounter;
+
+            if ($action->extras['result_type'] == 'success') {
+                flash('<div class="text-center"><p>'.$action->result.'</p></div>')->success();
+            } elseif ($action->extras['result_type'] == 'neutral') {
+                flash('<div class="text-center"><p>'.$action->result.'</p></div>');
+            } else {
+                flash('<div class="text-center"><p>'.$action->result.'</p></div>')->error();
+            }
+
+            //if there is a reward, credit it
+            if ($action->output != null) {
+                // Credit rewards
+                $logType = 'Encounter Reward';
+                $rewardData = [
+                    'data' => 'Received rewards from '.$encounter->name.' encounter',
+                ];
+
+                if (!($rewards = fillUserAssets($action->rewardItems, null, $user, $logType, $rewardData))) {
+                    throw new \Exception('Failed to distribute rewards to user.');
+                }
+                flash($this->getRewardsString($rewards));
+            }
+
+            $use_energy = Config::get('lorekeeper.encounters.use_energy');
+
+            if (Config::get('lorekeeper.encounters.use_characters')) {
+                $character = $user->settings->encounterCharacter;
+                //if it alters the energy, then alter it
+                if ($action->extras != null && $action->extras['math_type'] != null && $action->extras['energy_value'] != null) {
+                    //use energy
+                    if ($use_energy) {
+                        // map to map subtract, add etc to ops
+                        $operators = [
+                            'add'      => '+',
+                            'subtract' => '-',
+                        ];
+
+                        $quantity = eval('return '.$character->encounter_energy.$operators[$action->extras['math_type']].$action->extras['energy_value'].';');
+
+                        $character->encounter_energy = $quantity;
+                        $character->save();
+
+                        //if would become negative set to 0
+                        if ($character->encounter_energy < 0) {
+                            $character->encounter_energy = 0;
+                            $character->save();
+                        }
+                    } else {
+                        //use currency
+                        if ($action->extras['math_type'] == 'subtract') {
+                            if (!(new CurrencyManager)->debitCurrency($character, null, 'Encounter Removal', 'Lost energy in '.$area->name.'...', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
+                                flash('Could not debit currency.')->error();
+
+                                return redirect()->back();
+                            }
+                        } else {
+                            if (!(new CurrencyManager)->creditCurrency(null, $character, 'Encounter Grant', 'Gained energy in '.$area->name.'!', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
+                                flash('Could not grant currency.')->error();
+
+                                return redirect()->back();
+                            }
+                        }
+                    }
+
+                    if ($action->extras['math_type'] == 'subtract') {
+                        flash($character->fullName.' lost '.$action->extras['energy_value'].' energy...')->error();
+                    } elseif ($action->extras['math_type'] == 'add') {
+                        flash($character->fullName.' regained '.$action->extras['energy_value'].' energy!')->success();
+                    }
+                }
+            } else {
+                //if it alters the energy, then alter it
+                if ($action->extras != null && $action->extras['math_type'] != null && $action->extras['energy_value'] != null) {
+                    //use energy
+                    if ($use_energy) {
+                        // map to map subtract, add etc to ops
+                        $operators = [
+                            'add'      => '+',
+                            'subtract' => '-',
+                        ];
+
+                        $quantity = eval('return '.$user->settings->encounter_energy.$operators[$action->extras['math_type']].$action->extras['energy_value'].';');
+
+                        $user->settings->encounter_energy = $quantity;
+                        $user->settings->save();
+
+                        //if would become negative set to 0
+                        if ($user->settings->encounter_energy < 0) {
+                            $user->settings->encounter_energy = 0;
+                            $user->settings->save();
+                        }
+                    } else {
+                        //use currency
+                        if ($action->extras['math_type'] == 'subtract') {
+                            if (!(new CurrencyManager)->debitCurrency($user, null, 'Encounter Removal', 'Lost energy in '.$area->name.'...', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
+                                flash('Could not debit currency.')->error();
+
+                                return redirect()->back();
+                            }
+                        } else {
+                            if (!(new CurrencyManager)->creditCurrency(null, $user, 'Encounter Grant', 'Gained energy in '.$area->name.'!', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
+                                flash('Could not grant currency.')->error();
+
+                                return redirect()->back();
+                            }
+                        }
+                    }
+
+                    if ($action->extras['math_type'] == 'subtract') {
+                        flash('You lost '.$action->extras['energy_value'].' energy...')->error();
+                    } elseif ($action->extras['math_type'] == 'add') {
+                        flash('You regained '.$action->extras['energy_value'].' energy!')->success();
+                    }
+                }
+            }
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Select character.
+     *
+     * @param mixed $user
+     * @param mixed $id
+     */
+    public function selectCharacter($user, $id) {
+        DB::beginTransaction();
+
+        try {
+            if (!$id) {
+                throw new \Exception('Please select a character.');
+            }
+            $character = Character::find($id);
+            if (!$character) {
+                throw new \Exception('Invalid character.');
+            }
+            if ($character->user_id != $user->id) {
+                throw new \Exception('You do not own this character.');
+            }
+
+            $user->settings->encounter_character_id = $id;
+            $user->settings->save();
+
+            return $this->commitReturn($user);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
         return $this->rollbackReturn(false);
     }
 
     /**
      * Handle area data.
      *
-     * @param  array                                   $data
-     * @param  \App\Models\Prompt\EncounterArea|null  $area
+     * @param array                                 $data
+     * @param \App\Models\Prompt\EncounterArea|null $area
+     *
      * @return array
      */
-    private function populateAreaData($data, $area = null)
-    {
+    private function populateAreaData($data, $area = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         } elseif (!isset($data['description']) && !$data['description']) {
@@ -190,179 +667,33 @@ class EncounterService extends Service
     }
 
     /**
-     * Delete a area.
-     *
-     * @param  \App\Models\Prompt\EncounterArea  $area
-     * @return bool
-     */
-    public function deleteEncounterArea($area)
-    {
-        DB::beginTransaction();
-
-        try {
-            if ($area->has_image) {
-                $this->deleteImage($area->imagePath, $area->imageFileName);
-            }
-            $area->encounters()->delete();
-            $area->delete();
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
-    /**
      * Handles the creation of encounter tables for an area.
      *
-     * @param  \App\Models\Encounter\Encounter  $season
-     * @param  array                       $data
+     * @param array $data
+     * @param mixed $area
      */
-    private function populateTable($area, $data)
-    {
+    private function populateTable($area, $data) {
         // Clear the old encounters...
         $area->encounters()->delete();
 
         foreach ($data['encounter_id'] as $key => $type) {
             AreaEncounters::create([
                 'encounter_area_id' => $area->id,
-                'encounter_id' => isset($type) ? $type : 1,
-                'weight' => $data['weight'][$key],
+                'encounter_id'      => $type ?? 1,
+                'weight'            => $data['weight'][$key],
             ]);
         }
-    }
-
-    /**
-     * Restrict an area behind items
-     *
-     * @param  \App\Models\Encounter\Encounter  $season
-     * @param  array                       $data
-     */
-    public function restrictArea($data, $id)
-    {
-        DB::beginTransaction();
-
-        try {
-            $area = EncounterArea::find($id);
-
-            $area->limits()->delete();
-
-            if (isset($data['item_type'])) {
-                foreach ($data['item_type'] as $key => $type) {
-                    AreaLimit::create([
-                        'encounter_area_id' => $area->id,
-                        'item_type' => $type,
-                        'item_id' => $data['item_id'][$key],
-                    ]);
-                }
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
-    /**********************************************************************************************
-
-        ENCOUNTERS
-
-    **********************************************************************************************/
-
-    /**
-     * Creates a new encounter.
-     *
-     * @param  array                  $data
-     * @param  \App\Models\User\User  $user
-     * @return bool|\App\Models\Encounter\Encounter
-     */
-    public function createEncounter($data, $user)
-    {
-        DB::beginTransaction();
-
-        try {
-            $data = $this->populateData($data);
-
-            $image = null;
-            if (isset($data['image']) && $data['image']) {
-                $data['has_image'] = 1;
-                $image = $data['image'];
-                unset($data['image']);
-            } else {
-                $data['has_image'] = 0;
-            }
-
-            $encounter = Encounter::create($data);
-            $encounter->update([
-                'extras' => json_encode([
-                    'position_right' => isset($data['position_right']) && $data['position_right'] ? $data['position_right'] : null,
-                    'position_bottom' => isset($data['position_bottom']) && $data['position_bottom'] ? $data['position_bottom'] : null,
-                ]),
-            ]);
-
-            if ($image) {
-                $this->handleImage($image, $encounter->imagePath, $encounter->imageFileName);
-            }
-
-            return $this->commitReturn($encounter);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
-    /**
-     * Updates a encounter.
-     *
-     * @param  \App\Models\Encounter\Encounter  $Encounter
-     * @param  array                      $data
-     * @param  \App\Models\User\User      $user
-     * @return bool|\App\Models\Encounter\Encounter
-     */
-    public function updateEncounter($encounter, $data, $user)
-    {
-        DB::beginTransaction();
-
-        try {
-            $data = $this->populateData($data, $encounter);
-
-            $image = null;
-            if (isset($data['image']) && $data['image']) {
-                $data['has_image'] = 1;
-                $image = $data['image'];
-                unset($data['image']);
-            }
-
-            $encounter->update($data);
-            $encounter->update([
-                'extras' => json_encode([
-                    'position_right' => isset($data['position_right']) && $data['position_right'] ? $data['position_right'] : null,
-                    'position_bottom' => isset($data['position_bottom']) && $data['position_bottom'] ? $data['position_bottom'] : null,
-                ]),
-            ]);
-
-            if ($encounter) {
-                $this->handleImage($image, $encounter->imagePath, $encounter->imageFileName);
-            }
-
-            return $this->commitReturn($encounter);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
     }
 
     /**
      * Processes user input for creating/updating a encounter.
      *
-     * @param  array                      $data
-     * @param  \App\Models\Encounter\Encounter  $encounter
+     * @param array     $data
+     * @param Encounter $encounter
+     *
      * @return array
      */
-    private function populateData($data, $encounter = null)
-    {
+    private function populateData($data, $encounter = null) {
         if (isset($data['initial_prompt']) && $data['initial_prompt']) {
             $data['initial_prompt'] = parse($data['initial_prompt']);
         } elseif (!isset($data['initial_prompt']) && !$data['initial_prompt']) {
@@ -383,152 +714,11 @@ class EncounterService extends Service
     }
 
     /**
-     * Deletes a encounter.
+     * Creates the assets json from rewards.
      *
-     * @param  \App\Models\Prompt\Prompt  $encounter
-     * @return bool
+     * @param array $data
      */
-    public function deleteEncounter($encounter)
-    {
-        DB::beginTransaction();
-
-        try {
-            // Check first if the encounter is currently in use
-            if (AreaEncounters::where('encounter_id', $encounter->id)->exists()) {
-                throw new \Exception('An area has this encounter as an option. Please remove it from the list first.');
-            }
-
-            if ($encounter->has_image) {
-                $this->deleteImage($encounter->imagePath, $encounter->imageFileName);
-            }
-            $encounter->delete();
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
-    /**********************************************************************************************
-
-        ENCOUNTER EXPLORATION
-
-    **********************************************************************************************/
-    /**
-     * Creates a new prompt for a encounter
-     */
-    public function createPrompt($encounter, $data)
-    {
-        DB::beginTransaction();
-
-        try {
-            if ($data['result_type'] == null) {
-                throw new \Exception('Encounter prompts must have a result type.');
-            }
-
-            if (isset($data['rewardable_type'])) {
-                foreach ($data['rewardable_type'] as $key => $type) {
-                    if (!$type) {
-                        throw new \Exception('Please select a reward type.');
-                    }
-                    if (!$data['rewardable_id'][$key]) {
-                        throw new \Exception('Please select a reward');
-                    }
-                    if (!$data['quantity'][$key] || $data['quantity'][$key] < 1) {
-                        throw new \Exception('Quantity is required and must be an integer greater than 0.');
-                    }
-                }
-            }
-
-            $prompt = EncounterPrompt::create([
-                'encounter_id' => $encounter->id,
-                'name' => $data['name'],
-                'result' => parse($data['result']),
-            ]);
-
-            $prompt->update([
-                'extras' => json_encode([
-                    'math_type' => isset($data['math_type']) && $data['math_type'] ? $data['math_type'] : null,
-                    'energy_value' => isset($data['energy_value']) && $data['energy_value'] ? $data['energy_value'] : null,
-                    'result_type' => isset($data['result_type']) && $data['result_type'] ? $data['result_type'] : null,
-                ]),
-            ]);
-
-            $prompt->output = $this->populateRewards($data);
-            $prompt->save();
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
-    /**
-     * Edits the prompts on a encounter
-     */
-    public function editPrompt($prompt, $data)
-    {
-        DB::beginTransaction();
-
-        try {
-            if ($data['result_type'] == null) {
-                throw new \Exception('Encounter prompts must have a result type.');
-            }
-
-            $prompt->update([
-                'name' => $data['name'],
-                'result' => parse($data['result']),
-            ]);
-
-            if (isset($data['rewardable_type'])) {
-                foreach ($data['rewardable_type'] as $key => $type) {
-                    if (!$type) {
-                        throw new \Exception('Please select a reward type.');
-                    }
-                    if (!$data['rewardable_id'][$key]) {
-                        throw new \Exception('Please select a reward');
-                    }
-                    if (!$data['quantity'][$key] || $data['quantity'][$key] < 1) {
-                        throw new \Exception('Quantity is required and must be an integer greater than 0.');
-                    }
-                }
-            }
-
-            $prompt->update([
-                'extras' => json_encode([
-                    'math_type' => isset($data['math_type']) && $data['math_type'] ? $data['math_type'] : null,
-                    'energy_value' => isset($data['energy_value']) && $data['energy_value'] ? $data['energy_value'] : null,
-                    'result_type' => isset($data['result_type']) && $data['result_type'] ? $data['result_type'] : null,
-                ]),
-            ]);
-
-            $prompt->output = $this->populateRewards($data);
-            $prompt->save();
-
-            if (isset($data['delete']) && $data['delete']) {
-                $prompt->delete();
-                flash('Option deleted successfully.')->success();
-            } else {
-                flash('Option updated successfully.')->success();
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
-    /**
-     * Creates the assets json from rewards
-     *
-     * @param  \App\Models\Recipe\Recipe   $recipe
-     * @param  array                       $data
-     */
-    private function populateRewards($data)
-    {
+    private function populateRewards($data) {
         if (isset($data['rewardable_type'])) {
             // The data will be stored as an asset table, json_encode()d.
             // First build the asset table, then prepare it for storage.
@@ -557,204 +747,28 @@ class EncounterService extends Service
 
             return getDataReadyAssets($assets);
         }
+
         return null;
     }
 
-    /**********************************************************************************************
-
-        ENCOUNTER EXPLORATION
-
-    **********************************************************************************************/
-
     /**
-     * Explore area
+     * flash what the user got from the encounter.
      *
-     * @param  \App\Models\Prompt\Prompt  $encounter
-     * @return bool
-     */
-    public function takeAction($id, $data, $user)
-    {
-        DB::beginTransaction();
-
-        try {
-            $area = EncounterArea::active()->find($data['area_id']);
-            if (!$area) {
-                abort(404);
-            }
-            $action = EncounterPrompt::find($data['action']);
-            if (!$action) {
-                abort(404);
-            }
-
-            $encounter = $action->encounter;
-
-            if ($action->extras['result_type'] == 'success') {
-                flash('<div class="text-center"><p>' . $action->result . '</p></div>')->success();
-            } elseif ($action->extras['result_type'] == 'neutral') {
-                flash('<div class="text-center"><p>' . $action->result . '</p></div>');
-            } else {
-                flash('<div class="text-center"><p>' . $action->result . '</p></div>')->error();
-            }
-
-            //if there is a reward, credit it
-            if ($action->output != null) {
-                // Credit rewards
-                $logType = 'Encounter Reward';
-                $rewardData = [
-                    'data' => 'Received rewards from ' . $encounter->name . ' encounter',
-                ];
-
-                if (!($rewards = fillUserAssets($action->rewardItems, null, $user, $logType, $rewardData))) {
-                    throw new \Exception('Failed to distribute rewards to user.');
-                }
-                flash($this->getRewardsString($rewards));
-            }
-
-            $use_energy = Config::get('lorekeeper.encounters.use_energy');
-
-            if (Config::get('lorekeeper.encounters.use_characters')) {
-                $character = $user->settings->encounterCharacter;
-                //if it alters the energy, then alter it
-                if ($action->extras != null && $action->extras['math_type'] != null && $action->extras['energy_value'] != null) {
-                    //use energy
-                    if($use_energy){
-                        // map to map subtract, add etc to ops
-                            $operators = [
-                                'add' => '+',
-                                'subtract' => '-',
-                            ];
-
-                        $quantity = eval('return ' . $character->encounter_energy . $operators[$action->extras['math_type']] . $action->extras['energy_value'] . ';');
-
-                        $character->encounter_energy = $quantity;
-                        $character->save();
-
-                        //if would become negative set to 0
-                        if($character->encounter_energy < 0){
-                            $character->encounter_energy = 0;
-                            $character->save();
-                        }
-                    }else{
-                        //use currency
-                         if($action->extras['math_type'] == 'subtract'){
-                            if (!(new CurrencyManager())->debitCurrency($character, null, 'Encounter Removal', 'Lost energy in ' . $area->name.'...', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
-                                flash('Could not debit currency.')->error();
-                                return redirect()->back();
-                            }
-                         }else{
-                            if (!(new CurrencyManager())->creditCurrency(null, $character, 'Encounter Grant', 'Gained energy in ' . $area->name.'!', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
-                                flash('Could not grant currency.')->error();
-                                return redirect()->back();
-                            }
-                         }
-                    }
-                    
-
-                    if ($action->extras['math_type'] == 'subtract') {
-                        flash($character->fullName.' lost ' . $action->extras['energy_value'] . ' energy...')->error();
-                    } elseif ($action->extras['math_type'] == 'add') {
-                        flash($character->fullName.' regained ' . $action->extras['energy_value'] . ' energy!')->success();
-                    }
-                }
-            } else {
-                //if it alters the energy, then alter it
-                if ($action->extras != null && $action->extras['math_type'] != null && $action->extras['energy_value'] != null) {
-                    //use energy
-                    if($use_energy){
-                        // map to map subtract, add etc to ops
-                            $operators = [
-                                'add' => '+',
-                                'subtract' => '-',
-                            ];
-
-                        $quantity = eval('return ' . $user->settings->encounter_energy . $operators[$action->extras['math_type']] . $action->extras['energy_value'] . ';');
-
-                        $user->settings->encounter_energy = $quantity;
-                        $user->settings->save();
-
-                        //if would become negative set to 0
-                        if($user->settings->encounter_energy < 0){
-                            $user->settings->encounter_energy = 0;
-                            $user->settings->save();
-                        }
-                    }else{
-                        //use currency
-                         if($action->extras['math_type'] == 'subtract'){
-                            if (!(new CurrencyManager())->debitCurrency($user, null, 'Encounter Removal', 'Lost energy in ' . $area->name.'...', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
-                                flash('Could not debit currency.')->error();
-                                return redirect()->back();
-                            }
-                         }else{
-                            if (!(new CurrencyManager())->creditCurrency(null, $user, 'Encounter Grant', 'Gained energy in ' . $area->name.'!', Currency::find(Config::get('lorekeeper.encounters.energy_replacement_id')), $action->extras['energy_value'])) {
-                                flash('Could not grant currency.')->error();
-                                return redirect()->back();
-                            }
-                         }
-                    }
-                    
-
-                    if ($action->extras['math_type'] == 'subtract') {
-                        flash('You lost ' . $action->extras['energy_value'] . ' energy...')->error();
-                    } elseif ($action->extras['math_type'] == 'add') {
-                        flash('You regained ' . $action->extras['energy_value'] . ' energy!')->success();
-                    }
-                }
-            }
-
-            return $this->commitReturn(true);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
-    /**
-     * flash what the user got from the encounter
+     * @param array $rewards
      *
-     * @param  array                  $rewards
      * @return string
      */
-    private function getRewardsString($rewards)
-    {
+    private function getRewardsString($rewards) {
         $results = 'You have received: ';
         $result_elements = [];
         foreach ($rewards as $assetType) {
             if (isset($assetType)) {
                 foreach ($assetType as $asset) {
-                    array_push($result_elements, $asset['asset']->name . (class_basename($asset['asset']) == 'Raffle' ? ' (Raffle Ticket)' : '') . ' x' . $asset['quantity']);
+                    array_push($result_elements, $asset['asset']->name.(class_basename($asset['asset']) == 'Raffle' ? ' (Raffle Ticket)' : '').' x'.$asset['quantity']);
                 }
             }
         }
-        return $results . implode(', ', $result_elements);
-    }
 
-    /**
-     * Select character
-     */
-    public function selectCharacter($user, $id)
-    {
-        DB::beginTransaction();
-
-        try {
-            if (!$id) {
-                throw new \Exception('Please select a character.');
-            }
-            $character = Character::find($id);
-            if (!$character) {
-                throw new \Exception('Invalid character.');
-            }
-            if ($character->user_id != $user->id) {
-                throw new \Exception('You do not own this character.');
-            }
-
-            $user->settings->encounter_character_id = $id;
-            $user->settings->save();
-
-            return $this->commitReturn($user);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
+        return $results.implode(', ', $result_elements);
     }
 }

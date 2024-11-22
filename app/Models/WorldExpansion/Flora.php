@@ -7,8 +7,7 @@ use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Flora extends Model
-{
+class Flora extends Model {
     use SoftDeletes;
 
     /**
@@ -66,24 +65,21 @@ class Flora extends Model
     /**
      * Get the location attached to this location.
      */
-    public function category()
-    {
+    public function category() {
         return $this->belongsTo('App\Models\WorldExpansion\FloraCategory', 'category_id');
     }
 
     /**
      * Get the items attached to this flora.
      */
-    public function items()
-    {
+    public function items() {
         return $this->belongsToMany('App\Models\Item\Item', 'flora_items')->withPivot('id');
     }
 
     /**
      * Get the locations attached to this flora.
      */
-    public function locations()
-    {
+    public function locations() {
         return $this->belongsToMany('App\Models\WorldExpansion\Location', 'flora_locations')->visible()->withPivot('id');
     }
 
@@ -100,8 +96,7 @@ class Flora extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query)
-    {
+    public function scopeVisible($query) {
         if (!Auth::check() || !(Auth::check() && Auth::user()->isStaff)) {
             return $query->where('is_active', 1);
         } else {
@@ -120,8 +115,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->name.'</a>';
         } else {
@@ -134,8 +128,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameAttribute()
-    {
+    public function getFullDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->style.'</a>';
         } else {
@@ -148,8 +141,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameUCAttribute()
-    {
+    public function getFullDisplayNameUCAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.ucfirst($this->style).'</a>';
         } else {
@@ -162,8 +154,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/flora';
     }
 
@@ -172,8 +163,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -182,8 +172,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -192,8 +181,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -202,8 +190,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -216,8 +203,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -230,8 +216,7 @@ class Flora extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/floras/'.$this->id);
     }
 
@@ -248,8 +233,7 @@ class Flora extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortCategory($query)
-    {
+    public function scopeSortCategory($query) {
         $ids = FloraCategory::orderBy('sort', 'DESC')->pluck('id')->toArray();
 
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(category_id, '.implode(',', $ids).')')) : $query;
@@ -263,8 +247,7 @@ class Flora extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
@@ -275,8 +258,7 @@ class Flora extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -287,8 +269,7 @@ class Flora extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 }

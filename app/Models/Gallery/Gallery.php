@@ -16,7 +16,7 @@ class Gallery extends Model {
         'id', 'parent_id', 'name', 'sort', 'description',
         'currency_enabled', 'votes_required', 'submissions_open',
         'start_at', 'end_at', 'hide_before_start', 'prompt_selection', 'location_selection',
-        'use_alternate_currency'
+        'use_alternate_currency',
     ];
 
     /**
@@ -199,10 +199,14 @@ class Gallery extends Model {
      *
      * @return int
      */
-    public function getCurrencyIdAttribute()
-    {
-        if($this->use_alternate_currency == 1) return Settings::get('group_currency_alt');
-        if($this->use_alternate_currency == 2) return [Settings::get('group_currency'), Settings::get('group_currency_alt')];
+    public function getCurrencyIdAttribute() {
+        if ($this->use_alternate_currency == 1) {
+            return Settings::get('group_currency_alt');
+        }
+        if ($this->use_alternate_currency == 2) {
+            return [Settings::get('group_currency'), Settings::get('group_currency_alt')];
+        }
+
         return Settings::get('group_currency');
     }
 }

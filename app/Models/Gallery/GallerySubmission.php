@@ -130,8 +130,7 @@ class GallerySubmission extends Model {
     /**
      * Get the location this submission is for if relevant.
      */
-    public function location()
-    {
+    public function location() {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'location_id');
     }
 
@@ -486,8 +485,7 @@ class GallerySubmission extends Model {
      *
      * @return array
      */
-    public function getLocationSubmissionsAttribute()
-    {
+    public function getLocationSubmissionsAttribute() {
         // Only returns submissions which are viewable to everyone,
         // but given that this is for the sake of public display, that's fine
         return Submission::viewable()->whereNotNull('location_id')->where('url', $this->url)->get();
@@ -498,8 +496,7 @@ class GallerySubmission extends Model {
      *
      * @return array
      */
-    public function getLocationsAttribute()
-    {
+    public function getLocationsAttribute() {
         // Only returns submissions which are viewable to everyone,
         // but given that this is for the sake of public display, that's fine
         return Prompt::whereIn('id', $this->promptSubmissions->pluck('location_id'))->get();

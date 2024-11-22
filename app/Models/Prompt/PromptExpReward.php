@@ -2,18 +2,16 @@
 
 namespace App\Models\Prompt;
 
-use Config;
 use App\Models\Model;
 
-class PromptExpReward extends Model
-{
+class PromptExpReward extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'prompt_id', 'user_exp', 'user_points', 'chara_exp',  'chara_points'
+        'prompt_id', 'user_exp', 'user_points', 'chara_exp',  'chara_points',
     ];
 
     /**

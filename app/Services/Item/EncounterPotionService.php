@@ -2,12 +2,9 @@
 
 namespace App\Services\Item;
 
-
-
 use App\Services\InventoryManager;
 use App\Services\Service;
 use DB;
-use App\Services\ForageStamManager;
 
 class EncounterPotionService extends Service {
     /*
@@ -38,6 +35,7 @@ class EncounterPotionService extends Service {
      */
     public function getTagData($tag) {
         $potionData['value'] = $tag->data['value'] ?? 0;
+
         return $potionData;
     }
 
@@ -78,7 +76,6 @@ class EncounterPotionService extends Service {
         DB::beginTransaction();
 
         try {
-
             foreach ($stacks as $key=> $stack) {
                 // We don't want to let anyone who isn't the owner of the slot to use it,
                 // so do some validation...
@@ -89,12 +86,10 @@ class EncounterPotionService extends Service {
                 // Next, try to delete the tag item. If successful, we can start applying potion effects.
                 if ((new InventoryManager)->debitStack($stack->user, 'Encounter Potion Used', ['data' => ''], $stack, $data['quantities'][$key])) {
                     for ($q = 0; $q < $data['quantities'][$key]; $q++) {
-
                         $quantity = $stack->item->tag($data['tag'])->getData()['value'];
 
                         $user->settings->encounter_energy += $quantity;
                         $user->settings->save();
-
                     }
                 }
             }

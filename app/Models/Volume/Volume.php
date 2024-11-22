@@ -2,20 +2,17 @@
 
 namespace App\Models\Volume;
 
-use Config;
-use DB;
 use App\Models\Model;
 use App\Models\User\UserVolume;
 
-class Volume extends Model
-{
+class Volume extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'has_image','description', 'parsed_description', 'is_visible', 'book_id','summary','is_global'
+        'name', 'has_image', 'description', 'parsed_description', 'is_visible', 'book_id', 'summary', 'is_global',
     ];
 
     protected $appends = ['image_url'];
@@ -33,9 +30,9 @@ class Volume extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:volumes',
+        'name'        => 'required|unique:volumes',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**
@@ -44,9 +41,9 @@ class Volume extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required',
+        'name'        => 'required',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -56,19 +53,16 @@ class Volume extends Model
     /**
      * Get the users who have this volume.
      */
-    public function users()
-    {
+    public function users() {
         return $this->belongsToMany('App\Models\User\User', 'user_volumes')->withPivot('id');
     }
 
     /**
-     * Get the prompts parent
+     * Get the prompts parent.
      */
-    public function book()
-    {
+    public function book() {
         return $this->belongsTo('App\Models\Volume\Book', 'book_id');
     }
-
 
     /**********************************************************************************************
         SCOPES
@@ -77,49 +71,52 @@ class Volume extends Model
     /**
      * Scope a query to sort items in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
     /**
      * Scope a query to sort items by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 
     /**
      * Scope a query to show only visible volumes.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed                                 $withHidden
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query, $withHidden = 0)
-    {
-        if($withHidden) return $query;
+    public function scopeVisible($query, $withHidden = 0) {
+        if ($withHidden) {
+            return $query;
+        }
+
         return $query->where('is_visible', 1);
     }
-
 
     /**********************************************************************************************
         ACCESSORS
@@ -130,8 +127,7 @@ class Volume extends Model
      *
      * @return string
      */
-    public function getIdUrlAttribute()
-    {
+    public function getIdUrlAttribute() {
         return url('world/'.__('volumes.library').'/'.__('volumes.volume').'/'.$this->id);
     }
 
@@ -140,8 +136,7 @@ class Volume extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->idUrl.'" class="display-item">'.$this->name.'</a>';
     }
 
@@ -150,8 +145,7 @@ class Volume extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/volumes';
     }
 
@@ -160,9 +154,8 @@ class Volume extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
-        return $this->id . '-image.png';
+    public function getImageFileNameAttribute() {
+        return $this->id.'-image.png';
     }
 
     /**
@@ -170,8 +163,7 @@ class Volume extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -180,10 +172,12 @@ class Volume extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+    public function getImageUrlAttribute() {
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -191,19 +185,18 @@ class Volume extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'volumes';
     }
 
-     /**
-     * global check for if any users have this volume
+    /**
+     * global check for if any users have this volume.
      *
      * @return bool
      */
-    public function checkGlobal()
-    {
+    public function checkGlobal() {
         $users = UserVolume::where('volume_id', $this->id)->count();
+
         return $users;
     }
 }

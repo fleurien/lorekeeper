@@ -8,15 +8,13 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
-class AffiliateController extends Controller
-{
+class AffiliateController extends Controller {
     /**
      * Shows the homepage.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('home.affiliates', [
             'open'       => intval(Settings::get('affiliates_open')),
             'affiliates' => Affiliate::where('status', 'Accepted')->featured(0)->get(),
@@ -29,8 +27,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getApply()
-    {
+    public function getApply() {
         return view('home.affiliates_apply', [
             'open'       => intval(Settings::get('affiliates_open')),
             'affiliates' => Affiliate::where('status', 'Accepted')->featured(0)->get(),
@@ -43,8 +40,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function postApply(Request $request, AffiliateManager $service)
-    {
+    public function postApply(Request $request, AffiliateManager $service) {
         $slug = randomString(10);
 
         if (Affiliate::where('slug', $slug)->exists()) {
@@ -72,8 +68,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getStatus($slug)
-    {
+    public function getStatus($slug) {
         $affiliate = Affiliate::where('slug', $slug)->first();
         if (!$affiliate) {
             abort(404);

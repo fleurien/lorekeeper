@@ -3,25 +3,16 @@
 namespace App\Models\User;
 
 use App\Models\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserVolume extends Model
-{
+class UserVolume extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'volume_id', 'user_id'
+        'volume_id', 'user_id',
     ];
-
-    /**
-     * Whether the model contains timestamps to be saved and updated.
-     *
-     * @var string
-     */
-    public $timestamps = true;
 
     /**
      * The table associated with the model.
@@ -30,29 +21,34 @@ class UserVolume extends Model
      */
     protected $table = 'user_volumes';
 
+    /**
+     * Whether the model contains timestamps to be saved and updated.
+     *
+     * @var string
+     */
+    public $timestamps = true;
+
     /**********************************************************************************************
-    
+
         RELATIONS
     **********************************************************************************************/
 
     /**
      * Get the user who owns the volume.
      */
-    public function user() 
-    {
+    public function user() {
         return $this->belongsTo('App\Models\User\User');
     }
 
     /**
      * Get the volume associated with this user.
      */
-    public function volume() 
-    {
+    public function volume() {
         return $this->belongsTo('App\Models\Volume\Volume');
     }
 
     /**********************************************************************************************
-    
+
         ACCESSORS
     **********************************************************************************************/
 
@@ -61,8 +57,7 @@ class UserVolume extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'user_volume';
     }
 }

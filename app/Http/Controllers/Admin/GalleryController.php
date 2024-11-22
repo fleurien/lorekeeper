@@ -9,7 +9,6 @@ use App\Models\Gallery\GallerySubmission;
 use App\Services\GalleryManager;
 use Auth;
 use Illuminate\Http\Request;
-use Settings;
 
 class GalleryController extends Controller {
     /**
@@ -60,7 +59,7 @@ class GalleryController extends Controller {
 
         return view('admin.galleries.submissions_currency_index', [
             'submissions' => $submissions->paginate(10)->appends($request->query()),
-            'galleries' => ['' => 'Any Gallery'] + Gallery::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray()
+            'galleries'   => ['' => 'Any Gallery'] + Gallery::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 

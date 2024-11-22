@@ -12,8 +12,7 @@ use App\Models\WorldExpansion\LocationType;
 use Auth;
 use Illuminate\Http\Request;
 
-class NatureController extends Controller
-{
+class NatureController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Nature Controller
@@ -29,8 +28,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFaunaCategories(Request $request)
-    {
+    public function getFaunaCategories(Request $request) {
         $query = FaunaCategory::query();
         $name = $request->get('name');
         if ($name) {
@@ -50,8 +48,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFaunaCategory($id)
-    {
+    public function getFaunaCategory($id) {
         $category = FaunaCategory::find($id);
         if (!$category) {
             abort(404);
@@ -67,8 +64,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFaunas(Request $request)
-    {
+    public function getFaunas(Request $request) {
         $query = Fauna::with('category');
         $data = $request->only(['category_id', 'name', 'sort']);
         if (isset($data['category_id']) && $data['category_id'] != 'none') {
@@ -117,8 +113,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFauna($id)
-    {
+    public function getFauna($id) {
         $fauna = Fauna::find($id);
         if (!$fauna || !$fauna->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);
@@ -138,8 +133,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFloraCategories(Request $request)
-    {
+    public function getFloraCategories(Request $request) {
         $query = FloraCategory::query();
         $name = $request->get('name');
         if ($name) {
@@ -159,8 +153,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFloraCategory($id)
-    {
+    public function getFloraCategory($id) {
         $category = FloraCategory::find($id);
         if (!$category) {
             abort(404);
@@ -176,8 +169,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFloras(Request $request)
-    {
+    public function getFloras(Request $request) {
         $query = Flora::with('category');
         $data = $request->only(['category_id', 'name', 'sort']);
         if (isset($data['category_id']) && $data['category_id'] != 'none') {
@@ -226,8 +218,7 @@ class NatureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFlora($id)
-    {
+    public function getFlora($id) {
         $flora = Flora::find($id);
         if (!$flora || !$flora->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);

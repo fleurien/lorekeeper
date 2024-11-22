@@ -7,8 +7,7 @@ use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Event extends Model
-{
+class Event extends Model {
     use SoftDeletes;
 
     /**
@@ -68,48 +67,42 @@ class Event extends Model
     /**
      * Get the location attached to this location.
      */
-    public function category()
-    {
+    public function category() {
         return $this->belongsTo('App\Models\WorldExpansion\EventCategory', 'category_id');
     }
 
     /**
      * Get the items attached to this event.
      */
-    public function figures()
-    {
+    public function figures() {
         return $this->belongsToMany('App\Models\WorldExpansion\Figure', 'event_figures')->visible()->withPivot('id');
     }
 
     /**
      * Get the locations attached to this event.
      */
-    public function locations()
-    {
+    public function locations() {
         return $this->belongsToMany('App\Models\WorldExpansion\Location', 'event_locations')->visible()->withPivot('id');
     }
 
     /**
      * Get the newses attached to this event.
      */
-    public function newses()
-    {
+    public function newses() {
         return $this->belongsToMany('App\Models\News', 'event_newses')->visible()->withPivot('id');
     }
 
     /**
      * Get the prompts attached to this event.
      */
-    public function prompts()
-    {
+    public function prompts() {
         return $this->belongsToMany('App\Models\Prompt\Prompt', 'event_prompts')->withPivot('id');
     }
 
     /**
      * Get the factions attached to this event.
      */
-    public function factions()
-    {
+    public function factions() {
         return $this->belongsToMany('App\Models\WorldExpansion\Faction', 'event_factions')->visible()->withPivot('id');
     }
 
@@ -126,8 +119,7 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query)
-    {
+    public function scopeVisible($query) {
         if (!Auth::check() || !(Auth::check() && Auth::user()->isStaff)) {
             return $query->where('is_active', 1);
         } else {
@@ -146,8 +138,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->name.'</a>';
         } else {
@@ -160,8 +151,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameAttribute()
-    {
+    public function getFullDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->style.'</a>';
         } else {
@@ -174,8 +164,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameUCAttribute()
-    {
+    public function getFullDisplayNameUCAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.ucfirst($this->style).'</a>';
         } else {
@@ -188,8 +177,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/event';
     }
 
@@ -198,8 +186,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -208,8 +195,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -218,8 +204,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -228,8 +213,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -242,8 +226,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -256,8 +239,7 @@ class Event extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/events/'.$this->id);
     }
 
@@ -274,8 +256,7 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortCategory($query)
-    {
+    public function scopeSortCategory($query) {
         $ids = EventCategory::orderBy('sort', 'DESC')->pluck('id')->toArray();
 
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(category_id, '.implode(',', $ids).')')) : $query;
@@ -289,8 +270,7 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
@@ -301,8 +281,7 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -313,8 +292,7 @@ class Event extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 }

@@ -10,8 +10,7 @@ use App\Models\WorldExpansion\FigureItem;
 use App\Services\Service;
 use DB;
 
-class FigureService extends Service
-{
+class FigureService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Figure Service
@@ -29,8 +28,7 @@ class FigureService extends Service
      *
      * @return \App\Models\Figure\Category|bool
      */
-    public function createFigureCategory($data, $user)
-    {
+    public function createFigureCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -77,8 +75,7 @@ class FigureService extends Service
      *
      * @return \App\Models\Category\Category|bool
      */
-    public function updateFigureCategory($category, $data, $user)
-    {
+    public function updateFigureCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -138,8 +135,7 @@ class FigureService extends Service
      *
      * @return bool
      */
-    public function deleteFigureCategory($category)
-    {
+    public function deleteFigureCategory($category) {
         DB::beginTransaction();
 
         try {
@@ -178,8 +174,7 @@ class FigureService extends Service
      *
      * @return bool
      */
-    public function sortFigureCategory($data)
-    {
+    public function sortFigureCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -213,8 +208,7 @@ class FigureService extends Service
      *
      * @return \App\Models\Figure\Category|bool
      */
-    public function createFigure($data, $user)
-    {
+    public function createFigure($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -255,14 +249,13 @@ class FigureService extends Service
     /**
      * Updates a figure.
      *
-     * @param \App\Models\WorldExpansion\Figure $figure
-     * @param array                             $data
-     * @param \App\Models\User\User             $user
+     * @param Figure                $figure
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\WorldExpansion\Figure|bool
+     * @return bool|Figure
      */
-    public function updateFigure($figure, $data, $user)
-    {
+    public function updateFigure($figure, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -354,12 +347,11 @@ class FigureService extends Service
     /**
      * Deletes a figure.
      *
-     * @param \App\Models\WorldExpansion\Figure $figure
+     * @param Figure $figure
      *
      * @return bool
      */
-    public function deleteFigure($figure)
-    {
+    public function deleteFigure($figure) {
         DB::beginTransaction();
 
         try {
@@ -386,8 +378,7 @@ class FigureService extends Service
      *
      * @return bool
      */
-    public function sortFigure($data)
-    {
+    public function sortFigure($data) {
         DB::beginTransaction();
 
         try {
@@ -414,8 +405,7 @@ class FigureService extends Service
      *
      * @return array
      */
-    private function populateFigureCategoryData($data, $category = null)
-    {
+    private function populateFigureCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -445,18 +435,17 @@ class FigureService extends Service
     /**
      * Processes user input for creating/updating a figure.
      *
-     * @param array                             $data
-     * @param \App\Models\WorldExpansion\Figure $figure
+     * @param array  $data
+     * @param Figure $figure
      *
      * @return array
      */
-    private function populateFigureData($data, $figure = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateFigureData($data, $figure = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['name']) && $data['name']) {
             $saveData['name'] = parse($data['name']);
@@ -465,11 +454,11 @@ class FigureService extends Service
         $saveData['category_id'] = isset($data['category_id']) && $data['category_id'] ? $data['category_id'] : null;
         $saveData['faction_id'] = isset($data['faction_id']) && $data['faction_id'] ? $data['faction_id'] : null;
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
-        $saveData['birth_date'] = isset($data['birth_date']) ? $data['birth_date'] : null;
-        $saveData['death_date'] = isset($data['death_date']) ? $data['death_date'] : null;
+        $saveData['birth_date'] = $data['birth_date'] ?? null;
+        $saveData['death_date'] = $data['death_date'] ?? null;
 
         if (isset($data['remove_image'])) {
             if ($figure && isset($figure->image_extension) && $data['remove_image']) {

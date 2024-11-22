@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UserLinkAddon extends Migration
-{
+class UserLinkAddon extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         // Add columns
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->string('insta', 40)->nullable($value = true);
@@ -23,8 +21,7 @@ class UserLinkAddon extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('user_profiles', function (Blueprint $table) {
             //
             $table->dropColumn('insta');

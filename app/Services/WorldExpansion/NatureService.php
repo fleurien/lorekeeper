@@ -15,8 +15,7 @@ use App\Models\WorldExpansion\Location;
 use App\Services\Service;
 use DB;
 
-class NatureService extends Service
-{
+class NatureService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Nature Service
@@ -34,8 +33,7 @@ class NatureService extends Service
      *
      * @return \App\Models\Fauna\Category|bool
      */
-    public function createFaunaCategory($data, $user)
-    {
+    public function createFaunaCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -82,8 +80,7 @@ class NatureService extends Service
      *
      * @return \App\Models\Category\Category|bool
      */
-    public function updateFaunaCategory($category, $data, $user)
-    {
+    public function updateFaunaCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -143,8 +140,7 @@ class NatureService extends Service
      *
      * @return bool
      */
-    public function deleteFaunaCategory($category)
-    {
+    public function deleteFaunaCategory($category) {
         DB::beginTransaction();
 
         try {
@@ -183,8 +179,7 @@ class NatureService extends Service
      *
      * @return bool
      */
-    public function sortFaunaCategory($data)
-    {
+    public function sortFaunaCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -218,8 +213,7 @@ class NatureService extends Service
      *
      * @return \App\Models\Fauna\Category|bool
      */
-    public function createFauna($data, $user)
-    {
+    public function createFauna($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -260,14 +254,13 @@ class NatureService extends Service
     /**
      * Updates a fauna.
      *
-     * @param \App\Models\WorldExpansion\Fauna $fauna
-     * @param array                            $data
-     * @param \App\Models\User\User            $user
+     * @param Fauna                 $fauna
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\WorldExpansion\Fauna|bool
+     * @return bool|Fauna
      */
-    public function updateFauna($fauna, $data, $user)
-    {
+    public function updateFauna($fauna, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -372,12 +365,11 @@ class NatureService extends Service
     /**
      * Deletes a fauna.
      *
-     * @param \App\Models\WorldExpansion\Fauna $fauna
+     * @param Fauna $fauna
      *
      * @return bool
      */
-    public function deleteFauna($fauna)
-    {
+    public function deleteFauna($fauna) {
         DB::beginTransaction();
 
         try {
@@ -404,8 +396,7 @@ class NatureService extends Service
      *
      * @return bool
      */
-    public function sortFauna($data)
-    {
+    public function sortFauna($data) {
         DB::beginTransaction();
 
         try {
@@ -432,8 +423,7 @@ class NatureService extends Service
      *
      * @return \App\Models\Flora\Category|bool
      */
-    public function createFloraCategory($data, $user)
-    {
+    public function createFloraCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -480,8 +470,7 @@ class NatureService extends Service
      *
      * @return \App\Models\Category\Category|bool
      */
-    public function updateFloraCategory($category, $data, $user)
-    {
+    public function updateFloraCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -541,8 +530,7 @@ class NatureService extends Service
      *
      * @return bool
      */
-    public function deleteFloraCategory($category)
-    {
+    public function deleteFloraCategory($category) {
         DB::beginTransaction();
 
         try {
@@ -579,8 +567,7 @@ class NatureService extends Service
      *
      * @return bool
      */
-    public function sortFloraCategory($data)
-    {
+    public function sortFloraCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -614,8 +601,7 @@ class NatureService extends Service
      *
      * @return \App\Models\Flora\Category|bool
      */
-    public function createFlora($data, $user)
-    {
+    public function createFlora($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -656,14 +642,13 @@ class NatureService extends Service
     /**
      * Updates a flora.
      *
-     * @param \App\Models\WorldExpansion\Flora $flora
-     * @param array                            $data
-     * @param \App\Models\User\User            $user
+     * @param Flora                 $flora
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\WorldExpansion\Flora|bool
+     * @return bool|Flora
      */
-    public function updateFlora($flora, $data, $user)
-    {
+    public function updateFlora($flora, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -768,12 +753,11 @@ class NatureService extends Service
     /**
      * Deletes a flora.
      *
-     * @param \App\Models\WorldExpansion\Flora $flora
+     * @param Flora $flora
      *
      * @return bool
      */
-    public function deleteFlora($flora)
-    {
+    public function deleteFlora($flora) {
         DB::beginTransaction();
 
         try {
@@ -800,8 +784,7 @@ class NatureService extends Service
      *
      * @return bool
      */
-    public function sortFlora($data)
-    {
+    public function sortFlora($data) {
         DB::beginTransaction();
 
         try {
@@ -828,8 +811,7 @@ class NatureService extends Service
      *
      * @return array
      */
-    private function populateFaunaCategoryData($data, $category = null)
-    {
+    private function populateFaunaCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -859,18 +841,17 @@ class NatureService extends Service
     /**
      * Processes user input for creating/updating a fauna.
      *
-     * @param array                            $data
-     * @param \App\Models\WorldExpansion\Fauna $fauna
+     * @param array $data
+     * @param Fauna $fauna
      *
      * @return array
      */
-    private function populateFaunaData($data, $fauna = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateFaunaData($data, $fauna = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['name']) && $data['name']) {
             $saveData['name'] = parse($data['name']);
@@ -882,8 +863,8 @@ class NatureService extends Service
         $saveData['is_active'] = isset($data['is_active']);
         $saveData['category_id'] = isset($data['category_id']) && $data['category_id'] ? $data['category_id'] : null;
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
         if (isset($data['remove_image'])) {
             if ($fauna && isset($fauna->image_extension) && $data['remove_image']) {
@@ -912,8 +893,7 @@ class NatureService extends Service
      *
      * @return array
      */
-    private function populateFloraCategoryData($data, $category = null)
-    {
+    private function populateFloraCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -943,18 +923,17 @@ class NatureService extends Service
     /**
      * Processes user input for creating/updating a flora.
      *
-     * @param array                            $data
-     * @param \App\Models\WorldExpansion\Flora $flora
+     * @param array $data
+     * @param Flora $flora
      *
      * @return array
      */
-    private function populateFloraData($data, $flora = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateFloraData($data, $flora = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['scientific_name']) && $data['scientific_name']) {
             $saveData['scientific_name'] = parse($data['scientific_name']);
@@ -966,8 +945,8 @@ class NatureService extends Service
         $saveData['is_active'] = isset($data['is_active']);
         $saveData['category_id'] = isset($data['category_id']) && $data['category_id'] ? $data['category_id'] : null;
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
         if (isset($data['remove_image'])) {
             if ($flora && isset($flora->image_extension) && $data['remove_image']) {

@@ -62,7 +62,7 @@ return [
             ],
             [
                 'name' => 'Logs',
-                'url' => 'admin/logs'
+                'url'  => 'admin/logs',
             ],
             [
                 'name' => 'Sales',
@@ -70,21 +70,21 @@ return [
             ],
             [
                 'name' => 'Page Sections',
-                'url' => 'admin/page-sections'
+                'url'  => 'admin/page-sections',
             ],
             [
                 'name' => 'Page Categories',
-                'url' => 'admin/page-categories'
+                'url'  => 'admin/page-categories',
             ],
             [
                 'name' => 'Pages',
-                'url' => 'admin/pages'
+                'url'  => 'admin/pages',
             ],
             [
                 'name' => 'Emotes',
-                'url' => 'admin/emotes'
-            ]
-        ]
+                'url'  => 'admin/emotes',
+            ],
+        ],
     ],
     'Users'      => [
         'power' => 'edit_user_info',
@@ -146,29 +146,29 @@ return [
         'links' => [
             [
                 'name' => 'Forages',
-                'url' => 'admin/data/forages'
+                'url'  => 'admin/data/forages',
             ],
             [
                 'name' => 'EXP Grants',
-                'url' => 'admin/grants/exp'
+                'url'  => 'admin/grants/exp',
             ],
             [
                 'name' => 'Pet Grants',
-                'url' => 'admin/grants/pets'
+                'url'  => 'admin/grants/pets',
             ],
             [
                 'name' => 'Gear Grants',
-                'url' => 'admin/grants/gear'
+                'url'  => 'admin/grants/gear',
             ],
             [
                 'name' => 'Weapon Grants',
-                'url' => 'admin/grants/weapons'
+                'url'  => 'admin/grants/weapons',
             ],
             [
                 'name' => 'Recipe Grants',
-                'url' => 'admin/grants/recipes'
+                'url'  => 'admin/grants/recipes',
             ],
-        ]
+        ],
     ],
     'Masterlist' => [
         'power' => 'manage_characters',
@@ -204,39 +204,39 @@ return [
         'links' => [
             [
                 'name' => 'Gene Groups',
-                'url' => 'admin/genetics/genes'
+                'url'  => 'admin/genetics/genes',
             ],
             [
                 'name' => 'Breeding Roller',
-                'url' => 'admin/genetics/roller'
+                'url'  => 'admin/genetics/roller',
             ],
             [
                 'name' => 'Breeding Logs',
-                'url' => 'admin/genetics/logs'
+                'url'  => 'admin/genetics/logs',
             ],
-        ]
+        ],
     ],
     'Stats' => [
         'power' => 'edit_stats',
         'links' => [
             [
                 'name' => 'Stats',
-                'url' => 'admin/stats'
+                'url'  => 'admin/stats',
             ],
-        ]
+        ],
     ],
     'Levels' => [
         'power' => 'edit_levels',
         'links' => [
             [
                 'name' => 'User Levels',
-                'url' => 'admin/levels/user'
+                'url'  => 'admin/levels/user',
             ],
             [
                 'name' => 'Character Levels',
-                'url' => 'admin/levels/character'
+                'url'  => 'admin/levels/character',
             ],
-        ]
+        ],
     ],
     'Data' => [
         'power' => 'edit_data',
@@ -287,7 +287,7 @@ return [
             ],
             [
                 'name' => 'Status Effects',
-                'url' => 'admin/data/status-effects'
+                'url'  => 'admin/data/status-effects',
             ],
             [
                 'name' => 'Shops',
@@ -295,7 +295,7 @@ return [
             ],
             [
                 'name' => 'Dailies',
-                'url' => 'admin/data/dailies'
+                'url'  => 'admin/data/dailies',
             ],
             [
                 'name' => 'Currencies',
@@ -317,9 +317,9 @@ return [
                 'name' => 'Advent Calendars',
                 'url'  => 'admin/data/advent-calendars',
             ],
-        [
+            [
                 'name' => 'Library',
-                'url' => 'admin/data/volumes'
+                'url'  => 'admin/data/volumes',
             ],
             [
                 'name' => 'Transformations',
@@ -327,46 +327,46 @@ return [
             ],
             [
                 'name' => 'Pets',
-                'url' => 'admin/data/pets'
+                'url'  => 'admin/data/pets',
             ],
             [
                 'name' => 'Collections',
-                'url' => 'admin/data/collections'
+                'url'  => 'admin/data/collections',
             ],
             [
                 'name' => 'Recipes',
-                'url' => 'admin/data/recipes'
+                'url'  => 'admin/data/recipes',
             ],
             [
                 'name' => 'Encounters',
-                'url' => 'admin/data/encounters'
+                'url'  => 'admin/data/encounters',
             ],
             [
                 'name' => 'Encounter Areas',
-                'url' => 'admin/data/encounters/areas'
+                'url'  => 'admin/data/encounters/areas',
             ],
-        ]
+        ],
     ],
     'Claymores' => [
         'power' => 'edit_claymores',
         'links' => [
             [
                 'name' => 'Gear',
-                'url' => 'admin/gear'
+                'url'  => 'admin/gear',
             ],
             [
                 'name' => 'Weapons',
-                'url' => 'admin/weapon'
+                'url'  => 'admin/weapon',
             ],
             [
                 'name' => 'Character Classes',
-                'url' => 'admin/character-classes'
+                'url'  => 'admin/character-classes',
             ],
             [
                 'name' => 'Character Skills',
-                'url' => 'admin/data/skills'
-            ]
-        ]
+                'url'  => 'admin/data/skills',
+            ],
+        ],
     ],
     'World.Expanded' => [
         'power' => 'manage_world',
@@ -427,8 +427,8 @@ return [
             ],
             [
                 'name' => 'Theme Manager',
-                'url' => 'admin/themes'
+                'url'  => 'admin/themes',
             ],
-        ]
+        ],
     ],
 ];

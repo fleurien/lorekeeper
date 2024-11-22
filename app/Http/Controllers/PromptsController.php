@@ -127,8 +127,7 @@ class PromptsController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEventTracking(Request $request)
-    {
+    public function getEventTracking(Request $request) {
         if (!Settings::get('global_event_score')) {
             abort(404);
         }

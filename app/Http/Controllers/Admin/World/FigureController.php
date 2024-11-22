@@ -12,8 +12,7 @@ use App\Services\WorldExpansion\FigureService;
 use Auth;
 use Illuminate\Http\Request;
 
-class FigureController extends Controller
-{
+class FigureController extends Controller {
     /**********************************************************************************************
 
         Figure Types
@@ -25,8 +24,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFigureCategories()
-    {
+    public function getFigureCategories() {
         return view('admin.world_expansion.figure_categories', [
             'categories' => FigureCategory::orderBy('sort', 'DESC')->get(),
         ]);
@@ -37,8 +35,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFigureCategory()
-    {
+    public function getCreateFigureCategory() {
         return view('admin.world_expansion.create_edit_figure_category', [
             'category' => new FigureCategory,
         ]);
@@ -51,8 +48,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFigureCategory($id)
-    {
+    public function getEditFigureCategory($id) {
         $category = FigureCategory::find($id);
         if (!$category) {
             abort(404);
@@ -71,8 +67,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFigureCategory(Request $request, FigureService $service, $id = null)
-    {
+    public function postCreateEditFigureCategory(Request $request, FigureService $service, $id = null) {
         $id ? $request->validate(FigureCategory::$updateRules) : $request->validate(FigureCategory::$createRules);
 
         $data = $request->only([
@@ -100,8 +95,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFigureCategory($id)
-    {
+    public function getDeleteFigureCategory($id) {
         $category = FigureCategory::find($id);
 
         return view('admin.world_expansion._delete_figure_category', [
@@ -117,8 +111,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFigureCategory(Request $request, FigureService $service, $id)
-    {
+    public function postDeleteFigureCategory(Request $request, FigureService $service, $id) {
         if ($id && $service->deleteFigureCategory(FigureCategory::find($id))) {
             flash('Figure Category deleted successfully.')->success();
         } else {
@@ -137,8 +130,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFigureCategory(Request $request, FigureService $service)
-    {
+    public function postSortFigureCategory(Request $request, FigureService $service) {
         if ($service->sortFigureCategory($request->get('sort'))) {
             flash('Figure Category order updated successfully.')->success();
         } else {
@@ -161,8 +153,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFigureIndex()
-    {
+    public function getFigureIndex() {
         return view('admin.world_expansion.figures', [
             'figures' => Figure::orderBy('sort', 'DESC')->get(),
         ]);
@@ -173,8 +164,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFigure()
-    {
+    public function getCreateFigure() {
         return view('admin.world_expansion.create_edit_figure', [
             'figure'     => new Figure,
             'categories' => FigureCategory::all()->pluck('name', 'id')->toArray(),
@@ -192,8 +182,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFigure($id)
-    {
+    public function getEditFigure($id) {
         $figure = Figure::find($id);
         if (!$figure) {
             abort(404);
@@ -217,8 +206,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFigure(Request $request, FigureService $service, $id = null)
-    {
+    public function postCreateEditFigure(Request $request, FigureService $service, $id = null) {
         $id ? $request->validate(Figure::$updateRules) : $request->validate(Figure::$createRules);
 
         $data = $request->only([
@@ -248,8 +236,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFigure($id)
-    {
+    public function getDeleteFigure($id) {
         $figure = Figure::find($id);
 
         return view('admin.world_expansion._delete_figure', [
@@ -265,8 +252,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFigure(Request $request, FigureService $service, $id)
-    {
+    public function postDeleteFigure(Request $request, FigureService $service, $id) {
         if ($id && $service->deleteFigure(Figure::find($id))) {
             flash('Figure deleted successfully.')->success();
         } else {
@@ -285,8 +271,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFigure(Request $request, FigureService $service)
-    {
+    public function postSortFigure(Request $request, FigureService $service) {
         if ($service->sortFigure($request->get('sort'))) {
             flash('Figure order updated successfully.')->success();
         } else {

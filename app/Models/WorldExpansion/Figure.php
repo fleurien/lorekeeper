@@ -7,8 +7,7 @@ use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Figure extends Model
-{
+class Figure extends Model {
     use SoftDeletes;
 
     /**
@@ -69,40 +68,35 @@ class Figure extends Model
     /**
      * Get the figure attached to this figure.
      */
-    public function category()
-    {
+    public function category() {
         return $this->belongsTo('App\Models\WorldExpansion\FigureCategory', 'category_id');
     }
 
     /**
      * Get the figure attached to this figure.
      */
-    public function faction()
-    {
+    public function faction() {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'faction_id')->visible();
     }
 
     /**
      * Get the items attached to this figure.
      */
-    public function items()
-    {
+    public function items() {
         return $this->belongsToMany('App\Models\Item\Item', 'figure_items')->withPivot('id');
     }
 
     /**
      * Get the items attached to this figure.
      */
-    public function events()
-    {
+    public function events() {
         return $this->belongsToMany('App\Models\WorldExpansion\Event', 'event_figures')->visible()->withPivot('id');
     }
 
     /**
      * Get the factions attached to this figure.
      */
-    public function factions()
-    {
+    public function factions() {
         return $this->belongsToMany('App\Models\WorldExpansion\Faction', 'faction_figures')->visible()->withPivot('id');
     }
 
@@ -119,8 +113,7 @@ class Figure extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query)
-    {
+    public function scopeVisible($query) {
         if (!Auth::check() || !(Auth::check() && Auth::user()->isStaff)) {
             return $query->where('is_active', 1);
         } else {
@@ -139,8 +132,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-figure">'.$this->name.'</a>';
         } else {
@@ -153,8 +145,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameAttribute()
-    {
+    public function getFullDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-figure">'.$this->style.'</a>';
         } else {
@@ -167,8 +158,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameUCAttribute()
-    {
+    public function getFullDisplayNameUCAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-figure">'.ucfirst($this->style).'</a>';
         } else {
@@ -181,8 +171,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/figures';
     }
 
@@ -191,8 +180,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -201,8 +189,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -211,8 +198,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -221,8 +207,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -235,8 +220,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -249,8 +233,7 @@ class Figure extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/figures/'.$this->id);
     }
 
@@ -267,8 +250,7 @@ class Figure extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortCategory($query)
-    {
+    public function scopeSortCategory($query) {
         $ids = FigureCategory::orderBy('sort', 'DESC')->pluck('id')->toArray();
 
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(category_id, '.implode(',', $ids).')')) : $query;
@@ -282,8 +264,7 @@ class Figure extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
@@ -294,8 +275,7 @@ class Figure extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -306,8 +286,7 @@ class Figure extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 
@@ -320,8 +299,7 @@ class Figure extends Model
     /**
      * Get character's faction rank.
      */
-    public function getFactionRankAttribute()
-    {
+    public function getFactionRankAttribute() {
         if (!isset($this->faction_id) || !$this->faction->ranks()->count()) {
             return null;
         }

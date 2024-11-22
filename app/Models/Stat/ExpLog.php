@@ -2,20 +2,18 @@
 
 namespace App\Models\Stat;
 
-use Config;
 use App\Models\Model;
 
-class ExpLog extends Model
-{
+class ExpLog extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'sender_id', 'recipient_id', 
+        'sender_id', 'recipient_id',
         'log', 'quantity', 'log_type', 'data',
-        'sender_type', 'recipient_type'
+        'sender_type', 'recipient_type',
     ];
 
     /**
@@ -33,7 +31,7 @@ class ExpLog extends Model
     public $timestamps = true;
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -41,18 +39,22 @@ class ExpLog extends Model
     /**
      * Get the user who initiated the logged action.
      */
-    public function sender() 
-    {
-        if($this->sender_type == 'User') return $this->belongsTo('App\Models\User\User', 'sender_id');
+    public function sender() {
+        if ($this->sender_type == 'User') {
+            return $this->belongsTo('App\Models\User\User', 'sender_id');
+        }
+
         return $this->belongsTo('App\Models\Character\Character', 'sender_id');
     }
 
     /**
      * Get the user who received the logged action.
      */
-    public function recipient() 
-    {
-        if($this->recipient_type == 'User') return $this->belongsTo('App\Models\User\User', 'recipient_id');
+    public function recipient() {
+        if ($this->recipient_type == 'User') {
+            return $this->belongsTo('App\Models\User\User', 'recipient_id');
+        }
+
         return $this->belongsTo('App\Models\Character\Character', 'recipient_id');
     }
 }

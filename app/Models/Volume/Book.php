@@ -2,19 +2,16 @@
 
 namespace App\Models\Volume;
 
-use Config;
-use DB;
 use App\Models\Model;
 
-class Book extends Model
-{
+class Book extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'has_image','description', 'parsed_description', 'is_visible', 'summary'
+        'name', 'has_image', 'description', 'parsed_description', 'is_visible', 'summary',
     ];
 
     protected $appends = ['image_url'];
@@ -32,9 +29,9 @@ class Book extends Model
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:books',
+        'name'        => 'required|unique:books',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**
@@ -43,9 +40,9 @@ class Book extends Model
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required',
+        'name'        => 'required',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -53,10 +50,9 @@ class Book extends Model
     **********************************************************************************************/
 
     /**
-     * get the volumes attached to the book
+     * get the volumes attached to the book.
      */
-    public function volumes()
-    {
+    public function volumes() {
         return $this->hasMany('App\Models\Volume\Volume')->where('book_id', $this->id)->where('is_visible', 1);
     }
 
@@ -67,49 +63,52 @@ class Book extends Model
     /**
      * Scope a query to sort items in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
     /**
      * Scope a query to sort items by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 
     /**
      * Scope a query to show only visible books.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed                                 $withHidden
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query, $withHidden = 0)
-    {
-        if($withHidden) return $query;
+    public function scopeVisible($query, $withHidden = 0) {
+        if ($withHidden) {
+            return $query;
+        }
+
         return $query->where('is_visible', 1);
     }
-
 
     /**********************************************************************************************
         ACCESSORS
@@ -120,8 +119,7 @@ class Book extends Model
      *
      * @return string
      */
-    public function getIdUrlAttribute()
-    {
+    public function getIdUrlAttribute() {
         return url('world/'.__('volumes.library').'/'.__('volumes.book').'/'.$this->id);
     }
 
@@ -130,8 +128,7 @@ class Book extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->idUrl.'" class="display-item">'.$this->name.'</a>';
     }
 
@@ -140,8 +137,7 @@ class Book extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/books';
     }
 
@@ -150,9 +146,8 @@ class Book extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
-        return $this->id . '-image.png';
+    public function getImageFileNameAttribute() {
+        return $this->id.'-image.png';
     }
 
     /**
@@ -160,8 +155,7 @@ class Book extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -170,10 +164,12 @@ class Book extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+    public function getImageUrlAttribute() {
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -181,9 +177,7 @@ class Book extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'books';
     }
-
 }

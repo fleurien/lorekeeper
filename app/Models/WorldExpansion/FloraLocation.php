@@ -4,8 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FloraLocation extends Model
-{
+class FloraLocation extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -33,16 +32,14 @@ class FloraLocation extends Model
     /**
      * Get the flora attached to this.
      */
-    public function flora()
-    {
+    public function flora() {
         return $this->belongsTo('App\Models\WorldExpansion\Flora', 'flora_id');
     }
 
     /**
      * Get the location attached to this.
      */
-    public function location()
-    {
+    public function location() {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'location_id');
     }
 }

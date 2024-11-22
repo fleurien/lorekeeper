@@ -4,14 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAwardsCategoriesLogsTables extends Migration
-{
+class AddAwardsCategoriesLogsTables extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
-
+    public function up() {
         // Creating awards tables
 
         // All of this is based off the existing items tables. With additions from other extensions (like the data function from item entry expansion) but removed the ability for users to transfer from user to user.
@@ -104,8 +101,7 @@ class AddAwardsCategoriesLogsTables extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('character_awards_log');
         Schema::dropIfExists('awards_log');
         Schema::dropIfExists('character_awards');

@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Settings;
 
-class Faction extends Model
-{
+class Faction extends Model {
     use SoftDeletes;
 
     /**
@@ -69,64 +68,56 @@ class Faction extends Model
     /**
      * Get the type attached to this faction.
      */
-    public function type()
-    {
+    public function type() {
         return $this->belongsTo('App\Models\WorldExpansion\FactionType', 'type_id');
     }
 
     /**
      * Get parents of this faction.
      */
-    public function parent()
-    {
+    public function parent() {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'parent_id')->visible();
     }
 
     /**
      * Get children of this faction.
      */
-    public function children()
-    {
+    public function children() {
         return $this->hasMany('App\Models\WorldExpansion\Faction', 'parent_id')->visible();
     }
 
     /**
      * Get the events attached to this faction.
      */
-    public function events()
-    {
+    public function events() {
         return $this->belongsToMany('App\Models\WorldExpansion\Event', 'event_factions')->withPivot('id');
     }
 
     /**
      * Get the figures associated with this faction.
      */
-    public function figures()
-    {
+    public function figures() {
         return $this->belongsToMany('App\Models\WorldExpansion\Figure', 'faction_figures')->visible()->withPivot('id');
     }
 
     /**
      * Get the locations associated with this faction.
      */
-    public function locations()
-    {
+    public function locations() {
         return $this->belongsToMany('App\Models\WorldExpansion\Location', 'faction_locations')->visible()->withPivot('id');
     }
 
     /**
      * Get the member figures associated with this faction.
      */
-    public function members()
-    {
+    public function members() {
         return $this->hasMany('App\Models\WorldExpansion\Figure', 'faction_id')->visible();
     }
 
     /**
      * Get the ranks associated with this faction.
      */
-    public function ranks()
-    {
+    public function ranks() {
         return $this->hasMany('App\Models\WorldExpansion\FactionRank', 'faction_id');
     }
 
@@ -143,8 +134,7 @@ class Faction extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query)
-    {
+    public function scopeVisible($query) {
         if (!Auth::check() || !(Auth::check() && Auth::user()->isStaff)) {
             return $query->where('is_active', 1);
         } else {
@@ -159,8 +149,7 @@ class Faction extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortFactionType($query)
-    {
+    public function scopeSortFactionType($query) {
         $ids = LocationType::orderBy('sort', 'DESC')->pluck('id')->toArray();
 
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(type_id, '.implode(',', $ids).')')) : $query;
@@ -174,8 +163,7 @@ class Faction extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
@@ -186,8 +174,7 @@ class Faction extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -198,8 +185,7 @@ class Faction extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 
@@ -214,8 +200,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->name.'</a>';
         } else {
@@ -228,8 +213,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameAttribute()
-    {
+    public function getFullDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->style.'</a>';
         } else {
@@ -242,8 +226,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameUCAttribute()
-    {
+    public function getFullDisplayNameUCAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.ucfirst($this->style).'</a>';
         } else {
@@ -256,8 +239,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/factions';
     }
 
@@ -266,8 +248,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -276,8 +257,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -286,8 +266,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -296,8 +275,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -310,8 +288,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -324,8 +301,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/factions/'.$this->id);
     }
 
@@ -334,8 +310,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getDisplayStylesAttribute()
-    {
+    public function getDisplayStylesAttribute() {
         return
             [
                 0 => $this->name,
@@ -350,8 +325,7 @@ class Faction extends Model
      *
      * @return string
      */
-    public function getStyleAttribute()
-    {
+    public function getStyleAttribute() {
         return $this->displayStyles[$this->display_style];
     }
 
@@ -360,8 +334,7 @@ class Faction extends Model
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getFactionMembersAttribute()
-    {
+    public function getFactionMembersAttribute() {
         $figures = $this->members()->get();
         $users = Settings::get('WE_user_factions') > 0 && $this->is_user_faction ? User::visible()->where('faction_id', $this->id)->get() : null;
         $characters = Settings::get('WE_character_factions') > 0 && $this->is_character_faction ? Character::visible()->where('faction_id', $this->id)->get() : null;

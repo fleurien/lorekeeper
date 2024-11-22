@@ -11,8 +11,7 @@ use App\Services\WorldExpansion\ConceptService;
 use Auth;
 use Illuminate\Http\Request;
 
-class ConceptController extends Controller
-{
+class ConceptController extends Controller {
     /**********************************************************************************************
 
         Concept Types
@@ -24,8 +23,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getConceptCategories()
-    {
+    public function getConceptCategories() {
         return view('admin.world_expansion.concept_categories', [
             'categories' => ConceptCategory::orderBy('sort', 'DESC')->get(),
         ]);
@@ -36,8 +34,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateConceptCategory()
-    {
+    public function getCreateConceptCategory() {
         return view('admin.world_expansion.create_edit_concept_category', [
             'category' => new ConceptCategory,
         ]);
@@ -50,8 +47,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditConceptCategory($id)
-    {
+    public function getEditConceptCategory($id) {
         $category = ConceptCategory::find($id);
         if (!$category) {
             abort(404);
@@ -70,8 +66,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditConceptCategory(Request $request, ConceptService $service, $id = null)
-    {
+    public function postCreateEditConceptCategory(Request $request, ConceptService $service, $id = null) {
         $id ? $request->validate(ConceptCategory::$updateRules) : $request->validate(ConceptCategory::$createRules);
 
         $data = $request->only([
@@ -99,8 +94,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteConceptCategory($id)
-    {
+    public function getDeleteConceptCategory($id) {
         $category = ConceptCategory::find($id);
 
         return view('admin.world_expansion._delete_concept_category', [
@@ -116,8 +110,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteConceptCategory(Request $request, ConceptService $service, $id)
-    {
+    public function postDeleteConceptCategory(Request $request, ConceptService $service, $id) {
         if ($id && $service->deleteConceptCategory(ConceptCategory::find($id))) {
             flash('Concept Category deleted successfully.')->success();
         } else {
@@ -136,8 +129,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortConceptCategory(Request $request, ConceptService $service)
-    {
+    public function postSortConceptCategory(Request $request, ConceptService $service) {
         if ($service->sortConceptCategory($request->get('sort'))) {
             flash('Concept Category order updated successfully.')->success();
         } else {
@@ -160,8 +152,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getConceptIndex()
-    {
+    public function getConceptIndex() {
         return view('admin.world_expansion.concepts', [
             'concepts' => Concept::orderBy('sort', 'DESC')->get(),
         ]);
@@ -172,8 +163,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateConcept()
-    {
+    public function getCreateConcept() {
         return view('admin.world_expansion.create_edit_concept', [
             'concept'    => new Concept,
             'categories' => ConceptCategory::all()->pluck('name', 'id')->toArray(),
@@ -190,8 +180,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditConcept($id)
-    {
+    public function getEditConcept($id) {
         $concept = Concept::find($id);
         if (!$concept) {
             abort(404);
@@ -214,8 +203,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditConcept(Request $request, ConceptService $service, $id = null)
-    {
+    public function postCreateEditConcept(Request $request, ConceptService $service, $id = null) {
         $id ? $request->validate(Concept::$updateRules) : $request->validate(Concept::$createRules);
 
         $data = $request->only([
@@ -244,8 +232,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteConcept($id)
-    {
+    public function getDeleteConcept($id) {
         $concept = Concept::find($id);
 
         return view('admin.world_expansion._delete_concept', [
@@ -261,8 +248,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteConcept(Request $request, ConceptService $service, $id)
-    {
+    public function postDeleteConcept(Request $request, ConceptService $service, $id) {
         if ($id && $service->deleteConcept(Concept::find($id))) {
             flash('Concept deleted successfully.')->success();
         } else {
@@ -281,8 +267,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortConcept(Request $request, ConceptService $service)
-    {
+    public function postSortConcept(Request $request, ConceptService $service) {
         if ($service->sortConcept($request->get('sort'))) {
             flash('Concept order updated successfully.')->success();
         } else {

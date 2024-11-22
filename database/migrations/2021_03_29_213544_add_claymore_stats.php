@@ -4,15 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddClaymoreStats extends Migration
-{
+class AddClaymoreStats extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
         Schema::create('gear_stats', function (Blueprint $table) {
             $table->increments('id');
@@ -20,7 +16,7 @@ class AddClaymoreStats extends Migration
             $table->integer('stat_id')->unsigned();
 
             $table->integer('count');
-            
+
             $table->foreign('gear_id')->references('id')->on('gears');
             $table->foreign('stat_id')->references('id')->on('stats');
         });
@@ -31,7 +27,7 @@ class AddClaymoreStats extends Migration
             $table->integer('stat_id')->unsigned();
 
             $table->integer('count');
-            
+
             $table->foreign('weapon_id')->references('id')->on('weapons');
             $table->foreign('stat_id')->references('id')->on('stats');
         });
@@ -49,11 +45,8 @@ class AddClaymoreStats extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::dropifExists('gear_stats');
         Schema::dropifExists('weapon_stats');
@@ -61,7 +54,7 @@ class AddClaymoreStats extends Migration
             $table->dropColumn('currency_id');
             $table->dropColumn('cost');
         });
-        
+
         Schema::table('weapons', function (Blueprint $table) {
             $table->dropColumn('currency_id');
             $table->dropColumn('cost');

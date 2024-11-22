@@ -2,11 +2,9 @@
 
 namespace App\Models\Character;
 
-use Config;
 use App\Models\Model;
 
-class CharacterClass extends Model
-{
+class CharacterClass extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -22,49 +20,47 @@ class CharacterClass extends Model
      * @var string
      */
     protected $table = 'character_classes';
-    
+
     /**
      * Validation rules for creation.
      *
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:character_classes|between:3,25',
+        'name'        => 'required|unique:character_classes|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,25',
+        'name'        => 'required|between:3,25',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
-    
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
-    
+
     /**
      * Displays the model's name, linked to its encyclopedia page.
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-category">'.$this->name.'</a>';
     }
 
@@ -73,8 +69,7 @@ class CharacterClass extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/character-classes';
     }
 
@@ -83,9 +78,8 @@ class CharacterClass extends Model
      *
      * @return string
      */
-    public function getCategoryImageFileNameAttribute()
-    {
-        return $this->id . '-image.png';
+    public function getCategoryImageFileNameAttribute() {
+        return $this->id.'-image.png';
     }
 
     /**
@@ -93,20 +87,21 @@ class CharacterClass extends Model
      *
      * @return string
      */
-    public function getCategoryImagePathAttribute()
-    {
+    public function getCategoryImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
-    
+
     /**
      * Gets the URL of the model's image.
      *
      * @return string
      */
-    public function getCategoryImageUrlAttribute()
-    {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->categoryImageFileName);
+    public function getCategoryImageUrlAttribute() {
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->categoryImageFileName);
     }
 
     /**
@@ -114,8 +109,7 @@ class CharacterClass extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/character-classes?name='.$this->name);
     }
 }

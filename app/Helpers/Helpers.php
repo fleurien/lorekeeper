@@ -72,8 +72,8 @@ function breadcrumbs($links) {
 /**
  * Formats the timestamp to a standard format.
  *
- * @param \Illuminate\Support\Carbon\Carbon $timestamp
- * @param mixed                             $showTime
+ * @param Illuminate\Support\Carbon\Carbon $timestamp
+ * @param mixed                            $showTime
  *
  * @return string
  */
@@ -140,7 +140,9 @@ function parse($text, &$pings = null) {
     $text = parseEmoteIDs($text, $users);
     $text = parseEmoteNames($text, $users);
     $text = parseItemIDs($text, $users);
-    if($pings) $pings = ['users' => $users, 'characters' => $characters];
+    if ($pings) {
+        $pings = ['users' => $users, 'characters' => $characters];
+    }
 
     return $text;
 }
@@ -161,7 +163,7 @@ function parseUsers($text, &$users) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $user = \App\Models\User\User::where('name', $match)->first();
+            $user = App\Models\User\User::where('name', $match)->first();
             if ($user) {
                 $users[] = $user;
                 $text = preg_replace('/\B@'.$match.'/', $user->displayName, $text);
@@ -188,7 +190,7 @@ function parseUsersAndAvatars($text, &$users) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $user = \App\Models\User\User::where('name', $match)->first();
+            $user = App\Models\User\User::where('name', $match)->first();
             if ($user) {
                 $users[] = $user;
                 $text = preg_replace('/\B%'.$match.'/', '<a href="'.$user->url.'"><img src="/images/avatars/'.$user->avatar.'" style="width:70px; height:70px; border-radius:50%; " alt="'.$user->name.'\'s Avatar"></a>'.$user->displayName, $text);
@@ -215,7 +217,7 @@ function parseUserIDs($text, &$users) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $user = \App\Models\User\User::where('id', $match)->first();
+            $user = App\Models\User\User::where('id', $match)->first();
             if ($user) {
                 $users[] = $user;
                 $text = preg_replace('/\[user='.$match.'\]/', $user->displayName, $text);
@@ -242,7 +244,7 @@ function parseUserIDsForAvatars($text, &$users) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $user = \App\Models\User\User::where('id', $match)->first();
+            $user = App\Models\User\User::where('id', $match)->first();
             if ($user) {
                 $users[] = $user;
                 $text = preg_replace('/\[userav='.$match.'\]/', '<a href="'.$user->url.'"><img src="/images/avatars/'.$user->avatar.'" style="width:70px; height:70px; border-radius:50%; " alt="'.$user->name.'\'s Avatar"></a>', $text);
@@ -269,7 +271,7 @@ function parseCharacters($text, &$characters) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $character = \App\Models\Character\Character::where('slug', $match)->first();
+            $character = App\Models\Character\Character::where('slug', $match)->first();
             if ($character) {
                 $characters[] = $character;
                 $text = preg_replace('/\[character='.$match.'\]/', $character->displayName, $text);
@@ -296,7 +298,7 @@ function parseCharacterThumbs($text, &$characters) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $character = \App\Models\Character\Character::where('slug', $match)->first();
+            $character = App\Models\Character\Character::where('slug', $match)->first();
             if ($character) {
                 $characters[] = $character;
                 $text = preg_replace('/\[charthumb='.$match.'\]/', '<a href="'.$character->url.'"><img class="img-thumbnail" alt="Thumbnail of '.$character->fullName.'" data-toggle="tooltip" title="'.$character->fullName.'" src="'.$character->image->thumbnailUrl.'"></a>', $text);
@@ -323,7 +325,7 @@ function parseGalleryThumbs($text, &$submissions) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $submission = \App\Models\Gallery\GallerySubmission::where('id', $match)->first();
+            $submission = App\Models\Gallery\GallerySubmission::where('id', $match)->first();
             if ($submission) {
                 $submissions[] = $submission;
                 $text = preg_replace('/\[thumb='.$match.'\]/', '<a href="'.$submission->url.'" data-toggle="tooltip" title="'.$submission->displayTitle.' by '.nl2br(htmlentities($submission->creditsPlain)).(isset($submission->content_warning) ? '<br/><strong>Content Warning:</strong> '.nl2br(htmlentities($submission->content_warning)) : '').'">'.view('widgets._gallery_thumb', ['submission' => $submission]).'</a>', $text);
@@ -358,7 +360,7 @@ function randomString($characters) {
  * @param string $url
  * @param bool   $failOnError
  *
- * @return \App\Models\User\User|string
+ * @return App\Models\User\User|string
  */
 function checkAlias($url, $failOnError = true) {
     if ($url) {
@@ -375,7 +377,7 @@ function checkAlias($url, $failOnError = true) {
             }
         }
         if ((!isset($matches[0]) || $matches[0] == []) && $failOnError) {
-            throw new \Exception('This URL is from an invalid site. Please provide a URL for a user profile from a site used for authentication.');
+            throw new Exception('This URL is from an invalid site. Please provide a URL for a user profile from a site used for authentication.');
         }
 
         // and 2. if it contains an alias associated with a user on-site.
@@ -466,7 +468,7 @@ function parseEmoteIDs($text, &$users) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $emote = \App\Models\Emote::active()->where('id', $match)->first();
+            $emote = App\Models\Emote::active()->where('id', $match)->first();
             if ($emote) {
                 $users[] = $emote;
                 $text = preg_replace('/\[emote='.$match.'\]/', '<img src="'.$emote->imageUrl.'">', $text);
@@ -493,7 +495,7 @@ function parseEmoteNames($text, &$users) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $emote = \App\Models\Emote::active()->where('name', $match)->first();
+            $emote = App\Models\Emote::active()->where('name', $match)->first();
             if ($emote) {
                 $users[] = $emote;
                 $text = preg_replace('/\[emote='.$match.'\]/', '<img src="'.$emote->imageUrl.'">', $text);
@@ -520,7 +522,7 @@ function parseItemIDs($text, &$users) {
     if ($count) {
         $matches = array_unique($matches[1]);
         foreach ($matches as $match) {
-            $item = \App\Models\Item\Item::released()->where('id', $match)->first();
+            $item = App\Models\Item\Item::released()->where('id', $match)->first();
             if ($item) {
                 $users[] = $item;
                 $text = preg_replace('/\[item='.$match.'\]/', '<a href="'.$item->url.'"> <img src="'.$item->imageUrl.'"> </a>', $text);
@@ -530,8 +532,8 @@ function parseItemIDs($text, &$users) {
 
     return $text;
 }
-/** 
-* Puts down the HTML needed for a LiveClock.
+/**
+ * Puts down the HTML needed for a LiveClock.
  *
  * @return string
  */

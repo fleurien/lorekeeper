@@ -11,53 +11,53 @@ return [
     //     ]),
     //     'version' => '1.0.0',
     // ],
-    
+
     'dev_logs' => [
-        'key' => 'dev_logs',
+        'key'      => 'dev_logs',
         'wiki_key' => 'Dev_Logs',
-            'creators' => json_encode([
+        'creators' => json_encode([
             'AnimatedCritter' => 'https://github.com/animatedcritter/',
         ]),
-    
+
         'version' => '1.0.0',
     ],
     'dailies' => [
-        'key' => 'dailies',
+        'key'      => 'dailies',
         'wiki_key' => 'Dailies',
         'creators' => json_encode([
             'Cylunny' => 'https://toyhou.se/cylunny',
         ]),
-        'version' => '1.1.0', 
+        'version' => '1.1.0',
     ],
 
     'crafting_system' => [
-        'key' => 'crafting_system',
+        'key'      => 'crafting_system',
         'wiki_key' => 'Crafting_System',
         'creators' => json_encode([
             'Draginraptor' => 'https://github.com/Draginraptor',
-            'Uri' => 'https://github.com/preimpression/',
-            'Newt' => 'https://github.com/Ne-wt'
+            'Uri'          => 'https://github.com/preimpression/',
+            'Newt'         => 'https://github.com/Ne-wt',
         ]),
         'version' => '1.0.0',
     ],
 
     'character_genetic_data' => [
-        'key' => 'character_genetic_data',
+        'key'      => 'character_genetic_data',
         'wiki_key' => 'Character_Genetic_Data',
         'creators' => json_encode([
             'Pure09' => 'https://github.com/deep-ci/',
         ]),
         'version' => '1.2.0',
     ],
-    
+
     'Books' => [
-        'key' => 'Books',
-            'wiki_key' => 'Books',
-            'creators' => json_encode([
-                'CH3RVB' => 'https://github.com/CH3RVB/',
-            ]),
-            'version' => '1.0.0',
-        ],
+        'key'      => 'Books',
+        'wiki_key' => 'Books',
+        'creators' => json_encode([
+            'CH3RVB' => 'https://github.com/CH3RVB/',
+        ]),
+        'version' => '1.0.0',
+    ],
 
     'advent_calendars' => [
         'key'      => 'advent_calendars',
@@ -69,16 +69,16 @@ return [
     ],
 
     'breeding_permissions' => [
-        'key' => 'breeding_permissions',
+        'key'      => 'breeding_permissions',
         'wiki_key' => 'Breeding_Permissions',
         'creators' => json_encode([
             'Mercury' => 'https://github.com/itinerare/',
         ]),
         'version' => '1.0.1',
     ],
-    
+
     'trade_listings' => [
-        'key' => 'Trade_Listings',
+        'key'      => 'Trade_Listings',
         'wiki_key' => 'Trade_Listings',
         'creators' => json_encode([
             'Mercury' => 'https://github.com/itinerare/',
@@ -86,7 +86,7 @@ return [
         'version' => '1.0.1',
     ],
     'selected_character' => [
-        'key' => 'selected_character',
+        'key'      => 'selected_character',
         'wiki_key' => 'Selected_Character',
         'creators' => json_encode([
             'Mercury' => 'https://github.com/itinerare/',
@@ -102,17 +102,17 @@ return [
         ]),
         'version' => '1.1.0',
     ],
-     'Levels_&_Stats' => [
-         'key' => 'Levels_&_Stats',
-         'wiki_key' => 'Levels_%26_Stats',
-         'creators' => json_encode([
-             'Newt' => 'https://github.com/ne-wt/',
-         ]),
-         'version' => '1.0.0',
-     ],
+    'Levels_&_Stats' => [
+        'key'      => 'Levels_&_Stats',
+        'wiki_key' => 'Levels_%26_Stats',
+        'creators' => json_encode([
+            'Newt' => 'https://github.com/ne-wt/',
+        ]),
+        'version' => '1.0.0',
+    ],
 
-     'Pets' => [
-        'key' => 'Pets',
+    'Pets' => [
+        'key'      => 'Pets',
         'wiki_key' => 'Pets',
         'creators' => json_encode([
             'Newt' => 'https://github.com/ne-wt/',
@@ -121,12 +121,12 @@ return [
     ],
 
     'Claymores and Companions' => [
-        'key' => 'Claymores and Companions',
+        'key'      => 'Claymores and Companions',
         'wiki_key' => 'Claymores_and_Companions',
         'creators' => json_encode([
-            'Newt' => 'https://github.com/ne-wt/',
+            'Newt'    => 'https://github.com/ne-wt/',
             'Mercury' => 'https://github.com/itinerare/',
-            'Uri' => 'https://github.com/preimpression/',
+            'Uri'     => 'https://github.com/preimpression/',
         ]),
         'version' => '1.1.0',
     ],
@@ -135,8 +135,8 @@ return [
         'key'      => 'awards',
         'wiki_key' => 'Awards',
         'creators' => json_encode([
-            'Uri'  => 'https://github.com/preimpression/',
-            'TGI'  => 'https://github.com/tjgallaha/',
+            'Uri'   => 'https://github.com/preimpression/',
+            'TGI'   => 'https://github.com/tjgallaha/',
             'Ne-wt' => 'https://github.com/ne-wt/',
         ]),
         'version' => '2.0.0',
@@ -152,7 +152,7 @@ return [
     ],
 
     'dual_gallery_reward_currencies' => [
-        'key' => 'dual_gallery_reward_currencies',
+        'key'      => 'dual_gallery_reward_currencies',
         'wiki_key' => 'Dual_Gallery_Reward_Currencies',
         'creators' => json_encode([
             'Mercury' => 'https://github.com/itinerare/',
@@ -160,7 +160,7 @@ return [
         'version' => '1.0.0',
     ],
     'choice_box_tag' => [
-        'key' => 'Choice_Box_Tag',
+        'key'      => 'Choice_Box_Tag',
         'wiki_key' => 'Choice_Box_Tag',
         'creators' => json_encode([
             'Mercury' => 'https://github.com/itinerare/',
@@ -195,9 +195,8 @@ return [
         'version' => '1.0.0',
     ],
 
-
     'character_backgrounds' => [
-        'key' => 'character_backgrounds',
+        'key'      => 'character_backgrounds',
         'wiki_key' => 'Character_Backgrounds',
         'creators' => json_encode([
             'Uri' => 'https://github.com/preimpression/',
@@ -206,12 +205,12 @@ return [
     ],
 
     'theme_manager' => [
-        'key' => 'theme_manager',
+        'key'      => 'theme_manager',
         'wiki_key' => 'Theme Manager',
         'creators' => json_encode([
-            'Uri' => 'https://github.com/preimpression/',
+            'Uri'     => 'https://github.com/preimpression/',
             'Cylunny' => 'https://toyhou.se/cylunny',
-            'moif' => 'https://toyhou.se/moif'
+            'moif'    => 'https://toyhou.se/moif',
         ]),
         'version' => '2.0.0', // Big update with Cylunny's Theme manager + Moif's work merging the two!
     ],
@@ -233,28 +232,28 @@ return [
         ]),
         'version' => '1.3.1',
     ],
-    
+
     'Character_Transformations' => [
-        'key' => 'character_transformations',
-            'wiki_key' => 'Character_Transformations',
-            'creators' => json_encode([
-                'CH3RVB' => 'https://github.com/CH3RVB/',
-                'Newt' => 'https://github.com/Ne-wt',
-            ]),
-            'version' => '1.0.0',
-        ],
+        'key'      => 'character_transformations',
+        'wiki_key' => 'Character_Transformations',
+        'creators' => json_encode([
+            'CH3RVB' => 'https://github.com/CH3RVB/',
+            'Newt'   => 'https://github.com/Ne-wt',
+        ]),
+        'version' => '1.0.0',
+    ],
 
     'character_skills' => [
-        'key' => 'character_skills',
+        'key'      => 'character_skills',
         'wiki_key' => 'Character_Skills',
-            'creators' => json_encode([
-                'Newt' => 'https://github.com/ne-wt/',
-            ]),
+        'creators' => json_encode([
+            'Newt' => 'https://github.com/ne-wt/',
+        ]),
         'version' => '1.0.0',
     ],
 
     'shop_features' => [
-        'key' => 'shop_features',
+        'key'      => 'shop_features',
         'wiki_key' => 'Shop_Features',
         'creators' => json_encode([
             'Newt' => 'https://github.com/ne-wt/',
@@ -262,17 +261,16 @@ return [
         'version' => '1.0.4',
     ],
 
-    
     'Emotes' => [
-        'key' => 'Emotes',
-            'wiki_key' => 'Emotes',
-            'creators' => json_encode([
-                'CH3RVB' => 'https://github.com/CH3RVB/',
-            ]),
-            'version' => '1.1.0',
-        ],
+        'key'      => 'Emotes',
+        'wiki_key' => 'Emotes',
+        'creators' => json_encode([
+            'CH3RVB' => 'https://github.com/CH3RVB/',
+        ]),
+        'version' => '1.1.0',
+    ],
     'status_effects' => [
-        'key' => 'status_effects',
+        'key'      => 'status_effects',
         'wiki_key' => 'Status_Effects',
         'creators' => json_encode([
             'Mercury' => 'https://github.com/itinerare/',
@@ -281,17 +279,17 @@ return [
     ],
 
     'encounters' => [
-        'key' => 'encounters',
+        'key'      => 'encounters',
         'wiki_key' => 'Encounters',
         'creators' => json_encode([
-            'CH3RVB' => 'https://github.com/CH3RVB/',
+            'CH3RVB'        => 'https://github.com/CH3RVB/',
             'LostInProgres' => 'https://github.com/LostInProgres',
         ]),
         'version' => '1.0.0',
     ],
 
     'news_widget' => [
-        'key' => 'news_widget',
+        'key'      => 'news_widget',
         'wiki_key' => 'News_Widget',
         'creators' => json_encode([
             'Min' => 'https://github.com/liwoyadan/',

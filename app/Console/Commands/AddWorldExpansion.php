@@ -7,8 +7,7 @@ use Config;
 use DB;
 use Illuminate\Console\Command;
 
-class AddWorldExpansion extends Command
-{
+class AddWorldExpansion extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -26,8 +25,7 @@ class AddWorldExpansion extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -36,8 +34,7 @@ class AddWorldExpansion extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $this->info('********************************');
         $this->info('* ADD WORLD EXPANSION SETTINGS *');
         $this->info('********************************'."\n");

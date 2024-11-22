@@ -7,8 +7,7 @@ use Cache;
 use Carbon\Carbon;
 use Closure;
 
-class LastUserActivity
-{
+class LastUserActivity {
     /**
      * Handle an incoming request.
      *
@@ -16,8 +15,7 @@ class LastUserActivity
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
-    {
+    public function handle($request, Closure $next) {
         if (Auth::check()) {
             $expiresAt = Carbon::now()->addMinutes(15);
             Cache::put('user-is-online-'.Auth::user()->id, true, $expiresAt);

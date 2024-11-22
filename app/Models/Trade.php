@@ -14,7 +14,7 @@ class Trade extends Model {
     protected $fillable = [
         'sender_id', 'recipient_id', 'comments',
         'status', 'is_sender_confirmed', 'is_recipient_confirmed', 'is_sender_trade_confirmed', 'is_recipient_trade_confirmed',
-        'is_approved', 'reason', 'data', 'terms_link'
+        'is_approved', 'reason', 'data', 'terms_link',
     ];
 
     /**
@@ -141,7 +141,7 @@ class Trade extends Model {
     /**
      * Gets the inventory of the given user for selection.
      *
-     * @param \App\Models\User\User $user
+     * @param User\User $user
      *
      * @return array
      */
@@ -155,7 +155,7 @@ class Trade extends Model {
     /**
      * Gets the characters of the given user for selection.
      *
-     * @param \App\Models\User\User $user
+     * @param User\User $user
      *
      * @return array
      */
@@ -172,7 +172,7 @@ class Trade extends Model {
     /**
      * Gets the currencies of the given user for selection.
      *
-     * @param \App\Models\User\User $user
+     * @param User\User $user
      *
      * @return array
      */

@@ -9,8 +9,7 @@ use App\Services\InventoryManager;
 use App\Services\Service;
 use DB;
 
-class BoxService extends Service
-{
+class BoxService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Box Service
@@ -25,8 +24,7 @@ class BoxService extends Service
      *
      * @return array
      */
-    public function getEditData()
-    {
+    public function getEditData() {
         return [
             'characterCurrencies' => Currency::where('is_character_owned', 1)->orderBy('sort_character', 'DESC')->pluck('name', 'id'),
             'awards'              => Award::orderBy('name')->pluck('name', 'id'),
@@ -42,8 +40,7 @@ class BoxService extends Service
      *
      * @return mixed
      */
-    public function getTagData($tag)
-    {
+    public function getTagData($tag) {
         $rewards = [];
         if ($tag->data) {
             $assets = parseAssetData($tag->data);
@@ -70,8 +67,7 @@ class BoxService extends Service
      *
      * @return bool
      */
-    public function updateData($tag, $data)
-    {
+    public function updateData($tag, $data) {
         DB::beginTransaction();
 
         try {
@@ -119,8 +115,7 @@ class BoxService extends Service
      *
      * @return bool
      */
-    public function act($stacks, $user, $data)
-    {
+    public function act($stacks, $user, $data) {
         DB::beginTransaction();
 
         try {
@@ -160,8 +155,7 @@ class BoxService extends Service
      *
      * @return string
      */
-    private function getBoxRewardsString($rewards)
-    {
+    private function getBoxRewardsString($rewards) {
         $results = 'You have received: ';
         $result_elements = [];
         foreach ($rewards as $assetType) {

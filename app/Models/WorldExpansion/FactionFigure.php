@@ -4,8 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FactionFigure extends Model
-{
+class FactionFigure extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -33,16 +32,14 @@ class FactionFigure extends Model
     /**
      * Get the figure attached to this.
      */
-    public function figure()
-    {
+    public function figure() {
         return $this->belongsTo('App\Models\WorldExpansion\Figure', 'figure_id');
     }
 
     /**
      * Get the item attached to this.
      */
-    public function faction()
-    {
+    public function faction() {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'faction_id');
     }
 }

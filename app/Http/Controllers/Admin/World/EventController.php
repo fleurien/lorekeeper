@@ -14,8 +14,7 @@ use App\Services\WorldExpansion\EventService;
 use Auth;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
-{
+class EventController extends Controller {
     /**********************************************************************************************
 
         Event Types
@@ -27,8 +26,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEventCategories()
-    {
+    public function getEventCategories() {
         return view('admin.world_expansion.event_categories', [
             'categories' => EventCategory::orderBy('sort', 'DESC')->get(),
         ]);
@@ -39,8 +37,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateEventCategory()
-    {
+    public function getCreateEventCategory() {
         return view('admin.world_expansion.create_edit_event_category', [
             'category' => new EventCategory,
         ]);
@@ -53,8 +50,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditEventCategory($id)
-    {
+    public function getEditEventCategory($id) {
         $category = EventCategory::find($id);
         if (!$category) {
             abort(404);
@@ -73,8 +69,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditEventCategory(Request $request, EventService $service, $id = null)
-    {
+    public function postCreateEditEventCategory(Request $request, EventService $service, $id = null) {
         $id ? $request->validate(EventCategory::$updateRules) : $request->validate(EventCategory::$createRules);
 
         $data = $request->only([
@@ -102,8 +97,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteEventCategory($id)
-    {
+    public function getDeleteEventCategory($id) {
         $category = EventCategory::find($id);
 
         return view('admin.world_expansion._delete_event_category', [
@@ -119,8 +113,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteEventCategory(Request $request, EventService $service, $id)
-    {
+    public function postDeleteEventCategory(Request $request, EventService $service, $id) {
         if ($id && $service->deleteEventCategory(EventCategory::find($id))) {
             flash('Event Category deleted successfully.')->success();
         } else {
@@ -139,8 +132,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortEventCategory(Request $request, EventService $service)
-    {
+    public function postSortEventCategory(Request $request, EventService $service) {
         if ($service->sortEventCategory($request->get('sort'))) {
             flash('Event Category order updated successfully.')->success();
         } else {
@@ -163,8 +155,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEventIndex()
-    {
+    public function getEventIndex() {
         return view('admin.world_expansion.events', [
             'events' => Event::orderBy('sort', 'DESC')->get(),
         ]);
@@ -175,8 +166,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateEvent()
-    {
+    public function getCreateEvent() {
         return view('admin.world_expansion.create_edit_event', [
             'event'      => new Event,
             'categories' => EventCategory::all()->pluck('name', 'id')->toArray(),
@@ -196,8 +186,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditEvent($id)
-    {
+    public function getEditEvent($id) {
         $event = Event::find($id);
         if (!$event) {
             abort(404);
@@ -223,8 +212,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditEvent(Request $request, EventService $service, $id = null)
-    {
+    public function postCreateEditEvent(Request $request, EventService $service, $id = null) {
         $id ? $request->validate(Event::$updateRules) : $request->validate(Event::$createRules);
 
         $data = $request->only([
@@ -254,8 +242,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteEvent($id)
-    {
+    public function getDeleteEvent($id) {
         $event = Event::find($id);
 
         return view('admin.world_expansion._delete_event', [
@@ -271,8 +258,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteEvent(Request $request, EventService $service, $id)
-    {
+    public function postDeleteEvent(Request $request, EventService $service, $id) {
         if ($id && $service->deleteEvent(Event::find($id))) {
             flash('Event deleted successfully.')->success();
         } else {
@@ -291,8 +277,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortEvent(Request $request, EventService $service)
-    {
+    public function postSortEvent(Request $request, EventService $service) {
         if ($service->sortEvent($request->get('sort'))) {
             flash('Event order updated successfully.')->success();
         } else {

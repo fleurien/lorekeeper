@@ -94,8 +94,7 @@ class Feature extends Model {
      *
      * @return string
      */
-    public function getVisualTraitsUrlAttribute()
-    {
+    public function getVisualTraitsUrlAttribute() {
         return url('/world/universaltraits');
     }
 
@@ -335,6 +334,6 @@ class Feature extends Model {
             });
 
             return $features_by_category;
-        } 
+        }
     }
 }

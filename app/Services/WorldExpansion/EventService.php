@@ -20,8 +20,7 @@ use App\Models\WorldExpansion\Location;
 use App\Services\Service;
 use DB;
 
-class EventService extends Service
-{
+class EventService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Event Service
@@ -39,8 +38,7 @@ class EventService extends Service
      *
      * @return \App\Models\Event\Category|bool
      */
-    public function createEventCategory($data, $user)
-    {
+    public function createEventCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -87,8 +85,7 @@ class EventService extends Service
      *
      * @return \App\Models\Category\Category|bool
      */
-    public function updateEventCategory($category, $data, $user)
-    {
+    public function updateEventCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -148,8 +145,7 @@ class EventService extends Service
      *
      * @return bool
      */
-    public function deleteEventCategory($category)
-    {
+    public function deleteEventCategory($category) {
         DB::beginTransaction();
 
         try {
@@ -188,8 +184,7 @@ class EventService extends Service
      *
      * @return bool
      */
-    public function sortEventCategory($data)
-    {
+    public function sortEventCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -223,8 +218,7 @@ class EventService extends Service
      *
      * @return \App\Models\Event\Category|bool
      */
-    public function createEvent($data, $user)
-    {
+    public function createEvent($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -265,14 +259,13 @@ class EventService extends Service
     /**
      * Updates a event.
      *
-     * @param \App\Models\WorldExpansion\Event $event
-     * @param array                            $data
-     * @param \App\Models\User\User            $user
+     * @param Event                 $event
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\WorldExpansion\Event|bool
+     * @return bool|Event
      */
-    public function updateEvent($event, $data, $user)
-    {
+    public function updateEvent($event, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -451,12 +444,11 @@ class EventService extends Service
     /**
      * Deletes a event.
      *
-     * @param \App\Models\WorldExpansion\Event $event
+     * @param Event $event
      *
      * @return bool
      */
-    public function deleteEvent($event)
-    {
+    public function deleteEvent($event) {
         DB::beginTransaction();
 
         try {
@@ -483,8 +475,7 @@ class EventService extends Service
      *
      * @return bool
      */
-    public function sortEvent($data)
-    {
+    public function sortEvent($data) {
         DB::beginTransaction();
 
         try {
@@ -511,8 +502,7 @@ class EventService extends Service
      *
      * @return \App\Models\Figure\Category|bool
      */
-    public function createFigureCategory($data, $user)
-    {
+    public function createFigureCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -559,8 +549,7 @@ class EventService extends Service
      *
      * @return \App\Models\Category\Category|bool
      */
-    public function updateFigureCategory($category, $data, $user)
-    {
+    public function updateFigureCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -620,8 +609,7 @@ class EventService extends Service
      *
      * @return bool
      */
-    public function deleteFigureCategory($category)
-    {
+    public function deleteFigureCategory($category) {
         DB::beginTransaction();
 
         try {
@@ -658,8 +646,7 @@ class EventService extends Service
      *
      * @return bool
      */
-    public function sortFigureCategory($data)
-    {
+    public function sortFigureCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -693,8 +680,7 @@ class EventService extends Service
      *
      * @return \App\Models\Figure\Category|bool
      */
-    public function createFigure($data, $user)
-    {
+    public function createFigure($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -735,14 +721,13 @@ class EventService extends Service
     /**
      * Updates a figure.
      *
-     * @param \App\Models\WorldExpansion\Figure $figure
-     * @param array                             $data
-     * @param \App\Models\User\User             $user
+     * @param Figure                $figure
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\WorldExpansion\Figure|bool
+     * @return bool|Figure
      */
-    public function updateFigure($figure, $data, $user)
-    {
+    public function updateFigure($figure, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -825,12 +810,11 @@ class EventService extends Service
     /**
      * Deletes a figure.
      *
-     * @param \App\Models\WorldExpansion\Figure $figure
+     * @param Figure $figure
      *
      * @return bool
      */
-    public function deleteFigure($figure)
-    {
+    public function deleteFigure($figure) {
         DB::beginTransaction();
 
         try {
@@ -857,8 +841,7 @@ class EventService extends Service
      *
      * @return bool
      */
-    public function sortFigure($data)
-    {
+    public function sortFigure($data) {
         DB::beginTransaction();
 
         try {
@@ -885,8 +868,7 @@ class EventService extends Service
      *
      * @return array
      */
-    private function populateEventCategoryData($data, $category = null)
-    {
+    private function populateEventCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -916,18 +898,17 @@ class EventService extends Service
     /**
      * Processes user input for creating/updating a event.
      *
-     * @param array                            $data
-     * @param \App\Models\WorldExpansion\Event $event
+     * @param array $data
+     * @param Event $event
      *
      * @return array
      */
-    private function populateEventData($data, $event = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateEventData($data, $event = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['name']) && $data['name']) {
             $saveData['name'] = parse($data['name']);
@@ -935,11 +916,11 @@ class EventService extends Service
         $saveData['is_active'] = isset($data['is_active']);
         $saveData['category_id'] = isset($data['category_id']) && $data['category_id'] ? $data['category_id'] : null;
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
-        $saveData['occur_start'] = isset($data['occur_start']) ? $data['occur_start'] : null;
-        $saveData['occur_end'] = isset($data['occur_end']) ? $data['occur_end'] : null;
+        $saveData['occur_start'] = $data['occur_start'] ?? null;
+        $saveData['occur_end'] = $data['occur_end'] ?? null;
 
         if (isset($data['remove_image'])) {
             if ($event && isset($event->image_extension) && $data['remove_image']) {
@@ -968,8 +949,7 @@ class EventService extends Service
      *
      * @return array
      */
-    private function populateFigureCategoryData($data, $category = null)
-    {
+    private function populateFigureCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -999,18 +979,17 @@ class EventService extends Service
     /**
      * Processes user input for creating/updating a figure.
      *
-     * @param array                             $data
-     * @param \App\Models\WorldExpansion\Figure $figure
+     * @param array  $data
+     * @param Figure $figure
      *
      * @return array
      */
-    private function populateFigureData($data, $figure = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateFigureData($data, $figure = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['name']) && $data['name']) {
             $saveData['name'] = parse($data['name']);
@@ -1018,8 +997,8 @@ class EventService extends Service
         $saveData['is_active'] = isset($data['is_active']);
         $saveData['category_id'] = isset($data['category_id']) && $data['category_id'] ? $data['category_id'] : null;
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
         if (isset($data['remove_image'])) {
             if ($figure && isset($figure->image_extension) && $data['remove_image']) {

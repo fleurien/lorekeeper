@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use DB;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Character\Character;
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterItem;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
-use App\Models\Item\UserItemLog;
 use App\Models\Submission\Submission;
 use App\Models\Trade;
 use App\Models\User\User;
 use App\Models\User\UserItem;
-
 use App\Services\InventoryManager;
+use Auth;
+use Illuminate\Http\Request;
 
 class InventoryController extends Controller {
     /*
@@ -377,8 +372,7 @@ class InventoryController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    private function postDonate(Request $request, InventoryManager $service)
-    {
+    private function postDonate(Request $request, InventoryManager $service) {
         if ($service->donateStack(Auth::user(), UserItem::find($request->get('ids')), $request->get('quantities'))) {
             flash('Item donated successfully.')->success();
         } else {

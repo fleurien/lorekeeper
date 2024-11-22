@@ -2,18 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
-use DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-
 use App\Models\Submission\Submission;
 use App\Models\Submission\SubmissionCharacter;
+use Illuminate\Console\Command;
 
-class ExchangeFocus extends Command
-{
-        /**
+class ExchangeFocus extends Command {
+    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -29,11 +23,8 @@ class ExchangeFocus extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -42,15 +33,14 @@ class ExchangeFocus extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $submissions = Submission::where('focus_chara_id', '!=', null)->get();
-        foreach($submissions as $submission) {
-            if(!SubmissionCharacter::where('submission_id', $submission->id)->where('character_id', $submission->focus_chara_id)->exists()) {
-                Submissioncharacter::create([
+        foreach ($submissions as $submission) {
+            if (!SubmissionCharacter::where('submission_id', $submission->id)->where('character_id', $submission->focus_chara_id)->exists()) {
+                SubmissionCharacter::create([
                     'submission_id' => $submission->id,
-                    'character_id' => $submission->focus_chara_id,
-                    'is_focus' => 1,
+                    'character_id'  => $submission->focus_chara_id,
+                    'is_focus'      => 1,
                 ]);
             }
         }

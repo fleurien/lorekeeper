@@ -5,8 +5,7 @@ namespace App\Models\WorldExpansion;
 use App\Models\Item\Item;
 use Illuminate\Database\Eloquent\Model;
 
-class FloraItem extends Model
-{
+class FloraItem extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -34,16 +33,14 @@ class FloraItem extends Model
     /**
      * Get the flora attached to this.
      */
-    public function flora()
-    {
+    public function flora() {
         return $this->belongsTo('App\Models\WorldExpansion\Flora', 'flora_id');
     }
 
     /**
      * Get the item attached to this.
      */
-    public function item()
-    {
+    public function item() {
         return $this->belongsTo('App\Models\Item\Item', 'item_id');
     }
 }

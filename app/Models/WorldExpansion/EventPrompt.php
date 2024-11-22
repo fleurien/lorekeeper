@@ -6,8 +6,7 @@ use App\Models\Item\Item;
 use App\Models\Prompt\Prompt;
 use Illuminate\Database\Eloquent\Model;
 
-class EventPrompt extends Model
-{
+class EventPrompt extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -35,16 +34,14 @@ class EventPrompt extends Model
     /**
      * Get the prompt attached to this.
      */
-    public function prompt()
-    {
+    public function prompt() {
         return $this->belongsTo('App\Models\Prompt\Prompt', 'prompt_id');
     }
 
     /**
      * Get the item attached to this.
      */
-    public function item()
-    {
+    public function item() {
         return $this->belongsTo('App\Models\WorldExpansion\Event', 'event_id');
     }
 }

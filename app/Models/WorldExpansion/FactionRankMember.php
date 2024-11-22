@@ -5,8 +5,7 @@ namespace App\Models\WorldExpansion;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
-class FactionRankMember extends Model
-{
+class FactionRankMember extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -33,40 +32,35 @@ class FactionRankMember extends Model
     /**
      * Get the faction this member belongs to.
      */
-    public function faction()
-    {
+    public function faction() {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'faction_id');
     }
 
     /**
      * Get the rank this member belongs to.
      */
-    public function rank()
-    {
+    public function rank() {
         return $this->belongsTo('App\Models\WorldExpansion\FactionRank', 'rank_id');
     }
 
     /**
      * Get the associated figure.
      */
-    public function figure()
-    {
+    public function figure() {
         return $this->belongsTo('App\Models\WorldExpansion\Figure', 'member_id');
     }
 
     /**
      * Get the associated user.
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('App\Models\User\User', 'member_id');
     }
 
     /**
      * Get the associated character.
      */
-    public function character()
-    {
+    public function character() {
         return $this->belongsTo('App\Models\Character\Character', 'member_id');
     }
 
@@ -78,10 +72,9 @@ class FactionRankMember extends Model
     /**
      * Gets the member object depending on member type.
      *
-     * @return \App\Models\Character\Character|\App\Models\User\User|\App\Models\WorldExpansion\Figure
+     * @return \App\Models\Character\Character|Figure|User
      */
-    public function getMemberObjectAttribute()
-    {
+    public function getMemberObjectAttribute() {
         switch ($this->member_type) {
             case 'figure':
                 return $this->figure;

@@ -7,8 +7,7 @@ use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Location extends Model
-{
+class Location extends Model {
     use SoftDeletes;
 
     /**
@@ -66,64 +65,56 @@ class Location extends Model
     /**
      * Get the location attached to this location.
      */
-    public function type()
-    {
+    public function type() {
         return $this->belongsTo('App\Models\WorldExpansion\LocationType', 'type_id');
     }
 
     /**
      * Get the location attached to this location.
      */
-    public function parent()
-    {
+    public function parent() {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'parent_id')->visible();
     }
 
     /**
      * Get the location attached to this location.
      */
-    public function children()
-    {
+    public function children() {
         return $this->hasMany('App\Models\WorldExpansion\Location', 'parent_id')->visible();
     }
 
     /**
      * Get the locations attached to this fauna.
      */
-    public function fauna()
-    {
+    public function fauna() {
         return $this->belongsToMany('App\Models\WorldExpansion\Fauna', 'fauna_locations')->visible()->withPivot('id');
     }
 
     /**
      * Get the locations attached to this flora.
      */
-    public function flora()
-    {
+    public function flora() {
         return $this->belongsToMany('App\Models\WorldExpansion\Flora', 'flora_locations')->visible()->withPivot('id');
     }
 
     /**
      * Get the locations attached to this flora.
      */
-    public function events()
-    {
+    public function events() {
         return $this->belongsToMany('App\Models\WorldExpansion\Event', 'event_locations')->visible()->withPivot('id');
     }
 
     /**
      * Get the factions attached to this location.
      */
-    public function factions()
-    {
+    public function factions() {
         return $this->belongsToMany('App\Models\WorldExpansion\Faction', 'faction_locations')->visible()->withPivot('id');
     }
 
     /**
      * Get the location attached to this location.
      */
-    public function gallerysubmissions()
-    {
+    public function gallerysubmissions() {
         return $this->hasMany('App\Models\Gallery\GallerySubmission', 'location_id')->visible();
     }
 
@@ -140,8 +131,7 @@ class Location extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVisible($query)
-    {
+    public function scopeVisible($query) {
         if (!Auth::check() || !(Auth::check() && Auth::user()->isStaff)) {
             return $query->where('is_active', 1);
         } else {
@@ -160,8 +150,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->name.'</a>';
         } else {
@@ -174,8 +163,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameAttribute()
-    {
+    public function getFullDisplayNameAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.$this->style.'</a>';
         } else {
@@ -188,8 +176,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getFullDisplayNameUCAttribute()
-    {
+    public function getFullDisplayNameUCAttribute() {
         if ($this->is_active) {
             return '<a href="'.$this->url.'" class="display-location">'.ucfirst($this->style).'</a>';
         } else {
@@ -202,8 +189,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/locations';
     }
 
@@ -212,8 +198,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -222,8 +207,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -232,8 +216,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -242,8 +225,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -256,8 +238,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -270,8 +251,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/locations/'.$this->id);
     }
 
@@ -280,8 +260,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getDisplayStylesAttribute()
-    {
+    public function getDisplayStylesAttribute() {
         return
             [
                 0 => $this->name,
@@ -296,8 +275,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getStyleAttribute()
-    {
+    public function getStyleAttribute() {
         return $this->displayStyles[$this->display_style];
     }
 
@@ -306,8 +284,7 @@ class Location extends Model
      *
      * @return string
      */
-    public function getStyleParentAttribute()
-    {
+    public function getStyleParentAttribute() {
         if ($this->parent_id) {
             return $this->style.' ('.$this->parent->style.')';
         } else {
@@ -328,8 +305,7 @@ class Location extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortLocationType($query)
-    {
+    public function scopeSortLocationType($query) {
         $ids = LocationType::orderBy('sort', 'DESC')->pluck('id')->toArray();
 
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(type_id, '.implode(',', $ids).')')) : $query;
@@ -343,8 +319,7 @@ class Location extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
@@ -355,8 +330,7 @@ class Location extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -367,8 +341,7 @@ class Location extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 }

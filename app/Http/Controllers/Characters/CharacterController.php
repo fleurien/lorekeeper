@@ -5,28 +5,23 @@ namespace App\Http\Controllers\Characters;
 use App\Http\Controllers\Controller;
 use App\Models\Award\Award;
 use App\Models\Award\AwardCategory;
+use App\Models\Character\BreedingPermission;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterAward;
-use App\Models\Character\BreedingPermission;
-use App\Models\Character\BreedingPermissionLog;
-use App\Models\Level\CharacterLevel;
-use App\Models\Species\Species;
-use App\Models\Rarity;
-use App\Models\Feature\Feature;
-use App\Models\Character\CharacterProfile;
-
-use App\Models\Currency\Currency;
-use App\Models\Currency\CurrencyLog;
-use App\Models\User\UserCurrency;
-use App\Models\Gallery\GallerySubmission;
 use App\Models\Character\CharacterCurrency;
 use App\Models\Character\CharacterImage;
 use App\Models\Character\CharacterItem;
+use App\Models\Character\CharacterProfile;
 use App\Models\Character\CharacterTransfer;
+use App\Models\Currency\Currency;
+use App\Models\Gallery\GallerySubmission;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
+use App\Models\Skill\Skill;
+use App\Models\Status\StatusEffect;
 use App\Models\User\User;
 use App\Models\User\UserAward;
+use App\Models\User\UserCurrency;
 use App\Models\User\UserItem;
 use App\Models\WorldExpansion\Faction;
 use App\Models\WorldExpansion\Location;
@@ -42,11 +37,7 @@ use Illuminate\Support\Facades\View;
 use Route;
 use Settings;
 
-use App\Models\Status\StatusEffect;
-
-use App\Models\Skill\Skill;
-class CharacterController extends Controller
-{
+class CharacterController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Character Controller
@@ -59,8 +50,7 @@ class CharacterController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->middleware(function ($request, $next) {
             $slug = Route::current()->parameter('slug');
@@ -126,11 +116,12 @@ class CharacterController extends Controller
                 View::share('extPrevAndNextBtns', $extPrevAndNextBtns);
             }
 
-            if(!$this->character->level) {
+            if (!$this->character->level) {
                 $this->character->level()->create([
-                    'character_id' => $this->character->id
+                    'character_id' => $this->character->id,
                 ]);
             }
+
             return $next($request);
         });
     }
@@ -145,12 +136,13 @@ class CharacterController extends Controller
     public function getCharacter($slug) {
         $background = new \App\Services\Item\BackgroundService;
         $bg = $background->checkBackground($this->character);
+
         return view('character.character', [
             'character'             => $this->character,
-            'skills' => Skill::where('parent_id', null)->orderBy('name', 'ASC')->get(),
+            'skills'                => Skill::where('parent_id', null)->orderBy('name', 'ASC')->get(),
             'showMention'           => true,
             'extPrevAndNextBtnsUrl' => '',
-            'background' => $bg
+            'background'            => $bg,
         ]);
     }
 
@@ -161,15 +153,14 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterProfile($slug)
-    {
+    public function getCharacterProfile($slug) {
         $background = new \App\Services\Item\BackgroundService;
         $bg = $background->checkBackground($this->character);
 
         return view('character.profile', [
-            'character' => $this->character,
+            'character'             => $this->character,
             'extPrevAndNextBtnsUrl' => '/profile',
-            'background' => $bg,
+            'background'            => $bg,
         ]);
     }
 
@@ -283,10 +274,10 @@ class CharacterController extends Controller
         $bg = $background->checkBackground($this->character);
 
         return view('character.image', [
-            'user'      => Auth::check() ? Auth::user() : null,
-            'character' => $this->character,
-            'image'     => $image,
-            'ajax'      => true,
+            'user'       => Auth::check() ? Auth::user() : null,
+            'character'  => $this->character,
+            'image'      => $image,
+            'ajax'       => true,
             'background' => $bg,
         ]);
     }
@@ -363,8 +354,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterAwards($slug)
-    {
+    public function getCharacterAwards($slug) {
         $categories = AwardCategory::orderBy('sort', 'DESC')->get();
         $awardOptions = Award::where('is_character_owned', '1');
 
@@ -388,42 +378,44 @@ class CharacterController extends Controller
             'categories' => $categories->keyBy('id'),
             'awards'     => $awards,
             'logs'       => $this->character->getAwardLogs(),
-            ] + (Auth::check() && (Auth::user()->hasPower('edit_inventories') || Auth::user()->id == $this->character->user_id) ? [
-                'awardOptions' => $awardOptions->pluck('name', 'id'),
-                'page'         => 'character',
-            ] : []));
+        ] + (Auth::check() && (Auth::user()->hasPower('edit_inventories') || Auth::user()->id == $this->character->user_id) ? [
+            'awardOptions' => $awardOptions->pluck('name', 'id'),
+            'page'         => 'character',
+        ] : []));
     }
+
     /**
      * Shows a character's breeding permissions.
-     * Shows a character's levels
+     * Shows a character's levels.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterLevel($name)
-    {
+    public function getCharacterLevel($name) {
         return view('character.stats.level', [
             'character' => $this->character,
-            'exps' => $this->character->getExpLogs(),
-            'levels' => $this->character->getLevelLogs(),
-            'stats' => $this->character->getStatLogs(),
-            'counts' => $this->character->getCountLogs(),
+            'exps'      => $this->character->getExpLogs(),
+            'levels'    => $this->character->getLevelLogs(),
+            'stats'     => $this->character->getStatLogs(),
+            'counts'    => $this->character->getCountLogs(),
         ]);
     }
-    
-/**    
-* Shows a character's status effects.
+
+    /**
+     * Shows a character's status effects.
      *
-     * @param  string  $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterStatusEffects($slug)
-    {
+    public function getCharacterStatusEffects($slug) {
         $character = $this->character;
+
         return view('character.status_effects', [
             'character' => $this->character,
-            'statuses' => $character->getStatusEffects(),
-            'logs' => $this->character->getStatusEffectLogs(),
+            'statuses'  => $character->getStatusEffects(),
+            'logs'      => $this->character->getStatusEffectLogs(),
         ] + (Auth::check() && (Auth::user()->hasPower('edit_inventories') || Auth::user()->id == $this->character->user_id) ? [
             'statusOptions' => StatusEffect::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ] : []));
@@ -432,52 +424,54 @@ class CharacterController extends Controller
     /**
      * Transfers currency between the user and character.
      *
-     * @param  \Illuminate\Http\Request       $request
-     * @param  string                         $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterBreedingPermissions(Request $request, $slug)
-    {
+    public function getCharacterBreedingPermissions(Request $request, $slug) {
         return view('character.breeding_permissions', [
-            'character' => $this->character,
-            'permissions' => $this->character->breedingPermissions()->orderBy('is_used')->paginate(20)->appends($request->query())
+            'character'   => $this->character,
+            'permissions' => $this->character->breedingPermissions()->orderBy('is_used')->paginate(20)->appends($request->query()),
         ]);
     }
 
     /**
      * Shows the new breeding permission modal.
      *
-     * @param  string  $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getNewBreedingPermission($slug)
-    {
-        if(!Auth::check() || $this->character->user_id != Auth::user()->id) abort(404);
+    public function getNewBreedingPermission($slug) {
+        if (!Auth::check() || $this->character->user_id != Auth::user()->id) {
+            abort(404);
+        }
 
         return view('character._create_edit_breeding_permission', [
-            'character' => $this->character,
+            'character'          => $this->character,
             'breedingPermission' => new BreedingPermission,
-            'userOptions' => User::orderBy('id')->pluck('name', 'id')
+            'userOptions'        => User::orderBy('id')->pluck('name', 'id'),
         ]);
     }
 
     /**
      * Shows the transfer breeding permission modal.
      *
-     * @param  string  $slug
-     * @param  int     $id
+     * @param string $slug
+     * @param int    $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getTransferBreedingPermission($slug, $id)
-    {
+    public function getTransferBreedingPermission($slug, $id) {
         $permission = BreedingPermission::where('id', $id)->first();
-        if(!Auth::check() || !$permission || ($permission->recipient_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters')))
+        if (!Auth::check() || !$permission || ($permission->recipient_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) {
             abort(404);
+        }
 
         return view('character._transfer_breeding_permission', [
-            'character' => $this->character,
+            'character'          => $this->character,
             'breedingPermission' => $permission,
-            'userOptions' => User::orderBy('id')->pluck('name', 'id')
+            'userOptions'        => User::orderBy('id')->pluck('name', 'id'),
         ]);
     }
 
@@ -559,8 +553,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postAwardEdit(Request $request, AwardCaseManager $service, $slug)
-    {
+    public function postAwardEdit(Request $request, AwardCaseManager $service, $slug) {
         // TODO: THIS
         if (!Auth::check()) {
             abort(404);
@@ -596,44 +589,49 @@ class CharacterController extends Controller
     /**
      * Creates a new breeding permission for a character.
      *
-     * @param  \Illuminate\Http\Request       $request
-     * @param  App\Services\CharacterManager  $service
-     * @param  string                         $slug
+     * @param App\Services\CharacterManager $service
+     * @param string                        $slug
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postNewBreedingPermission(Request $request, CharacterManager $service, $slug)
-    {
-        if(!Auth::check()) abort(404);
+    public function postNewBreedingPermission(Request $request, CharacterManager $service, $slug) {
+        if (!Auth::check()) {
+            abort(404);
+        }
 
         $request->validate(BreedingPermission::$createRules);
 
-        if($service->createBreedingPermission($request->only(['recipient_id', 'type', 'description']), $this->character, Auth::user())) {
+        if ($service->createBreedingPermission($request->only(['recipient_id', 'type', 'description']), $this->character, Auth::user())) {
             flash('Breeding permission created successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
     /**
      * Transfers a breeding permission.
      *
-     * @param  \Illuminate\Http\Request       $request
-     * @param  App\Services\CharacterManager  $service
-     * @param  string                         $slug
-     * @param  int                            $id
+     * @param App\Services\CharacterManager $service
+     * @param string                        $slug
+     * @param int                           $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postTransferBreedingPermission(Request $request, CharacterManager $service, $slug, $id)
-    {
+    public function postTransferBreedingPermission(Request $request, CharacterManager $service, $slug, $id) {
         if ($service->transferBreedingPermission($this->character, BreedingPermission::where('id', $id)->first(), User::where('id', $request->only(['recipient_id']))->first(), Auth::user())) {
             flash('Breeding permission transferred successfully.')->success();
+
             return redirect()->back();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
@@ -674,8 +672,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterAwardLogs($slug)
-    {
+    public function getCharacterAwardLogs($slug) {
         return view('character.award_logs', [
             'character' => $this->character,
             'logs'      => $this->character->getAwardLogs(0),
@@ -685,74 +682,78 @@ class CharacterController extends Controller
     /**
      * Shows a character's status effect logs.
      *
-     * @param  string  $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterStatusEffectLogs($slug)
-    {
+    public function getCharacterStatusEffectLogs($slug) {
         return view('character.status_effect_logs', [
             'character' => $this->character,
-            'logs' => $this->character->getStatusEffectLogs(0)
+            'logs'      => $this->character->getStatusEffectLogs(0),
         ]);
     }
 
     /**
      * Shows a character's item logs.
      *
-     * @param  string  $name
+     * @param mixed $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterExpLogs($slug)
-    {
+    public function getCharacterExpLogs($slug) {
         $character = $this->character;
+
         return view('character.stats.exp_logs', [
             'character' => $this->character,
-            'logs' => $this->character->getExpLogs(0)
+            'logs'      => $this->character->getExpLogs(0),
         ]);
     }
 
     /**
      * Shows a user's stat logs.
      *
-     * @param  string  $name
+     * @param mixed $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterStatLogs($slug)
-    {
+    public function getCharacterStatLogs($slug) {
         $character = $this->character;
+
         return view('character.stats.stat_logs', [
             'character' => $this->character,
-            'logs' => $this->character->getStatLogs(0)
+            'logs'      => $this->character->getStatLogs(0),
         ]);
     }
 
     /**
      * Shows a user's level logs.
      *
-     * @param  string  $name
+     * @param mixed $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterLevelLogs($slug)
-    {
+    public function getCharacterLevelLogs($slug) {
         $character = $this->character;
+
         return view('character.stats.level_logs', [
             'character' => $this->character,
-            'logs' => $this->character->getLevelLogs(0)
+            'logs'      => $this->character->getLevelLogs(0),
         ]);
     }
 
     /**
      * Shows a user's count logs.
      *
-     * @param  string  $name
+     * @param mixed $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterCountLogs($slug)
-    {
+    public function getCharacterCountLogs($slug) {
         $character = $this->character;
+
         return view('character.stats.count_logs', [
             'character' => $this->character,
-            'logs' => $this->character->getCountLogs(0)
+            'logs'      => $this->character->getCountLogs(0),
         ]);
     }
 
@@ -804,14 +805,14 @@ class CharacterController extends Controller
     /**
      * Shows a character's skill logs.
      *
-     * @param  string  $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCharacterSkillLogs($slug)
-    {
+    public function getCharacterSkillLogs($slug) {
         return view('character.character_skill_logs', [
             'character' => $this->character,
-            'logs' => $this->character->getCharacterSkillLogs()
+            'logs'      => $this->character->getCharacterSkillLogs(),
         ]);
     }
 
@@ -937,14 +938,41 @@ class CharacterController extends Controller
     }
 
     /**
+     * Opens a new design update approval request for a character. but with a specific image lmao.
+     *
+     * @param App\Services\CharacterManager $service
+     * @param string                        $slug
+     * @param mixed                         $id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postCharacterApprovalSpecificImage($slug, CharacterManager $service, $id) {
+        if (!Auth::check() || $this->character->user_id != Auth::user()->id) {
+            abort(404);
+        }
+        $image = CharacterImage::where('character_id', $this->character->id)->where('id', $id)->first();
+
+        if ($request = $service->createDesignUpdateRequestSpecificImage($this->character, Auth::user(), $image)) {
+            flash('Successfully created new design update request draft.')->success();
+
+            return redirect()->to($request->url);
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
+    }
+
+    /**
      * Transfers inventory awards back to a user.
      *
      * @param App\Services\InventoryManager $service
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    private function postAwardTransfer(Request $request, AwardCaseManager $service)
-    {
+    private function postAwardTransfer(Request $request, AwardCaseManager $service) {
         if ($service->transferCharacterStack($this->character, $this->character->user, CharacterAward::find($request->get('ids')), $request->get('quantities'))) {
             flash('Award transferred successfully.')->success();
         } else {
@@ -963,8 +991,7 @@ class CharacterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    private function postDeleteAward(Request $request, AwardCaseManager $service)
-    {
+    private function postDeleteAward(Request $request, AwardCaseManager $service) {
         if ($service->deleteStack($this->character, CharacterAward::find($request->get('ids')), $request->get('quantities'))) {
             flash('Award deleted successfully.')->success();
         } else {
@@ -1030,29 +1057,6 @@ class CharacterController extends Controller
             }
         }
 
-        return redirect()->back();
-    }
-
-
-    /**
-     * Opens a new design update approval request for a character. but with a specific image lmao
-     *
-     * @param  App\Services\CharacterManager  $service
-     * @param  string                         $slug
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postCharacterApprovalSpecificImage($slug, CharacterManager $service, $id)
-    {
-        if(!Auth::check() || $this->character->user_id != Auth::user()->id) abort(404);
-        $image = CharacterImage::where('character_id', $this->character->id)->where('id', $id)->first();
-
-        if($request = $service->createDesignUpdateRequestSpecificImage($this->character, Auth::user(), $image)) {
-            flash('Successfully created new design update request draft.')->success();
-            return redirect()->to($request->url);
-        }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
         return redirect()->back();
     }
 }

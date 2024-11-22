@@ -4,9 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-class FigureCategory extends Model
-{
+class FigureCategory extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -59,8 +57,7 @@ class FigureCategory extends Model
     /**
      * Get the location attached to this type.
      */
-    public function figures()
-    {
+    public function figures() {
         return $this->hasMany('App\Models\WorldExpansion\Figure', 'category_id')->visible();
     }
 
@@ -74,8 +71,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-type">'.$this->name.'</a>';
     }
 
@@ -84,8 +80,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/figure_categories';
     }
 
@@ -94,8 +89,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -104,8 +98,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -114,8 +107,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -124,8 +116,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -138,8 +129,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -152,8 +142,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/figure-categories/'.$this->id);
     }
 
@@ -162,8 +151,7 @@ class FigureCategory extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         return url('world/figures?category_id='.$this->id.'&sort=category');
     }
 }

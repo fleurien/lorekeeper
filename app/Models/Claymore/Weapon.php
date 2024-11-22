@@ -2,19 +2,12 @@
 
 namespace App\Models\Claymore;
 
-use Config;
-use DB;
 use App\Models\Model;
-use App\Models\Claymore\WeaponCategory;
-
 use App\Models\User\User;
-use App\Models\Shop\Shop;
-use App\Models\Prompt\Prompt;
 use App\Models\User\UserWeapon;
+use DB;
 
-
-class Weapon extends Model
-{
+class Weapon extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +15,7 @@ class Weapon extends Model
      */
     protected $fillable = [
         'weapon_category_id', 'name', 'has_image', 'description', 'parsed_description', 'allow_transfer',
-        'parent_id', 'currency_id', 'cost'
+        'parent_id', 'currency_id', 'cost',
     ];
 
     protected $appends = ['image_url'];
@@ -41,9 +34,9 @@ class Weapon extends Model
      */
     public static $createRules = [
         'weapon_category_id' => 'nullable',
-        'name' => 'required|unique:weapons|between:3,100',
-        'description' => 'nullable',
-        'image' => 'mimes:png',
+        'name'               => 'required|unique:weapons|between:3,100',
+        'description'        => 'nullable',
+        'image'              => 'mimes:png',
     ];
 
     /**
@@ -53,9 +46,9 @@ class Weapon extends Model
      */
     public static $updateRules = [
         'weapon_category_id' => 'nullable',
-        'name' => 'required|between:3,100',
-        'description' => 'nullable',
-        'image' => 'mimes:png',
+        'name'               => 'required|between:3,100',
+        'description'        => 'nullable',
+        'image'              => 'mimes:png',
     ];
 
     /**********************************************************************************************
@@ -67,34 +60,29 @@ class Weapon extends Model
     /**
      * Get the category the weapon belongs to.
      */
-    public function category()
-    {
+    public function category() {
         return $this->belongsTo('App\Models\Claymore\WeaponCategory', 'weapon_category_id');
     }
 
     /**
-     * Get the parent of the weapon
+     * Get the parent of the weapon.
      */
-    public function parent()
-    {
+    public function parent() {
         return $this->belongsTo('App\Models\Claymore\Weapon', 'parent_id');
     }
 
-    public function children()
-    {
+    public function children() {
         return $this->hasMany('App\Models\Claymore\Weapon', 'parent_id');
     }
 
-    public function stats()
-    {
+    public function stats() {
         return $this->hasMany('App\Models\Claymore\WeaponStat');
     }
 
     /**
-     * Get the currency that the parent costs
+     * Get the currency that the parent costs.
      */
-    public function currency() 
-    {
+    public function currency() {
         return $this->belongsTo('App\Models\Currency\Currency');
     }
 
@@ -107,57 +95,58 @@ class Weapon extends Model
     /**
      * Scope a query to sort weapons in alphabetical order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  bool                                   $reverse
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortAlphabetical($query, $reverse = false)
-    {
+    public function scopeSortAlphabetical($query, $reverse = false) {
         return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
     }
 
     /**
      * Scope a query to sort weapons in category order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortCategory($query)
-    {
+    public function scopeSortCategory($query) {
         $ids = WeaponCategory::orderBy('sort', 'DESC')->pluck('id')->toArray();
+
         return count($ids) ? $query->orderByRaw(DB::raw('FIELD(weapon_category_id, '.implode(',', $ids).')')) : $query;
     }
 
     /**
      * Scope a query to sort weapons by newest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
     /**
      * Scope a query to sort features oldest first.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 
     /**
      * Scope a query to show only released or "released" (at least one user-owned stack has ever existed) weapons.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeReleased($query)
-    {
+    public function scopeReleased($query) {
         return $query->whereIn('id', UserWeapon::pluck('weapon_id')->toArray())->orWhere('is_released', 1);
     }
 
@@ -172,8 +161,7 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-item">'.$this->name.'</a>';
     }
 
@@ -182,8 +170,7 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/weapons';
     }
 
@@ -192,9 +179,8 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
-        return $this->id . '-image.png';
+    public function getImageFileNameAttribute() {
+        return $this->id.'-image.png';
     }
 
     /**
@@ -202,8 +188,7 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -212,10 +197,12 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
+    public function getImageUrlAttribute() {
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
 
     /**
@@ -223,8 +210,7 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/weapons?name='.$this->name);
     }
 
@@ -233,8 +219,7 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getIdUrlAttribute()
-    {
+    public function getIdUrlAttribute() {
         return url('world/weapons/'.$this->id);
     }
 
@@ -243,8 +228,7 @@ class Weapon extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'weapons';
     }
 }

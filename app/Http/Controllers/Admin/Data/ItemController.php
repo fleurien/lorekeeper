@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers\Admin\Data;
 
-use Auth;
-
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
-use App\Models\Item\ItemTag;
 use App\Models\Prompt\Prompt;
 use App\Models\Shop\Shop;
 use App\Models\Shop\ShopStock;
 use App\Models\User\User;
-
 use App\Services\ItemService;
+use Auth;
+use Illuminate\Http\Request;
 
 class ItemController extends Controller {
     /*

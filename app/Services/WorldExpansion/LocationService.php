@@ -7,8 +7,7 @@ use App\Models\WorldExpansion\LocationType;
 use App\Services\Service;
 use DB;
 
-class LocationService extends Service
-{
+class LocationService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Location Service
@@ -26,8 +25,7 @@ class LocationService extends Service
      *
      * @return \App\Models\Location\Type|bool
      */
-    public function createLocationType($data, $user)
-    {
+    public function createLocationType($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -74,8 +72,7 @@ class LocationService extends Service
      *
      * @return \App\Models\Type\Type|bool
      */
-    public function updateLocationType($type, $data, $user)
-    {
+    public function updateLocationType($type, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -138,8 +135,7 @@ class LocationService extends Service
      *
      * @return bool
      */
-    public function deleteLocationType($type)
-    {
+    public function deleteLocationType($type) {
         DB::beginTransaction();
 
         try {
@@ -176,8 +172,7 @@ class LocationService extends Service
      *
      * @return bool
      */
-    public function sortLocationType($data)
-    {
+    public function sortLocationType($data) {
         DB::beginTransaction();
 
         try {
@@ -211,8 +206,7 @@ class LocationService extends Service
      *
      * @return \App\Models\Location\Type|bool
      */
-    public function createLocation($data, $user)
-    {
+    public function createLocation($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -253,14 +247,13 @@ class LocationService extends Service
     /**
      * Updates a location.
      *
-     * @param \App\Models\WorldExpansion\Location $location
-     * @param array                               $data
-     * @param \App\Models\User\User               $user
+     * @param Location              $location
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\WorldExpansion\Location|bool
+     * @return bool|Location
      */
-    public function updateLocation($location, $data, $user)
-    {
+    public function updateLocation($location, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -317,12 +310,11 @@ class LocationService extends Service
     /**
      * Deletes a location.
      *
-     * @param \App\Models\WorldExpansion\Location $location
+     * @param Location $location
      *
      * @return bool
      */
-    public function deleteLocation($location)
-    {
+    public function deleteLocation($location) {
         DB::beginTransaction();
 
         try {
@@ -349,8 +341,7 @@ class LocationService extends Service
      *
      * @return bool
      */
-    public function sortLocation($data)
-    {
+    public function sortLocation($data) {
         DB::beginTransaction();
 
         try {
@@ -377,8 +368,7 @@ class LocationService extends Service
      *
      * @return array
      */
-    private function populateLocationTypeData($data, $type = null)
-    {
+    private function populateLocationTypeData($data, $type = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -411,31 +401,30 @@ class LocationService extends Service
     /**
      * Processes user input for creating/updating a location.
      *
-     * @param array                               $data
-     * @param \App\Models\WorldExpansion\Location $location
+     * @param array    $data
+     * @param Location $location
      *
      * @return array
      */
-    private function populateLocationData($data, $location = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateLocationData($data, $location = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['name']) && $data['name']) {
             $saveData['name'] = parse($data['name']);
         }
         $saveData['is_active'] = isset($data['is_active']);
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
         $saveData['is_character_home'] = isset($data['character_home']);
         $saveData['is_user_home'] = isset($data['user_home']);
 
-        $saveData['display_style'] = isset($data['style']) ? $data['style'] : 0;
+        $saveData['display_style'] = $data['style'] ?? 0;
 
         $saveData['type_id'] = $data['type_id'];
         $saveData['parent_id'] = $data['parent_id'];

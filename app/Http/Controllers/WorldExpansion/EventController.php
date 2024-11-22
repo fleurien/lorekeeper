@@ -12,8 +12,7 @@ use App\Models\WorldExpansion\LocationType;
 use Auth;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
-{
+class EventController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Event Controller
@@ -29,8 +28,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEventCategories(Request $request)
-    {
+    public function getEventCategories(Request $request) {
         $query = EventCategory::query();
         $name = $request->get('name');
         if ($name) {
@@ -50,8 +48,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEventCategory($id)
-    {
+    public function getEventCategory($id) {
         $category = EventCategory::find($id);
         if (!$category) {
             abort(404);
@@ -67,8 +64,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEvents(Request $request)
-    {
+    public function getEvents(Request $request) {
         $query = Event::with('category');
         $data = $request->only(['category_id', 'name', 'sort']);
         if (isset($data['category_id']) && $data['category_id'] != 'none') {
@@ -117,8 +113,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEvent($id)
-    {
+    public function getEvent($id) {
         $event = Event::find($id);
         if (!$event || !$event->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);

@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Models\Character\Character;
 use App\Models\Character\CharacterCategory;
-use DB;
 use App\Models\Character\CharacterLineageBlacklist;
+use DB;
 
 class CharacterCategoryService extends Service {
     /*
@@ -23,7 +23,7 @@ class CharacterCategoryService extends Service {
      * @param array $data
      * @param mixed $user
      *
-     * @return \App\Models\Character\CharacterCategory|bool
+     * @return bool|CharacterCategory
      */
     public function createCharacterCategory($data, $user) {
         DB::beginTransaction();
@@ -52,7 +52,7 @@ class CharacterCategoryService extends Service {
             }
 
             return $this->commitReturn($category);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
@@ -62,11 +62,11 @@ class CharacterCategoryService extends Service {
     /**
      * Update a category.
      *
-     * @param \App\Models\Character\CharacterCategory $category
-     * @param array                                   $data
-     * @param mixed                                   $user
+     * @param CharacterCategory $category
+     * @param array             $data
+     * @param mixed             $user
      *
-     * @return \App\Models\Character\CharacterCategory|bool
+     * @return bool|CharacterCategory
      */
     public function updateCharacterCategory($category, $data, $user) {
         DB::beginTransaction();
@@ -83,7 +83,7 @@ class CharacterCategoryService extends Service {
             $blacklist = CharacterLineageBlacklist::searchAndSet($data['lineage-blacklist'], 'category', $category->id);
 
             $image = null;
-            if(isset($data['image']) && $data['image']) {
+            if (isset($data['image']) && $data['image']) {
                 $data['has_image'] = 1;
                 $image = $data['image'];
                 unset($data['image']);
@@ -100,7 +100,7 @@ class CharacterCategoryService extends Service {
             }
 
             return $this->commitReturn($category);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
@@ -108,34 +108,10 @@ class CharacterCategoryService extends Service {
     }
 
     /**
-     * Handle category data.
-     *
-     * @param  array                                         $data
-     * @param  \App\Models\Character\CharacterCategory|null  $category
-     * @return array
-     */
-    private function populateCategoryData($data, $category = null)
-    {
-        if(isset($data['description']) && $data['description']) $data['parsed_description'] = parse($data['description']);
-
-        if(isset($data['remove_image']))
-        {
-            if($category && $category->has_image && $data['remove_image'])
-            {
-                $data['has_image'] = 0;
-                $this->deleteImage($category->categoryImagePath, $category->categoryImageFileName);
-            }
-            unset($data['remove_image']);
-        }
-
-        return $data;
-    }
-
-    /**
      * Delete a category.
      *
-     * @param \App\Models\Character\CharacterCategory $category
-     * @param mixed                                   $user
+     * @param CharacterCategory $category
+     * @param mixed             $user
      *
      * @return bool
      */
@@ -161,7 +137,7 @@ class CharacterCategoryService extends Service {
             CharacterLineageBlacklist::searchAndSet(0, 'category', $category->id);
 
             return $this->commitReturn(true);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
@@ -187,10 +163,34 @@ class CharacterCategoryService extends Service {
             }
 
             return $this->commitReturn(true);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
 
         return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Handle category data.
+     *
+     * @param array                  $data
+     * @param CharacterCategory|null $category
+     *
+     * @return array
+     */
+    private function populateCategoryData($data, $category = null) {
+        if (isset($data['description']) && $data['description']) {
+            $data['parsed_description'] = parse($data['description']);
+        }
+
+        if (isset($data['remove_image'])) {
+            if ($category && $category->has_image && $data['remove_image']) {
+                $data['has_image'] = 0;
+                $this->deleteImage($category->categoryImagePath, $category->categoryImageFileName);
+            }
+            unset($data['remove_image']);
+        }
+
+        return $data;
     }
 }

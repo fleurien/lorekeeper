@@ -2,18 +2,16 @@
 
 namespace App\Models\Item;
 
-use Config;
 use App\Models\Model;
 
-class ItemCategory extends Model
-{
+class ItemCategory extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_character_owned', 'character_limit', 'can_name', 'is_visible'
+        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_character_owned', 'character_limit', 'can_name', 'is_visible',
     ];
 
     protected $appends = ['image_url'];
@@ -24,32 +22,32 @@ class ItemCategory extends Model
      * @var string
      */
     protected $table = 'item_categories';
-    
+
     /**
      * Validation rules for creation.
      *
      * @var array
      */
     public static $createRules = [
-        'name' => 'required|unique:item_categories|between:3,100',
+        'name'        => 'required|unique:item_categories|between:3,100',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required|between:3,100',
+        'name'        => 'required|between:3,100',
         'description' => 'nullable',
-        'image' => 'mimes:png',
+        'image'       => 'mimes:png',
     ];
 
-        /**********************************************************************************************
+    /**********************************************************************************************
 
-        SCOPES
+    SCOPES
 
     **********************************************************************************************/
 
@@ -70,7 +68,7 @@ class ItemCategory extends Model
     }
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -80,8 +78,7 @@ class ItemCategory extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-category">'.$this->name.'</a>';
     }
 
@@ -90,8 +87,7 @@ class ItemCategory extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/item-categories';
     }
 
@@ -100,9 +96,8 @@ class ItemCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImageFileNameAttribute()
-    {
-        return $this->id . '-image.png';
+    public function getCategoryImageFileNameAttribute() {
+        return $this->id.'-image.png';
     }
 
     /**
@@ -110,20 +105,21 @@ class ItemCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImagePathAttribute()
-    {
+    public function getCategoryImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
-    
+
     /**
      * Gets the URL of the model's image.
      *
      * @return string
      */
-    public function getCategoryImageUrlAttribute()
-    {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->categoryImageFileName);
+    public function getCategoryImageUrlAttribute() {
+        if (!$this->has_image) {
+            return null;
+        }
+
+        return asset($this->imageDirectory.'/'.$this->categoryImageFileName);
     }
 
     /**
@@ -131,8 +127,7 @@ class ItemCategory extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/item-categories?name='.$this->name);
     }
 
@@ -141,8 +136,7 @@ class ItemCategory extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         return url('world/items?item_category_id='.$this->id);
     }
 }

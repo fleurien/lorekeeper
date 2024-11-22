@@ -5,8 +5,7 @@ namespace App\Console\Commands;
 use App\Services\ShopManager;
 use Illuminate\Console\Command;
 
-class CleanDonations extends Command
-{
+class CleanDonations extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -24,8 +23,7 @@ class CleanDonations extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -34,8 +32,7 @@ class CleanDonations extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         //
         (new ShopManager)->cleanDonations();
     }

@@ -9,8 +9,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Arr;
 
-class AdventService extends Service
-{
+class AdventService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Advent Calendar Service
@@ -26,10 +25,9 @@ class AdventService extends Service
      * @param array                 $data
      * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Advent\AdventCalendar|bool
+     * @return AdventCalendar|bool
      */
-    public function createAdvent($data, $user)
-    {
+    public function createAdvent($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -53,14 +51,13 @@ class AdventService extends Service
     /**
      * Updates a advent calendar.
      *
-     * @param \App\Models\Advent\AdventCalendar $advent
-     * @param array                             $data
-     * @param \App\Models\User\User             $user
+     * @param AdventCalendar        $advent
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Advent\AdventCalendar|bool
+     * @return AdventCalendar|bool
      */
-    public function updateAdvent($advent, $data, $user)
-    {
+    public function updateAdvent($advent, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -96,7 +93,7 @@ class AdventService extends Service
 
                         $data['data'][$day] = [
                             'item'     => $data['item_ids'][$day],
-                            'quantity' => isset($data['quantities'][$day]) ? $data['quantities'][$day] : 1,
+                            'quantity' => $data['quantities'][$day] ?? 1,
                         ];
                     }
                 }
@@ -111,7 +108,7 @@ class AdventService extends Service
 
                     $data['data']['bonus'] = [
                         'item'     => $data['item_ids']['bonus'],
-                        'quantity' => isset($data['quantities']['bonus']) ? $data['quantities']['bonus'] : 1,
+                        'quantity' => $data['quantities']['bonus'] ?? 1,
                     ];
                 }
 
@@ -136,12 +133,11 @@ class AdventService extends Service
     /**
      * Deletes an advent calendar.
      *
-     * @param \App\Models\Advent\AdventCalendar $advent
+     * @param AdventCalendar $advent
      *
      * @return bool
      */
-    public function deleteAdvent($advent)
-    {
+    public function deleteAdvent($advent) {
         DB::beginTransaction();
 
         try {

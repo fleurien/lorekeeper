@@ -36,12 +36,12 @@ return [
         'description' => 'Allow rank to grant and remove items from user inventories, as well as grant/remove currency from users and characters.',
     ],
     'view_hidden_genetics' => [
-        'name' => 'View Hidden Genetics',
-        'description' => 'Allow rank to view genes & genomes that have their data hidden to regular users.'
+        'name'        => 'View Hidden Genetics',
+        'description' => 'Allow rank to view genes & genomes that have their data hidden to regular users.',
     ],
     'manage_characters' => [
-        'name' => 'Manage Masterlist',
-        'description' => 'Allow rank to create/edit new characters. This includes uploading new images, modifying traits on an existing character and forcing ownership transfers.'
+        'name'        => 'Manage Masterlist',
+        'description' => 'Allow rank to create/edit new characters. This includes uploading new images, modifying traits on an existing character and forcing ownership transfers.',
     ],
     'manage_raffles'     => [
         'name'        => 'Manage Raffles',
@@ -69,16 +69,16 @@ return [
     ],
 
     'edit_stats' => [
-        'name' => 'Edit Stats',
-        'description' => 'Allow rank to edit stats.'
+        'name'        => 'Edit Stats',
+        'description' => 'Allow rank to edit stats.',
     ],
     'edit_levels' => [
-        'name' => 'Edit Levels',
-        'description' => 'Allow rank to edit levels.'
+        'name'        => 'Edit Levels',
+        'description' => 'Allow rank to edit levels.',
     ],
     'edit_claymores' => [
-        'name' => 'Edit Claymores & Companions',
-        'description' => 'Allow rank to edit claymore & companions data.'
-    ]
+        'name'        => 'Edit Claymores & Companions',
+        'description' => 'Allow rank to edit claymore & companions data.',
+    ],
 
 ];

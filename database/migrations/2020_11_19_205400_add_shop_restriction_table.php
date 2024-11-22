@@ -1,20 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddShopRestrictionTable extends Migration
-{
+class AddShopRestrictionTable extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        schema::create('shop_limits', function (Blueprint $table) {
+        Schema::create('shop_limits', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('shop_id');
             $table->integer('item_id');
@@ -23,12 +19,9 @@ class AddShopRestrictionTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        schema::dropIfExists('shop_limits');
+        Schema::dropIfExists('shop_limits');
     }
 }

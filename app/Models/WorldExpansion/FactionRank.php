@@ -4,8 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FactionRank extends Model
-{
+class FactionRank extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -32,16 +31,14 @@ class FactionRank extends Model
     /**
      * Get faction this rank belongs to.
      */
-    public function faction()
-    {
+    public function faction() {
         return $this->belongsTo('App\Models\WorldExpansion\Faction', 'faction_id');
     }
 
     /**
      * Get members attached to this rank.
      */
-    public function members()
-    {
+    public function members() {
         return $this->hasMany('App\Models\WorldExpansion\FactionRankMember', 'rank_id');
     }
 
@@ -55,8 +52,7 @@ class FactionRank extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->faction->url.'" class="display-location text-muted">'.$this->name.'</a>';
     }
 }

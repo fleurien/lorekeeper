@@ -5,8 +5,7 @@ namespace App\Models\User;
 use App\Models\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserWeapon extends Model
-{
+class UserWeapon extends Model {
     use SoftDeletes;
 
     /**
@@ -15,15 +14,8 @@ class UserWeapon extends Model
      * @var array
      */
     protected $fillable = [
-        'data', 'weapon_id', 'user_id', 'attached_at', 'has_image'
+        'data', 'weapon_id', 'user_id', 'attached_at', 'has_image',
     ];
-
-    /**
-     * Whether the model contains timestamps to be saved and updated.
-     *
-     * @var string
-     */
-    public $timestamps = true;
 
     /**
      * Dates on the model to convert to Carbon instances.
@@ -39,8 +31,15 @@ class UserWeapon extends Model
      */
     protected $table = 'user_weapons';
 
+    /**
+     * Whether the model contains timestamps to be saved and updated.
+     *
+     * @var string
+     */
+    public $timestamps = true;
+
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -48,26 +47,23 @@ class UserWeapon extends Model
     /**
      * Get the user who owns the stack.
      */
-    public function user() 
-    {
+    public function user() {
         return $this->belongsTo('App\Models\User\User');
     }
 
     /**
      * Get the weapon associated with this weapon stack.
      */
-    public function weapon() 
-    {
+    public function weapon() {
         return $this->belongsTo('App\Models\Claymore\Weapon');
     }
 
-    public function character()
-    {
+    public function character() {
         return $this->belongsTo('App\Models\Character\Character', 'character_id');
     }
 
     /**********************************************************************************************
-    
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -77,19 +73,20 @@ class UserWeapon extends Model
      *
      * @return array
      */
-    public function getDataAttribute() 
-    {
+    public function getDataAttribute() {
         return json_decode($this->attributes['data'], true);
     }
-    
+
     /**
      * Checks if the stack is transferrable.
      *
      * @return array
      */
-    public function getIsTransferrableAttribute()
-    {
-        if(!isset($this->data['disallow_transfer']) && $this->weapon->allow_transfer) return true;
+    public function getIsTransferrableAttribute() {
+        if (!isset($this->data['disallow_transfer']) && $this->weapon->allow_transfer) {
+            return true;
+        }
+
         return false;
     }
 
@@ -98,8 +95,7 @@ class UserWeapon extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'user_weapons';
     }
 
@@ -108,8 +104,7 @@ class UserWeapon extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/user-weapons';
     }
 
@@ -118,9 +113,8 @@ class UserWeapon extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
-        return $this->id . '-image.png';
+    public function getImageFileNameAttribute() {
+        return $this->id.'-image.png';
     }
 
     /**
@@ -128,8 +122,7 @@ class UserWeapon extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -138,10 +131,11 @@ class UserWeapon extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
-        if (!$this->has_image) return null;
-        return asset($this->imageDirectory . '/' . $this->imageFileName);
-    }
+    public function getImageUrlAttribute() {
+        if (!$this->has_image) {
+            return null;
+        }
 
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
+    }
 }

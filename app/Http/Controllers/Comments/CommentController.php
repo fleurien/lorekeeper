@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Comments;
 
 use App\Models\Comment;
+use App\Models\DevLogs;
 use App\Models\Gallery\GallerySubmission;
 use App\Models\News;
 use App\Models\Report\Report;
 use App\Models\Sales\Sales;
 use App\Models\SitePage;
+use App\Models\TradeListing;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -17,18 +19,12 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
-use App\Models\TradeListing;
-
-use App\Models\DevLogs;
-
 use Notifications;
 use Settings;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
-class CommentController extends Controller 
-{
-    public function __construct()
-    {
+class CommentController extends Controller {
+    public function __construct() {
         $this->middleware('web');
         if (Config::get('comments.guest_commenting') == true) {
             $this->middleware('auth')->except('store');
@@ -128,7 +124,7 @@ class CommentController extends Controller
                 $devLogs = DevLogs::find($comment->commentable_id);
                 $recipient = $devLogs->user; // User that has been commented on (or owner of sale post)
                 $log = 'your dev log post'; // Simple message to show if it's profile/sales/news
-                $link = $devLogs->url . '/#comment-' . $comment->getKey();
+                $link = $devLogs->url.'/#comment-'.$comment->getKey();
                 break;
             case 'App\Models\Report\Report':
                 $report = Report::find($comment->commentable_id);
@@ -151,7 +147,7 @@ class CommentController extends Controller
                 $listing = TradeListing::find($comment->commentable_id);
                 $recipient = $listing->user;
                 $post = 'your trade listing';
-                $link = $listing->url . '/#comment-' . $comment->getKey();
+                $link = $listing->url.'/#comment-'.$comment->getKey();
                 break;
             case 'App\Models\Gallery\GallerySubmission':
                 $submission = GallerySubmission::find($comment->commentable_id);

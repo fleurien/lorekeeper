@@ -2,19 +2,17 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Character\Character;
+use App\Models\Character\CharacterCurrency;
+use App\Models\User\User;
+use App\Models\User\UserCurrency;
 use App\Models\User\UserSettings;
+use Config;
+use DB;
 use Illuminate\Console\Command;
 use Settings;
-use Config;
-use App\Services\CurrencyManager;
-use App\Models\User\UserCurrency;
-use App\Models\User\User;
-use DB;
-use App\Models\Character\CharacterCurrency;
-use App\Models\Character\Character;
 
-class RefreshEncounterEnergy extends Command
-{
+class RefreshEncounterEnergy extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -32,8 +30,7 @@ class RefreshEncounterEnergy extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -42,8 +39,7 @@ class RefreshEncounterEnergy extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         //oh boy i love 999 different if else checks
 
         //if energy regen set
@@ -63,11 +59,11 @@ class RefreshEncounterEnergy extends Command
                         $record = CharacterCurrency::where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))->first();
                         if ($record) {
                             //don't reset if the currency is above the setting. it's extremely likely that a currency will exceed the cap and we don't want it to dip back down.
-                            if($record->quantity < Settings::get('encounter_energy')){
+                            if ($record->quantity < Settings::get('encounter_energy')) {
                                 DB::table('character_currencies')
-                                ->where('character_id', $character->id)
-                                ->where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))
-                                ->update(['quantity' => Settings::get('encounter_energy')]);
+                                    ->where('character_id', $character->id)
+                                    ->where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))
+                                    ->update(['quantity' => Settings::get('encounter_energy')]);
                             }
                         } else {
                             //else if no currency exists then make one
@@ -89,11 +85,11 @@ class RefreshEncounterEnergy extends Command
                         $record = UserCurrency::where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))->first();
                         if ($record) {
                             //don't reset if the currency is above the setting. it's extremely likely that a currency will exceed the cap and we don't want it to dip back down.
-                            if($record->quantity < Settings::get('encounter_energy')){
-                            DB::table('user_currencies')
-                                ->where('user_id', $user->id)
-                                ->where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))
-                                ->update(['quantity' => Settings::get('encounter_energy')]);
+                            if ($record->quantity < Settings::get('encounter_energy')) {
+                                DB::table('user_currencies')
+                                    ->where('user_id', $user->id)
+                                    ->where('currency_id', Config::get('lorekeeper.encounters.energy_replacement_id'))
+                                    ->update(['quantity' => Settings::get('encounter_energy')]);
                             }
                         } else {
                             //else if no currency exists then make one

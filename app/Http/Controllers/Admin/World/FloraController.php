@@ -11,8 +11,7 @@ use App\Services\WorldExpansion\NatureService;
 use Auth;
 use Illuminate\Http\Request;
 
-class FloraController extends Controller
-{
+class FloraController extends Controller {
     /**********************************************************************************************
 
         Flora Types
@@ -24,8 +23,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFloraCategories()
-    {
+    public function getFloraCategories() {
         return view('admin.world_expansion.flora_categories', [
             'categories' => FloraCategory::orderBy('sort', 'DESC')->get(),
         ]);
@@ -36,8 +34,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFloraCategory()
-    {
+    public function getCreateFloraCategory() {
         return view('admin.world_expansion.create_edit_flora_category', [
             'category' => new FloraCategory,
         ]);
@@ -50,8 +47,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFloraCategory($id)
-    {
+    public function getEditFloraCategory($id) {
         $category = FloraCategory::find($id);
         if (!$category) {
             abort(404);
@@ -70,8 +66,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFloraCategory(Request $request, NatureService $service, $id = null)
-    {
+    public function postCreateEditFloraCategory(Request $request, NatureService $service, $id = null) {
         $id ? $request->validate(FloraCategory::$updateRules) : $request->validate(FloraCategory::$createRules);
 
         $data = $request->only([
@@ -99,8 +94,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFloraCategory($id)
-    {
+    public function getDeleteFloraCategory($id) {
         $category = FloraCategory::find($id);
 
         return view('admin.world_expansion._delete_flora_category', [
@@ -116,8 +110,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFloraCategory(Request $request, NatureService $service, $id)
-    {
+    public function postDeleteFloraCategory(Request $request, NatureService $service, $id) {
         if ($id && $service->deleteFloraCategory(FloraCategory::find($id))) {
             flash('Flora Category deleted successfully.')->success();
         } else {
@@ -136,8 +129,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFloraCategory(Request $request, NatureService $service)
-    {
+    public function postSortFloraCategory(Request $request, NatureService $service) {
         if ($service->sortFloraCategory($request->get('sort'))) {
             flash('Flora Category order updated successfully.')->success();
         } else {
@@ -160,8 +152,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFloraIndex()
-    {
+    public function getFloraIndex() {
         return view('admin.world_expansion.floras', [
             'floras' => Flora::orderBy('sort', 'DESC')->get(),
         ]);
@@ -172,8 +163,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFlora()
-    {
+    public function getCreateFlora() {
         return view('admin.world_expansion.create_edit_flora', [
             'flora'      => new Flora,
             'categories' => FloraCategory::all()->pluck('name', 'id')->toArray(),
@@ -190,8 +180,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFlora($id)
-    {
+    public function getEditFlora($id) {
         $flora = Flora::find($id);
         if (!$flora) {
             abort(404);
@@ -214,8 +203,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFlora(Request $request, NatureService $service, $id = null)
-    {
+    public function postCreateEditFlora(Request $request, NatureService $service, $id = null) {
         $id ? $request->validate(Flora::$updateRules) : $request->validate(Flora::$createRules);
 
         $data = $request->only([
@@ -244,8 +232,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFlora($id)
-    {
+    public function getDeleteFlora($id) {
         $flora = Flora::find($id);
 
         return view('admin.world_expansion._delete_flora', [
@@ -261,8 +248,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFlora(Request $request, NatureService $service, $id)
-    {
+    public function postDeleteFlora(Request $request, NatureService $service, $id) {
         if ($id && $service->deleteFlora(Flora::find($id))) {
             flash('Flora deleted successfully.')->success();
         } else {
@@ -281,8 +267,7 @@ class FloraController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFlora(Request $request, NatureService $service)
-    {
+    public function postSortFlora(Request $request, NatureService $service) {
         if ($service->sortFlora($request->get('sort'))) {
             flash('Flora order updated successfully.')->success();
         } else {

@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLinksBetweenLocationAndGallerySubmission extends Migration
-{
+class AddLinksBetweenLocationAndGallerySubmission extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('galleries', function (Blueprint $table) {
             $table->boolean('location_selection')->default(0);
         });
@@ -23,8 +21,7 @@ class AddLinksBetweenLocationAndGallerySubmission extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('gallery_submissions', function (Blueprint $table) {
             $table->dropColumn('location_id');
         });

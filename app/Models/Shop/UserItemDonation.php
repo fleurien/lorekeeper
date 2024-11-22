@@ -7,8 +7,7 @@ use App\Models\Model;
 use Carbon\Carbon;
 use Config;
 
-class UserItemDonation extends Model
-{
+class UserItemDonation extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -34,16 +33,14 @@ class UserItemDonation extends Model
     /**
      * Get the donated stack.
      */
-    public function stack()
-    {
+    public function stack() {
         return $this->belongsTo('App\Models\User\UserItem');
     }
 
     /**
      * Get the item of the donated stack.
      */
-    public function item()
-    {
+    public function item() {
         return $this->belongsTo('App\Models\Item\Item');
     }
 
@@ -60,8 +57,7 @@ class UserItemDonation extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAvailable($query)
-    {
+    public function scopeAvailable($query) {
         return $query->where('stock', '>', 0);
     }
 
@@ -72,8 +68,7 @@ class UserItemDonation extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeExpired($query)
-    {
+    public function scopeExpired($query) {
         if (Config::get('lorekeeper.settings.donation_shop.expiry')) {
             $expiredLogs = ItemLog::where('log_type', 'Donated by User')->where('created_at', '<', Carbon::now()->subMonths(Config::get('lorekeeper.settings.donation_shop.expiry')));
 
@@ -92,8 +87,7 @@ class UserItemDonation extends Model
     /**
      * Get the shop stock as items for display purposes.
      */
-    public function displayStock()
-    {
+    public function displayStock() {
         return $this->available()->leftJoin('items', 'user_item_donations.item_id', '=', 'items.id')->select(['user_item_donations.*', 'items.item_category_id']);
     }
 }

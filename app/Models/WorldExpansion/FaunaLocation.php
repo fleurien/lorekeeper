@@ -4,8 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FaunaLocation extends Model
-{
+class FaunaLocation extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -33,16 +32,14 @@ class FaunaLocation extends Model
     /**
      * Get the fauna attached to this.
      */
-    public function fauna()
-    {
+    public function fauna() {
         return $this->belongsTo('App\Models\WorldExpansion\Fauna', 'fauna_id');
     }
 
     /**
      * Get the location attached to this.
      */
-    public function location()
-    {
+    public function location() {
         return $this->belongsTo('App\Models\WorldExpansion\Location', 'location_id');
     }
 }

@@ -2,16 +2,13 @@
 
 namespace App\Services;
 
-use DB;
-use Config;
-
+use App\Models\Award\Award;
 use App\Models\Award\AwardCategory;
 use App\Models\Award\AwardProgression;
 use App\Models\Award\AwardReward;
-use App\Models\Award\Award;
+use DB;
 
-class AwardService extends Service
-{
+class AwardService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Award Service
@@ -33,10 +30,9 @@ class AwardService extends Service
      * @param array                 $data
      * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Award\AwardCategory|bool
+     * @return AwardCategory|bool
      */
-    public function createAwardCategory($data, $user)
-    {
+    public function createAwardCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -70,14 +66,13 @@ class AwardService extends Service
     /**
      * Update a category.
      *
-     * @param \App\Models\Award\AwardCategory $category
-     * @param array                           $data
-     * @param \App\Models\User\User           $user
+     * @param AwardCategory         $category
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Award\AwardCategory|bool
+     * @return AwardCategory|bool
      */
-    public function updateAwardCategory($category, $data, $user)
-    {
+    public function updateAwardCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -114,12 +109,11 @@ class AwardService extends Service
     /**
      * Delete a category.
      *
-     * @param \App\Models\Award\AwardCategory $category
+     * @param AwardCategory $category
      *
      * @return bool
      */
-    public function deleteAwardCategory($category)
-    {
+    public function deleteAwardCategory($category) {
         DB::beginTransaction();
 
         try {
@@ -148,8 +142,7 @@ class AwardService extends Service
      *
      * @return bool
      */
-    public function sortAwardCategory($data)
-    {
+    public function sortAwardCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -180,10 +173,9 @@ class AwardService extends Service
      * @param array                 $data
      * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Award\Award|bool
+     * @return Award|bool
      */
-    public function createAward($data, $user)
-    {
+    public function createAward($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -209,11 +201,11 @@ class AwardService extends Service
             $award = Award::create($data);
 
             // Make the image directory if it doesn't exist
-            if(!file_exists($award->imagePath))
-            {
+            if (!file_exists($award->imagePath)) {
                 // Create the directory.
                 if (!mkdir($award->imagePath, 0755, true)) {
                     $this->setError('error', 'Failed to create image directory.');
+
                     return false;
                 }
                 chmod($award->imagePath, 0755);
@@ -225,9 +217,8 @@ class AwardService extends Service
                     'release' => isset($data['release']) && $data['release'] ? $data['release'] : null,
                     'prompts' => isset($data['prompts']) && $data['prompts'] ? $data['prompts'] : null,
                     'credits' => isset($data['credits']) && $data['credits'] ? $data['credits'] : null,
-                    ]), // rarity, availability info (original source, drop locations), credits
+                ]), // rarity, availability info (original source, drop locations), credits
             ]);
-
 
             if ($image) {
                 $award->extension = $image->getClientOriginalExtension();
@@ -246,14 +237,13 @@ class AwardService extends Service
     /**
      * Updates an award.
      *
-     * @param \App\Models\Award\Award $award
-     * @param array                   $data
-     * @param \App\Models\User\User   $user
+     * @param Award                 $award
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Award\Award|bool
+     * @return Award|bool
      */
-    public function updateAward($award, $data, $user)
-    {
+    public function updateAward($award, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -284,11 +274,11 @@ class AwardService extends Service
             }
 
             // Make the image directory if it doesn't exist
-            if(!file_exists($award->imagePath))
-            {
+            if (!file_exists($award->imagePath)) {
                 // Create the directory.
                 if (!mkdir($award->imagePath, 0755, true)) {
                     $this->setError('error', 'Failed to create image directory.');
+
                     return false;
                 }
                 chmod($award->imagePath, 0755);
@@ -310,7 +300,7 @@ class AwardService extends Service
                     'release' => isset($data['release']) && $data['release'] ? $data['release'] : null,
                     'prompts' => isset($data['prompts']) && $data['prompts'] ? $data['prompts'] : null,
                     'credits' => isset($data['credits']) && $data['credits'] ? $data['credits'] : null,
-                    ]), // rarity, availability info (original source, drop locations)
+                ]), // rarity, availability info (original source, drop locations)
             ]);
 
             $this->populateProgression($data, $award);
@@ -327,12 +317,11 @@ class AwardService extends Service
     /**
      * Deletes an award.
      *
-     * @param \App\Models\Award\Award $award
+     * @param Award $award
      *
      * @return bool
      */
-    public function deleteAward($award)
-    {
+    public function deleteAward($award) {
         DB::beginTransaction();
 
         try {
@@ -370,13 +359,12 @@ class AwardService extends Service
     /**
      * Handle category data.
      *
-     * @param array                                $data
-     * @param \App\Models\Award\AwardCategory|null $category
+     * @param array              $data
+     * @param AwardCategory|null $category
      *
      * @return array
      */
-    private function populateCategoryData($data, $category = null)
-    {
+    private function populateCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -395,13 +383,12 @@ class AwardService extends Service
     /**
      * Processes user input for creating/updating an award.
      *
-     * @param array                   $data
-     * @param \App\Models\Award\Award $award
+     * @param array $data
+     * @param Award $award
      *
      * @return array
      */
-    private function populateData($data, $award = null)
-    {
+    private function populateData($data, $award = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         } else {
@@ -446,20 +433,21 @@ class AwardService extends Service
 
     /**
      * Populates the progressions of an award.
+     *
+     * @param mixed $data
+     * @param mixed $award
      */
-    private function populateProgression($data, $award)
-    {
+    private function populateProgression($data, $award) {
         // Clear the old shit...
         $award->progressions()->delete();
 
-        if(isset($data['rewardable_type'])) {
-            foreach($data['rewardable_type'] as $key => $type)
-            {
+        if (isset($data['rewardable_type'])) {
+            foreach ($data['rewardable_type'] as $key => $type) {
                 AwardProgression::create([
-                    'award_id' => $award->id,
-                    'type'     => $type,
+                    'award_id'      => $award->id,
+                    'type'          => $type,
                     'type_id'       => $data['rewardable_id'][$key],
-                    'quantity' => $data['quantity'][$key],
+                    'quantity'      => $data['quantity'][$key],
                 ]);
             }
         }
@@ -467,25 +455,23 @@ class AwardService extends Service
 
     /**
      * Populates the rewards of an award.
+     *
+     * @param mixed $data
+     * @param mixed $award
      */
-    private function populateRewards($data, $award)
-    {
+    private function populateRewards($data, $award) {
         // Clear the old shit...
         $award->rewards()->delete();
 
-        if(isset($data['award_type'])) {
-            foreach($data['award_type'] as $key => $type)
-            {
+        if (isset($data['award_type'])) {
+            foreach ($data['award_type'] as $key => $type) {
                 AwardReward::create([
-                    'award_id' => $award->id,
-                    'type'     => $type,
+                    'award_id'      => $award->id,
+                    'type'          => $type,
                     'type_id'       => $data['award_id'][$key],
-                    'quantity' => $data['award_quantity'][$key],
+                    'quantity'      => $data['award_quantity'][$key],
                 ]);
             }
         }
     }
-
-    
-
 }

@@ -14,8 +14,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
-class FactionController extends Controller
-{
+class FactionController extends Controller {
     /**********************************************************************************************
 
         FACTION TYPES
@@ -27,8 +26,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('admin.world_expansion.faction_types', [
             'types' => FactionType::orderBy('sort', 'DESC')->get(),
         ]);
@@ -39,8 +37,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFactionType()
-    {
+    public function getCreateFactionType() {
         return view('admin.world_expansion.create_edit_faction_type', [
             'type' => new FactionType,
         ]);
@@ -53,8 +50,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFactionType($id)
-    {
+    public function getEditFactionType($id) {
         $type = FactionType::find($id);
         if (!$type) {
             abort(404);
@@ -73,8 +69,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFactionType(Request $request, FactionService $service, $id = null)
-    {
+    public function postCreateEditFactionType(Request $request, FactionService $service, $id = null) {
         $id ? $request->validate(FactionType::$updateRules) : $request->validate(FactionType::$createRules);
 
         $data = $request->only([
@@ -102,8 +97,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFactionType($id)
-    {
+    public function getDeleteFactionType($id) {
         $type = FactionType::find($id);
 
         return view('admin.world_expansion._delete_faction_type', [
@@ -119,8 +113,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFactionType(Request $request, FactionService $service, $id)
-    {
+    public function postDeleteFactionType(Request $request, FactionService $service, $id) {
         if ($id && $service->deleteFactionType(FactionType::find($id))) {
             flash('Faction Type deleted successfully.')->success();
         } else {
@@ -139,8 +132,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFactionType(Request $request, FactionService $service)
-    {
+    public function postSortFactionType(Request $request, FactionService $service) {
         if ($service->sortFactionType($request->get('sort'))) {
             flash('Faction Type order updated successfully.')->success();
         } else {
@@ -163,8 +155,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFactionIndex()
-    {
+    public function getFactionIndex() {
         return view('admin.world_expansion.factions', [
             'factions' => Faction::orderBy('sort', 'DESC')->get(),
             'types'    => FactionType::orderBy('sort', 'DESC')->get(),
@@ -176,8 +167,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFaction()
-    {
+    public function getCreateFaction() {
         $types = FactionType::all()->pluck('name', 'id')->toArray();
 
         if (!count($types)) {
@@ -204,8 +194,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFaction($id)
-    {
+    public function getEditFaction($id) {
         $faction = Faction::find($id);
         if (!$faction) {
             abort(404);
@@ -233,8 +222,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFaction(Request $request, FactionService $service, $id = null)
-    {
+    public function postCreateEditFaction(Request $request, FactionService $service, $id = null) {
         $id ? $request->validate(Faction::$updateRules) : $request->validate(Faction::$createRules);
 
         $data = $request->only([
@@ -265,8 +253,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFaction($id)
-    {
+    public function getDeleteFaction($id) {
         $faction = Faction::find($id);
 
         return view('admin.world_expansion._delete_faction', [
@@ -282,8 +269,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFaction(Request $request, FactionService $service, $id)
-    {
+    public function postDeleteFaction(Request $request, FactionService $service, $id) {
         if ($id && $service->deleteFaction(Faction::find($id))) {
             flash('Faction deleted successfully.')->success();
         } else {
@@ -302,8 +288,7 @@ class FactionController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFaction(Request $request, FactionService $service)
-    {
+    public function postSortFaction(Request $request, FactionService $service) {
         if ($service->sortFaction($request->get('sort'))) {
             flash('Faction  order updated successfully.')->success();
         } else {

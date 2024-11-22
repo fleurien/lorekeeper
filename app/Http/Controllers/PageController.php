@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\SitePage;
-use DB;
 use App\Models\SitePageCategory;
 use App\Models\SitePageSection;
+use DB;
 
 class PageController extends Controller {
-    
     /*
     |--------------------------------------------------------------------------
     | Page Controller
@@ -43,28 +42,31 @@ class PageController extends Controller {
         return view('pages.credits', [
             'credits'    => SitePage::where('key', 'credits')->first(),
             'extensions' => DB::table('site_extensions')->get(),
-       ]) ;
+        ]);
     }
     /**********************************************************************************************
-    
+
         PAGE CATEGORIES
 
     **********************************************************************************************/
-    
+
     /**
      * Shows the world lore page.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getPageSection($key)
-    {
+    public function getPageSection($key) {
         $section = SitePageSection::where('key', $key)->first();
-        if(!$section) abort(404);
+        if (!$section) {
+            abort(404);
+        }
+
         return view('pages.page_sections', [
-            'sections' => SitePageSection::orderBy('sort', 'DESC')->get(),
-            'section' => $section,
-            'categories' => SitePageCategory::orderBy('sort', 'DESC')->get()
+            'sections'   => SitePageSection::orderBy('sort', 'DESC')->get(),
+            'section'    => $section,
+            'categories' => SitePageCategory::orderBy('sort', 'DESC')->get(),
         ]);
     }
 }

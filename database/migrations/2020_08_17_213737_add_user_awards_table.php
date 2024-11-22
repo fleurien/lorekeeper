@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserAwardsTable extends Migration
-{
+class AddUserAwardsTable extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         //oopsie! I forgot to add the user_awards table
         // welp, here it is!
         Schema::create('user_awards', function (Blueprint $table) {
@@ -40,8 +38,7 @@ class AddUserAwardsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('user_awards');
     }
 }

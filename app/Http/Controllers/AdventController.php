@@ -6,8 +6,7 @@ use App\Models\Advent\AdventCalendar;
 use App\Services\AdventManager;
 use Auth;
 
-class AdventController extends Controller
-{
+class AdventController extends Controller {
     /**
      * Shows an advent calendar's information.
      *
@@ -15,8 +14,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getAdvent($id)
-    {
+    public function getAdvent($id) {
         $advent = AdventCalendar::find($id);
         if (!$advent) {
             abort(404);
@@ -43,8 +41,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postClaimPrize($id, AdventManager $service)
-    {
+    public function postClaimPrize($id, AdventManager $service) {
         $advent = AdventCalendar::find($id);
         if (!$advent) {
             abort(404);

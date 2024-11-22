@@ -4,8 +4,7 @@ namespace App\Models\WorldExpansion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FactionType extends Model
-{
+class FactionType extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -60,8 +59,7 @@ class FactionType extends Model
     /**
      * Get factions attached to this type.
      */
-    public function factions()
-    {
+    public function factions() {
         return $this->hasMany('App\Models\WorldExpansion\Faction', 'type_id')->visible();
     }
 
@@ -75,8 +73,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-type">'.$this->name.'</a>';
     }
 
@@ -85,8 +82,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getDisplayNamePluralAttribute()
-    {
+    public function getDisplayNamePluralAttribute() {
         return '<a href="'.$this->url.'" class="display-type">'.$this->names.'</a>';
     }
 
@@ -95,8 +91,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/location_types';
     }
 
@@ -105,8 +100,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getImagePathAttribute()
-    {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -115,8 +109,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getImageFileNameAttribute()
-    {
+    public function getImageFileNameAttribute() {
         return $this->id.'-image.'.$this->image_extension;
     }
 
@@ -125,8 +118,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getThumbFileNameAttribute()
-    {
+    public function getThumbFileNameAttribute() {
         return $this->id.'-th.'.$this->thumb_extension;
     }
 
@@ -135,8 +127,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getImageUrlAttribute()
-    {
+    public function getImageUrlAttribute() {
         if (!$this->image_extension) {
             return null;
         }
@@ -149,8 +140,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getThumbUrlAttribute()
-    {
+    public function getThumbUrlAttribute() {
         if (!$this->thumb_extension) {
             return null;
         }
@@ -163,8 +153,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/faction-types/'.$this->id);
     }
 
@@ -173,8 +162,7 @@ class FactionType extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         return url('world/factions?type_id='.$this->id.'&sort=type');
     }
 }

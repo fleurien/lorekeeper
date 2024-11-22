@@ -26,15 +26,12 @@ class HomeController extends Controller {
     |
     */
 
-    
     /**
      * Shows the homepage.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
-        
+    public function getIndex() {
         if (Settings::get('featured_character')) {
             $character = Character::where('slug', Settings::get('featured_character'))->first();
         } else {
@@ -47,7 +44,7 @@ class HomeController extends Controller {
             'affiliates'          => Affiliate::where('status', 'Accepted')->featured(0)->inRandomOrder()->limit(10)->get(),
             'featured_affiliates' => Affiliate::where('status', 'Accepted')->featured(1)->get(),
             'featured'            => $character,
-            'newses'   => News::visible()->orderBy('updated_at', 'DESC')->take(1)->get(),
+            'newses'              => News::visible()->orderBy('updated_at', 'DESC')->take(1)->get(),
         ]);
     }
 

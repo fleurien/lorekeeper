@@ -117,8 +117,7 @@ class CharacterDesignUpdate extends Model {
     /**
      * Get the title of the design update.
      */
-    public function title()
-    {
+    public function title() {
         return $this->belongsTo('App\Models\Character\CharacterTitle', 'title_id');
     }
 
@@ -153,7 +152,6 @@ class CharacterDesignUpdate extends Model {
     public function artists() {
         return $this->hasMany('App\Models\Character\CharacterImageCreator', 'character_image_id')->where('type', 'Artist')->where('character_type', 'Update');
     }
-
 
     /**********************************************************************************************
 
@@ -334,8 +332,7 @@ class CharacterDesignUpdate extends Model {
      *
      * @return array
      */
-    public function getTitleDataAttribute()
-    {
+    public function getTitleDataAttribute() {
         return json_decode($this->attributes['title_data'], true);
     }
 

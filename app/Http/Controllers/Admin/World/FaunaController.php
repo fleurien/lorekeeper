@@ -11,8 +11,7 @@ use App\Services\WorldExpansion\NatureService;
 use Auth;
 use Illuminate\Http\Request;
 
-class FaunaController extends Controller
-{
+class FaunaController extends Controller {
     /**********************************************************************************************
 
         Fauna Types
@@ -24,8 +23,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFaunaCategories()
-    {
+    public function getFaunaCategories() {
         return view('admin.world_expansion.fauna_categories', [
             'categories' => FaunaCategory::orderBy('sort', 'DESC')->get(),
         ]);
@@ -36,8 +34,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFaunaCategory()
-    {
+    public function getCreateFaunaCategory() {
         return view('admin.world_expansion.create_edit_fauna_category', [
             'category' => new FaunaCategory,
         ]);
@@ -50,8 +47,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFaunaCategory($id)
-    {
+    public function getEditFaunaCategory($id) {
         $category = FaunaCategory::find($id);
         if (!$category) {
             abort(404);
@@ -70,8 +66,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFaunaCategory(Request $request, NatureService $service, $id = null)
-    {
+    public function postCreateEditFaunaCategory(Request $request, NatureService $service, $id = null) {
         $id ? $request->validate(FaunaCategory::$updateRules) : $request->validate(FaunaCategory::$createRules);
 
         $data = $request->only([
@@ -99,8 +94,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFaunaCategory($id)
-    {
+    public function getDeleteFaunaCategory($id) {
         $category = FaunaCategory::find($id);
 
         return view('admin.world_expansion._delete_fauna_category', [
@@ -116,8 +110,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFaunaCategory(Request $request, NatureService $service, $id)
-    {
+    public function postDeleteFaunaCategory(Request $request, NatureService $service, $id) {
         if ($id && $service->deleteFaunaCategory(FaunaCategory::find($id))) {
             flash('Fauna Category deleted successfully.')->success();
         } else {
@@ -136,8 +129,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFaunaCategory(Request $request, NatureService $service)
-    {
+    public function postSortFaunaCategory(Request $request, NatureService $service) {
         if ($service->sortFaunaCategory($request->get('sort'))) {
             flash('Fauna Category order updated successfully.')->success();
         } else {
@@ -160,8 +152,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFaunaIndex()
-    {
+    public function getFaunaIndex() {
         return view('admin.world_expansion.faunas', [
             'faunas' => Fauna::orderBy('sort', 'DESC')->get(),
         ]);
@@ -172,8 +163,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFauna()
-    {
+    public function getCreateFauna() {
         return view('admin.world_expansion.create_edit_fauna', [
             'fauna'      => new Fauna,
             'categories' => FaunaCategory::all()->pluck('name', 'id')->toArray(),
@@ -190,8 +180,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditFauna($id)
-    {
+    public function getEditFauna($id) {
         $fauna = Fauna::find($id);
         if (!$fauna) {
             abort(404);
@@ -214,8 +203,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditFauna(Request $request, NatureService $service, $id = null)
-    {
+    public function postCreateEditFauna(Request $request, NatureService $service, $id = null) {
         $id ? $request->validate(Fauna::$updateRules) : $request->validate(Fauna::$createRules);
 
         $data = $request->only([
@@ -244,8 +232,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteFauna($id)
-    {
+    public function getDeleteFauna($id) {
         $fauna = Fauna::find($id);
 
         return view('admin.world_expansion._delete_fauna', [
@@ -261,8 +248,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteFauna(Request $request, NatureService $service, $id)
-    {
+    public function postDeleteFauna(Request $request, NatureService $service, $id) {
         if ($id && $service->deleteFauna(Fauna::find($id))) {
             flash('Fauna deleted successfully.')->success();
         } else {
@@ -281,8 +267,7 @@ class FaunaController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortFauna(Request $request, NatureService $service)
-    {
+    public function postSortFauna(Request $request, NatureService $service) {
         if ($service->sortFauna($request->get('sort'))) {
             flash('Fauna order updated successfully.')->success();
         } else {

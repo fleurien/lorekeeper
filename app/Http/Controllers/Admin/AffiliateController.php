@@ -9,15 +9,13 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
-class AffiliateController extends Controller
-{
+class AffiliateController extends Controller {
     /**
      * Shows the homepage.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('admin.affiliates.index', [
             'open'       => intval(Settings::get('affiliates_open')),
             'affiliates' => Affiliate::where('status', 'Accepted')->get()->paginate(10),
@@ -29,8 +27,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateAffiliate()
-    {
+    public function getCreateAffiliate() {
         return view('admin.affiliates.create_edit_affiliate', [
             'affiliate' => new Affiliate,
         ]);
@@ -43,8 +40,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditAffiliate($id)
-    {
+    public function getEditAffiliate($id) {
         return view('admin.affiliates.create_edit_affiliate', [
             'affiliate' => Affiliate::find($id),
         ]);
@@ -57,8 +53,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function postCreateEditAffiliate(Request $request, AffiliateService $service, $id = null)
-    {
+    public function postCreateEditAffiliate(Request $request, AffiliateService $service, $id = null) {
         $id ? $request->validate(Affiliate::$updateRules) : $request->validate(Affiliate::$createRules);
         $affiliate = Affiliate::find($id);
 
@@ -88,8 +83,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getStatus($slug)
-    {
+    public function getStatus($slug) {
         $affiliate = Affiliate::where('slug', $slug)->first();
         if (!$affiliate) {
             abort(404);
@@ -107,8 +101,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getQueue(Request $request, $status = null)
-    {
+    public function getQueue(Request $request, $status = null) {
         $affiliates = Affiliate::where('status', $status ? ucfirst($status) : 'Pending');
         $data = $request->only(['sort']);
         if (isset($data['sort'])) {
@@ -134,8 +127,7 @@ class AffiliateController extends Controller
      *
      * @param mixed $id
      */
-    public function getAcceptAffiliate($id)
-    {
+    public function getAcceptAffiliate($id) {
         $affiliate = Affiliate::find($id);
         if (!$affiliate) {
             abort(404);
@@ -151,8 +143,7 @@ class AffiliateController extends Controller
      *
      * @param mixed $id
      */
-    public function getRejectAffiliate($id)
-    {
+    public function getRejectAffiliate($id) {
         $affiliate = Affiliate::find($id);
         if (!$affiliate) {
             abort(404);
@@ -169,8 +160,7 @@ class AffiliateController extends Controller
      * @param mixed $id
      * @param mixed $action
      */
-    public function postAffiliate(Request $request, AffiliateService $service, $id, $action)
-    {
+    public function postAffiliate(Request $request, AffiliateService $service, $id, $action) {
         if ($action == 'reject' && $service->rejectAffiliate($request->only(['staff_comment']) + ['id' => $id], Auth::user())) {
             flash('Affiliate rejected successfully.')->success();
         } elseif ($action == 'accept' && $service->acceptAffiliate($request->only(['staff_comment', 'is_featured']) + ['id' => $id], Auth::user())) {
@@ -189,8 +179,7 @@ class AffiliateController extends Controller
      *
      * @param mixed $id
      */
-    public function getDeleteAffiliate($id)
-    {
+    public function getDeleteAffiliate($id) {
         $affiliate = Affiliate::find($id);
         if (!$affiliate) {
             abort(404);
@@ -209,8 +198,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteAffiliate(Request $request, AffiliateService $service, $id)
-    {
+    public function postDeleteAffiliate(Request $request, AffiliateService $service, $id) {
         if ($id && $service->deleteAffiliate(Affiliate::find($id))) {
             flash('Affiliate deleted successfully.')->success();
         } else {

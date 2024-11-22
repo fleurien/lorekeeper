@@ -11,8 +11,7 @@ use App\Models\WorldExpansion\FigureCategory;
 use Auth;
 use Illuminate\Http\Request;
 
-class FigureController extends Controller
-{
+class FigureController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Figure Controller
@@ -28,8 +27,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFigureCategories(Request $request)
-    {
+    public function getFigureCategories(Request $request) {
         $query = FigureCategory::query();
         $name = $request->get('name');
         if ($name) {
@@ -49,8 +47,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFigureCategory($id)
-    {
+    public function getFigureCategory($id) {
         $category = FigureCategory::find($id);
         if (!$category) {
             abort(404);
@@ -66,8 +63,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFigures(Request $request)
-    {
+    public function getFigures(Request $request) {
         $query = Figure::with('category');
         $data = $request->only(['category_id', 'name', 'sort']);
         if (isset($data['category_id']) && $data['category_id'] != 'none') {
@@ -116,8 +112,7 @@ class FigureController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getFigure($id)
-    {
+    public function getFigure($id) {
         $figure = Figure::find($id);
         if (!$figure || !$figure->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);

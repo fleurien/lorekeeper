@@ -2,18 +2,16 @@
 
 namespace App\Models\Level;
 
-use Config;
 use App\Models\Model;
 
-class CharacterLevel extends Model
-{
+class CharacterLevel extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'character_id','current_level', 'current_exp', 'current_points'
+        'character_id', 'current_level', 'current_exp', 'current_points',
     ];
 
     /**
@@ -24,7 +22,7 @@ class CharacterLevel extends Model
     protected $table = 'character_levels';
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
@@ -32,14 +30,11 @@ class CharacterLevel extends Model
     /**
      * Get the shop stock.
      */
-    public function character() 
-    {
+    public function character() {
         return $this->belongsTo('App\Models\Character\Character');
     }
 
-    public function level() 
-    {
+    public function level() {
         return $this->belongsTo('App\Models\Level\CharacterLevel', 'current_level');
     }
-    
 }

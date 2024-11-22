@@ -10,8 +10,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
-class LocationController extends Controller
-{
+class LocationController extends Controller {
     /**********************************************************************************************
 
         LOCATION TYPES
@@ -23,8 +22,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('admin.world_expansion.location_types', [
             'types' => LocationType::orderBy('sort', 'DESC')->get(),
         ]);
@@ -35,8 +33,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateLocationType()
-    {
+    public function getCreateLocationType() {
         return view('admin.world_expansion.create_edit_location_type', [
             'type' => new LocationType,
         ]);
@@ -49,8 +46,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditLocationType($id)
-    {
+    public function getEditLocationType($id) {
         $type = LocationType::find($id);
         if (!$type) {
             abort(404);
@@ -69,8 +65,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditLocationType(Request $request, LocationService $service, $id = null)
-    {
+    public function postCreateEditLocationType(Request $request, LocationService $service, $id = null) {
         $id ? $request->validate(LocationType::$updateRules) : $request->validate(LocationType::$createRules);
 
         $data = $request->only([
@@ -98,8 +93,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteLocationType($id)
-    {
+    public function getDeleteLocationType($id) {
         $type = LocationType::find($id);
 
         return view('admin.world_expansion._delete_location_type', [
@@ -115,8 +109,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteLocationType(Request $request, LocationService $service, $id)
-    {
+    public function postDeleteLocationType(Request $request, LocationService $service, $id) {
         if ($id && $service->deleteLocationType(LocationType::find($id))) {
             flash('Location Type deleted successfully.')->success();
         } else {
@@ -135,8 +128,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortLocationType(Request $request, LocationService $service)
-    {
+    public function postSortLocationType(Request $request, LocationService $service) {
         if ($service->sortLocationType($request->get('sort'))) {
             flash('Location Type order updated successfully.')->success();
         } else {
@@ -159,8 +151,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLocationIndex()
-    {
+    public function getLocationIndex() {
         return view('admin.world_expansion.locations', [
             'locations' => Location::orderBy('sort', 'DESC')->get(),
             'types'     => LocationType::orderBy('sort', 'DESC')->get(),
@@ -172,8 +163,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateLocation()
-    {
+    public function getCreateLocation() {
         $types = LocationType::all()->pluck('name', 'id')->toArray();
 
         if (!count($types)) {
@@ -198,8 +188,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditLocation($id)
-    {
+    public function getEditLocation($id) {
         $location = Location::find($id);
         if (!$location) {
             abort(404);
@@ -222,8 +211,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditLocation(Request $request, LocationService $service, $id = null)
-    {
+    public function postCreateEditLocation(Request $request, LocationService $service, $id = null) {
         $id ? $request->validate(Location::$updateRules) : $request->validate(Location::$createRules);
 
         $data = $request->only([
@@ -252,8 +240,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteLocation($id)
-    {
+    public function getDeleteLocation($id) {
         $location = Location::find($id);
 
         return view('admin.world_expansion._delete_location', [
@@ -269,8 +256,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteLocation(Request $request, LocationService $service, $id)
-    {
+    public function postDeleteLocation(Request $request, LocationService $service, $id) {
         if ($id && $service->deleteLocation(Location::find($id))) {
             flash('Location deleted successfully.')->success();
         } else {
@@ -289,8 +275,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortLocation(Request $request, LocationService $service)
-    {
+    public function postSortLocation(Request $request, LocationService $service) {
         if ($service->sortLocation($request->get('sort'))) {
             flash('Location  order updated successfully.')->success();
         } else {

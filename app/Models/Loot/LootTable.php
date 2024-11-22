@@ -13,7 +13,7 @@ class LootTable extends Model {
      * @var array
      */
     protected $fillable = [
-        'name', 'display_name', 'data'
+        'name', 'display_name', 'data',
     ];
 
     /**
@@ -37,8 +37,8 @@ class LootTable extends Model {
      * @var array
      */
     public static $createRules = [
-        'name'         => 'required',
-        'display_name' => 'required',
+        'name'                => 'required',
+        'display_name'        => 'required',
         'subtable_criteria.*' => 'required_with:subtable_status_id.*',
         'subtable_quantity.*' => 'required_with:subtable_quantity.*',
     ];
@@ -49,8 +49,8 @@ class LootTable extends Model {
      * @var array
      */
     public static $updateRules = [
-        'name'         => 'required',
-        'display_name' => 'required',
+        'name'                => 'required',
+        'display_name'        => 'required',
         'subtable_criteria.*' => 'required_with:subtable_status_id.*',
         'subtable_quantity.*' => 'required_with:subtable_quantity.*',
     ];
@@ -119,53 +119,53 @@ class LootTable extends Model {
     /**
      * Rolls on the loot table and consolidates the rewards.
      *
-     * @param  int  $quantity
-     * @param  bool $isCharacter
-     * @param  \App\Models\Character\Character $character
+     * @param int                             $quantity
+     * @param bool                            $isCharacter
+     * @param \App\Models\Character\Character $character
+     *
      * @return \Illuminate\Support\Collection
      */
-    public function roll($quantity = 1, $isCharacter = false, $character = null)
-    {
+    public function roll($quantity = 1, $isCharacter = false, $character = null) {
         $rewards = createAssetsArray($isCharacter);
 
-        $loot = $this->loot()->where('subtable_id', null)->orWhere(function($query) use($isCharacter, $character) {
+        $loot = $this->loot()->where('subtable_id', null)->orWhere(function ($query) use ($isCharacter, $character) {
             // Collect any status-specific rows
-            if($isCharacter && $character) {
+            if ($isCharacter && $character) {
                 // Check for subtables
-                
-                if(isset($this->data) && count($this->data)) {
+
+                if (isset($this->data) && count($this->data)) {
                     // Gather the character's status effects
 
-                    if($subtable['sublist_status_id'] == $items) {
+                    if ($subtable['sublist_status_id'] == $items) {
                         $statuses = $character->items();
                     }
-                    if($subtable['sublist_status_id'] == $stats) {
+                    if ($subtable['sublist_status_id'] == $stats) {
                         $statuses = $character->stats();
                     }
-                    if($subtable['sublist_status_id'] == $statuses) {
+                    if ($subtable['sublist_status_id'] == $statuses) {
                         $statuses = $character->getStatusEffects();
                     }
-                    
 
-                    if($statuses->count()) {
+                    if ($statuses->count()) {
                         // Cycle through subtables checking for matching criteria
-                        foreach($this->data as $key=>$subtable) {
-                            if($statuses->where('id', $subtable['status_id'])->where('quantity', $subtable['criteria'], $subtable['quantity'])->count()) {
+                        foreach ($this->data as $key=>$subtable) {
+                            if ($statuses->where('id', $subtable['status_id'])->where('quantity', $subtable['criteria'], $subtable['quantity'])->count()) {
                                 $query = $query->orWhere('subtable_id', $key);
                                 $querySuccess = true;
                             }
                         }
-                        if($querySuccess) return $query;
+                        if ($querySuccess) {
+                            return $query;
+                        }
                     }
                 }
 
                 // Otherwise use the fallback rows
                 return $query = $query->orWhere('subtable_id', 0);
             }
+
             return $query;
         })->get();
-
-
 
         $totalWeight = 0;
         foreach ($loot as $l) {

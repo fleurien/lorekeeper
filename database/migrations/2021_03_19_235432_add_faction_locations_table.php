@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFactionLocationsTable extends Migration
-{
+class AddFactionLocationsTable extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         //
         Schema::create('faction_locations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -23,8 +21,7 @@ class AddFactionLocationsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::dropIfExists('faction_locations');
     }

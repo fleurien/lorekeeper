@@ -51,8 +51,7 @@ class Species extends Model {
     /**
      * Get the subtypes for this species.
      */
-    public function subtypes() 
-    {
+    public function subtypes() {
         return $this->hasMany('App\Models\Species\Subtype')->orderBy('sort', 'DESC');
     }
 

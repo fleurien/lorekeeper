@@ -2,18 +2,15 @@
 
 namespace App\Services\Item;
 
-use App\Services\Service;
-
-use DB;
-use Illuminate\Support\Arr;
-
-use App\Services\InventoryManager;
-
-use App\Models\Item\Item;
 use App\Models\Character\Character;
 use App\Models\Currency\Currency;
+use App\Models\Item\Item;
 use App\Services\CharacterManager;
 use App\Services\CurrencyManager;
+use App\Services\InventoryManager;
+use App\Services\Service;
+use DB;
+use Illuminate\Support\Arr;
 
 class GiftwrappedService extends Service {
     /*
@@ -43,7 +40,8 @@ class GiftwrappedService extends Service {
     /**
      * Processes the data attribute of the tag and returns it in the preferred format.
      *
-     * @param  object  $tag
+     * @param object $tag
+     *
      * @return mixed
      */
     public function getTagData($tag) {
@@ -53,8 +51,9 @@ class GiftwrappedService extends Service {
     /**
      * Processes the data attribute of the tag and returns it in the preferred format.
      *
-     * @param  object  $tag
-     * @param  array   $data
+     * @param object $tag
+     * @param array  $data
+     *
      * @return bool
      */
     public function updateData($tag, $data) {
@@ -65,16 +64,17 @@ class GiftwrappedService extends Service {
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
-
 
     /**
      * Acts upon the item when used from the inventory.
      *
-     * @param  \App\Models\User\UserItem  $stacks
-     * @param  \App\Models\User\User      $user
-     * @param  array                      $data
+     * @param \App\Models\User\UserItem $stacks
+     * @param \App\Models\User\User     $user
+     * @param array                     $data
+     *
      * @return bool
      */
     public function act($stacks, $user, $data) {
@@ -82,7 +82,9 @@ class GiftwrappedService extends Service {
 
         try {
             foreach ($stacks as $key => $stack) {
-                if ($stack->user_id != $user->id) throw new \Exception("This item does not belong to you.");
+                if ($stack->user_id != $user->id) {
+                    throw new \Exception('This item does not belong to you.');
+                }
                 $inventoryManager = new InventoryManager;
                 // Try to delete the box item. If successful, we can distribute the wrapped item.
                 if ($inventoryManager->debitStack($stack->user, 'Box Opened', ['data' => ''], $stack, $data['quantities'][$key])) {
@@ -90,37 +92,39 @@ class GiftwrappedService extends Service {
                         if ($stack->data['wrap_type'] === 'Item') {
                             $item = Item::where('id', $stack->data['wrap_id'])->first();
                             if ($inventoryManager->creditItem(null, $user, 'Unwrapped Item', Arr::only($data, ['wrap_type', 'wrap_id']) + ['data' => 'Received from Wrapped Box'], $item, 1)) {
-                                flash($item->name . ' received from box!');
+                                flash($item->name.' received from box!');
                             } else {
-                                throw new \Exception("Failed to create wrapped item");
+                                throw new \Exception('Failed to create wrapped item');
                             }
-                        } else if ($stack->data['wrap_type'] === 'Character' || $stack->data['wrap_type'] === 'MYO') {
+                        } elseif ($stack->data['wrap_type'] === 'Character' || $stack->data['wrap_type'] === 'MYO') {
                             $myo = Character::where('id', $stack->data['wrap_id'])->first();
                             $myo->is_visible = 1;
                             $myo->save();
 
                             if ((new CharacterManager)->adminTransfer(['recipient_id' => $user->id, 'reason' => 'Unwrapped from Box'], $myo, $user)) {
-                                flash($myo->name . ' received from box!');
+                                flash($myo->name.' received from box!');
                             } else {
-                                throw new \Exception("Failed to transfer wrapped item");
+                                throw new \Exception('Failed to transfer wrapped item');
                             }
-                        } else if ($stack->data['wrap_type'] === 'Currency') {
+                        } elseif ($stack->data['wrap_type'] === 'Currency') {
                             $currency = Currency::where('id', $stack->data['wrap_id'])->first();
                             if ((new CurrencyManager)->creditCurrency(null, $user, 'Unwrapped Currency', null, $currency, $stack->data['wrap_count'])) {
-                                flash($currency->display($stack->data['wrap_count']) . ' received from box!');
+                                flash($currency->display($stack->data['wrap_count']).' received from box!');
                             } else {
-                                throw new \Exception("Failed to wrap item");
+                                throw new \Exception('Failed to wrap item');
                             }
                         }
                     }
                 } else {
-                    throw new \Exception("Failed to remove wrapper");
+                    throw new \Exception('Failed to remove wrapper');
                 }
             }
+
             return $this->commitReturn(true);
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 }

@@ -35,8 +35,8 @@ Route::group(['prefix' => 'news'], function () {
 /**************************************************************************************************
     Dev Logs
 **************************************************************************************************/
-# PROFILES
-Route::group(['prefix' => 'logs'], function() {
+// PROFILES
+Route::group(['prefix' => 'logs'], function () {
     Route::get('/', 'DevLogsController@getIndex');
     Route::get('{id}.{slug?}', 'DevLogsController@getLogs');
     Route::get('{id}.', 'DevLogsController@getLogs');
@@ -128,7 +128,7 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function ()
     Route::get('{slug}/gallery', 'CharacterController@getCharacterGallery');
 
     Route::get('{slug}/breeding-permissions', 'CharacterController@getCharacterBreedingPermissions');
-    # lineage
+    // lineage
     Route::get('{slug}/lineage', 'CharacterLineageController@getCharacterLineage');
     Route::get('{slug}/children', 'CharacterLineageController@getCharacterChildren');
     Route::get('{slug}/grandchildren', 'CharacterLineageController@getCharacterGrandChildren');
@@ -225,12 +225,10 @@ Route::get('event-tracking', 'PromptsController@getEventTracking');
 **************************************************************************************************/
 Route::get('pets/pet/{id}', 'Users\PetController@getPetDrops');
 
-
-Route::group(['prefix' => __('dailies.dailies')], function() {
+Route::group(['prefix' => __('dailies.dailies')], function () {
     Route::get('/', 'DailyController@getIndex');
     Route::get('{id}', 'DailyController@getDaily')->where(['id' => '[0-9]+']);
 });
-
 
 /**************************************************************************************************
     Site Pages
@@ -332,6 +330,6 @@ Route::group(['prefix' => 'world', 'namespace' => 'WorldExpansion'], function ()
     Route::get('concept-categories', 'ConceptController@getConceptCategories');
     Route::get('concept-categories/{id}', 'ConceptController@getConceptCategory');
 });
-Route::get('time' , function() {
+Route::get('time', function () {
     return date('Y-m-d H:i:s');
 });

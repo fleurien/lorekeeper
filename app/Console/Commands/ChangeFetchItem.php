@@ -2,14 +2,12 @@
 
 namespace App\Console\Commands;
 
-use DB;
-use Settings;
-use Log;
-use Illuminate\Console\Command;
 use App\Models\Item\Item;
+use DB;
+use Illuminate\Console\Command;
+use Settings;
 
-class ChangeFetchItem extends Command
-{
+class ChangeFetchItem extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -26,11 +24,8 @@ class ChangeFetchItem extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -39,17 +34,18 @@ class ChangeFetchItem extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $items = Item::where('item_category_id', Settings::get('fetch_category_id'))->released()->get();
-        if(!$items->count()) throw new \Exception('There are no items to select from!');
+        if (!$items->count()) {
+            throw new \Exception('There are no items to select from!');
+        }
 
         $totalWeight = $items->count();
         $roll = mt_rand(0, $totalWeight - 1);
         $result = $items[$roll]->id;
 
         $setting = Settings::get('fetch_item');
-        while($result == $setting) {
+        while ($result == $setting) {
             $roll = mt_rand(0, $totalWeight - 1);
             $result = $items[$roll]->id;
         }

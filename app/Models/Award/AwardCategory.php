@@ -4,8 +4,7 @@ namespace App\Models\Award;
 
 use App\Models\Model;
 
-class AwardCategory extends Model
-{
+class AwardCategory extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -55,8 +54,7 @@ class AwardCategory extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-category">'.$this->name.'</a>';
     }
 
@@ -65,8 +63,7 @@ class AwardCategory extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/award-categories';
     }
 
@@ -75,8 +72,7 @@ class AwardCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImageFileNameAttribute()
-    {
+    public function getCategoryImageFileNameAttribute() {
         return $this->id.'-image.png';
     }
 
@@ -85,8 +81,7 @@ class AwardCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImagePathAttribute()
-    {
+    public function getCategoryImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -95,8 +90,7 @@ class AwardCategory extends Model
      *
      * @return string
      */
-    public function getCategoryImageUrlAttribute()
-    {
+    public function getCategoryImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
@@ -109,8 +103,7 @@ class AwardCategory extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/'.__('awards.award').'-categories?name='.$this->name);
     }
 
@@ -119,8 +112,7 @@ class AwardCategory extends Model
      *
      * @return string
      */
-    public function getSearchUrlAttribute()
-    {
+    public function getSearchUrlAttribute() {
         return url('world/'.__('awards.awards').'s?'.__('awards.award').'_category_id='.$this->id);
     }
 }

@@ -15,8 +15,7 @@ use App\Models\WorldExpansion\Location;
 use App\Services\Service;
 use DB;
 
-class FactionService extends Service
-{
+class FactionService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Faction Service
@@ -29,13 +28,12 @@ class FactionService extends Service
     /**
      * Creates a new faction type.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return \App\Models\Faction\Type|bool
      */
-    public function createFactionType($data, $user)
-    {
+    public function createFactionType($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -78,12 +76,11 @@ class FactionService extends Service
      *
      * @param \App\Models\Type\Type $type
      * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param User                  $user
      *
      * @return \App\Models\Type\Type|bool
      */
-    public function updateFactionType($type, $data, $user)
-    {
+    public function updateFactionType($type, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -146,8 +143,7 @@ class FactionService extends Service
      *
      * @return bool
      */
-    public function deleteFactionType($type)
-    {
+    public function deleteFactionType($type) {
         DB::beginTransaction();
 
         try {
@@ -184,8 +180,7 @@ class FactionService extends Service
      *
      * @return bool
      */
-    public function sortFactionType($data)
-    {
+    public function sortFactionType($data) {
         DB::beginTransaction();
 
         try {
@@ -214,13 +209,12 @@ class FactionService extends Service
     /**
      * Creates a new faction.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return \App\Models\Faction\Type|bool
      */
-    public function createFaction($data, $user)
-    {
+    public function createFaction($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -261,14 +255,13 @@ class FactionService extends Service
     /**
      * Updates a faction.
      *
-     * @param \App\Models\WorldExpansion\Faction $faction
-     * @param array                              $data
-     * @param \App\Models\User\User              $user
+     * @param Faction $faction
+     * @param array   $data
+     * @param User    $user
      *
-     * @return \App\Models\WorldExpansion\Faction|bool
+     * @return bool|Faction
      */
-    public function updateFaction($faction, $data, $user)
-    {
+    public function updateFaction($faction, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -469,12 +462,11 @@ class FactionService extends Service
     /**
      * Deletes a faction.
      *
-     * @param \App\Models\WorldExpansion\Faction $faction
+     * @param Faction $faction
      *
      * @return bool
      */
-    public function deleteFaction($faction)
-    {
+    public function deleteFaction($faction) {
         DB::beginTransaction();
 
         try {
@@ -501,8 +493,7 @@ class FactionService extends Service
      *
      * @return bool
      */
-    public function sortFaction($data)
-    {
+    public function sortFaction($data) {
         DB::beginTransaction();
 
         try {
@@ -529,8 +520,7 @@ class FactionService extends Service
      *
      * @return array
      */
-    private function populateFactionTypeData($data, $type = null)
-    {
+    private function populateFactionTypeData($data, $type = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -563,31 +553,30 @@ class FactionService extends Service
     /**
      * Processes user input for creating/updating a faction.
      *
-     * @param array                              $data
-     * @param \App\Models\WorldExpansion\Faction $faction
+     * @param array   $data
+     * @param Faction $faction
      *
      * @return array
      */
-    private function populateFactionData($data, $faction = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateFactionData($data, $faction = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['name']) && $data['name']) {
             $saveData['name'] = parse($data['name']);
         }
         $saveData['is_active'] = isset($data['is_active']);
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
         $saveData['is_character_faction'] = isset($data['character_faction']);
         $saveData['is_user_faction'] = isset($data['user_faction']);
 
-        $saveData['display_style'] = isset($data['style']) ? $data['style'] : 0;
+        $saveData['display_style'] = $data['style'] ?? 0;
 
         $saveData['type_id'] = $data['type_id'];
         $saveData['parent_id'] = $data['parent_id'];

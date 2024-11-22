@@ -10,8 +10,7 @@ use App\Services\AdventService;
 use Auth;
 use Illuminate\Http\Request;
 
-class AdventController extends Controller
-{
+class AdventController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Admin / Advent Calendar Controller
@@ -26,8 +25,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getAdventIndex(Request $request)
-    {
+    public function getAdventIndex(Request $request) {
         return view('admin.advents.index', [
             'advents' => AdventCalendar::orderBy('start_at', 'DESC')->paginate(20),
         ]);
@@ -38,8 +36,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateAdvent()
-    {
+    public function getCreateAdvent() {
         return view('admin.advents.create_edit_advent', [
             'advent' => new AdventCalendar,
         ]);
@@ -52,8 +49,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditAdvent(Request $request, $id)
-    {
+    public function getEditAdvent(Request $request, $id) {
         $advent = AdventCalendar::find($id);
         if (!$advent) {
             abort(404);
@@ -61,18 +57,18 @@ class AdventController extends Controller
 
         $query = AdventParticipant::where('advent_id', $advent->id);
         $sort = $request->only(['sort']);
-        switch (isset($sort['sort']) ? $sort['sort'] : null) {
+        switch ($sort['sort'] ?? null) {
             default:
                 $query->select('advent_participants.*')->join('users', 'users.id', '=', 'advent_participants.user_id')
-                ->orderBy('users.name');
+                    ->orderBy('users.name');
                 break;
             case 'alpha':
                 $query->select('advent_participants.*')->join('users', 'users.id', '=', 'advent_participants.user_id')
-                ->orderBy('users.name', 'ASC');
+                    ->orderBy('users.name', 'ASC');
                 break;
             case 'alpha-reverse':
                 $query->select('advent_participants.*')->join('users', 'users.id', '=', 'advent_participants.user_id')
-                ->orderBy('users.name', 'DESC');
+                    ->orderBy('users.name', 'DESC');
                 break;
             case 'day':
                 $query->orderBy('day', 'ASC');
@@ -103,8 +99,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditAdvent(Request $request, AdventService $service, $id = null)
-    {
+    public function postCreateEditAdvent(Request $request, AdventService $service, $id = null) {
         $id ? $request->validate(AdventCalendar::$updateRules) : $request->validate(AdventCalendar::$createRules);
         $data = $request->only([
             'name', 'display_name', 'summary', 'start_at', 'end_at', 'item_ids', 'quantities',
@@ -131,8 +126,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteAdvent($id)
-    {
+    public function getDeleteAdvent($id) {
         $advent = AdventCalendar::find($id);
 
         return view('admin.advents._delete_advent', [
@@ -148,8 +142,7 @@ class AdventController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteAdvent(Request $request, AdventService $service, $id)
-    {
+    public function postDeleteAdvent(Request $request, AdventService $service, $id) {
         if ($id && $service->deleteAdvent(AdventCalendar::find($id))) {
             flash('Advent calendar deleted successfully.')->success();
         } else {

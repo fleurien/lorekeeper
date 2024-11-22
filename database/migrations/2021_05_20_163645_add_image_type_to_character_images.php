@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddImageTypeToCharacterImages extends Migration
-{
+class AddImageTypeToCharacterImages extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('character_image_creators', function (Blueprint $table) {
             //
             $table->string('credit_type')->nullable()->default(null);
@@ -20,8 +18,7 @@ class AddImageTypeToCharacterImages extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('character_image_creators', function (Blueprint $table) {
             //
             $table->dropColumn('credit_type');

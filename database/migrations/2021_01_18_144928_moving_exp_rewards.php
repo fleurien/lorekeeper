@@ -4,17 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MovingExpRewards extends Migration
-{
+class MovingExpRewards extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        schema::table('prompts', function (Blueprint $table) {
+        Schema::table('prompts', function (Blueprint $table) {
             $table->dropColumn('user_exp');
             $table->dropColumn('user_points');
             $table->dropColumn('chara_exp');
@@ -35,13 +31,10 @@ class MovingExpRewards extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        schema::table('prompts', function (Blueprint $table) {
+        Schema::table('prompts', function (Blueprint $table) {
             $table->string('user_exp')->nullable()->default(null);
             $table->string('user_points')->nullable()->default(null);
             $table->string('chara_exp')->nullable()->default(null);

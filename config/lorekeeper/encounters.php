@@ -8,14 +8,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | Edit this file to change certain settings related to encounters
-    | 
+    |
     |
     */
 
     //self explanatory
     //set to 1 to use characters instead of user stats
     //this will debit/grant or check things from the character instead
-    'use_characters' => 1, 
+    'use_characters' => 1,
     //self explanatory
     //if turned off it will try to use currency instead
     'use_energy' => 0,

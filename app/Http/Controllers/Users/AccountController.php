@@ -3,26 +3,18 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Character\BreedingPermission;
 use App\Models\Notification;
-use Auth;
-use File;
-use Image;
-
 use App\Models\Theme;
 use App\Models\User\User;
 use App\Models\User\UserAlias;
 use App\Models\WorldExpansion\Faction;
 use App\Models\WorldExpansion\Location;
-use App\Models\Character\BreedingPermission;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Models\ThemeEditor;
-
-use App\Services\UserService;
 use App\Services\LinkService;
+use App\Services\UserService;
+use Auth;
+use Illuminate\Http\Request;
 use Settings;
-
 
 class AccountController extends Controller {
     /*
@@ -65,8 +57,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getSettings()
-    {
+    public function getSettings() {
         $interval = [
             0 => 'whenever',
             1 => 'yearly',
@@ -89,8 +80,8 @@ class AccountController extends Controller {
         $decoratorOptions = ['0' => 'Select Decorator Theme'] + Theme::where('is_active', 1)->where('theme_type', 'decorator')->where('is_user_selectable', 1)->get()->pluck('displayName', 'id')->toArray();
 
         return view('account.settings', [
-            'themeOptions' => $themeOptions + Auth::user()->themes()->where('theme_type', 'base')->get()->pluck('displayName', 'id')->toArray(),
-            'decoratorThemes' => $decoratorOptions + Auth::user()->themes()->where('theme_type', 'decorator')->get()->pluck('displayName', 'id')->toArray(),
+            'themeOptions'         => $themeOptions + Auth::user()->themes()->where('theme_type', 'base')->get()->pluck('displayName', 'id')->toArray(),
+            'decoratorThemes'      => $decoratorOptions + Auth::user()->themes()->where('theme_type', 'decorator')->get()->pluck('displayName', 'id')->toArray(),
             'locations'            => Location::all()->where('is_user_home')->pluck('style', 'id')->toArray(),
             'factions'             => Faction::all()->where('is_user_faction')->pluck('style', 'id')->toArray(),
             'user_enabled'         => Settings::get('WE_user_locations'),
@@ -98,7 +89,7 @@ class AccountController extends Controller {
             'char_enabled'         => Settings::get('WE_character_locations'),
             'char_faction_enabled' => Settings::get('WE_character_factions'),
             'location_interval'    => $interval[Settings::get('WE_change_timelimit')],
-            'themeOptions' => Theme::where('is_active',1)->get()->pluck('displayName','id')->toArray()
+            'themeOptions'         => Theme::where('is_active', 1)->get()->pluck('displayName', 'id')->toArray(),
         ]);
     }
 
@@ -130,67 +121,75 @@ class AccountController extends Controller {
                 flash($error)->error();
             }
         }
+
         return redirect()->back();
     }
 
     /**
      * Edits the user's theme.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postTheme(Request $request, UserService $service) {
         if ($service->updateTheme($request->only(['theme', 'decorator_theme']), Auth::user())) {
             flash('Theme updated successfully.')->success();
         } else {
-            foreach ($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
+
         return redirect()->back();
     }
-
 
     /**
      * Changes the user's password.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\UserService  $service
+     * @param App\Services\UserService $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postPassword(Request $request, UserService $service)
-    {
+    public function postPassword(Request $request, UserService $service) {
         $user = Auth::user();
         if (!isset($user->password) && (!isset($user->email) || !isset($user->email_verified_at))) {
             flash('Please set and verify an email before setting a password for email login.')->error();
+
             return redirect()->back();
         }
 
         $request->validate([
-            'new_password' => 'required|string|min:8|confirmed'
+            'new_password' => 'required|string|min:8|confirmed',
         ] + (isset($user->password) ? ['old_password' => 'required|string'] : []));
-        if($service->updatePassword($request->only(['old_password', 'new_password', 'new_password_confirmation']), Auth::user())) {
+        if ($service->updatePassword($request->only(['old_password', 'new_password', 'new_password_confirmation']), Auth::user())) {
             flash('Password updated successfully.')->success();
         } else {
-            foreach ($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
+
         return redirect()->back();
     }
 
     /**
      * Changes the user's email address and sends a verification email.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\UserService  $service
+     * @param App\Services\UserService $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postEmail(Request $request, UserService $service) {
         $request->validate([
-            'email' => 'required|string|email|max:255|unique:users'
+            'email' => 'required|string|email|max:255|unique:users',
         ]);
         if ($service->updateEmail($request->only(['email']), Auth::user())) {
             flash('Email updated successfully. A verification email has been sent to your new email address.')->success();
         } else {
-            foreach ($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
+
         return redirect()->back();
     }
 
@@ -199,8 +198,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postLocation(Request $request, UserService $service)
-    {
+    public function postLocation(Request $request, UserService $service) {
         if ($service->updateLocation($request->input('location'), Auth::user())) {
             flash('Location updated successfully.')->success();
         } else {
@@ -217,8 +215,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postFaction(Request $request, UserService $service)
-    {
+    public function postFaction(Request $request, UserService $service) {
         if ($service->updateFaction($request->input('faction'), Auth::user())) {
             flash('Faction updated successfully.')->success();
         } else {
@@ -235,8 +232,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postLinks(Request $request)
-    {
+    public function postLinks(Request $request) {
         Auth::user()->profile->update([
             'disc'  => $request->get('disc'),
             'insta' => $request->get('insta'),
@@ -247,10 +243,6 @@ class AccountController extends Controller {
 
         return redirect()->back();
     }
-
-
-
-
 
     /**
      * Changes user birthday setting.
@@ -272,20 +264,21 @@ class AccountController extends Controller {
     }
 
     /**
-     * Changes user dev log notification setting
+     * Changes user dev log notification setting.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\UserService  $service
+     * @param App\Services\UserService $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postLogNotif(Request $request, UserService $service)
-    {
-        if($service->updateLogNotif($request->input('dev_log_notif'), Auth::user())) {
+    public function postLogNotif(Request $request, UserService $service) {
+        if ($service->updateLogNotif($request->input('dev_log_notif'), Auth::user())) {
             flash('Setting updated successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 
@@ -493,14 +486,14 @@ class AccountController extends Controller {
     /**
      * Shows the user's owned breeding permissions.
      *
-     * @param  \Illuminate\Http\Request       $request
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getBreedingPermissions(Request $request)
-    {
+    public function getBreedingPermissions(Request $request) {
         $permissions = BreedingPermission::where('recipient_id', Auth::user()->id);
         $used = $request->get('used');
-        if(!$used) $used = 0;
+        if (!$used) {
+            $used = 0;
+        }
 
         $permissions = $permissions->where('is_used', $used);
 

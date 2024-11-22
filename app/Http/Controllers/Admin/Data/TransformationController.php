@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\Character\CharacterTransformation as Transformation;
-use App\Models\Species\Species;
 use App\Services\TransformationService;
 use Auth;
 use Illuminate\Http\Request;

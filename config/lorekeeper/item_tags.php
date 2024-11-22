@@ -32,81 +32,81 @@ return [
     ],
 
     'volume' => [
-        'name' => 'Volume',
-        'text_color' => '#ffffff',
-        'background_color' => '#1fd1a7'
+        'name'             => 'Volume',
+        'text_color'       => '#ffffff',
+        'background_color' => '#1fd1a7',
     ],
 
     'breedingperm' => [
-        'name' => 'Breeding Permission',
-        'text_color' => '#ffffff',
-        'background_color' => '#cbbd8a'
+        'name'             => 'Breeding Permission',
+        'text_color'       => '#ffffff',
+        'background_color' => '#cbbd8a',
     ],
     'background' => [
-        'name' => 'Background',
-        'text_color' => 'antiquewhite',
-        'background_color' => 'slategrey'
+        'name'             => 'Background',
+        'text_color'       => 'antiquewhite',
+        'background_color' => 'slategrey',
     ],
     'gene_reveal' => [
-        'name' => 'Gene Reveal',
-        'text_color' => '#ffffff',
-        'background_color' => '#A8CE5E'
+        'name'             => 'Gene Reveal',
+        'text_color'       => '#ffffff',
+        'background_color' => '#A8CE5E',
     ],
     'splice' => [
-        'name' => 'Splice',
-        'text_color' => '#ffffff',
-        'background_color' => '#a69bc6'
+        'name'             => 'Splice',
+        'text_color'       => '#ffffff',
+        'background_color' => '#a69bc6',
     ],
 
     'coupon' => [
-        'name' => 'Coupon',
-        'text_color' => '#ffffff',
-        'background_color' => '#ff5ca8'
+        'name'             => 'Coupon',
+        'text_color'       => '#ffffff',
+        'background_color' => '#ff5ca8',
     ],
     'choicebox' => [
-        'name' => 'Choice Box',
-        'text_color' => '#ffffff',
-        'background_color' => '#56639E'
+        'name'             => 'Choice Box',
+        'text_color'       => '#ffffff',
+        'background_color' => '#56639E',
     ],
     'recipe' => [
-        'name' => 'Recipe',
-        'text_color' => '#ffffff',
-        'background_color' => '#6D18A7'
+        'name'             => 'Recipe',
+        'text_color'       => '#ffffff',
+        'background_color' => '#6D18A7',
     ],
-    
+
     // The item to wrap another item with
     'giftwrap' => [
-        'name' => 'Giftwrap',
-        'text_color' => "#ffffff",
-        'background_color' => '#61a16c'
+        'name'             => 'Giftwrap',
+        'text_color'       => '#ffffff',
+        'background_color' => '#61a16c',
     ],
-    
+
     // The open-able item
     'giftwrapped' => [
-        'name' => 'Giftwrapped',
-        'text_color' => "#ffffff",
-        'background_color' => '#c33d73'
+        'name'             => 'Giftwrapped',
+        'text_color'       => '#ffffff',
+        'background_color' => '#c33d73',
     ],
     'buff' => [
-        'name' => 'Buff',
-        'text_color' => '#ffffff',
-        'background_color' => '#a4b88d'
+        'name'             => 'Buff',
+        'text_color'       => '#ffffff',
+        'background_color' => '#a4b88d',
     ],
 
     'cure' => [
-        'name' => 'Cure',
-        'text_color' => '#ffffff',
-        'background_color' => '#b4676b'
+        'name'             => 'Cure',
+        'text_color'       => '#ffffff',
+        'background_color' => '#b4676b',
     ],
     'theme' => [
-        'name' => 'Theme',
-        'text_color' => "#ffffff",
-        'background_color' => '#573f7e'
+        'name'             => 'Theme',
+        'text_color'       => '#ffffff',
+        'background_color' => '#573f7e',
     ],
-    
+
     'encounterpotion' => [
-        'name' => 'Encounter Potion',
-        'text_color' => '#ffffff',
-        'background_color' => '#1fd1a7'
+        'name'             => 'Encounter Potion',
+        'text_color'       => '#ffffff',
+        'background_color' => '#1fd1a7',
     ],
 ];

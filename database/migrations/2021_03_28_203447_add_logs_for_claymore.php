@@ -4,17 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLogsForClaymore extends Migration
-{
+class AddLogsForClaymore extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('user_gears_log', function(Blueprint $table) {
+        Schema::create('user_gears_log', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('gear_id')->unsigned();
@@ -22,8 +18,8 @@ class AddLogsForClaymore extends Migration
 
             $table->integer('sender_id')->unsigned()->nullable();
             $table->integer('recipient_id')->unsigned()->nullable();
-            $table->string('log'); 
-            $table->string('log_type'); 
+            $table->string('log');
+            $table->string('log_type');
             $table->string('data', 1024)->nullable();
 
             $table->timestamps();
@@ -36,7 +32,7 @@ class AddLogsForClaymore extends Migration
             $table->foreign('recipient_id')->references('id')->on('users');
         });
 
-        Schema::create('user_weapons_log', function(Blueprint $table) {
+        Schema::create('user_weapons_log', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('weapon_id')->unsigned();
@@ -44,8 +40,8 @@ class AddLogsForClaymore extends Migration
 
             $table->integer('sender_id')->unsigned()->nullable();
             $table->integer('recipient_id')->unsigned()->nullable();
-            $table->string('log'); 
-            $table->string('log_type'); 
+            $table->string('log');
+            $table->string('log_type');
             $table->string('data', 1024)->nullable();
 
             $table->timestamps();
@@ -61,11 +57,8 @@ class AddLogsForClaymore extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::dropifExists('user_gears_log');
         Schema::dropifExists('user_weapons_log');

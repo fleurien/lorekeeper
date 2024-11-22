@@ -11,8 +11,7 @@ use App\Models\WorldExpansion\Location;
 use App\Services\Service;
 use DB;
 
-class ConceptService extends Service
-{
+class ConceptService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Concept Service
@@ -30,8 +29,7 @@ class ConceptService extends Service
      *
      * @return \App\Models\Concept\Category|bool
      */
-    public function createConceptCategory($data, $user)
-    {
+    public function createConceptCategory($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -78,8 +76,7 @@ class ConceptService extends Service
      *
      * @return \App\Models\Category\Category|bool
      */
-    public function updateConceptCategory($category, $data, $user)
-    {
+    public function updateConceptCategory($category, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -139,8 +136,7 @@ class ConceptService extends Service
      *
      * @return bool
      */
-    public function deleteConceptCategory($category)
-    {
+    public function deleteConceptCategory($category) {
         DB::beginTransaction();
 
         try {
@@ -179,8 +175,7 @@ class ConceptService extends Service
      *
      * @return bool
      */
-    public function sortConceptCategory($data)
-    {
+    public function sortConceptCategory($data) {
         DB::beginTransaction();
 
         try {
@@ -214,8 +209,7 @@ class ConceptService extends Service
      *
      * @return \App\Models\Concept\Category|bool
      */
-    public function createConcept($data, $user)
-    {
+    public function createConcept($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -256,14 +250,13 @@ class ConceptService extends Service
     /**
      * Updates a concept.
      *
-     * @param \App\Models\WorldExpansion\Concept $concept
-     * @param array                              $data
-     * @param \App\Models\User\User              $user
+     * @param Concept               $concept
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\WorldExpansion\Concept|bool
+     * @return bool|Concept
      */
-    public function updateConcept($concept, $data, $user)
-    {
+    public function updateConcept($concept, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -368,12 +361,11 @@ class ConceptService extends Service
     /**
      * Deletes a concept.
      *
-     * @param \App\Models\WorldExpansion\Concept $concept
+     * @param Concept $concept
      *
      * @return bool
      */
-    public function deleteConcept($concept)
-    {
+    public function deleteConcept($concept) {
         DB::beginTransaction();
 
         try {
@@ -400,8 +392,7 @@ class ConceptService extends Service
      *
      * @return bool
      */
-    public function sortConcept($data)
-    {
+    public function sortConcept($data) {
         DB::beginTransaction();
 
         try {
@@ -428,8 +419,7 @@ class ConceptService extends Service
      *
      * @return array
      */
-    private function populateConceptCategoryData($data, $category = null)
-    {
+    private function populateConceptCategoryData($data, $category = null) {
         if (isset($data['description']) && $data['description']) {
             $data['parsed_description'] = parse($data['description']);
         }
@@ -459,18 +449,17 @@ class ConceptService extends Service
     /**
      * Processes user input for creating/updating a concept.
      *
-     * @param array                              $data
-     * @param \App\Models\WorldExpansion\Concept $concept
+     * @param array   $data
+     * @param Concept $concept
      *
      * @return array
      */
-    private function populateConceptData($data, $concept = null)
-    {
-        $saveData['description'] = isset($data['description']) ? $data['description'] : null;
+    private function populateConceptData($data, $concept = null) {
+        $saveData['description'] = $data['description'] ?? null;
         if (isset($data['description']) && $data['description']) {
             $saveData['parsed_description'] = parse($data['description']);
         }
-        $saveData['summary'] = isset($data['summary']) ? $data['summary'] : null;
+        $saveData['summary'] = $data['summary'] ?? null;
 
         if (isset($data['name']) && $data['name']) {
             $saveData['name'] = parse($data['name']);
@@ -482,8 +471,8 @@ class ConceptService extends Service
         $saveData['is_active'] = isset($data['is_active']);
         $saveData['category_id'] = isset($data['category_id']) && $data['category_id'] ? $data['category_id'] : null;
 
-        $saveData['image'] = isset($data['image']) ? $data['image'] : null;
-        $saveData['image_th'] = isset($data['image_th']) ? $data['image_th'] : null;
+        $saveData['image'] = $data['image'] ?? null;
+        $saveData['image_th'] = $data['image_th'] ?? null;
 
         if (isset($data['remove_image'])) {
             if ($concept && isset($concept->image_extension) && $data['remove_image']) {

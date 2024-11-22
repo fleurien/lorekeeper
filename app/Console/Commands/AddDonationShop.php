@@ -6,8 +6,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Console\Command;
 
-class AddDonationShop extends Command
-{
+class AddDonationShop extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -25,8 +24,7 @@ class AddDonationShop extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -35,8 +33,7 @@ class AddDonationShop extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $this->line("Adding donation shop text...\n");
         $text = '<p>This is the shop text for the Donation Shop! It can be edited from the site pages admin panel.</p>
         <p>Items in this shop are donated by users of this site and can be collected at no cost.</p>';

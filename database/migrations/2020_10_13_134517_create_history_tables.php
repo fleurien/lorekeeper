@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistoryTables extends Migration
-{
+class CreateHistoryTables extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
-    {
+    public function up() {
         // Categories of historical events
         Schema::create('event_categories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -135,8 +133,7 @@ class CreateHistoryTables extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('event_locations');
         Schema::dropIfExists('event_figures');
         Schema::dropIfExists('figure_items');

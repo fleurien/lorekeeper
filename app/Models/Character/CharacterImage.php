@@ -113,8 +113,7 @@ class CharacterImage extends Model {
     /**
      * Get the title of the character image.
      */
-    public function title()
-    {
+    public function title() {
         return $this->belongsTo('App\Models\Character\CharacterTitle', 'title_id');
     }
 
@@ -150,7 +149,6 @@ class CharacterImage extends Model {
         return $this->hasMany('App\Models\Character\CharacterImageCreator', 'character_image_id')->where('type', 'Artist')->where('character_type', 'Character');
     }
 
- 
     /**********************************************************************************************
 
         SCOPES
@@ -281,8 +279,7 @@ class CharacterImage extends Model {
      *
      * @return string
      */
-    public function getHasTitleAttribute()
-    {
+    public function getHasTitleAttribute() {
         if (isset($this->title_id) || isset($this->title_data)) {
             return true;
         } else {
@@ -295,8 +292,7 @@ class CharacterImage extends Model {
      *
      * @return array
      */
-    public function getTitleDataAttribute()
-    {
+    public function getTitleDataAttribute() {
         return json_decode($this->attributes['title_data'], true);
     }
 }

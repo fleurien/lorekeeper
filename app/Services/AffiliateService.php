@@ -8,16 +8,14 @@ use Auth;
 use DB;
 use Notifications;
 
-class AffiliateService extends Service
-{
+class AffiliateService extends Service {
     /**
      * Create an affiliation request.
      *
      * @param mixed $data
      * @param mixed $user
      */
-    public function createAffiliate($data, $user)
-    {
+    public function createAffiliate($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -30,7 +28,7 @@ class AffiliateService extends Service
                 'status'        => 'Accepted',
                 'is_featured'   => isset($data['is_featured']) && $data['is_featured'] ? intval($data['is_featured']) : 0,
                 'staff_comment' => isset($data['staff_comment']) ? parse($data['staff_comment']) : null,
-                'image_url'     => isset($data['image_url']) ? $data['image_url'] : null,
+                'image_url'     => $data['image_url'] ?? null,
                 'description'   => isset($data['description']) ? parse($data['description']) : null,
                 'message'       => isset($data['message']) ? parse($data['message']) : null,
                 'guest_name'    => null,
@@ -54,8 +52,7 @@ class AffiliateService extends Service
      * @param mixed $data
      * @param mixed $user
      */
-    public function updateAffiliate($affiliate, $data, $user)
-    {
+    public function updateAffiliate($affiliate, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -72,8 +69,8 @@ class AffiliateService extends Service
                 'url'           => $data['url'],
                 'is_featured'   => isset($data['is_featured']) && $data['is_featured'] ? intval($data['is_featured']) : 0,
                 'staff_comment' => isset($data['staff_comment']) ? parse($data['staff_comment']) : null,
-                'image_url'     => isset($data['image_url']) ? $data['image_url'] : null,
-                'staff_id'      => isset($affiliate->staff_id) ? $affiliate->staff_id : $user,
+                'image_url'     => $data['image_url'] ?? null,
+                'staff_id'      => $affiliate->staff_id ?? $user,
                 'description'   => isset($data['description']) ? parse($data['description']) : null,
             ];
 
@@ -93,8 +90,7 @@ class AffiliateService extends Service
      * @param mixed $data
      * @param mixed $user
      */
-    public function acceptAffiliate($data, $user)
-    {
+    public function acceptAffiliate($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -135,8 +131,7 @@ class AffiliateService extends Service
      * @param mixed $data
      * @param mixed $user
      */
-    public function rejectAffiliate($data, $user)
-    {
+    public function rejectAffiliate($data, $user) {
         DB::beginTransaction();
 
         try {
@@ -173,12 +168,11 @@ class AffiliateService extends Service
     /**
      * Deletes an affiliate.
      *
-     * @param \App\Models\Affiliate\Affiliate $affiliate
+     * @param Affiliate\Affiliate $affiliate
      *
      * @return bool
      */
-    public function deleteAffiliate($affiliate)
-    {
+    public function deleteAffiliate($affiliate) {
         DB::beginTransaction();
 
         try {

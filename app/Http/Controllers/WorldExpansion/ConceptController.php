@@ -11,8 +11,7 @@ use App\Models\WorldExpansion\LocationType;
 use Auth;
 use Illuminate\Http\Request;
 
-class ConceptController extends Controller
-{
+class ConceptController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Concept Controller
@@ -27,8 +26,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getConceptCategories(Request $request)
-    {
+    public function getConceptCategories(Request $request) {
         $query = ConceptCategory::query();
         $name = $request->get('name');
         if ($name) {
@@ -48,8 +46,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getConceptCategory($id)
-    {
+    public function getConceptCategory($id) {
         $category = ConceptCategory::find($id);
         if (!$category) {
             abort(404);
@@ -65,8 +62,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getConcepts(Request $request)
-    {
+    public function getConcepts(Request $request) {
         $query = Concept::with('category');
         $data = $request->only(['category_id', 'name', 'sort']);
         if (isset($data['category_id']) && $data['category_id'] != 'none') {
@@ -115,8 +111,7 @@ class ConceptController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getConcept($id)
-    {
+    public function getConcept($id) {
         $concept = Concept::find($id);
         if (!$concept || !$concept->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);

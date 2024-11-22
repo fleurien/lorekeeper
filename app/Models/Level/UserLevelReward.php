@@ -2,18 +2,16 @@
 
 namespace App\Models\Level;
 
-use Config;
 use App\Models\Model;
 
-class UserLevelReward extends Model
-{
+class UserLevelReward extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'level_id', 'rewardable_type', 'rewardable_id', 'quantity'
+        'level_id', 'rewardable_type', 'rewardable_id', 'quantity',
     ];
 
     /**
@@ -22,7 +20,7 @@ class UserLevelReward extends Model
      * @var string
      */
     protected $table = 'user_level_rewards';
-    
+
     /**
      * Validation rules for creation.
      *
@@ -30,10 +28,10 @@ class UserLevelReward extends Model
      */
     public static $createRules = [
         'rewardable_type' => 'required',
-        'rewardable_id' => 'required',
-        'quantity' => 'required|integer|min:1',
+        'rewardable_id'   => 'required',
+        'quantity'        => 'required|integer|min:1',
     ];
-    
+
     /**
      * Validation rules for updating.
      *
@@ -41,23 +39,21 @@ class UserLevelReward extends Model
      */
     public static $updateRules = [
         'rewardable_type' => 'required',
-        'rewardable_id' => 'required',
-        'quantity' => 'required|integer|min:1',
+        'rewardable_id'   => 'required',
+        'quantity'        => 'required|integer|min:1',
     ];
 
     /**********************************************************************************************
-    
+
         RELATIONS
 
     **********************************************************************************************/
-    
+
     /**
      * Get the reward attached to the prompt reward.
      */
-    public function reward() 
-    {
-        switch ($this->rewardable_type)
-        {
+    public function reward() {
+        switch ($this->rewardable_type) {
             case 'Item':
                 return $this->belongsTo('App\Models\Item\Item', 'rewardable_id');
                 break;
@@ -71,6 +67,7 @@ class UserLevelReward extends Model
                 return $this->belongsTo('App\Models\Raffle\Raffle', 'rewardable_id');
                 break;
         }
+
         return null;
     }
 }

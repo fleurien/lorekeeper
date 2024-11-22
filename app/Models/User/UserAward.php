@@ -5,8 +5,7 @@ namespace App\Models\User;
 use App\Models\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserAward extends Model
-{
+class UserAward extends Model {
     use SoftDeletes;
 
     /**
@@ -41,16 +40,14 @@ class UserAward extends Model
     /**
      * Get the user who owns the stack.
      */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('App\Models\User\User');
     }
 
     /**
      * Get the award associated with this award stack.
      */
-    public function award()
-    {
+    public function award() {
         return $this->belongsTo('App\Models\Award\Award');
     }
 
@@ -65,8 +62,7 @@ class UserAward extends Model
      *
      * @return array
      */
-    public function getDataAttribute()
-    {
+    public function getDataAttribute() {
         return json_decode($this->attributes['data'], true);
     }
 
@@ -75,8 +71,7 @@ class UserAward extends Model
      *
      * @return array
      */
-    public function getIsTransferrableAttribute()
-    {
+    public function getIsTransferrableAttribute() {
         if (!isset($this->data['disallow_transfer']) && $this->award->allow_transfer) {
             return true;
         }
@@ -89,8 +84,7 @@ class UserAward extends Model
      *
      * @return int
      */
-    public function getAvailableQuantityAttribute()
-    {
+    public function getAvailableQuantityAttribute() {
         return $this->count - $this->trade_count - $this->update_count - $this->submission_count;
     }
 
@@ -99,8 +93,7 @@ class UserAward extends Model
      *
      * @return string
      */
-    public function getAssetTypeAttribute()
-    {
+    public function getAssetTypeAttribute() {
         return 'user_awards';
     }
 
@@ -113,8 +106,7 @@ class UserAward extends Model
      *
      * @return string
      */
-    public function getOthers($tradeCount = 0, $updateCount = 0, $submissionCount = 0)
-    {
+    public function getOthers($tradeCount = 0, $updateCount = 0, $submissionCount = 0) {
         return $this->getHeldString($this->trade_count - $tradeCount, $this->update_count - $updateCount, $this->submission_count - $submissionCount);
     }
 
@@ -125,8 +117,7 @@ class UserAward extends Model
      *
      * @return int
      */
-    public function getAvailableContextQuantity($count)
-    {
+    public function getAvailableContextQuantity($count) {
         return $this->getAvailableQuantityAttribute() + $count;
     }
 
@@ -139,8 +130,7 @@ class UserAward extends Model
      *
      * @return string
      */
-    private function getHeldString($tradeCount, $updateCount, $submissionCount)
-    {
+    private function getHeldString($tradeCount, $updateCount, $submissionCount) {
         if (!$tradeCount && !$updateCount && !$submissionCount) {
             return null;
         }

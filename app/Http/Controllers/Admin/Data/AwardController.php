@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers\Admin\Data;
 
-
-use Auth;
 use App\Http\Controllers\Controller;
-
-use App\Models\Award\AwardCategory;
-use App\Models\Item\Item;
-use App\Http\Controllers\Admin\Data\PromptController;
-use App\Models\Currency\Currency;
-use App\Models\Loot\LootTable;
 use App\Models\Award\Award;
+use App\Models\Award\AwardCategory;
+use App\Models\Currency\Currency;
+use App\Models\Item\Item;
+use App\Models\Loot\LootTable;
 use App\Models\Pet\Pet;
 use App\Models\Raffle\Raffle;
-
-use App\Models\Shop\Shop;
 use App\Models\User\User;
 use App\Services\AwardService;
+use Auth;
 use Illuminate\Http\Request;
 
-class AwardController extends Controller
-{
+class AwardController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Admin / Award Controller
@@ -42,8 +36,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('admin.awards.award_categories', [
             'categories' => AwardCategory::orderBy('sort', 'DESC')->get(),
         ]);
@@ -54,8 +47,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateAwardCategory()
-    {
+    public function getCreateAwardCategory() {
         return view('admin.awards.create_edit_award_category', [
             'category' => new AwardCategory,
         ]);
@@ -68,8 +60,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditAwardCategory($id)
-    {
+    public function getEditAwardCategory($id) {
         $category = AwardCategory::find($id);
         if (!$category) {
             abort(404);
@@ -88,8 +79,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditAwardCategory(Request $request, AwardService $service, $id = null)
-    {
+    public function postCreateEditAwardCategory(Request $request, AwardService $service, $id = null) {
         $id ? $request->validate(AwardCategory::$updateRules) : $request->validate(AwardCategory::$createRules);
         // TODO: Clear character references in updateAwardCategory and createAwardCategory
         $data = $request->only([
@@ -117,8 +107,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteAwardCategory($id)
-    {
+    public function getDeleteAwardCategory($id) {
         $category = AwardCategory::find($id);
 
         return view('admin.awards._delete_award_category', [
@@ -134,8 +123,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteAwardCategory(Request $request, AwardService $service, $id)
-    {
+    public function postDeleteAwardCategory(Request $request, AwardService $service, $id) {
         if ($id && $service->deleteAwardCategory(AwardCategory::find($id))) {
             flash('Category deleted successfully.')->success();
         } else {
@@ -154,8 +142,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postSortAwardCategory(Request $request, AwardService $service)
-    {
+    public function postSortAwardCategory(Request $request, AwardService $service) {
         if ($service->sortAwardCategory($request->get('sort'))) {
             flash('Category order updated successfully.')->success();
         } else {
@@ -178,8 +165,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getAwardIndex(Request $request)
-    {
+    public function getAwardIndex(Request $request) {
         $query = Award::query();
         $data = $request->only(['award_category_id', 'name']);
         if (isset($data['award_category_id']) && $data['award_category_id'] != 'none') {
@@ -200,13 +186,12 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateAward()
-    {
+    public function getCreateAward() {
         return view('admin.awards.create_edit_award', [
-            'award' => new Award,
-            'categories' => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'prompts' => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
-            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray()
+            'award'       => new Award,
+            'categories'  => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'prompts'     => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
+            'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -217,23 +202,22 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditAward($id)
-    {
+    public function getEditAward($id) {
         $award = Award::find($id);
         if (!$award) {
             abort(404);
         }
 
         return view('admin.awards.create_edit_award', [
-            'award' => $award,
-            'categories' => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'award'       => $award,
+            'categories'  => ['none' => 'No category'] + AwardCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'userOptions' => User::query()->orderBy('name')->pluck('name', 'id')->toArray(),
-            'items' => Item::orderBy('name')->pluck('name', 'id'),
-            'pets' => Pet::orderBy('name')->pluck('name', 'id'),
-            'awards' => Award::orderBy('name')->pluck('name', 'id'),
-            'currencies' => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
-            'tables' => LootTable::orderBy('name')->pluck('name', 'id'),
-            'raffles' => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'items'       => Item::orderBy('name')->pluck('name', 'id'),
+            'pets'        => Pet::orderBy('name')->pluck('name', 'id'),
+            'awards'      => Award::orderBy('name')->pluck('name', 'id'),
+            'currencies'  => Currency::where('is_user_owned', 1)->orderBy('name')->pluck('name', 'id'),
+            'tables'      => LootTable::orderBy('name')->pluck('name', 'id'),
+            'raffles'     => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
@@ -245,8 +229,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditAward(Request $request, AwardService $service, $id = null)
-    {
+    public function postCreateEditAward(Request $request, AwardService $service, $id = null) {
         $id ? $request->validate(Award::$updateRules) : $request->validate(Award::$createRules);
         // TODO: Process all new character/user holding booleans plus all new Credits information
         // TODO: Add "extension" to image processing - see WE for example
@@ -259,7 +242,7 @@ class AwardController extends Controller
             // progression stuff - since we're reusing loot select we gotta refer to it as rewardable
             'rewardable_id', 'rewardable_type', 'quantity',
             // reward
-            'award_type', 'award_id', 'award_quantity', 'allow_reclaim'
+            'award_type', 'award_id', 'award_quantity', 'allow_reclaim',
         ]);
         if ($id && $service->updateAward(Award::find($id), $data, Auth::user())) {
             flash('Award updated successfully.')->success();
@@ -283,8 +266,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteAward($id)
-    {
+    public function getDeleteAward($id) {
         $award = Award::find($id);
 
         return view('admin.awards._delete_award', [
@@ -300,8 +282,7 @@ class AwardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteAward(Request $request, AwardService $service, $id)
-    {
+    public function postDeleteAward(Request $request, AwardService $service, $id) {
         if ($id && $service->deleteAward(Award::find($id))) {
             flash('Award deleted successfully.')->success();
         } else {

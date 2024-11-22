@@ -4,8 +4,7 @@ namespace App\Models;
 
 use App\Models\User\User;
 
-class Affiliate extends Model
-{
+class Affiliate extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -77,8 +76,7 @@ class Affiliate extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
-    {
+    public function scopeActive($query) {
         return $query->where('status', 'Pending');
     }
 
@@ -90,8 +88,7 @@ class Affiliate extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFeatured($query, $num)
-    {
+    public function scopeFeatured($query, $num) {
         if ($num == 0) {
             return $query->where('is_featured', 0);
         } else {
@@ -106,8 +103,7 @@ class Affiliate extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortOldest($query)
-    {
+    public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
 
@@ -118,8 +114,7 @@ class Affiliate extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSortNewest($query)
-    {
+    public function scopeSortNewest($query) {
         return $query->orderBy('id', 'DESC');
     }
 
@@ -132,8 +127,7 @@ class Affiliate extends Model
     /**
      * Determine who submitted the affiliate.
      */
-    public function getSubmitterAttribute()
-    {
+    public function getSubmitterAttribute() {
         if (isset($this->user_id)) {
             $user = User::find($this->user_id)->displayName;
         }
@@ -148,8 +142,7 @@ class Affiliate extends Model
     /**
      * Determine who submitted the affiliate.
      */
-    public function getStaffAttribute()
-    {
+    public function getStaffAttribute() {
         if (isset($this->staff_id)) {
             $staff = User::find($this->staff_id)->displayName;
         }
@@ -164,13 +157,11 @@ class Affiliate extends Model
     /**
      * Determine who submitted the affiliate.
      */
-    public function getIconAttribute()
-    {
-        return '<a href="'.$this->url.'"><img src="'.(isset($this->image_url) ? $this->image_url : asset('images/affiliate.png')).'" data-toggle="tooltip" title="<strong>'.$this->name.'</strong>'.($this->description ? ' <br> '.$this->description : '').'"class="m-1 avatar" /></a>';
+    public function getIconAttribute() {
+        return '<a href="'.$this->url.'"><img src="'.($this->image_url ?? asset('images/affiliate.png')).'" data-toggle="tooltip" title="<strong>'.$this->name.'</strong>'.($this->description ? ' <br> '.$this->description : '').'"class="m-1 avatar" /></a>';
     }
 
-    public function getStatusUrlAttribute()
-    {
+    public function getStatusUrlAttribute() {
         return url('/affiliates/status/').'/'.$this->slug;
     }
 }

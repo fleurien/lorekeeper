@@ -4,8 +4,7 @@ namespace App\Models\Character;
 
 use App\Models\Model;
 
-class CharacterTitle extends Model
-{
+class CharacterTitle extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -55,8 +54,7 @@ class CharacterTitle extends Model
     /**
      * Get the rarity of the character image.
      */
-    public function rarity()
-    {
+    public function rarity() {
         return $this->belongsTo('App\Models\Rarity', 'rarity_id');
     }
 
@@ -71,8 +69,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getDisplayNameAttribute()
-    {
+    public function getDisplayNameAttribute() {
         return '<a href="'.$this->url.'" class="display-rarity">'.$this->title.'</a>';
     }
 
@@ -81,8 +78,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getDisplayNamePartialAttribute()
-    {
+    public function getDisplayNamePartialAttribute() {
         return '<a href="'.$this->url.'" class="display-rarity">'.$this->title.'</a>'.($this->rarity ? ' ('.$this->rarity->displayName.')' : '');
     }
 
@@ -91,8 +87,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getDisplayNameFullAttribute()
-    {
+    public function getDisplayNameFullAttribute() {
         return '<a href="'.$this->url.'" class="display-rarity">'.$this->title.'</a>'.($this->short_title ? ' ('.$this->short_title.')' : '').($this->rarity ? ' ('.$this->rarity->displayName.')' : '');
     }
 
@@ -101,8 +96,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getDisplayNameShortAttribute()
-    {
+    public function getDisplayNameShortAttribute() {
         return '<a href="'.$this->url.'" class="display-rarity">'.$this->short_title.'</a>';
     }
 
@@ -111,8 +105,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getImageDirectoryAttribute()
-    {
+    public function getImageDirectoryAttribute() {
         return 'images/data/character-titles';
     }
 
@@ -121,8 +114,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getTitleImageFileNameAttribute()
-    {
+    public function getTitleImageFileNameAttribute() {
         return $this->id.'-image.png';
     }
 
@@ -131,8 +123,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getTitleImagePathAttribute()
-    {
+    public function getTitleImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -141,8 +132,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getTitleImageUrlAttribute()
-    {
+    public function getTitleImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
@@ -155,8 +145,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
         return url('world/character-titles?title='.$this->title);
     }
 
@@ -165,8 +154,7 @@ class CharacterTitle extends Model
      *
      * @return string
      */
-    public function getSearchCharactersUrlAttribute()
-    {
+    public function getSearchCharactersUrlAttribute() {
         return url('masterlist?title_id='.$this->id);
     }
 }

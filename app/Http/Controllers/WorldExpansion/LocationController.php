@@ -14,8 +14,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Settings;
 
-class LocationController extends Controller
-{
+class LocationController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Location Controller
@@ -31,8 +30,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getWorld()
-    {
+    public function getWorld() {
         $world = SitePage::where('key', 'world')->first();
         if (!$world) {
             abort(404);
@@ -48,8 +46,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         return view('world.index');
     }
 
@@ -58,8 +55,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLocationTypes(Request $request)
-    {
+    public function getLocationTypes(Request $request) {
         $query = LocationType::query();
         $name = $request->get('name');
         if ($name) {
@@ -79,8 +75,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLocationType($id)
-    {
+    public function getLocationType($id) {
         $type = LocationType::find($id);
         if (!$type) {
             abort(404);
@@ -96,8 +91,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLocations(Request $request)
-    {
+    public function getLocations(Request $request) {
         $query = Location::with('type');
         $data = $request->only(['type_id', 'name', 'sort']);
         if (isset($data['type_id']) && $data['type_id'] != 'none') {
@@ -149,8 +143,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLocation($id)
-    {
+    public function getLocation($id) {
         $location = Location::find($id);
         if (!$location || !$location->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);
@@ -175,8 +168,7 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getLocationSubmissions($id)
-    {
+    public function getLocationSubmissions($id) {
         $location = Location::find($id);
         if (!$location || !$location->is_active && (!Auth::check() || !(Auth::check() && Auth::user()->isStaff))) {
             abort(404);

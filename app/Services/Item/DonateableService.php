@@ -5,8 +5,7 @@ namespace App\Services\Item;
 use App\Services\Service;
 use DB;
 
-class DonateableService extends Service
-{
+class DonateableService extends Service {
     /*
     |--------------------------------------------------------------------------
     | Donateable Service
@@ -21,8 +20,7 @@ class DonateableService extends Service
      *
      * @return array
      */
-    public function getEditData()
-    {
+    public function getEditData() {
         return [
         ];
     }
@@ -35,8 +33,7 @@ class DonateableService extends Service
      *
      * @return bool
      */
-    public function updateData($tag, $data)
-    {
+    public function updateData($tag, $data) {
         DB::beginTransaction();
 
         try {

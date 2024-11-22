@@ -34,8 +34,6 @@ class ToyhouseProvider extends AbstractProvider implements ProviderInterface {
         return 'https://toyhou.se/~oauth/token';
     }
 
-
-
     /**
      * Get the raw user for the given access token.
      *
@@ -48,7 +46,7 @@ class ToyhouseProvider extends AbstractProvider implements ProviderInterface {
             'https://toyhou.se/~api/v1/me',
             [
                 RequestOptions::HEADERS => [
-                    'Authorization' => 'Bearer ' . $token,
+                    'Authorization' => 'Bearer '.$token,
                 ],
             ]
         );
@@ -59,7 +57,7 @@ class ToyhouseProvider extends AbstractProvider implements ProviderInterface {
     /**
      * Map the raw user array to a Socialite User instance.
      *
-     * @return \Laravel\Socialite\Two\User
+     * @return User
      */
     protected function mapUserToObject(array $user) {
         return (new User)->setRaw($user)->map([
